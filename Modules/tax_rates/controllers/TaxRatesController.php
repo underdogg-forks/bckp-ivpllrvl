@@ -4,7 +4,7 @@ namespace Modules\Taxrates\Controllers;
 
 use Modules\Core\Controllers\AdminController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -26,8 +26,10 @@ class TaxRatesController extends AdminController
         parent::__construct();
         $this->load->model('mdl_tax_rates');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile TaxRatesController.php
      */
     public function index($page = 0)
@@ -38,8 +40,10 @@ class TaxRatesController extends AdminController
         $this->layout->buffer('content', 'tax_rates/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile TaxRatesController.php
      */
     public function form($id = null)
@@ -52,19 +56,21 @@ class TaxRatesController extends AdminController
         if ($this->mdl_tax_rates->run_validation()) {
             $this->mdl_tax_rates->form_values['tax_rate_percent'] = standardize_amount($this->mdl_tax_rates->form_values['tax_rate_percent']);
             // We need to use the correct decimal point for sql IPT-310
-            $db_array = $this->mdl_tax_rates->dbArray();
+            $db_array                     = $this->mdl_tax_rates->dbArray();
             $db_array['tax_rate_percent'] = standardize_amount($this->input->post('tax_rate_percent'));
             $this->mdl_tax_rates->save($id, $db_array);
             redirect('tax_rates');
         }
-        if ($id && !$this->input->post('btn_submit') && !$this->mdl_tax_rates->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_tax_rates->prepForm($id)) {
             show_404();
         }
         $this->layout->buffer('content', 'tax_rates/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile TaxRatesController.php
      */
     public function delete($id)

@@ -3,7 +3,8 @@
 namespace Modules\Core\Models;
 
 use AllowDynamicProperties;
-if (!defined('BASEPATH')) {
+
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,6 +25,6 @@ class FormValidationModel extends MyModel
     {
         parent::__construct();
         $this->load->library('form_validation');
-        $this->form_validation->CI =& $this;
+        $this->form_validation->CI = & $this;
     }
 }

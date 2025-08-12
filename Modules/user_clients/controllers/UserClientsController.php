@@ -2,7 +2,7 @@
 
 namespace Modules\Userclients\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -26,16 +26,20 @@ class UserClientsController extends AdminController
         $this->load->model('clients/mdl_clients');
         $this->load->model('user_clients/mdl_user_clients');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile UserClientsController.php
      */
     public function index()
     {
         redirect('users');
     }
+
     /**
      * @originalName user
+     *
      * @originalFile UserClientsController.php
      */
     public function user($id = null)
@@ -53,13 +57,15 @@ class UserClientsController extends AdminController
         $this->layout->buffer('content', 'user_clients/field');
         $this->layout->render();
     }
+
     /**
      * @originalName create
+     *
      * @originalFile UserClientsController.php
      */
     public function create($user_id = null)
     {
-        if (!$user_id) {
+        if ( ! $user_id) {
             redirect('custom_values');
         } elseif ($this->input->post('btn_cancel')) {
             redirect('user_clients/field/' . $user_id);
@@ -77,14 +83,16 @@ class UserClientsController extends AdminController
             $this->db->update('ip_users', $user_update);
             redirect('user_clients/user/' . $user_id);
         }
-        $user = $this->mdl_users->getById($user_id);
+        $user    = $this->mdl_users->getById($user_id);
         $clients = $this->mdl_clients->getNotAssignedToUser($user_id);
         $this->layout->set(['id' => $user_id, 'user' => $user, 'clients' => $clients]);
         $this->layout->buffer('content', 'user_clients/new');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile UserClientsController.php
      */
     public function delete($user_client_id)

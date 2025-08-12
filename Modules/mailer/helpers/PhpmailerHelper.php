@@ -2,7 +2,7 @@
 
 namespace Modules\Mailer\Helpers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -14,7 +14,8 @@ if (!defined('BASEPATH')) {
  * @link        https://invoiceplane.com
  */
 
-class PhpmailerHelper{
+class PhpmailerHelper
+{
     /**
      * @param $from
      * @param $to
@@ -25,10 +26,10 @@ class PhpmailerHelper{
      */
     public function phpmail_send($from, $to, $subject, $message, $attachment_path = null, $cc = null, $bcc = null, $more_attachments = null)
     {
-        $CI =& get_instance();
+        $CI = & get_instance();
         $CI->load->library('crypt');
         // Create the basic mailer object
-        $mail = new \PHPMailer\PHPMailer\PHPMailer();
+        $mail          = new \PHPMailer\PHPMailer\PHPMailer();
         $mail->CharSet = 'UTF-8';
         $mail->isHTML();
         // Set msg from PHPMailer in user lang. Only work with 2 letters. See phpmailer.lang-fr.php (in vendor dir).
@@ -37,7 +38,7 @@ class PhpmailerHelper{
         switch (get_setting('email_send_method')) {
             case 'smtp':
                 $mail->isSMTP();
-                $mail->SMTPDebug = env_bool('ENABLE_DEBUG') ? 2 : 0;
+                $mail->SMTPDebug   = env_bool('ENABLE_DEBUG') ? 2 : 0;
                 $mail->Debugoutput = env_bool('ENABLE_DEBUG') ? 'echo' : 'error_log';
                 // Set the basic properties
                 $mail->Host = get_setting('smtp_server_address');
@@ -45,7 +46,7 @@ class PhpmailerHelper{
                 // Is SMTP authentication required?
                 if (get_setting('smtp_authentication')) {
                     $mail->SMTPAuth = true;
-                    $decoded = $CI->crypt->decode($CI->mdl_settings->get('smtp_password'));
+                    $decoded        = $CI->crypt->decode($CI->mdl_settings->get('smtp_password'));
                     $mail->Username = get_setting('smtp_username');
                     $mail->Password = $decoded;
                 }
@@ -54,7 +55,7 @@ class PhpmailerHelper{
                     $mail->SMTPSecure = get_setting('smtp_security');
                 }
                 // Check if certificates should not be verified
-                if (!get_setting('smtp_verify_certs', true)) {
+                if ( ! get_setting('smtp_verify_certs', true)) {
                     $mail->SMTPOptions = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]];
                 }
                 break;
@@ -65,7 +66,7 @@ class PhpmailerHelper{
                 break;
         }
         $mail->Subject = $subject;
-        $mail->Body = $message;
+        $mail->Body    = $message;
         $mail->AltBody = $mail->normalizeBreaks($mail->html2text($message));
         if (is_array($from)) {
             // This array should be address, name
@@ -113,7 +114,7 @@ class PhpmailerHelper{
             $xml_file = mb_rtrim($attachment_path, '.pdf') . '.xml';
             if (file_exists($xml_file)) {
                 // Attach eInvoicing temp file
-                if (!empty($_SERVER['CIIname'])) {
+                if ( ! empty($_SERVER['CIIname'])) {
                     // Need Specific eInvoice filename? (see mailer helper)
                     $mail->addAttachment($xml_file, $_SERVER['CIIname']);
                     // phpmailer-sent-attachment-as-other-name
@@ -137,10 +138,10 @@ class PhpmailerHelper{
             unlink($xml_file);
         }
         // Only Notify the error. The success is in mailer controller.
-        if (!$ok) {
+        if ( ! $ok) {
             $CI->session->set_flashdata('alert_error', $mail->ErrorInfo);
         }
+
         return $ok;
     }
 }
-

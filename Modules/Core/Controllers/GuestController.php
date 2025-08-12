@@ -3,7 +3,8 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-if (!defined('BASEPATH')) {
+
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -19,6 +20,7 @@ class GuestController extends UserController
 {
     /** @var array */
     public $user_clients = [];
+
     /**
      * Modules\Core\Controllers\Guest_Controller constructor.
      */
@@ -27,7 +29,7 @@ class GuestController extends UserController
         parent::__construct('user_type', 2);
         $this->load->model('user_clients/mdl_user_clients');
         $user_clients = $this->mdl_user_clients->assigned_to($this->session->userdata('user_id'))->get()->result();
-        if (!$user_clients) {
+        if ( ! $user_clients) {
             show_error(trans('guest_account_denied'), 403);
             exit;
         }

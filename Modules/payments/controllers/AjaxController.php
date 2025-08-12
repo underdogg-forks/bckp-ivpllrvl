@@ -2,7 +2,7 @@
 
 namespace Modules\Payments\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,8 +17,10 @@ if (!defined('BASEPATH')) {
 class AjaxController extends AdminController
 {
     public $ajax_controller = true;
+
     /**
      * @originalName add
+     *
      * @originalFile AjaxController.php
      */
     public function add()
@@ -26,15 +28,17 @@ class AjaxController extends AdminController
         $this->load->model('payments/mdl_payments');
         if ($this->mdl_payments->run_validation()) {
             $payment_id = $this->mdl_payments->save();
-            $response = ['success' => 1, 'payment_id' => $payment_id];
+            $response   = ['success' => 1, 'payment_id' => $payment_id];
         } else {
             $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         echo json_encode($response);
     }
+
     /**
      * @originalName modalAddPayment
+     *
      * @originalFile AjaxController.php
      */
     public function modalAddPayment()

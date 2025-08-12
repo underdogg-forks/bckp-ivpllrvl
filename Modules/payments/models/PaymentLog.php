@@ -2,7 +2,7 @@
 
 namespace Modules\Payments\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,9 +17,12 @@ if (!defined('BASEPATH')) {
 class PaymentLog extends ResponseModel
 {
     public $table = 'ip_merchant_responses';
+
     public $primary_key = 'ip_merchant_responses.merchant_response_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile PaymentLog.php
      */
     public function defaultSelect()
@@ -29,16 +32,20 @@ class PaymentLog extends ResponseModel
             ip_invoices.invoice_number,
             ip_merchant_responses.*', false);
     }
+
     /**
      * @originalName defaultOrderBy
+     *
      * @originalFile PaymentLog.php
      */
     public function defaultOrderBy()
     {
         $this->db->orderBy('ip_merchant_responses.merchant_response_id DESC');
     }
+
     /**
      * @originalName defaultJoin
+     *
      * @originalFile PaymentLog.php
      */
     public function defaultJoin()

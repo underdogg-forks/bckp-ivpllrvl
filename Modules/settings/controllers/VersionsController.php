@@ -2,7 +2,7 @@
 
 namespace Modules\Settings\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class VersionsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_versions');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile VersionsController.php
      */
     public function index($page = 0)

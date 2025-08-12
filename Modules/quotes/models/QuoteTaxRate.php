@@ -2,7 +2,7 @@
 
 namespace Modules\Quotes\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,9 +17,12 @@ if (!defined('BASEPATH')) {
 class QuoteTaxRate extends ResponseModel
 {
     public $table = 'ip_quote_tax_rates';
+
     public $primary_key = 'ip_quote_tax_rates.quote_tax_rate_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile QuoteTaxRate.php
      */
     public function defaultSelect()
@@ -28,16 +31,20 @@ class QuoteTaxRate extends ResponseModel
         $this->db->select('ip_tax_rates.tax_rate_percent AS quote_tax_rate_percent');
         $this->db->select('ip_quote_tax_rates.*');
     }
+
     /**
      * @originalName defaultJoin
+     *
      * @originalFile QuoteTaxRate.php
      */
     public function defaultJoin()
     {
         $this->db->join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_quote_tax_rates.tax_rate_id');
     }
+
     /**
      * @originalName save
+     *
      * @originalFile QuoteTaxRate.php
      */
     public function save($id = null, $db_array = null)
@@ -52,8 +59,10 @@ class QuoteTaxRate extends ResponseModel
             $this->mdl_quote_amounts->calculate($quote_id, $global_discount);
         }
     }
+
     /**
      * @originalName validationRules
+     *
      * @originalFile QuoteTaxRate.php
      */
     public function validationRules()

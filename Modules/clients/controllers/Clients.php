@@ -2,7 +2,7 @@
 
 namespace Modules\Clients\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,6 +17,7 @@ if (!defined('BASEPATH')) {
 class Clients extends AdminController
 {
     private const CLIENT_TITLE = 'client_title';
+
     /**
      * Clients constructor.
      */
@@ -25,8 +26,10 @@ class Clients extends AdminController
         parent::__construct();
         $this->load->model('mdl_clients');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile Clients.php
      */
     public function index(): void
@@ -34,8 +37,10 @@ class Clients extends AdminController
         // Display active clients by default
         redirect('clients/status/active');
     }
+
     /**
      * @originalName status
+     *
      * @originalFile Clients.php
      */
     public function status(string $status = 'active', $page = 0): void
@@ -45,7 +50,7 @@ class Clients extends AdminController
             $this->mdl_clients->{$function}();
         }
         $this->mdl_clients->withTotalBalance()->paginate(site_url('clients/status/' . $status), $page);
-        $clients = $this->mdl_clients->result();
+        $clients        = $this->mdl_clients->result();
         $req_einvoicing = get_setting('einvoicing');
         if ($req_einvoicing) {
             $this->load->helper('e-invoice');
@@ -53,7 +58,7 @@ class Clients extends AdminController
             foreach ($clients as &$client) {
                 // GetController a check of filled Required (client and users) fields for eInvoicing
                 $req_einvoicing = get_req_fields_einvoice($client);
-                $client = $this->checkClientEinvoiceActive($client, $req_einvoicing);
+                $client         = $this->checkClientEinvoiceActive($client, $req_einvoicing);
             }
             unset($client);
         }
@@ -61,8 +66,10 @@ class Clients extends AdminController
         $this->layout->buffer('content', 'clients/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile Clients.php
      */
     public function form($id = null): void
@@ -76,7 +83,7 @@ class Clients extends AdminController
         // Set validation rule based on is_update
         if ($this->input->post('is_update') == 0 && $this->input->post('client_name') != '') {
             $check = $this->db->get_where('ip_clients', ['client_name' => $this->input->post('client_name'), 'client_surname' => $this->input->post('client_surname')])->result();
-            if (!empty($check)) {
+            if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('client_already_exists'));
                 redirect('clients/form');
             } else {
@@ -102,7 +109,7 @@ class Clients extends AdminController
             }
             $this->load->model('custom_fields/mdl_client_custom');
             $result = $this->mdl_client_custom->saveCustom($id, $this->input->post('custom'));
-            $where = 'view';
+            $where  = 'view';
             if ($result !== true) {
                 $this->session->set_flashdata('alert_error', $result);
                 $this->session->set_flashdata('alert_success', null);
@@ -115,10 +122,10 @@ class Clients extends AdminController
             $this->load->helper('e-invoice');
             // eInvoicing++
             // GetController a check of filled Required (client and users) fields for eInvoicing
-            $req_einvoicing = get_req_fields_einvoice($new_client || !$id ? null : $this->db->from('ip_clients')->where('client_id', $id)->get()->row());
+            $req_einvoicing = get_req_fields_einvoice($new_client || ! $id ? null : $this->db->from('ip_clients')->where('client_id', $id)->get()->row());
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_clients->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_clients->prepForm($id)) {
                 show_404();
             }
             $this->load->model('custom_fields/mdl_client_custom');
@@ -143,7 +150,7 @@ class Clients extends AdminController
         $custom_values = [];
         foreach ($custom_fields as $custom_field) {
             if (in_array($custom_field->custom_field_type, $this->mdl_custom_values->customValueFields())) {
-                $values = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
+                $values                                        = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
                 $custom_values[$custom_field->custom_field_id] = $values;
             }
         }
@@ -160,28 +167,30 @@ class Clients extends AdminController
         $this->load->helper(['custom_values', 'e-invoice']);
         // e-invoice - since 1.6.3
         $this->layout->set([
-            'client_id' => $id,
-            'custom_fields' => $custom_fields,
-            'custom_values' => $custom_values,
-            'countries' => get_country_list(trans('cldr')),
-            'selected_country' => $this->mdl_clients->form_value('client_country') ?: get_setting('default_country'),
-            'languages' => get_available_languages(),
+            'client_id'            => $id,
+            'custom_fields'        => $custom_fields,
+            'custom_values'        => $custom_values,
+            'countries'            => get_country_list(trans('cldr')),
+            'selected_country'     => $this->mdl_clients->form_value('client_country') ?: get_setting('default_country'),
+            'languages'            => get_available_languages(),
             'client_title_choices' => $this->getClientTitleChoices(),
-            'xml_templates' => get_xml_template_files(),
+            'xml_templates'        => get_xml_template_files(),
             // eInvoicing
             'req_einvoicing' => $req_einvoicing,
         ]);
         $this->layout->buffer('content', 'clients/form');
         $this->layout->render();
     }
+
     /**
      * @originalName view
+     *
      * @originalFile Clients.php
      */
     public function view($client_id, $activeTab = 'detail', $page = 0): void
     {
         $client = $this->mdl_clients->withTotal()->withTotalBalance()->withTotalPaid()->where('ip_clients.client_id', $client_id)->get()->row();
-        if (!$client) {
+        if ( ! $client) {
             show_404();
         }
         $this->load->model(['clients/mdl_client_notes', 'invoices/mdl_invoices', 'quotes/mdl_quotes', 'payments/mdl_payments', 'custom_fields/mdl_custom_fields', 'custom_fields/mdl_client_custom']);
@@ -191,7 +200,7 @@ class Clients extends AdminController
             // eInvoicing++
             // GetController a check of filled Required (client and users) fields for eInvoicing
             $req_einvoicing = get_req_fields_einvoice($client);
-            $client = $this->checkClientEinvoiceActive($client, $req_einvoicing);
+            $client         = $this->checkClientEinvoiceActive($client, $req_einvoicing);
         }
         // Change page only for one url (tab) system
         $p = ['invoices' => 0, 'quotes' => 0, 'payments' => 0];
@@ -225,8 +234,10 @@ class Clients extends AdminController
         $this->layout->buffer([['invoice_table', 'invoices/partial_invoice_table'], ['quote_table', 'quotes/partial_quote_table'], ['payment_table', 'payments/partial_payments_table'], ['partial_notes', 'clients/partial_notes'], ['content', 'clients/view']]);
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile Clients.php
      */
     public function delete($client_id): void
@@ -234,23 +245,27 @@ class Clients extends AdminController
         $this->mdl_clients->delete($client_id);
         redirect('clients');
     }
+
     /**
      * @originalName getClientTitleChoices
+     *
      * @originalFile Clients.php
      */
     private function getClientTitleChoices(): array
     {
-        return array_map(fn($clientTitleEnum) => $clientTitleEnum->value, ClientTitleEnum::cases());
+        return array_map(fn ($clientTitleEnum) => $clientTitleEnum->value, ClientTitleEnum::cases());
     }
+
     /**
      * @originalName checkClientEinvoiceActive
+     *
      * @originalFile Clients.php
      */
     private function checkClientEinvoiceActive($client, $req_einvoicing)
     {
         // Update active eInvoicing client
         $o = $client->client_einvoicing_active;
-        if (!empty($client->client_einvoicing_version) && $req_einvoicing->clients[$client->client_id]->einvoicing_empty_fields == 0) {
+        if ( ! empty($client->client_einvoicing_version) && $req_einvoicing->clients[$client->client_id]->einvoicing_empty_fields == 0) {
             $client->client_einvoicing_active = 1;
             // update view
         } else {
@@ -263,6 +278,7 @@ class Clients extends AdminController
             $this->db->set('client_einvoicing_active', $client->client_einvoicing_active);
             $this->db->update('ip_clients');
         }
+
         return $client;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Modules\Invoices\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -20,12 +20,15 @@ class InvoiceAmount extends BaseModel
      * @var int
      */
     public $decimal_places = 2;
+
     public function __construct()
     {
         $this->decimal_places = (int) get_setting('tax_rate_decimal_places');
     }
+
     /**
      * @originalName calculate
+     *
      * @originalFile InvoiceAmount.php
      */
     public function calculate($invoice_id, $global_discount)
@@ -45,11 +48,11 @@ class InvoiceAmount extends BaseModel
         // Discounts calculation - since v1.6.3
         if (config_item('legacy_calculation')) {
             $invoice_item_subtotal = $invoice_amounts->invoice_item_subtotal - $invoice_amounts->invoice_item_discount;
-            $invoice_subtotal = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
-            $invoice_total = $this->calculateDiscount($invoice_id, $invoice_subtotal);
+            $invoice_subtotal      = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
+            $invoice_total         = $this->calculateDiscount($invoice_id, $invoice_subtotal);
         } else {
             $invoice_item_subtotal = $invoice_amounts->invoice_item_subtotal - $invoice_amounts->invoice_item_discount - $global_discount['item'];
-            $invoice_total = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
+            $invoice_total         = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
         }
         // GetController the amount already paid
         $query = $this->db->query('
@@ -72,13 +75,13 @@ class InvoiceAmount extends BaseModel
         $this->calculateInvoiceTaxes($invoice_id);
         // GetController invoice status
         $this->load->model('invoices/mdl_invoices');
-        $invoice = $this->mdl_invoices->getById($invoice_id);
+        $invoice           = $this->mdl_invoices->getById($invoice_id);
         $invoice_is_credit = $invoice->creditinvoice_parent_id > 0;
         // Set to paid if balance is zero
         // Check if the invoice total is not zero or negative
         if ($invoice->invoice_balance == 0 && ($invoice->invoice_total != 0 || $invoice_is_credit)) {
             $this->db->where('invoice_id', $invoice_id);
-            $payment = $this->db->get('ip_payments')->row();
+            $payment           = $this->db->get('ip_payments')->row();
             $payment_method_id = $payment->payment_method_id ? $payment->payment_method_id : 0;
             $this->db->where('invoice_id', $invoice_id);
             $this->db->set('invoice_status_id', 4);
@@ -92,8 +95,10 @@ class InvoiceAmount extends BaseModel
             }
         }
     }
+
     /**
      * @originalName calculateDiscount
+     *
      * @originalFile InvoiceAmount.php
      */
     public function calculateDiscount($invoice_id, $invoice_total)
@@ -101,14 +106,17 @@ class InvoiceAmount extends BaseModel
         $this->db->where('invoice_id', $invoice_id);
         $invoice_data = $this->db->get('ip_invoices')->row();
         // Prevent NULL in number_format
-        $total = (float) number_format((float) $invoice_total, $this->decimal_places, '.', '');
-        $discount_amount = (float) number_format((float) $invoice_data->invoice_discount_amount, $this->decimal_places, '.', '');
+        $total            = (float) number_format((float) $invoice_total, $this->decimal_places, '.', '');
+        $discount_amount  = (float) number_format((float) $invoice_data->invoice_discount_amount, $this->decimal_places, '.', '');
         $discount_percent = (float) number_format((float) $invoice_data->invoice_discount_percent, $this->decimal_places, '.', '');
         $total -= $discount_amount;
+
         return $total - round($total / 100 * $discount_percent, $this->decimal_places);
     }
+
     /**
      * @originalName getGlobalDiscount
+     *
      * @originalFile InvoiceAmount.php
      */
     public function getGlobalDiscount($invoice_id)
@@ -119,10 +127,13 @@ class InvoiceAmount extends BaseModel
             WHERE item_id
                 IN (SELECT item_id FROM ip_invoice_items WHERE invoice_id = ' . $this->db->escape($invoice_id) . ')
             ')->row();
+
         return $row->global_discount;
     }
+
     /**
      * @originalName calculateInvoiceTaxes
+     *
      * @originalFile InvoiceAmount.php
      */
     public function calculateInvoiceTaxes($invoice_id)
@@ -177,8 +188,10 @@ class InvoiceAmount extends BaseModel
             $this->db->update('ip_invoice_amounts', $db_array);
         }
     }
+
     /**
      * @originalName getTotalInvoiced
+     *
      * @originalFile InvoiceAmount.php
      */
     public function getTotalInvoiced($period = null)
@@ -216,8 +229,10 @@ class InvoiceAmount extends BaseModel
                 return $this->db->query('SELECT SUM(invoice_total) AS total_invoiced FROM ip_invoice_amounts')->row()->total_invoiced;
         }
     }
+
     /**
      * @originalName getTotalPaid
+     *
      * @originalFile InvoiceAmount.php
      */
     public function getTotalPaid($period = null)
@@ -252,8 +267,10 @@ class InvoiceAmount extends BaseModel
                 return $this->db->query('SELECT SUM(invoice_paid) AS total_paid FROM ip_invoice_amounts')->row()->total_paid;
         }
     }
+
     /**
      * @originalName getTotalBalance
+     *
      * @originalFile InvoiceAmount.php
      */
     public function getTotalBalance($period = null)
@@ -287,8 +304,10 @@ class InvoiceAmount extends BaseModel
                 return $this->db->query('SELECT SUM(invoice_balance) AS total_balance FROM ip_invoice_amounts')->row()->total_balance;
         }
     }
+
     /**
      * @originalName getStatusTotals
+     *
      * @originalFile InvoiceAmount.php
      */
     public function getStatusTotals($period = '')
@@ -355,6 +374,7 @@ class InvoiceAmount extends BaseModel
         foreach ($results as $result) {
             $return[$result['invoice_status_id']] = array_merge($return[$result['invoice_status_id']], $result);
         }
+
         return $return;
     }
 }

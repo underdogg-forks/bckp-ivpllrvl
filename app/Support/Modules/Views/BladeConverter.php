@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
-final class BladeConverter
+class BladeConverter
 {
     private array $routeMap;
 

@@ -2,7 +2,7 @@
 
 namespace Modules\Products\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class ProductsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_products');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile ProductsController.php
      */
     public function index($page = 0)
@@ -36,8 +38,10 @@ class ProductsController extends AdminController
         $this->layout->buffer('content', 'products/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile ProductsController.php
      */
     public function form($id = null)
@@ -53,7 +57,7 @@ class ProductsController extends AdminController
             $this->mdl_products->save($id, $db_array);
             redirect('products');
         }
-        if ($id && !$this->input->post('btn_submit') && !$this->mdl_products->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_products->prepForm($id)) {
             show_404();
         }
         $this->load->model('families/mdl_families');
@@ -63,8 +67,10 @@ class ProductsController extends AdminController
         $this->layout->buffer('content', 'products/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile ProductsController.php
      */
     public function delete($id)

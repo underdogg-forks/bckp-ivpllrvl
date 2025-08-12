@@ -2,7 +2,7 @@
 
 namespace Modules\Projects\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class ProjectsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_projects');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile ProjectsController.php
      */
     public function index($page = 0)
@@ -36,8 +38,10 @@ class ProjectsController extends AdminController
         $this->layout->buffer('content', 'projects/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile ProjectsController.php
      */
     public function form($id = null)
@@ -51,7 +55,7 @@ class ProjectsController extends AdminController
             $this->mdl_projects->save($id);
             redirect('projects');
         }
-        if ($id && !$this->input->post('btn_submit') && !$this->mdl_projects->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_projects->prepForm($id)) {
             show_404();
         }
         $this->load->model('clients/mdl_clients');
@@ -59,8 +63,10 @@ class ProjectsController extends AdminController
         $this->layout->buffer('content', 'projects/form');
         $this->layout->render();
     }
+
     /**
      * @originalName view
+     *
      * @originalFile ProjectsController.php
      */
     public function view($project_id)
@@ -70,7 +76,7 @@ class ProjectsController extends AdminController
         }
         $this->load->model('projects/mdl_projects');
         $project = $this->mdl_projects->getById($project_id);
-        if (!$project) {
+        if ( ! $project) {
             show_404();
         }
         $this->load->model('tasks/mdl_tasks');
@@ -78,8 +84,10 @@ class ProjectsController extends AdminController
         $this->layout->buffer('content', 'projects/view');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile ProjectsController.php
      */
     public function delete($id)

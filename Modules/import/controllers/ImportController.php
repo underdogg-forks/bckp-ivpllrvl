@@ -4,7 +4,7 @@ namespace Modules\Import\Controllers;
 
 use Modules\Core\Controllers\AdminController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -19,6 +19,7 @@ if (!defined('BASEPATH')) {
 class ImportController extends AdminController
 {
     private array $allowed_files = ['clients.csv', 'invoices.csv', 'invoice_items.csv', 'payments.csv'];
+
     /**
      * ImportController constructor.
      */
@@ -27,8 +28,10 @@ class ImportController extends AdminController
         parent::__construct();
         $this->load->model('mdl_import');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile ImportController.php
      */
     public function index($page = 0)
@@ -39,17 +42,19 @@ class ImportController extends AdminController
         $this->layout->buffer('content', 'import/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile ImportController.php
      */
     public function form()
     {
-        if (!$this->input->post('btn_submit')) {
+        if ( ! $this->input->post('btn_submit')) {
             $this->load->helper('directory');
             $files = directory_map('./uploads/import');
             foreach ($files as $key => $file) {
-                if (!is_numeric(array_search($file, $this->allowed_files, true))) {
+                if ( ! is_numeric(array_search($file, $this->allowed_files, true))) {
                     unset($files[$key]);
                 }
             }
@@ -62,7 +67,7 @@ class ImportController extends AdminController
             if ($this->input->post('files')) {
                 $files = $this->allowed_files;
                 foreach ($files as $key => $file) {
-                    if (!is_numeric(array_search($file, $this->input->post('files'), true))) {
+                    if ( ! is_numeric(array_search($file, $this->input->post('files'), true))) {
                         unset($files[$key]);
                     }
                 }
@@ -93,8 +98,10 @@ class ImportController extends AdminController
             redirect('import');
         }
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile ImportController.php
      */
     public function delete($id)

@@ -2,7 +2,7 @@
 
 namespace Modules\Guest\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -18,6 +18,7 @@ class GuestController extends GuestController
 {
     /**
      * @originalName index
+     *
      * @originalFile GuestController.php
      */
     public function index()

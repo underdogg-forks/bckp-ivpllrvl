@@ -4,7 +4,7 @@ namespace Modules\Guest\Controllers\Gateways;
 
 use Modules\Core\Controllers\BaseController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -23,8 +23,10 @@ class PaypalController extends BaseController
         parent::__construct();
         $this->createClient();
     }
+
     /**
      * @originalName paypalCreateOrder
+     *
      * @originalFile PaypalController.php
      */
     public function paypalCreateOrder($invoice_url_key)
@@ -39,11 +41,14 @@ class PaypalController extends BaseController
         }
         //create the order
         $paypal_client = $this->lib_paypal->createOrder(['invoice_id' => $invoice->invoice_id, 'currency_code' => get_setting('gateway_paypal_currency'), 'value' => $invoice->invoice_balance, 'custom_id' => $invoice_url_key]);
+
         return $this->output->set_output($paypal_client);
         //TODO: make proper response
     }
+
     /**
      * @originalName paypalCapturePayment
+     *
      * @originalFile PaypalController.php
      */
     public function paypalCapturePayment(string $order_id)
@@ -52,8 +57,8 @@ class PaypalController extends BaseController
         //handle the payment
         if ($paypal_response['status']) {
             $paypal_object = json_decode($paypal_response['response']->getBody());
-            $invoice_id = $paypal_object->purchase_units[0]->payments->captures[0]->invoice_id;
-            $amount = $paypal_object->purchase_units[0]->payments->captures[0]->amount->value;
+            $invoice_id    = $paypal_object->purchase_units[0]->payments->captures[0]->invoice_id;
+            $amount        = $paypal_object->purchase_units[0]->payments->captures[0]->amount->value;
             //record the payment
             $this->load->model('payments/mdl_payments');
             $this->mdl_payments->save(null, ['invoice_id' => $invoice_id, 'payment_date' => date('Y-m-d'), 'payment_amount' => $amount, 'payment_method_id' => get_setting('gateway_paypal_payment_method'), 'payment_note' => '']);
@@ -72,8 +77,10 @@ class PaypalController extends BaseController
             $this->session->keep_flashdata('alert_error');
         }
     }
+
     /**
      * @originalName createClient
+     *
      * @originalFile PaypalController.php
      */
     protected function createClient(): void

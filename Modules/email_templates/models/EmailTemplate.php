@@ -2,7 +2,7 @@
 
 namespace Modules\Emailtemplates\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,25 +17,32 @@ if (!defined('BASEPATH')) {
 class EmailTemplate extends ResponseModel
 {
     public $table = 'ip_email_templates';
+
     public $primary_key = 'ip_email_templates.email_template_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile EmailTemplate.php
      */
     public function defaultSelect()
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName defaultOrderBy
+     *
      * @originalFile EmailTemplate.php
      */
     public function defaultOrderBy()
     {
         $this->db->orderBy('email_template_title');
     }
+
     /**
      * @originalName validationRules
+     *
      * @originalFile EmailTemplate.php
      */
     public function validationRules()

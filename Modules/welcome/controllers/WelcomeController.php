@@ -2,7 +2,7 @@
 
 namespace Modules\Welcome\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -18,6 +18,7 @@ class WelcomeController extends \App\Http\Controllers\AdminController
 {
     /**
      * @originalName index
+     *
      * @originalFile WelcomeController.php
      */
     public function index()

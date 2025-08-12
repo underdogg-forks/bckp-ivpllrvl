@@ -2,7 +2,7 @@
 
 namespace Modules\Mailer\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,6 +17,7 @@ if (!defined('BASEPATH')) {
 class MailerController extends AdminController
 {
     private bool $mailer_configured;
+
     /**
      * MailerController constructor.
      */
@@ -25,25 +26,27 @@ class MailerController extends AdminController
         parent::__construct();
         $this->load->helper('mailer');
         $this->mailer_configured = mailer_configured();
-        if (!$this->mailer_configured) {
+        if ( ! $this->mailer_configured) {
             $this->layout->buffer('content', 'mailer/not_configured');
             $this->layout->render();
         }
     }
+
     /**
      * @originalName invoice
+     *
      * @originalFile MailerController.php
      */
     public function invoice($invoice_id)
     {
-        if (!$this->mailer_configured) {
+        if ( ! $this->mailer_configured) {
             return;
         }
         $this->load->model(['email_templates/mdl_email_templates', 'custom_fields/mdl_custom_fields', 'invoices/mdl_templates', 'invoices/mdl_invoices', 'upload/mdl_uploads']);
         $this->load->helper(['template', 'dropzone']);
-        $invoice = $this->mdl_invoices->getById($invoice_id);
+        $invoice           = $this->mdl_invoices->getById($invoice_id);
         $email_template_id = select_email_invoice_template($invoice);
-        $email_template = '{}';
+        $email_template    = '{}';
         if ($email_template_id) {
             $email_template = json_encode($this->mdl_email_templates->getById($email_template_id));
         }
@@ -56,19 +59,21 @@ class MailerController extends AdminController
         $this->layout->buffer('content', 'mailer/invoice');
         $this->layout->render();
     }
+
     /**
      * @originalName quote
+     *
      * @originalFile MailerController.php
      */
     public function quote($quote_id)
     {
-        if (!$this->mailer_configured) {
+        if ( ! $this->mailer_configured) {
             return;
         }
         $this->load->model(['email_templates/mdl_email_templates', 'custom_fields/mdl_custom_fields', 'invoices/mdl_templates', 'quotes/mdl_quotes', 'upload/mdl_uploads']);
         $this->load->helper('dropzone');
         $email_template_id = get_setting('email_quote_template');
-        $email_template = '{}';
+        $email_template    = '{}';
         if ($email_template_id) {
             $email_template = json_encode($this->mdl_email_templates->getById($email_template_id));
         }
@@ -81,8 +86,10 @@ class MailerController extends AdminController
         $this->layout->buffer('content', 'mailer/quote');
         $this->layout->render();
     }
+
     /**
      * @originalName sendInvoice
+     *
      * @originalFile MailerController.php
      */
     public function sendInvoice(string $invoice_id)
@@ -90,21 +97,21 @@ class MailerController extends AdminController
         if ($this->input->post('btn_cancel')) {
             redirect('invoices/view/' . $invoice_id);
         }
-        if (!$this->mailer_configured) {
+        if ( ! $this->mailer_configured) {
             return;
         }
-        $to = $this->input->post('to_email', true);
-        $from = $this->input->post('from_email', true);
-        $from = [$from, $this->input->post('from_name')];
+        $to           = $this->input->post('to_email', true);
+        $from         = $this->input->post('from_email', true);
+        $from         = [$from, $this->input->post('from_name')];
         $pdf_template = $this->input->post('pdf_template', true);
-        $subject = $this->input->post('subject');
-        $body = $this->input->post('body');
+        $subject      = $this->input->post('subject');
+        $body         = $this->input->post('body');
         if (mb_strlen($body) != mb_strlen(strip_tags($body))) {
             $body = htmlspecialchars_decode($body, ENT_COMPAT);
         } else {
             $body = htmlspecialchars_decode(nl2br($body), ENT_COMPAT);
         }
-        $cc = $this->input->post('cc');
+        $cc  = $this->input->post('cc');
         $bcc = $this->input->post('bcc');
         $this->load->model('upload/mdl_uploads');
         $attachment_files = $this->mdl_uploads->getInvoiceUploads($invoice_id);
@@ -116,8 +123,10 @@ class MailerController extends AdminController
         }
         redirect('mailer/invoice/' . $invoice_id);
     }
+
     /**
      * @originalName sendQuote
+     *
      * @originalFile MailerController.php
      */
     public function sendQuote(string $quote_id)
@@ -125,20 +134,20 @@ class MailerController extends AdminController
         if ($this->input->post('btn_cancel')) {
             redirect('quotes/view/' . $quote_id);
         }
-        if (!$this->mailer_configured) {
+        if ( ! $this->mailer_configured) {
             return;
         }
-        $to = $this->input->post('to_email');
-        $from = $this->input->post('from_email');
-        $from = [$from, $this->input->post('from_name')];
+        $to           = $this->input->post('to_email');
+        $from         = $this->input->post('from_email');
+        $from         = [$from, $this->input->post('from_name')];
         $pdf_template = $this->input->post('pdf_template');
-        $subject = $this->input->post('subject');
+        $subject      = $this->input->post('subject');
         if (mb_strlen($this->input->post('body')) != mb_strlen(strip_tags($this->input->post('body')))) {
             $body = htmlspecialchars_decode($this->input->post('body'), ENT_COMPAT);
         } else {
             $body = htmlspecialchars_decode(nl2br($this->input->post('body')), ENT_COMPAT);
         }
-        $cc = $this->input->post('cc');
+        $cc  = $this->input->post('cc');
         $bcc = $this->input->post('bcc');
         $this->load->model('upload/mdl_uploads');
         $attachment_files = $this->mdl_uploads->getQuoteUploads($quote_id);

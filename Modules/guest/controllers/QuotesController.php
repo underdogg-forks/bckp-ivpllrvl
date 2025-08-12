@@ -2,7 +2,7 @@
 
 namespace Modules\Guest\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class QuotesController extends GuestController
         parent::__construct();
         $this->load->model('quotes/mdl_quotes');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile QuotesController.php
      */
     public function index()
@@ -33,8 +35,10 @@ class QuotesController extends GuestController
         // Display open quotes by default
         redirect('guest/quotes/status/open');
     }
+
     /**
      * @originalName status
+     *
      * @originalFile QuotesController.php
      */
     public function status(string $status = 'open', $page = 0)
@@ -67,8 +71,10 @@ class QuotesController extends GuestController
         $this->layout->buffer('content', 'guest/quotes_index');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName view
+     *
      * @originalFile QuotesController.php
      */
     public function view($quote_id)
@@ -76,7 +82,7 @@ class QuotesController extends GuestController
         redirect_to_set();
         // Sets the current URL in the session to force redirect_to()
         $quote = $this->mdl_quotes->guestVisible()->where('ip_quotes.quote_id', $quote_id)->where_in('ip_quotes.client_id', $this->user_clients)->get()->row();
-        if (!$quote) {
+        if ( ! $quote) {
             show_404();
         }
         $this->mdl_quotes->markViewed($quote->quote_id);
@@ -86,8 +92,10 @@ class QuotesController extends GuestController
         $this->layout->buffer('content', 'guest/quotes_view');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName generatePdf
+     *
      * @originalFile QuotesController.php
      */
     public function generatePdf($quote_id, $stream = true, $quote_template = null)
@@ -95,13 +103,15 @@ class QuotesController extends GuestController
         $this->load->helper('pdf');
         $this->mdl_quotes->markViewed($quote_id);
         $quote = $this->mdl_quotes->guestVisible()->where('ip_quotes.quote_id', $quote_id)->where_in('ip_quotes.client_id', $this->user_clients)->get()->row();
-        if (!$quote) {
+        if ( ! $quote) {
             show_404();
         }
         generate_quote_pdf($quote_id, $stream, $quote_template);
     }
+
     /**
      * @originalName approve
+     *
      * @originalFile QuotesController.php
      */
     public function approve(string $quote_id)
@@ -112,8 +122,10 @@ class QuotesController extends GuestController
         email_quote_status($quote_id, 'approved');
         redirect_to('guest/quotes');
     }
+
     /**
      * @originalName reject
+     *
      * @originalFile QuotesController.php
      */
     public function reject(string $quote_id)

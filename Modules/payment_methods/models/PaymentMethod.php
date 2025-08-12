@@ -4,7 +4,7 @@ namespace Modules\Paymentmethods\Models;
 
 use Modules\Core\Models\ResponseModel;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -19,25 +19,32 @@ if (!defined('BASEPATH')) {
 class PaymentMethod extends ResponseModel
 {
     public $table = 'ip_payment_methods';
+
     public $primary_key = 'ip_payment_methods.payment_method_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile PaymentMethod.php
      */
     public function defaultSelect()
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName orderBy
+     *
      * @originalFile PaymentMethod.php
      */
     public function orderBy()
     {
         $this->db->orderBy('ip_payment_methods.payment_method_name');
     }
+
     /**
      * @originalName validationRules
+     *
      * @originalFile PaymentMethod.php
      */
     public function validationRules()

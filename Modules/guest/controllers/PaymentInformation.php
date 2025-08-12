@@ -4,7 +4,7 @@ namespace Modules\Guest\Controllers;
 
 use Modules\Core\Controllers\BaseController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -23,8 +23,10 @@ class PaymentInformation extends BaseController
         parent::__construct();
         $this->load->model('invoices/mdl_invoices');
     }
+
     /**
      * @originalName form
+     *
      * @originalFile PaymentInformation.php
      */
     public function form($invoice_url_key, $payment_provider = null)
@@ -33,7 +35,7 @@ class PaymentInformation extends BaseController
         $disable_form = false;
         // Check if the invoice exists and is billable
         $invoice = $this->mdl_invoices->where('ip_invoices.invoice_url_key', $invoice_url_key)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             $this->session->set_flashdata('alert_error', lang('invoice_not_found'));
             redirect('guest');
             // /invoices
@@ -50,14 +52,14 @@ class PaymentInformation extends BaseController
         // GetController all payment gateways
         $this->load->model('mdl_settings');
         $this->config->load('payment_gateways');
-        $gateways = $this->config->item('payment_gateways');
+        $gateways          = $this->config->item('payment_gateways');
         $available_drivers = [];
-        if (!$disable_form) {
+        if ( ! $disable_form) {
             foreach ($gateways as $driver => $fields) {
                 $d = mb_strtolower($driver);
                 if (get_setting('gateway_' . $d . '_enabled') == 1) {
                     $invoice_payment_method = $invoice->payment_method;
-                    $driver_payment_method = get_setting('gateway_' . $d . '_payment_method');
+                    $driver_payment_method  = get_setting('gateway_' . $d . '_payment_method');
                     if ($invoice_payment_method == 0 || $driver_payment_method == 0 || $driver_payment_method == $invoice_payment_method) {
                         $available_drivers[] = $driver;
                     }
@@ -78,8 +80,10 @@ class PaymentInformation extends BaseController
         $data = ['disable_form' => $disable_form, 'invoice' => $invoice, 'gateways' => $available_drivers, 'payment_method' => $payment_method, 'is_overdue' => $is_overdue, 'invoice_url_key' => $invoice_url_key, 'payment_provider' => $payment_provider];
         $this->load->view('guest/payment_information', $data) . $payment_provider && $this->{$payment_provider}($invoice_url_key);
     }
+
     /**
      * @originalName stripe
+     *
      * @originalFile PaymentInformation.php
      */
     public function stripe($invoice_url_key)
@@ -88,8 +92,10 @@ class PaymentInformation extends BaseController
         $data = ['stripe_api_key' => get_setting('gateway_stripe_apiKeyPublic'), 'invoice_url_key' => $invoice_url_key];
         $this->load->view('guest/gateways/stripe', $data);
     }
+
     /**
      * @originalName paypal
+     *
      * @originalFile PaymentInformation.php
      */
     public function paypal($invoice_url_key)

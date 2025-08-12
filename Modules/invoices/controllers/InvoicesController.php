@@ -4,7 +4,7 @@ namespace Modules\Invoices\Controllers;
 
 use Modules\Core\Controllers\AdminController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -26,8 +26,10 @@ class InvoicesController extends AdminController
         parent::__construct();
         $this->load->model('mdl_invoices');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile InvoicesController.php
      */
     public function index(): void
@@ -35,8 +37,10 @@ class InvoicesController extends AdminController
         // Display all invoices by default
         redirect('invoices/status/all');
     }
+
     /**
      * @originalName status
+     *
      * @originalFile InvoicesController.php
      */
     public function status(string $status = 'all', $page = 0): void
@@ -65,8 +69,10 @@ class InvoicesController extends AdminController
         $this->layout->buffer('content', 'invoices/index');
         $this->layout->render();
     }
+
     /**
      * @originalName archive
+     *
      * @originalFile InvoicesController.php
      */
     public function archive(): void
@@ -76,24 +82,28 @@ class InvoicesController extends AdminController
         $this->layout->buffer('content', 'invoices/archive');
         $this->layout->render();
     }
+
     /**
      * @originalName download
+     *
      * @originalFile InvoicesController.php
      */
     public function download($invoice): void
     {
         $safeBaseDir = realpath(UPLOADS_ARCHIVE_FOLDER);
-        $fileName = urldecode(basename($invoice));
+        $fileName    = urldecode(basename($invoice));
         // Strip directory traversal sequences
         $filePath = realpath($safeBaseDir . DIRECTORY_SEPARATOR . $fileName);
-        if ($filePath === false || !str_starts_with($filePath, $safeBaseDir)) {
+        if ($filePath === false || ! str_starts_with($filePath, $safeBaseDir)) {
             log_message('error', 'Invalid file access attempt: ' . $fileName);
             show_404();
+
             return;
         }
-        if (!file_exists($filePath)) {
+        if ( ! file_exists($filePath)) {
             log_message('error', 'While downloading: File not found: ' . $filePath);
             show_404();
+
             return;
         }
         header('Content-Type: application/pdf');
@@ -102,8 +112,10 @@ class InvoicesController extends AdminController
         readfile($filePath);
         exit;
     }
+
     /**
      * @originalName view
+     *
      * @originalFile InvoicesController.php
      */
     public function view($invoice_id): void
@@ -123,16 +135,16 @@ class InvoicesController extends AdminController
                                   $this->mdl_invoices->set_form_value('custom[' . $key . ']', $val);
                               }
                           }*/
-        $fields = $this->mdl_invoice_custom->byId($invoice_id)->get()->result();
+        $fields  = $this->mdl_invoice_custom->byId($invoice_id)->get()->result();
         $invoice = $this->mdl_invoices->getById($invoice_id);
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $custom_fields = $this->mdl_custom_fields->byTable('ip_invoice_custom')->get()->result();
         $custom_values = [];
         foreach ($custom_fields as $custom_field) {
             if (in_array($custom_field->custom_field_type, $this->mdl_custom_values->customValueFields())) {
-                $values = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
+                $values                                        = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
                 $custom_values[$custom_field->custom_field_id] = $values;
             }
         }
@@ -146,7 +158,7 @@ class InvoicesController extends AdminController
             }
         }
         // Check whether there are payment custom fields
-        $payment_cf = $this->mdl_custom_fields->byTable('ip_payment_custom')->get();
+        $payment_cf       = $this->mdl_custom_fields->byTable('ip_payment_custom')->get();
         $payment_cf_exist = $payment_cf->num_rows() > 0 ? 'yes' : 'no';
         // GetController Item
         $items = $this->mdl_items->where('invoice_id', $invoice_id)->get()->result();
@@ -159,14 +171,16 @@ class InvoicesController extends AdminController
         $this->layout->buffer([['modal_delete_invoice', 'invoices/modal_delete_invoice'], ['modal_add_invoice_tax', 'invoices/modal_add_invoice_tax'], ['modal_add_payment', 'payments/modal_add_payment'], ['content', 'invoices/view' . ($invoice->sumex_id ? '_sumex' : '')]]);
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile InvoicesController.php
      */
     public function delete($invoice_id): void
     {
         // GetController the status of the invoice
-        $invoice = $this->mdl_invoices->getById($invoice_id);
+        $invoice        = $this->mdl_invoices->getById($invoice_id);
         $invoice_status = $invoice->invoice_status_id;
         if ($invoice_status == 1 || $this->config->item('enable_invoice_deletion') === true) {
             // If invoice refers to tasks, mark those tasks back to 'Complete'
@@ -181,8 +195,10 @@ class InvoicesController extends AdminController
         // Redirect to invoice index
         redirect('invoices/index');
     }
+
     /**
      * @originalName generatePdf
+     *
      * @originalFile InvoicesController.php
      */
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
@@ -194,14 +210,16 @@ class InvoicesController extends AdminController
         }
         generate_invoice_pdf($invoice_id, $stream, $invoice_template, null);
     }
+
     /**
      * @originalName generateXml
+     *
      * @originalFile InvoicesController.php
      */
     public function generateXml($invoice_id): void
     {
         $invoice = $this->mdl_invoices->getById($invoice_id);
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $this->load->model('invoices/mdl_items');
@@ -209,31 +227,33 @@ class InvoicesController extends AdminController
         $this->load->helper('e-invoice');
         // eInvoicing++
         $einvoice = get_einvoice_usage($invoice, $items, false);
-        if (!$einvoice->user) {
+        if ( ! $einvoice->user) {
             show_404();
         }
         // eInvoice library to Generate the appropriate UBL/CII or false
         $xml_id = $einvoice->name;
         // $invoice->client_einvoicing_version
-        $options = [];
+        $options   = [];
         $generator = $xml_id;
-        $path = APPPATH . 'helpers/XMLconfigs/';
+        $path      = APPPATH . 'helpers/XMLconfigs/';
         if ($xml_id && file_exists($path . $xml_id . '.php') && include $path . $xml_id . '.php') {
             $embed_xml = $xml_setting['embedXML'];
-            $XMLname = $xml_setting['XMLname'];
-            $options = empty($xml_setting['options']) ? $options : $xml_setting['options'];
+            $XMLname   = $xml_setting['XMLname'];
+            $options   = empty($xml_setting['options']) ? $options : $xml_setting['options'];
             // Optional
             $generator = empty($xml_setting['generator']) ? $generator : $xml_setting['generator'];
             // Optional
         }
         $filename = trans('invoice') . '_' . str_replace(['\\', '/'], '_', $invoice->invoice_number);
-        $path = generate_xml_invoice_file($invoice, $items, $generator, $filename, $options);
+        $path     = generate_xml_invoice_file($invoice, $items, $generator, $filename, $options);
         $this->output->set_content_type('text/xml');
         $this->output->set_output(file_get_contents($path));
         unlink($path);
     }
+
     /**
      * @originalName generateSumexPdf
+     *
      * @originalFile InvoicesController.php
      */
     public function generateSumexPdf($invoice_id): void
@@ -241,8 +261,10 @@ class InvoicesController extends AdminController
         $this->load->helper('pdf');
         generate_invoice_sumex($invoice_id);
     }
+
     /**
      * @originalName generateSumexCopy
+     *
      * @originalFile InvoicesController.php
      */
     public function generateSumexCopy($invoice_id): void
@@ -252,8 +274,10 @@ class InvoicesController extends AdminController
         $this->output->set_content_type('application/pdf');
         $this->output->set_output($this->sumex->pdf());
     }
+
     /**
      * @originalName deleteInvoiceTax
+     *
      * @originalFile InvoicesController.php
      */
     public function deleteInvoiceTax(string $invoice_id, $invoice_tax_rate_id): void
@@ -266,8 +290,10 @@ class InvoicesController extends AdminController
         $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
         redirect('invoices/view/' . $invoice_id);
     }
+
     /**
      * @originalName recalculateAllInvoices
+     *
      * @originalFile InvoicesController.php
      */
     public function recalculateAllInvoices(): void

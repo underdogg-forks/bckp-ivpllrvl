@@ -2,7 +2,7 @@
 
 namespace Modules\Guest\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class PaymentsController extends GuestController
         parent::__construct();
         $this->load->model('payments/mdl_payments');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile PaymentsController.php
      */
     public function index($page = 0)

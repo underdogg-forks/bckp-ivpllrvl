@@ -4,7 +4,7 @@ namespace Modules\Invoicegroups\Controllers;
 
 use Modules\Core\Controllers\AdminController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -26,8 +26,10 @@ class InvoiceGroupsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_invoice_groups');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile InvoiceGroupsController.php
      */
     public function index($page = 0)
@@ -38,8 +40,10 @@ class InvoiceGroupsController extends AdminController
         $this->layout->buffer('content', 'invoice_groups/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile InvoiceGroupsController.php
      */
     public function form($id = null)
@@ -53,19 +57,21 @@ class InvoiceGroupsController extends AdminController
             $this->mdl_invoice_groups->save($id);
             redirect('invoice_groups');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_invoice_groups->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_invoice_groups->prepForm($id)) {
                 show_404();
             }
-        } elseif (!$id) {
+        } elseif ( ! $id) {
             $this->mdl_invoice_groups->set_form_value('invoice_group_left_pad', 0);
             $this->mdl_invoice_groups->set_form_value('invoice_group_next_id', 1);
         }
         $this->layout->buffer('content', 'invoice_groups/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile InvoiceGroupsController.php
      */
     public function delete($id)

@@ -2,7 +2,7 @@
 
 namespace Modules\Tasks\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class TasksController extends AdminController
         parent::__construct();
         $this->load->model('mdl_tasks');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile TasksController.php
      */
     public function index($page = 0)
@@ -36,8 +38,10 @@ class TasksController extends AdminController
         $this->layout->buffer('content', 'tasks/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile TasksController.php
      */
     public function form($id = null)
@@ -51,9 +55,9 @@ class TasksController extends AdminController
             $this->mdl_tasks->save($id);
             redirect('tasks');
         }
-        if (!$this->input->post('btn_submit')) {
+        if ( ! $this->input->post('btn_submit')) {
             $prep_form = $this->mdl_tasks->prepForm($id);
-            if ($id && !$prep_form) {
+            if ($id && ! $prep_form) {
                 show_404();
             }
         }
@@ -63,8 +67,10 @@ class TasksController extends AdminController
         $this->layout->buffer('content', 'tasks/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile TasksController.php
      */
     public function delete($id)

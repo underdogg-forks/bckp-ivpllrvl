@@ -2,7 +2,7 @@
 
 namespace Modules\Quotes\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -18,18 +18,19 @@ class QuoteItemAmount extends BaseModel
 {
     /**
      * @originalName calculate
+     *
      * @originalFile QuoteItemAmount.php
      */
     public function calculate($item_id, &$global_discount)
     {
         $this->load->model('quotes/mdl_quote_items');
-        $item = $this->mdl_quote_items->getById($item_id);
+        $item          = $this->mdl_quote_items->getById($item_id);
         $item_subtotal = $item->item_quantity * $item->item_price;
         // Discounts calculation - since v1.6.3
         if (config_item('legacy_calculation')) {
-            $item_tax_total = $item_subtotal * ($item->item_tax_rate_percent / 100);
+            $item_tax_total      = $item_subtotal * ($item->item_tax_rate_percent / 100);
             $item_discount_total = $item->item_discount_amount * $item->item_quantity;
-            $item_total = $item_subtotal + $item_tax_total - $item_discount_total;
+            $item_total          = $item_subtotal + $item_tax_total - $item_discount_total;
         } else {
             $item_discount = 0.0;
             // For total & tax calculation after all discounts applied Proportionally by item
@@ -44,8 +45,8 @@ class QuoteItemAmount extends BaseModel
             $global_discount['item'] += $item_discount;
             // for Mdl_quote_amounts calculation
             $item_discount_total = $item->item_discount_amount * $item->item_quantity;
-            $item_tax_total = ($item_subtotal - $item_discount - $item_discount_total) * ($item->item_tax_rate_percent / 100);
-            $item_total = $item_subtotal - $item_discount - $item_discount_total + $item_tax_total;
+            $item_tax_total      = ($item_subtotal - $item_discount - $item_discount_total) * ($item->item_tax_rate_percent / 100);
+            $item_total          = $item_subtotal - $item_discount - $item_discount_total + $item_tax_total;
         }
         $db_array = ['item_id' => $item_id, 'item_subtotal' => $item_subtotal, 'item_tax_total' => $item_tax_total, 'item_discount' => $item_discount_total, 'item_total' => $item_total];
         $this->db->where('item_id', $item_id);

@@ -4,7 +4,7 @@ namespace Modules\Settings\Models;
 
 use Modules\Core\Models\BaseModel;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -19,8 +19,10 @@ if (!defined('BASEPATH')) {
 class Setting extends BaseModel
 {
     public $settings = [];
+
     /**
      * @originalName save
+     *
      * @originalFile Setting.php
      */
     public function save($key, $value)
@@ -33,8 +35,10 @@ class Setting extends BaseModel
             $this->db->insert('ip_settings', $db_array);
         }
     }
+
     /**
      * @originalName get
+     *
      * @originalFile Setting.php
      */
     public function get($key)
@@ -46,8 +50,10 @@ class Setting extends BaseModel
             return $query->row()->setting_value;
         }
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile Setting.php
      */
     public function delete($key)
@@ -55,8 +61,10 @@ class Setting extends BaseModel
         $this->db->where('setting_key', $key);
         $this->db->delete('ip_settings');
     }
+
     /**
      * @originalName loadSettings
+     *
      * @originalFile Setting.php
      */
     public function loadSettings()
@@ -70,45 +78,53 @@ class Setting extends BaseModel
         $this->load->model('settings/mdl_versions');
         $this->settings['current_version'] = $this->mdl_versions->getCurrentVersion();
     }
+
     /**
      * @originalName setting
+     *
      * @originalFile Setting.php
      */
     public function setting($key, $default = '')
     {
         return isset($this->settings[$key]) && $this->settings[$key] !== '' ? $this->settings[$key] : $default;
     }
+
     /**
      * @originalName gatewaySettings
+     *
      * @originalFile Setting.php
      */
     public function gatewaySettings($key)
     {
         return $this->db->like('setting_key', 'gateway_' . mb_strtolower($key), 'after')->get('ip_settings')->result();
     }
+
     /**
      * @originalName setSetting
+     *
      * @originalFile Setting.php
      */
     public function setSetting($key, $value)
     {
         $this->settings[$key] = $value;
     }
+
     /**
      * @originalName getThemes
+     *
      * @originalFile Setting.php
      */
     public function getThemes()
     {
         $this->load->helper('directory');
         $found_folders = directory_map(THEME_FOLDER, 1);
-        $themes = [];
+        $themes        = [];
         foreach ($found_folders as $theme) {
             if ($theme == 'core') {
                 continue;
             }
             // GetController the theme info file
-            $theme = str_replace(DIRECTORY_SEPARATOR, '', $theme);
+            $theme     = str_replace(DIRECTORY_SEPARATOR, '', $theme);
             $info_path = THEME_FOLDER . $theme . '/';
             $info_file = $theme . '.theme';
             if (file_exists($info_path . $info_file)) {
@@ -117,6 +133,7 @@ class Setting extends BaseModel
                 $themes[$theme] = env('TITLE');
             }
         }
+
         return $themes;
     }
 }

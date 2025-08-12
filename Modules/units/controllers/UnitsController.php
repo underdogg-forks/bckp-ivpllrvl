@@ -2,7 +2,7 @@
 
 namespace Modules\Units\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class UnitsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_units');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile UnitsController.php
      */
     public function index($page = 0)
@@ -36,8 +38,10 @@ class UnitsController extends AdminController
         $this->layout->buffer('content', 'units/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile UnitsController.php
      */
     public function form($id = null)
@@ -49,7 +53,7 @@ class UnitsController extends AdminController
         // <<<--- filters _POST array for nastiness
         if ($this->input->post('is_update') == 0 && $this->input->post('unit_name') != '' && $this->input->post('unit_name_plrl') != '') {
             $check = $this->db->get_where('ip_units', ['unit_name' => $this->input->post('unit_name')])->result();
-            if (!empty($check)) {
+            if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('unit_already_exists'));
                 redirect('units/form');
             }
@@ -58,8 +62,8 @@ class UnitsController extends AdminController
             $this->mdl_units->save($id);
             redirect('units');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_units->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_units->prepForm($id)) {
                 show_404();
             }
             $this->mdl_units->set_form_value('is_update', true);
@@ -67,8 +71,10 @@ class UnitsController extends AdminController
         $this->layout->buffer('content', 'units/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile UnitsController.php
      */
     public function delete($id)

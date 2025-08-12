@@ -4,7 +4,7 @@ namespace Modules\Quotes\Models;
 
 use Modules\Core\Models\BaseModel;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -22,12 +22,15 @@ class QuoteAmount extends BaseModel
      * @var int
      */
     public $decimal_places = 2;
+
     public function __construct()
     {
         $this->decimal_places = (int) get_setting('tax_rate_decimal_places');
     }
+
     /**
      * @originalName calculate
+     *
      * @originalFile QuoteAmount.php
      */
     public function calculate($quote_id, $global_discount)
@@ -46,11 +49,11 @@ class QuoteAmount extends BaseModel
         // Discounts calculation - since v1.6.3
         if (config_item('legacy_calculation')) {
             $quote_item_subtotal = $quote_amounts->quote_item_subtotal - $quote_amounts->quote_item_discount;
-            $quote_subtotal = $quote_item_subtotal + $quote_amounts->quote_item_tax_total;
-            $quote_total = $this->calculateDiscount($quote_id, $quote_subtotal);
+            $quote_subtotal      = $quote_item_subtotal + $quote_amounts->quote_item_tax_total;
+            $quote_total         = $this->calculateDiscount($quote_id, $quote_subtotal);
         } else {
             $quote_item_subtotal = $quote_amounts->quote_item_subtotal - $quote_amounts->quote_item_discount - $global_discount['item'];
-            $quote_total = $quote_item_subtotal + $quote_amounts->quote_item_tax_total;
+            $quote_total         = $quote_item_subtotal + $quote_amounts->quote_item_tax_total;
         }
         // Create the database array and insert or update
         $db_array = ['quote_id' => $quote_id, 'quote_item_subtotal' => $quote_item_subtotal, 'quote_item_tax_total' => $quote_amounts->quote_item_tax_total, 'quote_total' => $quote_total];
@@ -66,8 +69,10 @@ class QuoteAmount extends BaseModel
         // Calculate the quote taxes
         $this->calculateQuoteTaxes($quote_id);
     }
+
     /**
      * @originalName calculateDiscount
+     *
      * @originalFile QuoteAmount.php
      */
     public function calculateDiscount($quote_id, $quote_total)
@@ -76,14 +81,17 @@ class QuoteAmount extends BaseModel
         $quote_data = $this->db->get('ip_quotes')->row();
         // not my job to cntrl & fix '0.00' is not 0.0 && discount amount allways 0.00 (legacy.on)
         // Prevent NULL in number format
-        $total = (float) number_format((float) $quote_total, $this->decimal_places, '.', '');
-        $discount_amount = (float) number_format((float) $quote_data->quote_discount_amount, $this->decimal_places, '.', '');
+        $total            = (float) number_format((float) $quote_total, $this->decimal_places, '.', '');
+        $discount_amount  = (float) number_format((float) $quote_data->quote_discount_amount, $this->decimal_places, '.', '');
         $discount_percent = (float) number_format((float) $quote_data->quote_discount_percent, $this->decimal_places, '.', '');
         $total -= $discount_amount;
+
         return $total - round($total / 100 * $discount_percent, $this->decimal_places);
     }
+
     /**
      * @originalName getGlobalDiscount
+     *
      * @originalFile QuoteAmount.php
      */
     public function getGlobalDiscount($quote_id)
@@ -94,10 +102,13 @@ class QuoteAmount extends BaseModel
             WHERE item_id
                 IN (SELECT item_id FROM ip_quote_items WHERE quote_id = ' . $this->db->escape($quote_id) . ')
             ')->row();
+
         return $row->global_discount;
     }
+
     /**
      * @originalName calculateQuoteTaxes
+     *
      * @originalFile QuoteAmount.php
      */
     public function calculateQuoteTaxes($quote_id)
@@ -152,8 +163,10 @@ class QuoteAmount extends BaseModel
             $this->db->update('ip_quote_amounts', $db_array);
         }
     }
+
     /**
      * @originalName getTotalQuoted
+     *
      * @originalFile QuoteAmount.php
      */
     public function getTotalQuoted($period = null)
@@ -191,8 +204,10 @@ class QuoteAmount extends BaseModel
                 return $this->db->query('SELECT SUM(quote_total) AS total_quoted FROM ip_quote_amounts')->row()->total_quoted;
         }
     }
+
     /**
      * @originalName getStatusTotals
+     *
      * @originalFile QuoteAmount.php
      */
     public function getStatusTotals($period = '')
@@ -271,6 +286,7 @@ class QuoteAmount extends BaseModel
         foreach ($results as $result) {
             $return[$result['quote_status_id']] = array_merge($return[$result['quote_status_id']], $result);
         }
+
         return $return;
     }
 }

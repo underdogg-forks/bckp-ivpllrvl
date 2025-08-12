@@ -2,7 +2,7 @@
 
 namespace Modules\Invoices\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class RecurringController extends AdminController
         parent::__construct();
         $this->load->model('mdl_invoices_recurring');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile RecurringController.php
      */
     public function index($page = 0)
@@ -36,8 +38,10 @@ class RecurringController extends AdminController
         $this->layout->buffer('content', 'invoices/index_recurring');
         $this->layout->render();
     }
+
     /**
      * @originalName stop
+     *
      * @originalFile RecurringController.php
      */
     public function stop($invoice_recurring_id)
@@ -45,8 +49,10 @@ class RecurringController extends AdminController
         $this->mdl_invoices_recurring->stop($invoice_recurring_id);
         redirect('invoices/recurring/index');
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile RecurringController.php
      */
     public function delete($invoice_recurring_id)

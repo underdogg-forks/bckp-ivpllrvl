@@ -4,7 +4,7 @@ namespace Modules\Import\Models;
 
 use Modules\Core\Models\ResponseModel;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -19,60 +19,71 @@ if (!defined('BASEPATH')) {
 class Import extends ResponseModel
 {
     public $table = 'ip_imports';
+
     public $primary_key = 'ip_imports.import_id';
+
     public $expected_headers = ['clients.csv' => ['client_name', 'client_address_1', 'client_address_2', 'client_city', 'client_state', 'client_zip', 'client_country', 'client_phone', 'client_fax', 'client_mobile', 'client_email', 'client_web', 'client_vat_id', 'client_tax_code', 'client_active'], 'invoices.csv' => ['user_email', 'client_name', 'invoice_date_created', 'invoice_date_due', 'invoice_number', 'invoice_terms'], 'invoice_items.csv' => ['invoice_number', 'item_tax_rate', 'item_date_added', 'item_name', 'item_description', 'item_quantity', 'item_price'], 'payments.csv' => ['invoice_number', 'payment_method', 'payment_date', 'payment_amount', 'payment_note']];
+
     public $primary_keys = ['ip_clients' => 'client_id', 'ip_invoices' => 'invoice_id', 'ip_invoice_items' => 'item_id', 'ip_payments' => 'payment_id'];
+
     /**
      * Mdl_Import constructor.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile Import.php
      */
     public function defaultSelect()
     {
         $this->db->select("SQL_CALC_FOUND_ROWS ip_imports.*,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_clients' AND ip_import_details.import_id = ip_imports.import_id) AS num_clients,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_invoices' AND ip_import_details.import_id = ip_imports.import_id) AS num_invoices,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_invoice_items' AND ip_import_details.import_id = ip_imports.import_id) AS num_invoice_items,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_payments' AND ip_import_details.import_id = ip_imports.import_id) AS num_payments", false);
     }
+
     /**
      * @originalName defaultOrderBy
+     *
      * @originalFile Import.php
      */
     public function defaultOrderBy()
     {
         $this->db->orderBy('ip_imports.import_date DESC');
     }
+
     /**
      * @originalName startImport
+     *
      * @originalFile Import.php
      */
     public function startImport()
     {
         $db_array = ['import_date' => date('Y-m-d H:i:s')];
         $this->db->insert('ip_imports', $db_array);
+
         return $this->db->insert_id();
     }
+
     /**
      * @originalName importData
+     *
      * @originalFile Import.php
      */
     public function importData($file, $table)
     {
         // Open the file
         $handle = fopen('./uploads/import/' . $file, 'r');
-        $row = 1;
+        $row    = 1;
         // GetController the expected file headers
         $headers = $this->expected_headers[$file];
         // Init an array to store the inserted ids
-        $ids = [];
+        $ids         = [];
         $fileheaders = null;
         while (($data = fgetcsv($handle, 1000, ',')) != false) {
             // Check to make sure the file headers match the expected headers
             if ($row == 1) {
                 foreach ($headers as $header) {
-                    if (!in_array($header, $data)) {
+                    if ( ! in_array($header, $data)) {
                         return false;
                     }
                 }
@@ -86,7 +97,7 @@ class Import extends ResponseModel
                 }
                 // Create a couple of default values if file is clients.csv
                 if ($file == 'clients.csv') {
-                    $db_array['client_date_created'] = date('Y-m-d');
+                    $db_array['client_date_created']  = date('Y-m-d');
                     $db_array['client_date_modified'] = date('Y-m-d');
                 }
                 // Insert the record
@@ -96,18 +107,21 @@ class Import extends ResponseModel
             }
             $row++;
         }
+
         // Return the array of recorded ids
         return $ids;
     }
+
     /**
      * @originalName importInvoices
+     *
      * @originalFile Import.php
      */
     public function importInvoices()
     {
         // Open the file
         $handle = fopen('./uploads/import/invoices.csv', 'r');
-        $row = 1;
+        $row    = 1;
         // GetController the list of expected headers
         $headers = $this->expected_headers['invoices.csv'];
         // Init an array to store the inserted ids
@@ -129,7 +143,7 @@ class Import extends ResponseModel
                         $this->db->where('user_email', $data[$key]);
                         $user = $this->db->get('ip_users');
                         if ($user->num_rows()) {
-                            $header = 'user_id';
+                            $header     = 'user_id';
                             $data[$key] = $user->row()->user_id;
                         } else {
                             // Email address not found
@@ -156,26 +170,29 @@ class Import extends ResponseModel
                     $db_array[$header] = $data[$key] != 'null' ? $data[$key] : '';
                 }
                 // Check for any record errors
-                if (!$record_error) {
+                if ( ! $record_error) {
                     // No record errors exist - go ahead and create the invoice
                     $db_array['invoice_group_id'] = 0;
-                    $ids[] = $this->mdl_invoices->create($db_array);
+                    $ids[]                        = $this->mdl_invoices->create($db_array);
                 }
             }
             $row++;
         }
+
         // Return the array of recorded ids
         return $ids;
     }
+
     /**
      * @originalName importInvoiceItems
+     *
      * @originalFile Import.php
      */
     public function importInvoiceItems()
     {
         // Open the file
         $handle = fopen('./uploads/import/invoice_items.csv', 'r');
-        $row = 1;
+        $row    = 1;
         // GetController the list of expected headers
         $headers = $this->expected_headers['invoice_items.csv'];
         // Init an array to store the inserted ids
@@ -196,7 +213,7 @@ class Import extends ResponseModel
                         $this->db->where('invoice_number', $data[$key]);
                         $user = $this->db->get('ip_invoices');
                         if ($user->num_rows()) {
-                            $header = 'invoice_id';
+                            $header     = 'invoice_id';
                             $data[$key] = $user->row()->invoice_id;
                         } else {
                             $record_error = true;
@@ -220,7 +237,7 @@ class Import extends ResponseModel
                     // Assign the final value to the array
                     $db_array[$header] = $data[$key] != 'null' ? $data[$key] : '';
                 }
-                if (!$record_error) {
+                if ( ! $record_error) {
                     // Discounts calculation - since v1.6.3 Need if taxes applied after discounts
                     $global_discount = [
                         'amount' => 0.0,
@@ -237,18 +254,21 @@ class Import extends ResponseModel
             }
             $row++;
         }
+
         return $ids;
     }
+
     /**
      * @originalName importPayments
+     *
      * @originalFile Import.php
      */
     public function importPayments()
     {
-        $handle = fopen('./uploads/import/payments.csv', 'r');
-        $row = 1;
+        $handle  = fopen('./uploads/import/payments.csv', 'r');
+        $row     = 1;
         $headers = $this->expected_headers['payments.csv'];
-        $ids = [];
+        $ids     = [];
         while (($data = fgetcsv($handle, 1000, ',')) != false) {
             $record_error = false;
             if ($row == 1 && $data != $headers) {
@@ -261,7 +281,7 @@ class Import extends ResponseModel
                         $this->db->where('invoice_number', $data[$key]);
                         $user = $this->db->get('ip_invoices');
                         if ($user->num_rows()) {
-                            $header = 'invoice_id';
+                            $header     = 'invoice_id';
                             $data[$key] = $user->row()->invoice_id;
                         } else {
                             $record_error = true;
@@ -284,16 +304,19 @@ class Import extends ResponseModel
                     }
                     $db_array[$header] = $data[$key] != 'null' ? $data[$key] : '';
                 }
-                if (!$record_error) {
+                if ( ! $record_error) {
                     $ids[] = $this->mdl_payments->save(null, $db_array);
                 }
             }
             $row++;
         }
+
         return $ids;
     }
+
     /**
      * @originalName recordImportDetails
+     *
      * @originalFile Import.php
      */
     public function recordImportDetails($import_id, $table_name, $import_lang_key, $ids)
@@ -303,8 +326,10 @@ class Import extends ResponseModel
             $this->db->insert('ip_import_details', $db_array);
         }
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile Import.php
      */
     public function delete($import_id)

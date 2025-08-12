@@ -2,7 +2,7 @@
 
 namespace Modules\Reports\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -18,6 +18,7 @@ class Report extends BaseModel
 {
     /**
      * @originalName salesByClient
+     *
      * @originalFile Report.php
      */
     public function salesByClient($from_date = null, $to_date = null)
@@ -25,7 +26,7 @@ class Report extends BaseModel
         $this->db->select('client_name, client_surname, CONCAT(client_name," ", client_surname) AS client_namesurname');
         if ($from_date && $to_date) {
             $from_date = date_to_mysql($from_date);
-            $to_date = date_to_mysql($to_date);
+            $to_date   = date_to_mysql($to_date);
             $this->db->select('
             (
                 SELECT COUNT(*) FROM ip_invoices
@@ -89,10 +90,13 @@ class Report extends BaseModel
             $this->db->where('client_id IN (SELECT client_id FROM ip_invoices)');
         }
         $this->db->orderBy('client_namesurname');
+
         return $this->db->get('ip_clients')->result();
     }
+
     /**
      * @originalName paymentHistory
+     *
      * @originalFile Report.php
      */
     public function paymentHistory($from_date = null, $to_date = null)
@@ -100,14 +104,17 @@ class Report extends BaseModel
         $this->load->model('payments/mdl_payments');
         if ($from_date && $to_date) {
             $from_date = date_to_mysql($from_date);
-            $to_date = date_to_mysql($to_date);
+            $to_date   = date_to_mysql($to_date);
             $this->mdl_payments->where('payment_date >=', $from_date);
             $this->mdl_payments->where('payment_date <=', $to_date);
         }
+
         return $this->mdl_payments->get()->result();
     }
+
     /**
      * @originalName invoiceAging
+     *
      * @originalFile Report.php
      */
     public function invoiceAging()
@@ -159,16 +166,19 @@ class Report extends BaseModel
         $this->db->or_having('range_2 >', 0);
         $this->db->or_having('range_3 >', 0);
         $this->db->or_having('total_balance >', 0);
+
         return $this->db->get('ip_clients')->result();
     }
+
     /**
      * @originalName invoicesPerClient
+     *
      * @originalFile Report.php
      */
     public function invoicesPerClient($from_date = null, $to_date = null)
     {
         $from_date = date_to_mysql($from_date);
-        $to_date = date_to_mysql($to_date);
+        $to_date   = date_to_mysql($to_date);
         $this->db->select('*');
         $this->db->from('ip_clients');
         $this->db->join('ip_invoices', 'ip_invoices.client_id = ip_clients.client_id', 'left');
@@ -176,10 +186,13 @@ class Report extends BaseModel
         $this->db->where('ip_invoices.invoice_date_created >=', $from_date);
         $this->db->where('ip_invoices.invoice_date_created <=', $to_date);
         $this->db->orderBy('ip_clients.client_id');
+
         return $this->db->get()->result();
     }
+
     /**
      * @originalName salesByYear
+     *
      * @originalFile Report.php
      */
     public function salesByYear($from_date = null, $to_date = null, $minQuantity = null, $maxQuantity = null, $taxChecked = false)
@@ -187,10 +200,10 @@ class Report extends BaseModel
         if ($minQuantity == '') {
             $minQuantity = 0;
         }
-        $from_date = $from_date == '' ? date('Y-m-d') : date_to_mysql($from_date);
-        $to_date = $to_date == '' ? date('Y-m-d') : date_to_mysql($to_date);
+        $from_date      = $from_date == '' ? date('Y-m-d') : date_to_mysql($from_date);
+        $to_date        = $to_date == '' ? date('Y-m-d') : date_to_mysql($to_date);
         $from_date_year = (int) mb_substr($from_date, 0, 4);
-        $to_date_year = (int) mb_substr($to_date, 0, 4);
+        $to_date_year   = (int) mb_substr($to_date, 0, 4);
         $this->db->select('client_name as Name');
         $this->db->select('client_name');
         $this->db->select('client_surname');
@@ -648,6 +661,7 @@ class Report extends BaseModel
             }
         }
         $this->db->orderBy('client_namesurname');
+
         return $this->db->get('ip_clients')->result();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Modules\Quotes\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class QuotesController extends AdminController
         parent::__construct();
         $this->load->model('mdl_quotes');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile QuotesController.php
      */
     public function index()
@@ -33,8 +35,10 @@ class QuotesController extends AdminController
         // Display all quotes by default
         redirect('quotes/status/all');
     }
+
     /**
      * @originalName status
+     *
      * @originalFile QuotesController.php
      */
     public function status(string $status = 'all', $page = 0)
@@ -66,8 +70,10 @@ class QuotesController extends AdminController
         $this->layout->buffer('content', 'quotes/index');
         $this->layout->render();
     }
+
     /**
      * @originalName view
+     *
      * @originalFile QuotesController.php
      */
     public function view($quote_id)
@@ -85,14 +91,14 @@ class QuotesController extends AdminController
             }
         }
         $quote = $this->mdl_quotes->getById($quote_id);
-        if (!$quote) {
+        if ( ! $quote) {
             show_404();
         }
         $custom_fields = $this->mdl_custom_fields->byTable('ip_quote_custom')->get()->result();
         $custom_values = [];
         foreach ($custom_fields as $custom_field) {
             if (in_array($custom_field->custom_field_type, $this->mdl_custom_values->customValueFields())) {
-                $values = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
+                $values                                        = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
                 $custom_values[$custom_field->custom_field_id] = $values;
             }
         }
@@ -115,8 +121,10 @@ class QuotesController extends AdminController
         $this->layout->buffer([['modal_delete_quote', 'quotes/modal_delete_quote'], ['modal_add_quote_tax', 'quotes/modal_add_quote_tax'], ['content', 'quotes/view']]);
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile QuotesController.php
      */
     public function delete($quote_id)
@@ -126,8 +134,10 @@ class QuotesController extends AdminController
         // Redirect to quote index
         redirect('quotes/index');
     }
+
     /**
      * @originalName generatePdf
+     *
      * @originalFile QuotesController.php
      */
     public function generatePdf($quote_id, $stream = true, $quote_template = null)
@@ -139,8 +149,10 @@ class QuotesController extends AdminController
         }
         generate_quote_pdf($quote_id, $stream, $quote_template);
     }
+
     /**
      * @originalName deleteQuoteTax
+     *
      * @originalFile QuotesController.php
      */
     public function deleteQuoteTax(string $quote_id, $quote_tax_rate_id)
@@ -153,8 +165,10 @@ class QuotesController extends AdminController
         $this->mdl_quote_amounts->calculate($quote_id, $global_discount);
         redirect('quotes/view/' . $quote_id);
     }
+
     /**
      * @originalName recalculateAllQuotes
+     *
      * @originalFile QuotesController.php
      */
     public function recalculateAllQuotes()

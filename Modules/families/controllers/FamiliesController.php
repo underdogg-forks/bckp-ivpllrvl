@@ -4,7 +4,7 @@ namespace Modules\Families\Controllers;
 
 use Modules\Core\Controllers\AdminController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -26,8 +26,10 @@ class FamiliesController extends AdminController
         parent::__construct();
         $this->load->model('mdl_families');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile FamiliesController.php
      */
     public function index($page = 0)
@@ -38,8 +40,10 @@ class FamiliesController extends AdminController
         $this->layout->buffer('content', 'families/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile FamiliesController.php
      */
     public function form($id = null)
@@ -51,7 +55,7 @@ class FamiliesController extends AdminController
         // <<<--- filters _POST array for nastiness
         if ($this->input->post('is_update') == 0 && $this->input->post('family_name') != '') {
             $check = $this->db->get_where('ip_families', ['family_name' => $this->input->post('family_name')])->result();
-            if (!empty($check)) {
+            if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('family_already_exists'));
                 redirect('families/form');
             }
@@ -60,8 +64,8 @@ class FamiliesController extends AdminController
             $this->mdl_families->save($id);
             redirect('families');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_families->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_families->prepForm($id)) {
                 show_404();
             }
             $this->mdl_families->set_form_value('is_update', true);
@@ -69,8 +73,10 @@ class FamiliesController extends AdminController
         $this->layout->buffer('content', 'families/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile FamiliesController.php
      */
     public function delete($id)

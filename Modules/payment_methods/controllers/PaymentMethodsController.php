@@ -4,7 +4,7 @@ namespace Modules\Paymentmethods\Controllers;
 
 use Modules\Core\Controllers\AdminController;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -26,8 +26,10 @@ class PaymentMethodsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_payment_methods');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile PaymentMethodsController.php
      */
     public function index($page = 0)
@@ -38,8 +40,10 @@ class PaymentMethodsController extends AdminController
         $this->layout->buffer('content', 'payment_methods/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
+     *
      * @originalFile PaymentMethodsController.php
      */
     public function form($id = null)
@@ -51,7 +55,7 @@ class PaymentMethodsController extends AdminController
         // <<<--- filters _POST array for nastiness
         if ($this->input->post('is_update') == 0 && $this->input->post('payment_method_name') != '') {
             $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => $this->input->post('payment_method_name')])->result();
-            if (!empty($check)) {
+            if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('payment_method_already_exists'));
                 redirect('payment_methods/form');
             }
@@ -60,8 +64,8 @@ class PaymentMethodsController extends AdminController
             $this->mdl_payment_methods->save($id);
             redirect('payment_methods');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_payment_methods->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_payment_methods->prepForm($id)) {
                 show_404();
             }
             $this->mdl_payment_methods->set_form_value('is_update', true);
@@ -69,8 +73,10 @@ class PaymentMethodsController extends AdminController
         $this->layout->buffer('content', 'payment_methods/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile PaymentMethodsController.php
      */
     public function delete($id)

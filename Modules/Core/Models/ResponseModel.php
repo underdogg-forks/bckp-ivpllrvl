@@ -3,7 +3,8 @@
 namespace Modules\Core\Models;
 
 use AllowDynamicProperties;
-if (!defined('BASEPATH')) {
+
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -19,6 +20,7 @@ class ResponseModel extends FormValidationModel
 {
     /**
      * @originalName save
+     *
      * @originalFile ResponseModel.php
      */
     public function save($id = null, $db_array = null)
@@ -30,10 +32,13 @@ class ResponseModel extends FormValidationModel
             $this->session->set_flashdata('alert_success', trans('record_successfully_created'));
             $id = parent::save(null, $db_array);
         }
+
         return $id;
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile ResponseModel.php
      */
     public function delete($id)

@@ -2,7 +2,7 @@
 
 namespace Modules\Customfields\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,34 +17,44 @@ if (!defined('BASEPATH')) {
 class ClientCustom extends Validator
 {
     public static $positions = ['custom_fields', 'address', 'contact_information', 'personal_information', 'tax_information'];
+
     public $table = 'ip_client_custom';
+
     public $primary_key = 'ip_client_custom.client_custom_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile ClientCustom.php
      */
     public function defaultSelect()
     {
         $this->db->select('SQL_CALC_FOUND_ROWS ip_client_custom.*, ip_custom_fields.*', false);
     }
+
     /**
      * @originalName defaultOrderBy
+     *
      * @originalFile ClientCustom.php
      */
     public function defaultOrderBy()
     {
         $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
+
     /**
      * @originalName defaultJoin
+     *
      * @originalFile ClientCustom.php
      */
     public function defaultJoin()
     {
         $this->db->join('ip_custom_fields', 'ip_client_custom.client_custom_fieldid = ip_custom_fields.custom_field_id', 'inner');
     }
+
     /**
      * @originalName saveCustom
+     *
      * @originalFile ClientCustom.php
      */
     public function saveCustom($client_id, $db_array)
@@ -55,22 +65,26 @@ class ClientCustom extends Validator
             if (null === $form_data) {
                 return true;
             }
-            $client_custom_id = null;
+            $client_custom_id      = null;
             $db_array['client_id'] = $client_id;
             foreach ($form_data as $key => $value) {
-                $db_array = ['client_id' => $client_id, 'client_custom_fieldid' => $key, 'client_custom_fieldvalue' => $value];
+                $db_array      = ['client_id' => $client_id, 'client_custom_fieldid' => $key, 'client_custom_fieldvalue' => $value];
                 $client_custom = $this->where('client_id', $client_id)->where('client_custom_fieldid', $key)->get();
                 if ($client_custom->num_rows()) {
                     $client_custom_id = $client_custom->row()->client_custom_id;
                 }
                 parent::save($client_custom_id, $db_array);
             }
+
             return true;
         }
+
         return $result;
     }
+
     /**
      * @originalName prepForm
+     *
      * @originalFile ClientCustom.php
      */
     public function prepForm($id = null)
@@ -83,7 +97,7 @@ class ClientCustom extends Validator
                 foreach ($values as $value) {
                     $type = $value->custom_field_type;
                     if ($type != null) {
-                        $nicename = Mdl_Custom_Fields::getNicename($type);
+                        $nicename  = Mdl_Custom_Fields::getNicename($type);
                         $formatted = call_user_func('format_' . $nicename, $value->client_custom_fieldvalue);
                         $this->set_form_value('cf_' . $value->custom_field_id, $formatted);
                     }
@@ -92,34 +106,44 @@ class ClientCustom extends Validator
             parent::prepForm($id);
         }
     }
+
     /**
      * @originalName getByClient
+     *
      * @originalFile ClientCustom.php
      */
     public function getByClient($client_id)
     {
         $this->where('client_id', $client_id);
+
         return $this->get();
     }
+
     /**
      * @originalName byId
+     *
      * @originalFile ClientCustom.php
      */
     public function byId($client_id)
     {
         $this->db->where('ip_client_custom.client_id', $client_id);
+
         return $this;
     }
+
     /**
      * @originalName getByClid
+     *
      * @originalFile ClientCustom.php
      */
     public function getByClid($client_id)
     {
         return $this->where('ip_client_custom.client_id', $client_id)->get()->result();
     }
+
     /**
      * @originalName dbArray
+     *
      * @originalFile ClientCustom.php
      */
     public function dbArray()
@@ -134,6 +158,7 @@ class ClientCustom extends Validator
                 $db_array[$field->custom_field_column] = implode(',', $db_array[$field->custom_field_column]);
             }
         }
+
         return $db_array;
     }
 }

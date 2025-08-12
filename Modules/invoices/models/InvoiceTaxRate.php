@@ -2,7 +2,7 @@
 
 namespace Modules\Invoices\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,9 +17,12 @@ if (!defined('BASEPATH')) {
 class InvoiceTaxRate extends ResponseModel
 {
     public $table = 'ip_invoice_tax_rates';
+
     public $primary_key = 'ip_invoice_tax_rates.invoice_tax_rate_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile InvoiceTaxRate.php
      */
     public function defaultSelect()
@@ -28,16 +31,20 @@ class InvoiceTaxRate extends ResponseModel
         $this->db->select('ip_tax_rates.tax_rate_percent AS invoice_tax_rate_percent');
         $this->db->select('ip_invoice_tax_rates.*');
     }
+
     /**
      * @originalName defaultJoin
+     *
      * @originalFile InvoiceTaxRate.php
      */
     public function defaultJoin()
     {
         $this->db->join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_invoice_tax_rates.tax_rate_id');
     }
+
     /**
      * @originalName save
+     *
      * @originalFile InvoiceTaxRate.php
      */
     public function save($id = null, $db_array = null)
@@ -52,8 +59,10 @@ class InvoiceTaxRate extends ResponseModel
             $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
         }
     }
+
     /**
      * @originalName validationRules
+     *
      * @originalFile InvoiceTaxRate.php
      */
     public function validationRules()

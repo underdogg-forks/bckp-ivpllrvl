@@ -5,7 +5,7 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use MX_Controller;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -21,6 +21,7 @@ class BaseController extends MX_Controller
 {
     /** @var bool */
     public $ajax_controller = false;
+
     /**
      * Modules\Core\Controllers\Base_Controller constructor.
      */
@@ -29,7 +30,7 @@ class BaseController extends MX_Controller
         parent::__construct();
         $this->config->load('invoice_plane');
         // Don't allow non-ajax requests to ajax controllers
-        if ($this->ajax_controller && !$this->input->is_ajax_request()) {
+        if ($this->ajax_controller && ! $this->input->is_ajax_request()) {
             exit;
         }
         $this->load->helper('url');
@@ -41,7 +42,7 @@ class BaseController extends MX_Controller
         $this->load->library('session');
         $this->load->helper('redirect');
         // Check if database has been configured
-        if (!env_bool('SETUP_COMPLETED')) {
+        if ( ! env_bool('SETUP_COMPLETED')) {
             redirect('/welcome');
         } else {
             $this->load->library(['encryption', 'form_validation', 'session', 'ClientTitleEnum']);

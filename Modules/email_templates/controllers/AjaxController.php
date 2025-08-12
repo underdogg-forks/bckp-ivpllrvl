@@ -2,7 +2,7 @@
 
 namespace Modules\Emailtemplates\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,8 +17,10 @@ if (!defined('BASEPATH')) {
 class AjaxController extends AdminController
 {
     public $ajax_controller = true;
+
     /**
      * @originalName getContent
+     *
      * @originalFile AjaxController.php
      */
     public function getContent()

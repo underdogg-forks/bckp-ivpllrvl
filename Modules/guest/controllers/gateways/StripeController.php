@@ -2,7 +2,7 @@
 
 namespace Modules\Guest\Controllers\Gateways;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -21,7 +21,9 @@ use Stripe\StripeClient;
 class StripeController extends BaseController
 {
     protected StripeClient $stripe;
+
     protected $Mdl_settings;
+
     public function __construct()
     {
         parent::__construct();
@@ -29,8 +31,10 @@ class StripeController extends BaseController
         $this->load->model('invoices/mdl_invoices');
         $this->stripe = new StripeClient($this->crypt->decode(get_setting('gateway_stripe_apiKey')));
     }
+
     /**
      * @originalName createCheckoutSession
+     *
      * @originalFile StripeController.php
      */
     public function createCheckoutSession($invoice_url_key)
@@ -42,17 +46,19 @@ class StripeController extends BaseController
             redirect(site_url('guest/view/invoice/' . $invoice->invoice_url_key));
         }
         $checkout_session = $this->stripe->checkout->sessions->create([
-            'mode' => 'payment',
-            'ui_mode' => 'embedded',
-            'return_url' => site_url('guest/gateways/stripe/callback/{CHECKOUT_SESSION_ID}'),
+            'mode'                => 'payment',
+            'ui_mode'             => 'embedded',
+            'return_url'          => site_url('guest/gateways/stripe/callback/{CHECKOUT_SESSION_ID}'),
             'client_reference_id' => $invoice->invoice_url_key,
             // More privacy of invoice_id
             'line_items' => [['price_data' => ['currency' => get_setting('gateway_stripe_currency'), 'unit_amount' => $invoice->invoice_balance * 100, 'product_data' => ['name' => trans('invoice') . ' #' . $invoice->invoice_number]], 'quantity' => 1]],
         ]);
         $this->output->set_output(json_encode(['clientSecret' => $checkout_session->client_secret]));
     }
+
     /**
      * @originalName callback
+     *
      * @originalFile StripeController.php
      */
     public function callback(string $checkout_session_id)
@@ -84,7 +90,7 @@ class StripeController extends BaseController
             $user_msg = $paid ? sprintf(trans('online_payment_successful'), '#' . $invoice->invoice_number) : trans('online_payment_failed') . '<br>' . sprintf(trans('online_payment_incomplete'), __CLASS__, $session->payment_status);
         } catch (Error|Exception|ErrorException $e) {
             $user_msg = trans('online_payment_error') . (empty($user_msg) ? '' : '<br>' . $user_msg);
-            $paid = 'error';
+            $paid     = 'error';
             // tweak to reuse
             // Log the error so you can debug
             $response = __CLASS__ . '::' . __FUNCTION__ . ' exception: ' . $e->getMessage() . (empty($response) ? '' : ' - response: ' . $response);
@@ -98,12 +104,12 @@ class StripeController extends BaseController
             // StripeController is accessible?
             // Record a succeeded/canceled and other merchant response (This helps you keep track of incomplete attempts)
             $this->db->insert('ip_merchant_responses', [
-                'invoice_id' => $invoice->invoice_id,
+                'invoice_id'                   => $invoice->invoice_id,
                 'merchant_response_successful' => (int) $ok,
                 // response server API (no)ok
-                'merchant_response_date' => date('Y-m-d'),
-                'merchant_response_driver' => __CLASS__,
-                'merchant_response' => ($ok ? $session->mode . ': ' . $session->payment_status . ', ' : '') . $response,
+                'merchant_response_date'      => date('Y-m-d'),
+                'merchant_response_driver'    => __CLASS__,
+                'merchant_response'           => ($ok ? $session->mode . ': ' . $session->payment_status . ', ' : '') . $response,
                 'merchant_response_reference' => $ok ? 'intent_id: ' . $session->payment_intent : 'none',
             ]);
             // Notify user

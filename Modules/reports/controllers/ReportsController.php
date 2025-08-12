@@ -2,7 +2,7 @@
 
 namespace Modules\Reports\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class ReportsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_reports');
     }
+
     /**
      * @originalName salesByClient
+     *
      * @originalFile ReportsController.php
      */
     public function salesByClient()
@@ -38,8 +40,10 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/sales_by_client_index')->render();
     }
+
     /**
      * @originalName invoicesPerClient
+     *
      * @originalFile ReportsController.php
      */
     public function invoicesPerClient()
@@ -52,8 +56,10 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/invoices_per_client_index')->render();
     }
+
     /**
      * @originalName paymentHistory
+     *
      * @originalFile ReportsController.php
      */
     public function paymentHistory()
@@ -66,8 +72,10 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/payment_history_index')->render();
     }
+
     /**
      * @originalName invoiceAging
+     *
      * @originalFile ReportsController.php
      */
     public function invoiceAging()
@@ -80,8 +88,10 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/invoice_aging_index')->render();
     }
+
     /**
      * @originalName salesByYear
+     *
      * @originalFile ReportsController.php
      */
     public function salesByYear()

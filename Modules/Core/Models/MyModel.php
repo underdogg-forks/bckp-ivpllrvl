@@ -3,10 +3,9 @@
 namespace Modules\Core\Models;
 
 use AllowDynamicProperties;
-use CI_Model;
 use Illuminate\Database\Eloquent\Model;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /**
@@ -42,45 +41,69 @@ if (!defined('BASEPATH')) {
 class MyModel extends Model
 {
     public $table;
+
     public $primary_key;
+
     /** @var int */
     public $default_limit = 15;
+
     public $page_links;
+
     public $query;
+
     /** @var array */
     public $form_values = [];
+
     public $validation_errors;
+
     public $total_rows;
+
     public $date_created_field;
+
     public $date_modified_field;
+
     /** @var array */
     public $native_methods = ['select', 'select_max', 'select_min', 'select_avg', 'select_sum', 'join', 'where', 'or_where', 'where_in', 'or_where_in', 'where_not_in', 'or_where_not_in', 'like', 'or_like', 'not_like', 'or_not_like', 'group_by', 'distinct', 'having', 'or_having', 'order_by', 'limit'];
+
     /** @var int */
     public $total_pages = 0;
+
     /** @var int */
     public $current_page;
+
     /** @var int */
     public $next_page;
+
     /** @var int */
     public $previous_page;
+
     /** @var int */
     public $offset;
+
     /** @var int */
     public $next_offset;
+
     /** @var int */
     public $previous_offset;
+
     /** @var int */
     public $last_offset;
+
     /** @var int */
     public $id;
+
     /** @var array */
     public $filter = [];
+
     /** @var string */
     protected $default_validation_rules = 'validation_rules';
+
     /** @var array */
     protected $validation_rules;
+
     /**
      * @originalName __call
+     *
      * @originalFile MyModel.php
      */
     public function call($name, $arguments)
@@ -90,10 +113,13 @@ class MyModel extends Model
         } else {
             call_user_func_array([$this->db, $name], $arguments);
         }
+
         return $this;
     }
+
     /**
      * @originalName get
+     *
      * @originalFile MyModel.php
      */
     public function get($include_defaults = true)
@@ -102,48 +128,53 @@ class MyModel extends Model
             $this->setDefaults();
         }
         $this->runFilters();
-        $this->query = $this->db->get($this->table);
+        $this->query  = $this->db->get($this->table);
         $this->filter = [];
+
         return $this;
     }
+
     /**
      * @originalName paginate
+     *
      * @originalFile MyModel.php
      */
     public function paginate($base_url, $offset = 0, $uri_segment = 3)
     {
         $this->load->helper('url');
         $this->load->library('pagination');
-        $this->offset = $offset;
+        $this->offset       = $offset;
         $default_list_limit = $this->mdl_settings->setting('default_list_limit');
-        $per_page = empty($default_list_limit) ? $this->default_limit : $default_list_limit;
+        $per_page           = empty($default_list_limit) ? $this->default_limit : $default_list_limit;
         $this->setDefaults();
         $this->runFilters();
         $this->db->limit($per_page, $this->offset);
-        $this->query = $this->db->get($this->table);
-        $this->total_rows = $this->db->query('SELECT FOUND_ROWS() AS num_rows')->row()->num_rows;
-        $this->total_pages = ceil($this->total_rows / $per_page);
+        $this->query           = $this->db->get($this->table);
+        $this->total_rows      = $this->db->query('SELECT FOUND_ROWS() AS num_rows')->row()->num_rows;
+        $this->total_pages     = ceil($this->total_rows / $per_page);
         $this->previous_offset = $this->offset - $per_page;
-        $this->next_offset = $this->offset + $per_page;
-        $config = ['base_url' => $base_url, 'total_rows' => $this->total_rows, 'per_page' => $per_page];
-        $this->last_offset = $this->total_pages * $per_page - $per_page;
+        $this->next_offset     = $this->offset + $per_page;
+        $config                = ['base_url' => $base_url, 'total_rows' => $this->total_rows, 'per_page' => $per_page];
+        $this->last_offset     = $this->total_pages * $per_page - $per_page;
         if ($this->config->item('pagination_style')) {
             $config = array_merge($config, $this->config->item('pagination_style'));
         }
         $this->pagination->initialize($config);
         $this->page_links = $this->pagination->create_links();
     }
+
     /**
      * @originalName save
+     *
      * @originalFile MyModel.php
      */
     public function save($id = null, $db_array = null)
     {
-        if (!$db_array) {
+        if ( ! $db_array) {
             $db_array = $this->dbArray();
         }
         $datetime = date('Y-m-d H:i:s');
-        if (!$id) {
+        if ( ! $id) {
             if ($this->date_created_field) {
                 if (is_array($db_array)) {
                     $db_array[$this->date_created_field] = $datetime;
@@ -164,6 +195,7 @@ class MyModel extends Model
                 }
             }
             $this->db->insert($this->table, $db_array);
+
             return $this->db->insert_id();
         }
         if ($this->date_modified_field) {
@@ -175,25 +207,31 @@ class MyModel extends Model
         }
         $this->db->where($this->primary_key, $id);
         $this->db->update($this->table, $db_array);
+
         return $id;
     }
+
     /**
      * @originalName db_array
+     *
      * @originalFile MyModel.php
      */
     public function dbArray()
     {
-        $db_array = [];
+        $db_array         = [];
         $validation_rules = $this->{$this->validation_rules}();
         foreach ($this->input->post() as $key => $value) {
             if (array_key_exists($key, $validation_rules)) {
                 $db_array[$key] = $value;
             }
         }
+
         return $db_array;
     }
+
     /**
      * @originalName delete
+     *
      * @originalFile MyModel.php
      */
     public function delete($id)
@@ -201,81 +239,99 @@ class MyModel extends Model
         $this->db->where($this->primary_key, $id);
         $this->db->delete($this->table);
     }
+
     /**
      * @originalName result
+     *
      * @originalFile MyModel.php
      */
     public function result()
     {
         return $this->query->result();
     }
+
     /**
      * @originalName row
+     *
      * @originalFile MyModel.php
      */
     public function row()
     {
         return $this->query->row();
     }
+
     /**
      * @originalName result_array
+     *
      * @originalFile MyModel.php
      */
     public function resultArray()
     {
         return $this->query->resultArray();
     }
+
     /**
      * @originalName row_array
+     *
      * @originalFile MyModel.php
      */
     public function rowArray()
     {
         return $this->query->rowArray();
     }
+
     /**
      * @originalName num_rows
+     *
      * @originalFile MyModel.php
      */
     public function numRows()
     {
         return $this->query->numRows();
     }
+
     /**
      * @originalName prep_form
+     *
      * @originalFile MyModel.php
      */
     public function prepForm($id = null)
     {
-        if (!$_POST && $id) {
+        if ( ! $_POST && $id) {
             $row = $this->getById($id);
             if ($row) {
                 foreach ($row as $key => $value) {
                     $this->form_values[$key] = $value;
                 }
+
                 return true;
             }
+
             return false;
         }
-        if (!$id) {
+        if ( ! $id) {
             return true;
         }
     }
+
     /**
      * @originalName get_by_id
+     *
      * @originalFile MyModel.php
      */
     public function getById($id)
     {
         return $this->where($this->primary_key, $id)->get()->row();
     }
+
     /**
      * @originalName run_validation
+     *
      * @originalFile MyModel.php
      */
     public function runValidation($validation_rules = null)
     {
-        if (!$validation_rules) {
+        if ( ! $validation_rules) {
             $validation_rules = $this->default_validation_rules;
         }
         foreach (array_keys($_POST) as $key) {
@@ -285,38 +341,48 @@ class MyModel extends Model
             $this->validation_rules = $validation_rules;
             $this->load->library('form_validation');
             $this->form_validation->set_rules($this->{$validation_rules}());
-            $run = $this->form_validation->run();
+            $run                     = $this->form_validation->run();
             $this->validation_errors = validation_errors();
+
             return $run;
         }
     }
+
     /**
      * @originalName form_value
+     *
      * @originalFile MyModel.php
      */
     public function formValue($key, $escape = false)
     {
         $value = $this->form_values[$key] ?? '';
+
         return $escape ? htmlspecialchars($value) : $value;
     }
+
     /**
      * @originalName set_form_value
+     *
      * @originalFile MyModel.php
      */
     public function setFormValue($key, $value)
     {
         $this->form_values[$key] = $value;
     }
+
     /**
      * @originalName set_id
+     *
      * @originalFile MyModel.php
      */
     public function setId($id)
     {
         $this->id = $id;
     }
+
     /**
      * @originalName set_defaults
+     *
      * @originalFile MyModel.php
      */
     private function setDefaults($exclude = [])
@@ -332,8 +398,10 @@ class MyModel extends Model
             }
         }
     }
+
     /**
      * @originalName run_filters
+     *
      * @originalFile MyModel.php
      */
     private function runFilters()

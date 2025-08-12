@@ -2,7 +2,7 @@
 
 namespace Modules\Invoices\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,17 +17,22 @@ if (!defined('BASEPATH')) {
 class InvoiceSumex extends ResponseModel
 {
     public $table = 'ip_invoice_sumex';
+
     public $primary_key = 'ip_invoice_sumex.sumex_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile InvoiceSumex.php
      */
     public function defaultSelect()
     {
         $this->db->select('ip_invoice_sumex.*');
     }
+
     /**
      * @originalName save
+     *
      * @originalFile InvoiceSumex.php
      */
     public function save($id = null, $db_array = null)
@@ -35,8 +40,10 @@ class InvoiceSumex extends ResponseModel
         $id = $this->where('sumex_invoice', $id)->get()->row()->sumex_id;
         parent::save($id, $db_array);
     }
+
     /**
      * @originalName validationRules
+     *
      * @originalFile InvoiceSumex.php
      */
     public function validationRules()

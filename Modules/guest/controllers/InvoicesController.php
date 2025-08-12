@@ -2,7 +2,7 @@
 
 namespace Modules\Guest\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -24,8 +24,10 @@ class InvoicesController extends GuestController
         parent::__construct();
         $this->load->model('invoices/mdl_invoices');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile InvoicesController.php
      */
     public function index(): void
@@ -33,8 +35,10 @@ class InvoicesController extends GuestController
         // Display open invoices by default
         redirect('guest/invoices/status/open');
     }
+
     /**
      * @originalName status
+     *
      * @originalFile InvoicesController.php
      */
     public function status(string $status = 'open', $page = 0): void
@@ -61,14 +65,16 @@ class InvoicesController extends GuestController
         $this->layout->buffer('content', 'guest/invoices_index');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName view
+     *
      * @originalFile InvoicesController.php
      */
     public function view($invoice_id): void
     {
         $invoice = $this->mdl_invoices->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $this->mdl_invoices->markViewed($invoice->invoice_id);
@@ -78,28 +84,32 @@ class InvoicesController extends GuestController
         $this->layout->buffer('content', 'guest/invoices_view');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName generatePdf
+     *
      * @originalFile InvoicesController.php
      */
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
     {
         $invoice = $this->mdl_invoices->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $this->mdl_invoices->markViewed($invoice_id);
         $this->load->helper('pdf');
         generate_invoice_pdf($invoice_id, $stream, $invoice_template, true);
     }
+
     /**
      * @originalName generateSumexPdf
+     *
      * @originalFile InvoicesController.php
      */
     public function generateSumexPdf($invoice_id, $stream = true, $invoice_template = null): void
     {
         $invoice = $this->mdl_invoices->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $this->mdl_invoices->markViewed($invoice_id);

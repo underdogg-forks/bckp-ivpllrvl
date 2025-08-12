@@ -2,7 +2,7 @@
 
 namespace Modules\Settings\Controllers;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -27,8 +27,10 @@ class SettingsController extends AdminController
         $this->load->library('form_validation');
         $this->load->helper('payments_helper');
     }
+
     /**
      * @originalName index
+     *
      * @originalFile SettingsController.php
      */
     public function index()
@@ -72,17 +74,17 @@ class SettingsController extends AdminController
                 }
             }
             $upload_config = [
-                'upload_path' => './uploads/',
+                'upload_path'   => './uploads/',
                 'allowed_types' => 'gif|jpg|jpeg|png|svg',
                 // Invoice quote logo image :Todo: Add webp avif? (& test imgs in pdf)
-                'max_size' => '9999',
-                'max_width' => '9999',
+                'max_size'   => '9999',
+                'max_width'  => '9999',
                 'max_height' => '9999',
             ];
             // Check for invoice logo upload
             if ($_FILES['invoice_logo']['name']) {
                 $this->load->library('upload', $upload_config);
-                if (!$this->upload->do_upload('invoice_logo')) {
+                if ( ! $this->upload->do_upload('invoice_logo')) {
                     $this->session->set_flashdata('alert_error', $this->upload->display_errors());
                     redirect('settings');
                 }
@@ -92,7 +94,7 @@ class SettingsController extends AdminController
             // Check for login logo upload
             if ($_FILES['login_logo']['name']) {
                 $this->load->library('upload', $upload_config);
-                if (!$this->upload->do_upload('login_logo')) {
+                if ( ! $this->upload->do_upload('login_logo')) {
                     $this->session->set_flashdata('alert_error', $this->upload->display_errors());
                     redirect('settings');
                 }
@@ -105,10 +107,10 @@ class SettingsController extends AdminController
         // Load required resources
         $this->load->model(['invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'email_templates/mdl_email_templates', 'payment_methods/mdl_payment_methods', 'invoices/mdl_templates', 'custom_fields/mdl_invoice_custom', 'custom_fields/mdl_custom_fields']);
         // Collect the list of templates
-        $pdf_invoice_templates = $this->mdl_templates->getInvoiceTemplates('pdf');
+        $pdf_invoice_templates    = $this->mdl_templates->getInvoiceTemplates('pdf');
         $public_invoice_templates = $this->mdl_templates->getInvoiceTemplates('public');
-        $pdf_quote_templates = $this->mdl_templates->getQuoteTemplates('pdf');
-        $public_quote_templates = $this->mdl_templates->getQuoteTemplates('public');
+        $pdf_quote_templates      = $this->mdl_templates->getQuoteTemplates('pdf');
+        $public_quote_templates   = $this->mdl_templates->getQuoteTemplates('public');
         // GetController all themes
         $available_themes = $this->mdl_settings->getThemes();
         // Set data in the layout
@@ -116,8 +118,10 @@ class SettingsController extends AdminController
         $this->layout->buffer('content', 'settings/index');
         $this->layout->render();
     }
+
     /**
      * @originalName removeLogo
+     *
      * @originalFile SettingsController.php
      */
     public function removeLogo(string $type)

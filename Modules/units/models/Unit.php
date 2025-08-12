@@ -2,7 +2,7 @@
 
 namespace Modules\Units\Models;
 
-if (!defined('BASEPATH')) {
+if ( ! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -17,25 +17,32 @@ if (!defined('BASEPATH')) {
 class Unit extends ResponseModel
 {
     public $table = 'ip_units';
+
     public $primary_key = 'ip_units.unit_id';
+
     /**
      * @originalName defaultSelect
+     *
      * @originalFile Unit.php
      */
     public function defaultSelect()
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName defaultOrderBy
+     *
      * @originalFile Unit.php
      */
     public function defaultOrderBy()
     {
         $this->db->orderBy('ip_units.unit_name');
     }
+
     /**
      * @originalName getName
+     *
      * @originalFile Unit.php
      */
     public function getName($unit_id, $quantity)
@@ -48,13 +55,16 @@ class Unit extends ResponseModel
                         // Fix 0
                         return $unit->unit_name_plrl;
                     }
+
                     return $unit->unit_name;
                 }
             }
         }
     }
+
     /**
      * @originalName validationRules
+     *
      * @originalFile Unit.php
      */
     public function validationRules()
