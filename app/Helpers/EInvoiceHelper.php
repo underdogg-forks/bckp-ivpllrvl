@@ -36,7 +36,7 @@ class EInvoiceHelper
     public static function getXmlTemplateFiles(): array
     {
         $xml_template_items = [];
-        $path               = APPPATH . 'helpers/XMLconfigs/';
+        $path               = APPPATH . 'Helpers/XMLconfigs/';
         $xml_config_files   = is_dir($path) ? array_diff(scandir($path), ['.', '..']) : [];
         foreach ($xml_config_files as $key => $xml_config_file) {
             $xml_config_files[$key] = str_replace('.php', '', $xml_config_file);
@@ -65,8 +65,8 @@ class EInvoiceHelper
      */
     public static function getXmlFullName(string $xml_id)
     {
-        if (file_exists(APPPATH . 'helpers/XMLconfigs/' . $xml_id . '.php')) {
-            include APPPATH . 'helpers/XMLconfigs/' . $xml_id . '.php';
+        if (file_exists(APPPATH . 'Helpers/XMLconfigs/' . $xml_id . '.php')) {
+            include APPPATH . 'Helpers/XMLconfigs/' . $xml_id . '.php';
             $CI = & get_instance();
             // Shift calculation mode (false by default). Need true? See Dev Note on ipconfig example
             $CI->config->set_item('legacy_calculation', ! empty($xml_setting['legacy_calculation']));

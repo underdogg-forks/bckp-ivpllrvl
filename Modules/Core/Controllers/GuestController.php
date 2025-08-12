@@ -1,12 +1,17 @@
 <?php
+use Modules\Core\Controllers\AdminController;
+use Modules\Core\Controllers\BaseController;
+use Modules\Core\Controllers\GuestController;
+use Modules\Core\Controllers\UserController;
+use Modules\Core\Models\BaseModel;
+use Modules\Core\Models\FormValidationModel;
+use Modules\Core\Models\MyModel;
+use Modules\Core\Models\ResponseModel;
+
 
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-
-if ( ! defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
  * InvoicePlane
  *
@@ -20,7 +25,6 @@ class GuestController extends UserController
 {
     /** @var array */
     public $user_clients = [];
-
     /**
      * Modules\Core\Controllers\Guest_Controller constructor.
      */
@@ -28,8 +32,8 @@ class GuestController extends UserController
     {
         parent::__construct('user_type', 2);
         $this->load->model('user_clients/mdl_user_clients');
-        $user_clients = $this->mdl_user_clients->assigned_to($this->session->userdata('user_id'))->get()->result();
-        if ( ! $user_clients) {
+        $user_clients = $this->mdl_user_clients->assignedTo($this->session->userdata('user_id'))->get()->result();
+        if (!$user_clients) {
             show_error(trans('guest_account_denied'), 403);
             exit;
         }

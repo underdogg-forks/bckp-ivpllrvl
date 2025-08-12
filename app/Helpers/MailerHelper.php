@@ -33,7 +33,7 @@ class MailerHelper
         }
         // Need Specific eInvoice filename?
         if ( ! empty($_SERVER['CIIname'])) {
-            // Use $options['CIIname' => '{{{tags}}}'] in your config (helpers/XMLconfigs)
+            // Use $options['CIIname' => '{{{tags}}}'] in your config (Helpers/XMLconfigs)
             // Or set $_SERVER['CIIname'] in your generator (libraries/XMLtemplates)
             $_SERVER['CIIname'] = parse_template($db_invoice, $_SERVER['CIIname']);
         }

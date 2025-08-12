@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\File;
 
 class WrapHelpersCommand extends Command
 {
-    protected $signature = 'helpers:wrap
-        {--source=application/helpers}
+    protected $signature = 'Helpers:wrap
+        {--source=application/Helpers}
         {--namespace-dir=Helpers}
         {--bc-dir=Helpers/bc}
         {--rewrite-calls : Rewrite function calls to static class calls}

@@ -1,13 +1,19 @@
 <?php
+use Modules\Core\Controllers\AdminController;
+use Modules\Core\Controllers\BaseController;
+use Modules\Core\Controllers\GuestController;
+use Modules\Core\Controllers\UserController;
+use Modules\Core\Models\BaseModel;
+use Modules\Core\Models\FormValidationModel;
+use Modules\Core\Models\MyModel;
+use Modules\Core\Models\ResponseModel;
+
 
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
 use MX_Controller;
 
-if ( ! defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
  * InvoicePlane
  *
@@ -21,7 +27,6 @@ class BaseController extends MX_Controller
 {
     /** @var bool */
     public $ajax_controller = false;
-
     /**
      * Modules\Core\Controllers\Base_Controller constructor.
      */
@@ -29,8 +34,8 @@ class BaseController extends MX_Controller
     {
         parent::__construct();
         $this->config->load('invoice_plane');
-        // Don't allow non-ajax requests to ajax controllers
-        if ($this->ajax_controller && ! $this->input->is_ajax_request()) {
+        // Don't allow non-ajax requests to ajax Controllers
+        if ($this->ajax_controller && !$this->input->is_ajax_request()) {
             exit;
         }
         $this->load->helper('url');
@@ -42,7 +47,7 @@ class BaseController extends MX_Controller
         $this->load->library('session');
         $this->load->helper('redirect');
         // Check if database has been configured
-        if ( ! env_bool('SETUP_COMPLETED')) {
+        if (!env_bool('SETUP_COMPLETED')) {
             redirect('/welcome');
         } else {
             $this->load->library(['encryption', 'form_validation', 'session', 'ClientTitleEnum']);
@@ -51,7 +56,7 @@ class BaseController extends MX_Controller
             // Load setting model and load settings
             $this->load->model('settings/mdl_settings');
             if ($this->mdl_settings != null) {
-                $this->mdl_settings->load_settings();
+                $this->mdl_settings->loadSettings();
             }
             $this->load->helper('settings');
             // Load the lang based on user config, fall back to system if needed

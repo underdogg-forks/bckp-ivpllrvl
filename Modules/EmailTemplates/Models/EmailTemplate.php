@@ -1,0 +1,54 @@
+<?php
+use Modules\Core\Controllers\AdminController;
+use Modules\Core\Controllers\BaseController;
+use Modules\Core\Controllers\GuestController;
+use Modules\Core\Controllers\UserController;
+use Modules\Core\Models\BaseModel;
+use Modules\Core\Models\FormValidationModel;
+use Modules\Core\Models\MyModel;
+use Modules\Core\Models\ResponseModel;
+
+
+namespace Modules\Emailtemplates\Models;
+
+/*
+ * InvoicePlane
+ *
+ * @author		InvoicePlane Developers & Contributors
+ * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
+ * @license		https://invoiceplane.com/license.txt
+ * @link		https://invoiceplane.com
+ */
+#[AllowDynamicProperties]
+class EmailTemplate extends ResponseModel
+{
+    public $table = 'ip_email_templates';
+    public $primary_key = 'ip_email_templates.email_template_id';
+    /**
+     * @originalName defaultSelect
+     *
+     * @originalFile EmailTemplate.php
+     */
+    public function defaultSelect()
+    {
+        $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+    }
+    /**
+     * @originalName defaultOrderBy
+     *
+     * @originalFile EmailTemplate.php
+     */
+    public function defaultOrderBy()
+    {
+        $this->db->orderBy('email_template_title');
+    }
+    /**
+     * @originalName validationRules
+     *
+     * @originalFile EmailTemplate.php
+     */
+    public function validationRules()
+    {
+        return ['email_template_title' => ['field' => 'email_template_title', 'label' => trans('title'), 'rules' => 'required'], 'email_template_type' => ['field' => 'email_template_pdf_quote_template', 'label' => trans('type')], 'email_template_subject' => ['field' => 'email_template_subject', 'label' => trans('subject')], 'email_template_from_name' => ['field' => 'email_template_from_name', 'label' => trans('from_name'), 'rules' => 'trim'], 'email_template_from_email' => ['field' => 'email_template_from_email', 'label' => trans('from_email')], 'email_template_cc' => ['field' => 'email_template_cc', 'label' => trans('cc')], 'email_template_bcc' => ['field' => 'email_template_bcc', 'label' => trans('bcc')], 'email_template_pdf_template' => ['field' => 'email_template_pdf_template', 'label' => trans('default_pdf_template')], 'email_template_body' => ['field' => 'email_template_body', 'label' => trans('body')]];
+    }
+}

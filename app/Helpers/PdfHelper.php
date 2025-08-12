@@ -89,7 +89,7 @@ class PdfHelper
             $options = [];
             // Same name of config & library(+Xml) by default
             $generator = $xml_id;
-            $path      = APPPATH . 'helpers/XMLconfigs/';
+            $path      = APPPATH . 'Helpers/XMLconfigs/';
             if ($xml_id && file_exists($path . $xml_id . '.php') && include $path . $xml_id . '.php') {
                 $embed_xml = $xml_setting['embedXML'];
                 $XMLname   = $xml_setting['XMLname'];
