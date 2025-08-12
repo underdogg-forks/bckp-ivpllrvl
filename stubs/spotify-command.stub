@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Console\Command;
+
+class {{ class }} extends Command
+{
+    protected string $signature = 'spotify:{{ command_name }}';
+
+    protected string $description = '{{ description }}';
+
+    public function handle(): int
+    {
+        // Command execution logic here
+        return Command::SUCCESS;
+    }
+}

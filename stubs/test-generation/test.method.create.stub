@@ -1,0 +1,25 @@
+#[\PHPUnit\Framework\Attributes\Test]
+#[\PHPUnit\Framework\Attributes\Group('crud')]
+/**
+ * @test
+ * @group crud
+ * @covers \Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource
+ *
+ * @payload
+ * {{ payload_json }}
+ */
+public function it_creates_a_{{ model_lower }}(): void
+{
+    $this->markTestIncomplete();
+
+    //$this->actingAs(User::factory()->create());
+
+    $payload = [
+        {{ payload_array }}
+    ];
+
+    Livewire::test(Create{{ model }}::class)
+        ->fillForm($payload)
+        ->call('create')
+        ->assertHasNoFormErrors();
+}

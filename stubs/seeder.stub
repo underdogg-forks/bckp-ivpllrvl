@@ -1,0 +1,17 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\AbstractSeeder;
+use Illuminate\Database\Seeder;
+
+class {{ class }} extends AbstractSeeder
+{
+    public function run(): void
+    {
+        $this->progress('Creating {{ model }}', function () {
+            // {{ fill the model name here model }}::factory(10)->create();
+        });
+    }
+}

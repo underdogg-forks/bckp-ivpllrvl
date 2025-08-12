@@ -1,0 +1,16 @@
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('smoke')]
+    /**
+     * @test
+     * @group smoke
+     * @covers \Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource
+     */
+    public function it_lists_{{ modelPlural_lower }}(): void
+    {
+        $this->markTestIncomplete();
+
+        //$this->actingAs(User::factory()->create());
+
+        Livewire::test(List{{ modelPlural }}::class)
+            ->assertSuccessful();
+    }

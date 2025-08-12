@@ -1,0 +1,7 @@
+
+    /** @test */
+    public function {{ functionName }}()
+    {
+        $response = $this->post({{ route }}, {{ payload }});
+        $response->assertStatus(200);
+    }

@@ -1,0 +1,23 @@
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('crud')]
+    /**
+     * @test
+     * @group crud
+     * @covers \Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource
+     *
+     * @payload
+     * {{ payload_json }}
+     */
+    public function it_deletes_a_{{ model_lower }}(): void
+    {
+        $this->markTestIncomplete('Delete test needs confirmation logic.');
+
+        //$this->actingAs(User::factory()->create());
+
+        $record = {{ model }}::factory()->create();
+
+        Livewire::test(List{{ modelPlural }}::class)
+            ->callTableAction('delete', $record);
+
+        $this->assertDatabaseMissing('{{ modelPlural_lower }}', ['id' => $record->id]);
+    }
