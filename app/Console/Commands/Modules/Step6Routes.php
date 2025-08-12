@@ -19,7 +19,7 @@ class Step6Routes extends BaseModuleCommand
 
     public function handle(RouteWriter $writer): int
     {
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->createForHostVersion();
 
         foreach ($this->modulesFromTarget() as $module) {
             $ctrlDir = base_path("{$this->modulesRoot}/{$module}/Controllers");

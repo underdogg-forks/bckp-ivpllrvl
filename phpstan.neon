@@ -1,5 +1,5 @@
-#includes:
-#    - phpstan-baseline.neon
+includes:
+    - phpstan-baseline.neon
 
 parameters:
     tmpDir: null
@@ -9,6 +9,7 @@ parameters:
 
     excludePaths:
         analyse:
+            - "application"
             - */Http/*
 
     ignoreErrors:

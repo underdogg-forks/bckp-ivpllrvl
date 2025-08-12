@@ -4,6 +4,7 @@ namespace App\Support\Modules\PhpAst;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
@@ -21,7 +22,7 @@ class MethodCamelizer
     {
         $code = File::get($absPath);
 
-        $parser  = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser  = (new ParserFactory())->createForHostVersion();
         $printer = new Printer();
 
         try {
@@ -72,7 +73,7 @@ class MethodCamelizer
 
                     // Attach PHPDoc with original name + file (payload can be added later)
                     $doc = "/**\n * @originalName {$old}\n * @originalFile {$this->origFile}\n */";
-                    $node->setDocComment(new \PhpParser\Comment\Doc($doc));
+                    $node->setDocComment(new Doc($doc));
                 }
             }
 
