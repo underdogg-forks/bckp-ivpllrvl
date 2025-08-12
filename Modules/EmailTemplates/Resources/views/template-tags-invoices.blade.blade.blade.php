@@ -1,4 +1,4 @@
-@php namespace Modules\Emailtemplates\Views; @endphp
+@php namespace Modules\EmailTemplates\Views; @endphp
 <div class="form-group">
     <label for="tags_invoice">@@lang('invoices')</label>
     <select id="tags_invoice" class="tag-select form-control">
@@ -37,28 +37,28 @@
             <option value="{{{invoice_terms}}}">
                 @@lang('invoice_terms')
             </option>
-        <option value="{{{invoice_guest_url}}}">
-            @@lang('guest_url')
-        </option>
-<!--                 <option value="{{{payment_method}}}"> -->
-<!--                     @@lang('payment_method') -->
-<!--                 </option> -->
+            <option value="{{{invoice_guest_url}}}">
+                @@lang('guest_url')
+            </option>
+            <!--                 <option value="{{{payment_method}}}"> -->
+            <!--                     @@lang('payment_method') -->
+            <!--                 </option> -->
         </optgroup>
-@php if ($custom_fields['ip_invoice_custom']) {
-    @endphp
+        @php if ($custom_fields['ip_invoice_custom']) {
+        @endphp
         <optgroup label="@@lang('custom_fields')">
             @php
-    foreach ($custom_fields['ip_invoice_custom'] as $custom) {
-        @endphp
-                <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
-                    {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-                </option>
+                foreach ($custom_fields['ip_invoice_custom'] as $custom) {
+            @endphp
+            <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
+                {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
+            </option>
             @php
-    }
-    @endphp
+                }
+            @endphp
         </optgroup>
-<?php
-} @endphp
+            <?php
+        } @endphp
     </select>
 </div>
-<?php 
+    <?php

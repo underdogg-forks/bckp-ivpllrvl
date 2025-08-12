@@ -1,25 +1,10 @@
 <?php
+
+namespace Modules\TaxRates\Controllers;
+
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Taxrates\Controllers;
-
-use Modules\Core\Controllers\AdminController;
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class TaxRatesController extends AdminController
 {
@@ -31,6 +16,7 @@ class TaxRatesController extends AdminController
         parent::__construct();
         $this->load->model('mdl_tax_rates');
     }
+
     /**
      * @originalName index
      *
@@ -44,6 +30,7 @@ class TaxRatesController extends AdminController
         $this->layout->buffer('content', 'tax_rates/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -59,17 +46,18 @@ class TaxRatesController extends AdminController
         if ($this->mdl_tax_rates->runValidation()) {
             $this->mdl_tax_rates->form_values['tax_rate_percent'] = standardize_amount($this->mdl_tax_rates->form_values['tax_rate_percent']);
             // We need to use the correct decimal point for sql IPT-310
-            $db_array = $this->mdl_tax_rates->dbArray();
+            $db_array                     = $this->mdl_tax_rates->dbArray();
             $db_array['tax_rate_percent'] = standardize_amount($this->input->post('tax_rate_percent'));
             $this->mdl_tax_rates->save($id, $db_array);
             redirect('tax_rates');
         }
-        if ($id && !$this->input->post('btn_submit') && !$this->mdl_tax_rates->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_tax_rates->prepForm($id)) {
             show_404();
         }
         $this->layout->buffer('content', 'tax_rates/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

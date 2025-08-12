@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Users\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\AdminController;
+
 #[AllowDynamicProperties]
 class UsersController extends AdminController
 {
@@ -30,6 +16,7 @@ class UsersController extends AdminController
         parent::__construct();
         $this->load->model('mdl_users');
     }
+
     /**
      * @originalName index
      *
@@ -43,6 +30,7 @@ class UsersController extends AdminController
         $this->layout->buffer('content', 'users/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -61,15 +49,15 @@ class UsersController extends AdminController
             $this->mdl_user_custom->saveCustom($id, $this->input->post('custom'));
             // Update the session details if the logged in user edited his account
             if ($this->session->userdata('user_id') == $id) {
-                $new_details = $this->mdl_users->getById($id);
+                $new_details  = $this->mdl_users->getById($id);
                 $session_data = ['user_type' => $new_details->user_type, 'user_id' => $new_details->user_id, 'user_name' => $new_details->user_name, 'user_email' => $new_details->user_email, 'user_company' => $new_details->user_company, 'user_language' => $new_details->user_language ?? 'system'];
                 $this->session->set_userdata($session_data);
             }
             $this->session->unset_userdata('user_clients');
             redirect('users');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_users->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_users->prepForm($id)) {
                 show_404();
             }
             $this->load->model('custom_fields/mdl_user_custom');
@@ -91,10 +79,10 @@ class UsersController extends AdminController
         $this->load->helper(['custom_values', 'e-invoice']);
         $this->load->model(['user_clients/mdl_user_clients', 'clients/mdl_clients', 'custom_fields/mdl_custom_fields', 'custom_fields/mdl_user_custom', 'custom_values/mdl_custom_values']);
         $custom_fields['ip_user_custom'] = $this->mdl_custom_fields->byTable('ip_user_custom')->get()->result();
-        $custom_values = [];
+        $custom_values                   = [];
         foreach ($custom_fields['ip_user_custom'] as $custom_field) {
             if (in_array($custom_field->custom_field_type, $this->mdl_custom_values->customValueFields())) {
-                $values = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
+                $values                                        = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
                 $custom_values[$custom_field->custom_field_id] = $values;
             }
         }
@@ -114,6 +102,7 @@ class UsersController extends AdminController
         $this->layout->buffer('content', 'users/form');
         $this->layout->render();
     }
+
     /**
      * @originalName changePassword
      *
@@ -131,6 +120,7 @@ class UsersController extends AdminController
         $this->layout->buffer('content', 'users/form_change_password');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *
@@ -143,6 +133,7 @@ class UsersController extends AdminController
         }
         redirect('users');
     }
+
     /**
      * @originalName deleteUserClient
      *

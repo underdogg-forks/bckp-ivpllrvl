@@ -1,30 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Projects\Models;
 
+use AllowDynamicProperties;
 use Modules\Core\Models\ResponseModel;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class Project extends ResponseModel
 {
     public $table = 'ip_projects';
+
     public $primary_key = 'ip_projects.project_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -34,6 +21,7 @@ class Project extends ResponseModel
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -43,6 +31,7 @@ class Project extends ResponseModel
     {
         $this->db->orderBy('ip_projects.project_id');
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -52,6 +41,7 @@ class Project extends ResponseModel
     {
         $this->db->join('ip_clients', 'ip_clients.client_id = ip_projects.client_id', 'left');
     }
+
     /**
      * @originalName getLatest
      *
@@ -60,8 +50,10 @@ class Project extends ResponseModel
     public function getLatest()
     {
         $this->db->orderBy('ip_projects.project_id', 'DESC');
+
         return $this;
     }
+
     /**
      * @originalName validationRules
      *
@@ -71,6 +63,7 @@ class Project extends ResponseModel
     {
         return ['project_name' => ['field' => 'project_name', 'label' => trans('project_name'), 'rules' => 'required'], 'client_id' => ['field' => 'client_id', 'label' => trans('client')]];
     }
+
     /**
      * @originalName getTasks
      *
@@ -79,7 +72,7 @@ class Project extends ResponseModel
     public function getTasks($project_id)
     {
         $result = [];
-        if (!$project_id) {
+        if ( ! $project_id) {
             return $result;
         }
         $this->load->model('tasks/mdl_tasks');
@@ -87,6 +80,7 @@ class Project extends ResponseModel
         foreach ($query->result() as $row) {
             $result[] = $row;
         }
+
         return $result;
     }
 }

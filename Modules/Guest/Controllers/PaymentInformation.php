@@ -1,25 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Guest\Controllers;
 
+use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class PaymentInformation extends BaseController
 {
@@ -28,6 +13,7 @@ class PaymentInformation extends BaseController
         parent::__construct();
         $this->load->model('invoices/mdl_invoices');
     }
+
     /**
      * @originalName form
      *
@@ -39,7 +25,7 @@ class PaymentInformation extends BaseController
         $disable_form = false;
         // Check if the invoice exists and is billable
         $invoice = $this->mdl_invoices->where('ip_invoices.invoice_url_key', $invoice_url_key)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             $this->session->set_flashdata('alert_error', lang('invoice_not_found'));
             redirect('guest');
             // /invoices
@@ -53,17 +39,17 @@ class PaymentInformation extends BaseController
             }
             $disable_form = true;
         }
-        // GetController all payment gateways
+        // GetController all payment Gateways
         $this->load->model('mdl_settings');
         $this->config->load('payment_gateways');
-        $gateways = $this->config->item('payment_gateways');
+        $gateways          = $this->config->item('payment_gateways');
         $available_drivers = [];
-        if (!$disable_form) {
+        if ( ! $disable_form) {
             foreach ($gateways as $driver => $fields) {
                 $d = mb_strtolower($driver);
                 if (get_setting('gateway_' . $d . '_enabled') == 1) {
                     $invoice_payment_method = $invoice->payment_method;
-                    $driver_payment_method = get_setting('gateway_' . $d . '_payment_method');
+                    $driver_payment_method  = get_setting('gateway_' . $d . '_payment_method');
                     if ($invoice_payment_method == 0 || $driver_payment_method == 0 || $driver_payment_method == $invoice_payment_method) {
                         $available_drivers[] = $driver;
                     }
@@ -81,9 +67,10 @@ class PaymentInformation extends BaseController
         }
         $is_overdue = $invoice->invoice_balance > 0 && strtotime($invoice->invoice_date_due) < time();
         // Return the view
-        $data = ['disable_form' => $disable_form, 'invoice' => $invoice, 'gateways' => $available_drivers, 'payment_method' => $payment_method, 'is_overdue' => $is_overdue, 'invoice_url_key' => $invoice_url_key, 'payment_provider' => $payment_provider];
+        $data = ['disable_form' => $disable_form, 'invoice' => $invoice, 'Gateways' => $available_drivers, 'payment_method' => $payment_method, 'is_overdue' => $is_overdue, 'invoice_url_key' => $invoice_url_key, 'payment_provider' => $payment_provider];
         $this->load->view('guest/payment_information', $data) . $payment_provider && $this->{$payment_provider}($invoice_url_key);
     }
+
     /**
      * @originalName stripe
      *
@@ -93,8 +80,9 @@ class PaymentInformation extends BaseController
     {
         // GetController the api key for which the card token must be generated
         $data = ['stripe_api_key' => get_setting('gateway_stripe_apiKeyPublic'), 'invoice_url_key' => $invoice_url_key];
-        $this->load->view('guest/gateways/stripe', $data);
+        $this->load->view('guest/Gateways/stripe', $data);
     }
+
     /**
      * @originalName paypal
      *
@@ -103,6 +91,6 @@ class PaymentInformation extends BaseController
     public function paypal($invoice_url_key)
     {
         $data = ['paypal_client_id' => get_setting('gateway_paypal_clientId'), 'invoice_url_key' => $invoice_url_key, 'currency' => $this->mdl_settings->setting('gateway_paypal_currency')];
-        $this->load->view('guest/gateways/paypal', $data);
+        $this->load->view('guest/Gateways/paypal', $data);
     }
 }

@@ -1,4 +1,4 @@
-@php namespace Modules\Customfields\Views;
+@php namespace Modules\CustomFields\Views;
 
 $disabled = $custom_field_usage ? ' disabled' : '';
 $custom_field_table = $this->mdl_custom_fields->form_value('custom_field_table');
@@ -6,23 +6,23 @@ $custom_field_type = $this->mdl_custom_fields->form_value('custom_field_type'); 
 <form method="post">
 
     @php
-_csrf_field();
-?>
+        _csrf_field();
+        ?>
 
-    <div id="headerbar">
-        <h1 class="headerbar-title">@@lang('custom_field_form')</h1>
-        @php $this->layout->loadView('layout/header_buttons'); @endphp
-        <div class="headerbar-item pull-right">
-            <a href="{{ url('custom_values/field/' . $custom_field_id) }}" class="btn btn-sm btn-default">
-                                <i class="fa fa-list fa-margin"></i> @@lang('values')</a>
-        </div>
+            <div id="headerbar">
+                <h1 class="headerbar-title">@@lang('custom_field_form')</h1>
+                @php $this->layout->loadView('layout/header_buttons'); @endphp
+    <div class="headerbar-item pull-right">
+        <a href="{{ url('custom_values/field/' . $custom_field_id) }}" class="btn btn-sm btn-default">
+            <i class="fa fa-list fa-margin"></i> @@lang('values')</a>
     </div>
-@php if ($disabled) {
+    </div>
+    @php if ($disabled) {
     @endphp
     <input type="hidden" name="custom_field_table" value="{{ $custom_field_table }}">
     <input type="hidden" name="custom_field_type" value="{{ $custom_field_type }}">
-@php
-} @endphp
+    @php
+        } @endphp
     <div id="content" class="row">
 
         <div class="col-xs-12 col-md-6 col-md-offset-3">
@@ -37,39 +37,42 @@ _csrf_field();
 
             <div class="form-group">
                 <label for="custom_field_table">@@lang('table')</label>
-                <select name="custom_field_table" id="custom_field_table" class="form-control simple-select"{{ $disabled ?: ' required' }}>
-@php // New field? Auto select (work if come from custom_fields/table/*)
+                <select name="custom_field_table" id="custom_field_table"
+                        class="form-control simple-select"{{ $disabled ?: ' required' }}>
+                    @php // New field? Auto select (work if come from custom_fields/table/*)
 $custom_field_table = $custom_field_table ?: (isset($_SERVER['HTTP_REFERER']) ? 'ip_' . basename($_SERVER['HTTP_REFERER']) . '_custom' : '');
 foreach ($custom_field_tables as $table => $label) {
-    @endphp
+                    @endphp
                     <option value="{{ $table }}" @php
-    check_select($custom_field_table, $table);
-    @endphp>@php
-    _trans($label);
-    @endphp</option>
-@php
-} @endphp
+                        check_select($custom_field_table, $table);
+                    @endphp>@php
+                            _trans($label);
+                        @endphp</option>
+                    @php
+                        } @endphp
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="custom_field_location">@@lang('position')</label>
-                <select name="custom_field_location" id="custom_field_location" class="form-control simple-select"></select>
+                <select name="custom_field_location" id="custom_field_location"
+                        class="form-control simple-select"></select>
             </div>
 
             <div class="form-group">
                 <label for="custom_field_type">@@lang('type')</label>
-                <select name="custom_field_type" id="custom_field_type" class="form-control simple-select"{{ $disabled ?: ' required' }}>
-@php foreach ($custom_field_types as $type) {
+                <select name="custom_field_type" id="custom_field_type"
+                        class="form-control simple-select"{{ $disabled ?: ' required' }}>
+                    @php foreach ($custom_field_types as $type) {
     $alpha = str_replace('-', '_', mb_strtolower($type));
-    @endphp
-                        <option value="{{ $type }}" @php
-    check_select($custom_field_type, $type);
-    @endphp>@php
-    _trans($alpha);
-    @endphp</option>
-<?php
-} @endphp
+                    @endphp
+                    <option value="{{ $type }}" @php
+                        check_select($custom_field_type, $type);
+                    @endphp>@php
+                            _trans($alpha);
+                        @endphp</option>
+                        <?php
+                    } @endphp
                 </select>
             </div>
             <div class="form-group">
@@ -80,7 +83,7 @@ foreach ($custom_field_tables as $table => $label) {
 
         </div>
 
-@php $this->layout->loadView('layout/partial/custom_field_usage_list', ['custom_field_table' => $custom_field_table]); @endphp
+        @php $this->layout->loadView('layout/partial/custom_field_usage_list', ['custom_field_table' => $custom_field_table]); @endphp
 
     </div>
 </form>
@@ -111,4 +114,4 @@ foreach ($custom_field_tables as $table => $label) {
         updatePositions(optionIndex, {{ $custom_field_location }});
     });
 </script>
-<?php 
+<?php

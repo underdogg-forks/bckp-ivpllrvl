@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Quotes\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\BaseModel;
+
 #[AllowDynamicProperties]
 class QuoteItemAmount extends BaseModel
 {
@@ -30,13 +16,13 @@ class QuoteItemAmount extends BaseModel
     public function calculate($item_id, &$global_discount)
     {
         $this->load->model('quotes/mdl_quote_items');
-        $item = $this->mdl_quote_items->getById($item_id);
+        $item          = $this->mdl_quote_items->getById($item_id);
         $item_subtotal = $item->item_quantity * $item->item_price;
         // Discounts calculation - since v1.6.3
         if (config_item('legacy_calculation')) {
-            $item_tax_total = $item_subtotal * ($item->item_tax_rate_percent / 100);
+            $item_tax_total      = $item_subtotal * ($item->item_tax_rate_percent / 100);
             $item_discount_total = $item->item_discount_amount * $item->item_quantity;
-            $item_total = $item_subtotal + $item_tax_total - $item_discount_total;
+            $item_total          = $item_subtotal + $item_tax_total - $item_discount_total;
         } else {
             $item_discount = 0.0;
             // For total & tax calculation after all discounts applied Proportionally by item
@@ -51,8 +37,8 @@ class QuoteItemAmount extends BaseModel
             $global_discount['item'] += $item_discount;
             // for Mdl_quote_amounts calculation
             $item_discount_total = $item->item_discount_amount * $item->item_quantity;
-            $item_tax_total = ($item_subtotal - $item_discount - $item_discount_total) * ($item->item_tax_rate_percent / 100);
-            $item_total = $item_subtotal - $item_discount - $item_discount_total + $item_tax_total;
+            $item_tax_total      = ($item_subtotal - $item_discount - $item_discount_total) * ($item->item_tax_rate_percent / 100);
+            $item_total          = $item_subtotal - $item_discount - $item_discount_total + $item_tax_total;
         }
         $db_array = ['item_id' => $item_id, 'item_subtotal' => $item_subtotal, 'item_tax_total' => $item_tax_total, 'item_discount' => $item_discount_total, 'item_total' => $item_total];
         $this->db->where('item_id', $item_id);

@@ -1,29 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Units\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\ResponseModel;
+
 #[AllowDynamicProperties]
 class Unit extends ResponseModel
 {
     public $table = 'ip_units';
+
     public $primary_key = 'ip_units.unit_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -33,6 +21,7 @@ class Unit extends ResponseModel
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -42,6 +31,7 @@ class Unit extends ResponseModel
     {
         $this->db->orderBy('ip_units.unit_name');
     }
+
     /**
      * @originalName getName
      *
@@ -57,11 +47,13 @@ class Unit extends ResponseModel
                         // Fix 0
                         return $unit->unit_name_plrl;
                     }
+
                     return $unit->unit_name;
                 }
             }
         }
     }
+
     /**
      * @originalName validationRules
      *

@@ -1,30 +1,19 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Quotes\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\ResponseModel;
+
 #[AllowDynamicProperties]
 class Quote extends ResponseModel
 {
     public $table = 'ip_quotes';
+
     public $primary_key = 'ip_quotes.quote_id';
+
     public $date_modified_field = 'quote_date_modified';
+
     /**
      * @originalName statuses
      *
@@ -34,6 +23,7 @@ class Quote extends ResponseModel
     {
         return ['1' => ['label' => trans('draft'), 'class' => 'draft', 'href' => 'quotes/status/draft'], '2' => ['label' => trans('sent'), 'class' => 'sent', 'href' => 'quotes/status/sent'], '3' => ['label' => trans('viewed'), 'class' => 'viewed', 'href' => 'quotes/status/viewed'], '4' => ['label' => trans('approved'), 'class' => 'approved', 'href' => 'quotes/status/approved'], '5' => ['label' => trans('rejected'), 'class' => 'rejected', 'href' => 'quotes/status/rejected'], '6' => ['label' => trans('canceled'), 'class' => 'canceled', 'href' => 'quotes/status/canceled']];
     }
+
     /**
      * @originalName defaultSelect
      *
@@ -43,6 +33,7 @@ class Quote extends ResponseModel
     {
         $this->db->select("\n            SQL_CALC_FOUND_ROWS\n            ip_users.*,\n            ip_clients.*,\n            ip_quote_amounts.quote_amount_id,\n            IFNULL(ip_quote_amounts.quote_item_subtotal, '0.00') AS quote_item_subtotal,\n            IFNULL(ip_quote_amounts.quote_item_tax_total, '0.00') AS quote_item_tax_total,\n            IFNULL(ip_quote_amounts.quote_tax_total, '0.00') AS quote_tax_total,\n            IFNULL(ip_quote_amounts.quote_total, '0.00') AS quote_total,\n            ip_invoices.invoice_number,\n            ip_quotes.*", false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -52,6 +43,7 @@ class Quote extends ResponseModel
     {
         $this->db->orderBy('ip_quotes.quote_date_created DESC, ip_quotes.quote_number DESC, ip_quotes.quote_id DESC');
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -64,6 +56,7 @@ class Quote extends ResponseModel
         $this->db->join('ip_quote_amounts', 'ip_quote_amounts.quote_id = ip_quotes.quote_id', 'left');
         $this->db->join('ip_invoices', 'ip_invoices.invoice_id = ip_quotes.invoice_id', 'left');
     }
+
     /**
      * @originalName validationRules
      *
@@ -73,6 +66,7 @@ class Quote extends ResponseModel
     {
         return ['client_id' => ['field' => 'client_id', 'label' => trans('client'), 'rules' => 'required'], 'quote_date_created' => ['field' => 'quote_date_created', 'label' => trans('quote_date'), 'rules' => 'required'], 'invoice_group_id' => ['field' => 'invoice_group_id', 'label' => trans('quote_group'), 'rules' => 'required'], 'quote_password' => ['field' => 'quote_password', 'label' => trans('quote_password')], 'user_id' => ['field' => 'user_id', 'label' => trans('user'), 'rule' => 'required']];
     }
+
     /**
      * @originalName validationRulesSaveQuote
      *
@@ -82,6 +76,7 @@ class Quote extends ResponseModel
     {
         return ['quote_number' => ['field' => 'quote_number', 'label' => trans('quote') . ' #', 'rules' => 'is_unique[ip_quotes.quote_number' . ($this->id ? '.quote_id.' . $this->id : '') . ']'], 'quote_date_created' => ['field' => 'quote_date_created', 'label' => trans('date'), 'rules' => 'required'], 'quote_date_expires' => ['field' => 'quote_date_expires', 'label' => trans('due_date'), 'rules' => 'required'], 'quote_password' => ['field' => 'quote_password', 'label' => trans('quote_password')]];
     }
+
     /**
      * @originalName create
      *
@@ -98,8 +93,10 @@ class Quote extends ResponseModel
             $db_array = ['quote_id' => $quote_id, 'tax_rate_id' => get_setting('default_invoice_tax_rate'), 'include_item_tax' => get_setting('default_include_item_tax'), 'quote_tax_rate_amount' => 0];
             $this->db->insert('ip_quote_tax_rates', $db_array);
         }
+
         return $quote_id;
     }
+
     /**
      * @originalName copyQuote
      *
@@ -112,9 +109,9 @@ class Quote extends ResponseModel
         $quote = $this->getById($source_id);
         // This is the original quote
         $global_discount = [
-            'amount' => $quote->quote_discount_amount,
+            'amount'  => $quote->quote_discount_amount,
             'percent' => $quote->quote_discount_percent,
-            'item' => 0.0,
+            'item'    => 0.0,
             // Updated by ref (Need for quote_item_subtotal calculation in Mdl_quote_amounts)
             'items_subtotal' => $this->mdl_quote_items->getItemsSubtotal($source_id),
         ];
@@ -141,6 +138,7 @@ class Quote extends ResponseModel
             $this->mdl_quote_custom->saveCustom($target_id, $db_array);
         }
     }
+
     /**
      * @originalName dbArray
      *
@@ -151,12 +149,12 @@ class Quote extends ResponseModel
         $db_array = parent::dbArray();
         // GetController the client id for the submitted quote
         $this->load->model('clients/mdl_clients');
-        $cid = $this->mdl_clients->where('ip_clients.client_id', $db_array['client_id'])->get()->row()->client_id;
-        $db_array['client_id'] = $cid;
+        $cid                            = $this->mdl_clients->where('ip_clients.client_id', $db_array['client_id'])->get()->row()->client_id;
+        $db_array['client_id']          = $cid;
         $db_array['quote_date_created'] = date_to_mysql($db_array['quote_date_created']);
         $db_array['quote_date_expires'] = $this->getDateDue($db_array['quote_date_created']);
-        $db_array['notes'] = get_setting('default_quote_notes');
-        if (!isset($db_array['quote_status_id'])) {
+        $db_array['notes']              = get_setting('default_quote_notes');
+        if ( ! isset($db_array['quote_status_id'])) {
             $db_array['quote_status_id'] = 1;
         }
         $generate_quote_number = get_setting('generate_quote_number_for_draft');
@@ -169,8 +167,10 @@ class Quote extends ResponseModel
         }
         // Generate the unique url key
         $db_array['quote_url_key'] = $this->getUrlKey();
+
         return $db_array;
     }
+
     /**
      * @originalName getDateDue
      *
@@ -180,8 +180,10 @@ class Quote extends ResponseModel
     {
         $quote_date_expires = new DateTime($quote_date_created);
         $quote_date_expires->add(new DateInterval('P' . get_setting('quotes_expire_after') . 'D'));
+
         return $quote_date_expires->format('Y-m-d');
     }
+
     /**
      * @originalName getQuoteNumber
      *
@@ -190,8 +192,10 @@ class Quote extends ResponseModel
     public function getQuoteNumber($invoice_group_id)
     {
         $this->load->model('invoice_groups/mdl_invoice_groups');
+
         return $this->mdl_invoice_groups->generateInvoiceNumber($invoice_group_id);
     }
+
     /**
      * @originalName getUrlKey
      *
@@ -200,8 +204,10 @@ class Quote extends ResponseModel
     public function getUrlKey()
     {
         $this->load->helper('string');
+
         return random_string('alnum', 32);
     }
+
     /**
      * @originalName getInvoiceGroupId
      *
@@ -210,8 +216,10 @@ class Quote extends ResponseModel
     public function getInvoiceGroupId($invoice_id)
     {
         $invoice = $this->getById($invoice_id);
+
         return $invoice->invoice_group_id;
     }
+
     /**
      * @originalName delete
      *
@@ -223,6 +231,7 @@ class Quote extends ResponseModel
         $this->load->helper('orphan');
         delete_orphans();
     }
+
     /**
      * @originalName isDraft
      *
@@ -231,8 +240,10 @@ class Quote extends ResponseModel
     public function isDraft()
     {
         $this->filter_where('quote_status_id', 1);
+
         return $this;
     }
+
     /**
      * @originalName isSent
      *
@@ -241,8 +252,10 @@ class Quote extends ResponseModel
     public function isSent()
     {
         $this->filter_where('quote_status_id', 2);
+
         return $this;
     }
+
     /**
      * @originalName isViewed
      *
@@ -251,8 +264,10 @@ class Quote extends ResponseModel
     public function isViewed()
     {
         $this->filter_where('quote_status_id', 3);
+
         return $this;
     }
+
     /**
      * @originalName isApproved
      *
@@ -261,8 +276,10 @@ class Quote extends ResponseModel
     public function isApproved()
     {
         $this->filter_where('quote_status_id', 4);
+
         return $this;
     }
+
     /**
      * @originalName isRejected
      *
@@ -271,8 +288,10 @@ class Quote extends ResponseModel
     public function isRejected()
     {
         $this->filter_where('quote_status_id', 5);
+
         return $this;
     }
+
     /**
      * @originalName isCanceled
      *
@@ -281,8 +300,10 @@ class Quote extends ResponseModel
     public function isCanceled()
     {
         $this->filter_where('quote_status_id', 6);
+
         return $this;
     }
+
     /**
      * @originalName isOpen
      *
@@ -291,8 +312,10 @@ class Quote extends ResponseModel
     public function isOpen()
     {
         $this->filter_where_in('quote_status_id', [2, 3]);
+
         return $this;
     }
+
     /**
      * @originalName guestVisible
      *
@@ -301,8 +324,10 @@ class Quote extends ResponseModel
     public function guestVisible()
     {
         $this->filter_where_in('quote_status_id', [2, 3, 4, 5]);
+
         return $this;
     }
+
     /**
      * @originalName byClient
      *
@@ -311,8 +336,10 @@ class Quote extends ResponseModel
     public function byClient($client_id)
     {
         $this->filter_where('ip_quotes.client_id', $client_id);
+
         return $this;
     }
+
     /**
      * @originalName approveQuoteByKey
      *
@@ -325,6 +352,7 @@ class Quote extends ResponseModel
         $this->db->set('quote_status_id', 4);
         $this->db->update('ip_quotes');
     }
+
     /**
      * @originalName rejectQuoteByKey
      *
@@ -337,6 +365,7 @@ class Quote extends ResponseModel
         $this->db->set('quote_status_id', 5);
         $this->db->update('ip_quotes');
     }
+
     /**
      * @originalName approveQuoteById
      *
@@ -349,6 +378,7 @@ class Quote extends ResponseModel
         $this->db->set('quote_status_id', 4);
         $this->db->update('ip_quotes');
     }
+
     /**
      * @originalName rejectQuoteById
      *
@@ -361,6 +391,7 @@ class Quote extends ResponseModel
         $this->db->set('quote_status_id', 5);
         $this->db->update('ip_quotes');
     }
+
     /**
      * @originalName markViewed
      *
@@ -377,6 +408,7 @@ class Quote extends ResponseModel
             $this->db->update('ip_quotes');
         }
     }
+
     /**
      * @originalName markSent
      *
@@ -393,6 +425,7 @@ class Quote extends ResponseModel
             $this->db->update('ip_quotes');
         }
     }
+
     /**
      * @originalName generateQuoteNumberIfApplicable
      *
@@ -402,7 +435,7 @@ class Quote extends ResponseModel
     {
         $quote = $this->mdl_quotes->getById($quote_id);
         // Generate new quote number if applicable
-        if (!empty($quote) && ($quote->quote_status_id == 1 && $quote->quote_number == '') && get_setting('generate_quote_number_for_draft') == 0) {
+        if ( ! empty($quote) && ($quote->quote_status_id == 1 && $quote->quote_number == '') && get_setting('generate_quote_number_for_draft') == 0) {
             $quote_number = $this->mdl_quotes->getQuoteNumber($quote->invoice_group_id);
             // Set new quote number and save
             $this->db->where('quote_id', $quote_id);

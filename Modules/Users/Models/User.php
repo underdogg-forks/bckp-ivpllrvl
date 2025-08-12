@@ -1,31 +1,21 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Users\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\ResponseModel;
+
 #[AllowDynamicProperties]
 class User extends ResponseModel
 {
     public $table = 'ip_users';
+
     public $primary_key = 'ip_users.user_id';
+
     public $date_created_field = 'user_date_created';
+
     public $date_modified_field = 'user_date_modified';
+
     /**
      * @originalName userTypes
      *
@@ -35,6 +25,7 @@ class User extends ResponseModel
     {
         return ['1' => trans('administrator'), '2' => trans('guest_read_only')];
     }
+
     /**
      * @originalName defaultSelect
      *
@@ -44,6 +35,7 @@ class User extends ResponseModel
     {
         $this->db->select('SQL_CALC_FOUND_ROWS ip_users.*', false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -53,6 +45,7 @@ class User extends ResponseModel
     {
         $this->db->orderBy('ip_users.user_name');
     }
+
     /**
      * @originalName validationRules
      *
@@ -61,36 +54,37 @@ class User extends ResponseModel
     public function validationRules()
     {
         return [
-            'user_type' => ['field' => 'user_type', 'label' => trans('user_type'), 'rules' => 'required'],
-            'user_email' => ['field' => 'user_email', 'label' => trans('email'), 'rules' => 'required|valid_email|is_unique[ip_users.user_email]'],
-            'user_name' => ['field' => 'user_name', 'label' => trans('name'), 'rules' => 'required'],
-            'user_password' => ['field' => 'user_password', 'label' => trans('password'), 'rules' => 'required|min_length[8]'],
-            'user_passwordv' => ['field' => 'user_passwordv', 'label' => trans('verify_password'), 'rules' => 'required|matches[user_password]'],
-            'user_language' => ['field' => 'user_language', 'label' => trans('lang'), 'rules' => 'required'],
-            'user_company' => ['field' => 'user_company'],
-            'user_address_1' => ['field' => 'user_address_1'],
-            'user_address_2' => ['field' => 'user_address_2'],
-            'user_city' => ['field' => 'user_city'],
-            'user_state' => ['field' => 'user_state'],
-            'user_zip' => ['field' => 'user_zip'],
-            'user_country' => ['field' => 'user_country', 'label' => trans('country')],
-            'user_phone' => ['field' => 'user_phone'],
-            'user_fax' => ['field' => 'user_fax'],
-            'user_mobile' => ['field' => 'user_mobile'],
-            'user_web' => ['field' => 'user_web'],
-            'user_vat_id' => ['field' => 'user_vat_id'],
-            'user_tax_code' => ['field' => 'user_tax_code'],
+            'user_type'              => ['field' => 'user_type', 'label' => trans('user_type'), 'rules' => 'required'],
+            'user_email'             => ['field' => 'user_email', 'label' => trans('email'), 'rules' => 'required|valid_email|is_unique[ip_users.user_email]'],
+            'user_name'              => ['field' => 'user_name', 'label' => trans('name'), 'rules' => 'required'],
+            'user_password'          => ['field' => 'user_password', 'label' => trans('password'), 'rules' => 'required|min_length[8]'],
+            'user_passwordv'         => ['field' => 'user_passwordv', 'label' => trans('verify_password'), 'rules' => 'required|matches[user_password]'],
+            'user_language'          => ['field' => 'user_language', 'label' => trans('lang'), 'rules' => 'required'],
+            'user_company'           => ['field' => 'user_company'],
+            'user_address_1'         => ['field' => 'user_address_1'],
+            'user_address_2'         => ['field' => 'user_address_2'],
+            'user_city'              => ['field' => 'user_city'],
+            'user_state'             => ['field' => 'user_state'],
+            'user_zip'               => ['field' => 'user_zip'],
+            'user_country'           => ['field' => 'user_country', 'label' => trans('country')],
+            'user_phone'             => ['field' => 'user_phone'],
+            'user_fax'               => ['field' => 'user_fax'],
+            'user_mobile'            => ['field' => 'user_mobile'],
+            'user_web'               => ['field' => 'user_web'],
+            'user_vat_id'            => ['field' => 'user_vat_id'],
+            'user_tax_code'          => ['field' => 'user_tax_code'],
             'user_invoicing_contact' => ['field' => 'user_invoicing_contact', 'rules' => 'trim'],
-            'user_bank' => ['field' => 'user_bank', 'rules' => 'trim'],
-            'user_iban' => ['field' => 'user_iban'],
-            'user_bic' => ['field' => 'user_bic', 'rules' => 'trim|xss_clean'],
-            'user_remittance_text' => ['field' => 'user_remittance', 'rules' => 'trim|xss_clean'],
+            'user_bank'              => ['field' => 'user_bank', 'rules' => 'trim'],
+            'user_iban'              => ['field' => 'user_iban'],
+            'user_bic'               => ['field' => 'user_bic', 'rules' => 'trim|xss_clean'],
+            'user_remittance_text'   => ['field' => 'user_remittance', 'rules' => 'trim|xss_clean'],
             // SUMEX
             'user_subscribernumber' => ['field' => 'user_subscribernumber'],
-            'user_gln' => ['field' => 'user_gln'],
-            'user_rcc' => ['field' => 'user_rcc'],
+            'user_gln'              => ['field' => 'user_gln'],
+            'user_rcc'              => ['field' => 'user_rcc'],
         ];
     }
+
     /**
      * @originalName getLatest
      *
@@ -100,6 +94,7 @@ class User extends ResponseModel
     {
         return $this->mdl_users->where('user_active', 1)->orderBy('user_id', 'DESC')->limit($amount)->get()->result();
     }
+
     /**
      * @originalName validationRulesExisting
      *
@@ -108,34 +103,35 @@ class User extends ResponseModel
     public function validationRulesExisting()
     {
         return [
-            'user_type' => ['field' => 'user_type', 'label' => trans('user_type'), 'rules' => 'required'],
-            'user_email' => ['field' => 'user_email', 'label' => trans('email'), 'rules' => 'required|valid_email'],
-            'user_name' => ['field' => 'user_name', 'label' => trans('name'), 'rules' => 'required'],
-            'user_language' => ['field' => 'user_language', 'label' => trans('lang'), 'rules' => 'required'],
-            'user_company' => ['field' => 'user_company'],
-            'user_address_1' => ['field' => 'user_address_1'],
-            'user_address_2' => ['field' => 'user_address_2'],
-            'user_city' => ['field' => 'user_city'],
-            'user_state' => ['field' => 'user_state'],
-            'user_zip' => ['field' => 'user_zip'],
-            'user_country' => ['field' => 'user_country', 'label' => trans('country')],
-            'user_phone' => ['field' => 'user_phone'],
-            'user_fax' => ['field' => 'user_fax'],
-            'user_mobile' => ['field' => 'user_mobile'],
-            'user_web' => ['field' => 'user_web'],
-            'user_vat_id' => ['field' => 'user_vat_id'],
-            'user_tax_code' => ['field' => 'user_tax_code'],
+            'user_type'              => ['field' => 'user_type', 'label' => trans('user_type'), 'rules' => 'required'],
+            'user_email'             => ['field' => 'user_email', 'label' => trans('email'), 'rules' => 'required|valid_email'],
+            'user_name'              => ['field' => 'user_name', 'label' => trans('name'), 'rules' => 'required'],
+            'user_language'          => ['field' => 'user_language', 'label' => trans('lang'), 'rules' => 'required'],
+            'user_company'           => ['field' => 'user_company'],
+            'user_address_1'         => ['field' => 'user_address_1'],
+            'user_address_2'         => ['field' => 'user_address_2'],
+            'user_city'              => ['field' => 'user_city'],
+            'user_state'             => ['field' => 'user_state'],
+            'user_zip'               => ['field' => 'user_zip'],
+            'user_country'           => ['field' => 'user_country', 'label' => trans('country')],
+            'user_phone'             => ['field' => 'user_phone'],
+            'user_fax'               => ['field' => 'user_fax'],
+            'user_mobile'            => ['field' => 'user_mobile'],
+            'user_web'               => ['field' => 'user_web'],
+            'user_vat_id'            => ['field' => 'user_vat_id'],
+            'user_tax_code'          => ['field' => 'user_tax_code'],
             'user_invoicing_contact' => ['field' => 'user_invoicing_contact'],
-            'user_bank' => ['field' => 'user_bank'],
-            'user_iban' => ['field' => 'user_iban'],
-            'user_bic' => ['field' => 'user_bic'],
-            'user_remittance_text' => ['field' => 'user_remittance'],
+            'user_bank'              => ['field' => 'user_bank'],
+            'user_iban'              => ['field' => 'user_iban'],
+            'user_bic'               => ['field' => 'user_bic'],
+            'user_remittance_text'   => ['field' => 'user_remittance'],
             // SUMEX
             'user_subscribernumber' => ['field' => 'user_subscribernumber'],
-            'user_gln' => ['field' => 'user_gln'],
-            'user_rcc' => ['field' => 'user_rcc'],
+            'user_gln'              => ['field' => 'user_gln'],
+            'user_rcc'              => ['field' => 'user_rcc'],
         ];
     }
+
     /**
      * @originalName validationRulesChangePassword
      *
@@ -145,6 +141,7 @@ class User extends ResponseModel
     {
         return ['user_password' => ['field' => 'user_password', 'label' => trans('password'), 'rules' => 'required'], 'user_passwordv' => ['field' => 'user_passwordv', 'label' => trans('verify_password'), 'rules' => 'required|matches[user_password]']];
     }
+
     /**
      * @originalName dbArray
      *
@@ -156,12 +153,14 @@ class User extends ResponseModel
         if (isset($db_array['user_password'])) {
             unset($db_array['user_passwordv']);
             $this->load->library('crypt');
-            $user_psalt = $this->crypt->salt();
-            $db_array['user_psalt'] = $user_psalt;
+            $user_psalt                = $this->crypt->salt();
+            $db_array['user_psalt']    = $user_psalt;
             $db_array['user_password'] = $this->crypt->generate_password($db_array['user_password'], $user_psalt);
         }
+
         return $db_array;
     }
+
     /**
      * @originalName saveChangePassword
      *
@@ -170,13 +169,14 @@ class User extends ResponseModel
     public function saveChangePassword($user_id, $password): void
     {
         $this->load->library('crypt');
-        $user_psalt = $this->crypt->salt();
+        $user_psalt    = $this->crypt->salt();
         $user_password = $this->crypt->generate_password($password, $user_psalt);
-        $db_array = ['user_psalt' => $user_psalt, 'user_password' => $user_password];
+        $db_array      = ['user_psalt' => $user_psalt, 'user_password' => $user_password];
         $this->db->where('user_id', $user_id);
         $this->db->update('ip_users', $db_array);
         $this->session->set_flashdata('alert_success', trans('password_changed'));
     }
+
     /**
      * @originalName save
      *
@@ -192,8 +192,10 @@ class User extends ResponseModel
             }
             $this->session->unset_userdata('user_clients');
         }
+
         return $id;
     }
+
     /**
      * @originalName delete
      *

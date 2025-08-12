@@ -1,30 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
+
+namespace Modules\CustomValues\Models;
+
+use AllowDynamicProperties;
 use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Customvalues\Models;
-
-use Modules\Core\Models\MyModel;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class CustomValues extends MyModel
 {
     public $table = 'ip_custom_values';
+
     public $primary_key = 'ip_custom_values.custom_values_id';
+
     /**
      * @originalName customTypes
      *
@@ -34,6 +21,7 @@ class CustomValues extends MyModel
     {
         return array_merge(self::userInputTypes(), self::customValueFields());
     }
+
     /**
      * @originalName userInputTypes
      *
@@ -43,6 +31,7 @@ class CustomValues extends MyModel
     {
         return ['TEXT', 'DATE', 'BOOLEAN'];
     }
+
     /**
      * @originalName customValueFields
      *
@@ -52,6 +41,7 @@ class CustomValues extends MyModel
     {
         return ['SINGLE-CHOICE', 'MULTIPLE-CHOICE'];
     }
+
     /**
      * @originalName saveCustom
      *
@@ -61,13 +51,14 @@ class CustomValues extends MyModel
     {
         $this->load->module('custom_fields');
         $field_custom = $this->mdl_custom_fields->getById($fid);
-        if (!$field_custom) {
+        if ( ! $field_custom) {
             return;
         }
-        $db_array = $this->dbArray();
+        $db_array                        = $this->dbArray();
         $db_array['custom_values_field'] = $fid;
         parent::save(null, $db_array);
     }
+
     /**
      * @originalName validationRules
      *
@@ -77,6 +68,7 @@ class CustomValues extends MyModel
     {
         return ['custom_values_value' => ['field' => 'custom_values_value', 'label' => 'Value', 'rules' => 'required']];
     }
+
     /**
      * @originalName customTables
      *
@@ -86,6 +78,7 @@ class CustomValues extends MyModel
     {
         return ['ip_client_custom' => 'client', 'ip_invoice_custom' => 'invoice', 'ip_payment_custom' => 'payment', 'ip_quote_custom' => 'quote', 'ip_user_custom' => 'user'];
     }
+
     /**
      * @originalName used
      *
@@ -93,7 +86,7 @@ class CustomValues extends MyModel
      */
     public function used($id = null, $get = true)
     {
-        if (!$id) {
+        if ( ! $id) {
             return;
         }
         $this->load->model('custom_fields/mdl_custom_fields');
@@ -108,8 +101,10 @@ class CustomValues extends MyModel
         } else {
             $this->db->or_like($base, $id . ',')->or_like($base, ',' . $id)->or_where($base, $id);
         }
+
         return $get ? $this->db->get()->result() : $this->db;
     }
+
     /**
      * @originalName delete
      *
@@ -117,12 +112,15 @@ class CustomValues extends MyModel
      */
     public function delete($id): bool
     {
-        if (!$this->used($id)) {
+        if ( ! $this->used($id)) {
             parent::delete($id);
+
             return true;
         }
+
         return false;
     }
+
     /**
      * @originalName deleteAllFid
      *
@@ -132,6 +130,7 @@ class CustomValues extends MyModel
     {
         $this->db->where('custom_values_field', $id)->delete($this->table);
     }
+
     /**
      * @originalName getByFid
      *
@@ -141,6 +140,7 @@ class CustomValues extends MyModel
     {
         return $this->where('custom_values_field', $id)->get();
     }
+
     /**
      * @originalName getByColumn
      *
@@ -150,6 +150,7 @@ class CustomValues extends MyModel
     {
         return $this->where('custom_field_id', $id)->get();
     }
+
     /**
      * @originalName getById
      *
@@ -159,6 +160,7 @@ class CustomValues extends MyModel
     {
         return $this->where('custom_values_id', $id)->get();
     }
+
     /**
      * @originalName getByIds
      *
@@ -170,8 +172,10 @@ class CustomValues extends MyModel
             return;
         }
         $ids = is_array($ids) ? $ids : explode(',', $ids);
+
         return $this->where_in('custom_values_id', $ids)->get();
     }
+
     /**
      * @originalName columnHasValue
      *
@@ -182,8 +186,10 @@ class CustomValues extends MyModel
         $this->where('custom_field_id', $fid);
         $this->where('custom_values_id', $id);
         $this->get();
+
         return (bool) $this->numRows();
     }
+
     /**
      * @originalName grouped
      *
@@ -194,8 +200,10 @@ class CustomValues extends MyModel
         $this->db->select('SQL_CALC_FOUND_ROWS ip_custom_fields.*,ip_custom_values.*', false);
         $this->db->select('count(custom_field_label) as count');
         $this->db->group_by('ip_custom_fields.custom_field_id');
+
         return $this;
     }
+
     /**
      * @originalName defaultSelect
      *
@@ -205,6 +213,7 @@ class CustomValues extends MyModel
     {
         $this->db->select('ip_custom_fields.*,ip_custom_values.*', false);
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -214,6 +223,7 @@ class CustomValues extends MyModel
     {
         $this->db->join('ip_custom_fields', 'ip_custom_values.custom_values_field = ip_custom_fields.custom_field_id', 'inner');
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -223,6 +233,7 @@ class CustomValues extends MyModel
     {
         $this->db->orderBy('ip_custom_values.custom_values_value');
     }
+
     /**
      * @originalName defaultGroupBy
      *

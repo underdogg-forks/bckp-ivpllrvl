@@ -1,25 +1,10 @@
 <?php
+
+namespace Modules\InvoiceGroups\Controllers;
+
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Invoicegroups\Controllers;
-
-use Modules\Core\Controllers\AdminController;
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class InvoiceGroupsController extends AdminController
 {
@@ -31,6 +16,7 @@ class InvoiceGroupsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_invoice_groups');
     }
+
     /**
      * @originalName index
      *
@@ -44,6 +30,7 @@ class InvoiceGroupsController extends AdminController
         $this->layout->buffer('content', 'invoice_groups/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -60,17 +47,18 @@ class InvoiceGroupsController extends AdminController
             $this->mdl_invoice_groups->save($id);
             redirect('invoice_groups');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_invoice_groups->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_invoice_groups->prepForm($id)) {
                 show_404();
             }
-        } elseif (!$id) {
+        } elseif ( ! $id) {
             $this->mdl_invoice_groups->setFormValue('invoice_group_left_pad', 0);
             $this->mdl_invoice_groups->setFormValue('invoice_group_next_id', 1);
         }
         $this->layout->buffer('content', 'invoice_groups/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

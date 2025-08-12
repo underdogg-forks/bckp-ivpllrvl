@@ -1,25 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Invoices\Controllers;
 
+use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class CronController extends BaseController
 {
@@ -40,7 +25,7 @@ class CronController extends BaseController
         $this->load->helper('mailer');
         // Gather a list of recurring invoices to generate
         $invoices_recurring = $this->mdl_invoices_recurring->active()->get()->result();
-        $recurInfo = [];
+        $recurInfo          = [];
         foreach ($invoices_recurring as $invoice_recurring) {
             $recurInfo = ['invoice_id' => $invoice_recurring->invoice_id, 'client_id' => $invoice_recurring->client_id, 'invoice_group_id' => $invoice_recurring->invoice_group_id, 'invoice_status_id' => $invoice_recurring->invoice_status_id, 'invoice_number' => $invoice_recurring->invoice_number, 'invoice_recurring_id' => $invoice_recurring->invoice_recurring_id, 'recur_start_date' => $invoice_recurring->recur_start_date, 'recur_end_date' => $invoice_recurring->recur_end_date, 'recur_frequency' => $invoice_recurring->recur_frequency, 'recur_next_date' => $invoice_recurring->recur_next_date, 'recur_status' => $invoice_recurring->recur_status];
             if (IP_DEBUG) {
@@ -79,7 +64,7 @@ class CronController extends BaseController
                 // Set the email body, use default email template if available
                 $this->load->model('email_templates/mdl_email_templates');
                 $email_template_id = get_setting('email_invoice_template');
-                if (!$email_template_id) {
+                if ( ! $email_template_id) {
                     log_message('error', '[CronController RecurringController InvoicesController] No email template set in the system settings!');
                     continue;
                 }
@@ -99,12 +84,12 @@ class CronController extends BaseController
                 } else {
                     $body = htmlspecialchars_decode(nl2br($body), ENT_COMPAT);
                 }
-                $from = empty($tpl->email_template_from_email) ? [$invoice->user_email, ''] : [$tpl->email_template_from_email, $tpl->email_template_from_name];
-                $subject = empty($tpl->email_template_subject) ? trans('invoice') . ' #' . $new_invoice->invoice_number : $tpl->email_template_subject;
-                $pdf_template = $tpl->email_template_pdf_template;
-                $to = $invoice->client_email;
-                $cc = $tpl->email_template_cc;
-                $bcc = $tpl->email_template_bcc;
+                $from          = empty($tpl->email_template_from_email) ? [$invoice->user_email, ''] : [$tpl->email_template_from_email, $tpl->email_template_from_name];
+                $subject       = empty($tpl->email_template_subject) ? trans('invoice') . ' #' . $new_invoice->invoice_number : $tpl->email_template_subject;
+                $pdf_template  = $tpl->email_template_pdf_template;
+                $to            = $invoice->client_email;
+                $cc            = $tpl->email_template_cc;
+                $bcc           = $tpl->email_template_bcc;
                 $email_invoice = email_invoice($target_id, $pdf_template, $from, $to, $subject, $body, $cc, $bcc, $attachment_files);
                 if ($email_invoice) {
                     $this->mdl_invoices->markSent($target_id);

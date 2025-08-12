@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Quotes\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\AdminController;
+
 #[AllowDynamicProperties]
 class QuotesController extends AdminController
 {
@@ -30,6 +16,7 @@ class QuotesController extends AdminController
         parent::__construct();
         $this->load->model('mdl_quotes');
     }
+
     /**
      * @originalName index
      *
@@ -40,6 +27,7 @@ class QuotesController extends AdminController
         // Display all quotes by default
         redirect('quotes/status/all');
     }
+
     /**
      * @originalName status
      *
@@ -74,6 +62,7 @@ class QuotesController extends AdminController
         $this->layout->buffer('content', 'quotes/index');
         $this->layout->render();
     }
+
     /**
      * @originalName view
      *
@@ -94,14 +83,14 @@ class QuotesController extends AdminController
             }
         }
         $quote = $this->mdl_quotes->getById($quote_id);
-        if (!$quote) {
+        if ( ! $quote) {
             show_404();
         }
         $custom_fields = $this->mdl_custom_fields->byTable('ip_quote_custom')->get()->result();
         $custom_values = [];
         foreach ($custom_fields as $custom_field) {
             if (in_array($custom_field->custom_field_type, $this->mdl_custom_values->customValueFields())) {
-                $values = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
+                $values                                        = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
                 $custom_values[$custom_field->custom_field_id] = $values;
             }
         }
@@ -124,6 +113,7 @@ class QuotesController extends AdminController
         $this->layout->buffer([['modal_delete_quote', 'quotes/modal_delete_quote'], ['modal_add_quote_tax', 'quotes/modal_add_quote_tax'], ['content', 'quotes/view']]);
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *
@@ -136,6 +126,7 @@ class QuotesController extends AdminController
         // Redirect to quote index
         redirect('quotes/index');
     }
+
     /**
      * @originalName generatePdf
      *
@@ -150,6 +141,7 @@ class QuotesController extends AdminController
         }
         generate_quote_pdf($quote_id, $stream, $quote_template);
     }
+
     /**
      * @originalName deleteQuoteTax
      *
@@ -165,6 +157,7 @@ class QuotesController extends AdminController
         $this->mdl_quote_amounts->calculate($quote_id, $global_discount);
         redirect('quotes/view/' . $quote_id);
     }
+
     /**
      * @originalName recalculateAllQuotes
      *

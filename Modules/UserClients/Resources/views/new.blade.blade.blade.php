@@ -1,4 +1,4 @@
-@php namespace Modules\Userclients\Views; @endphp
+@php namespace Modules\UserClients\Views; @endphp
 <script>
     $(function () {
         $('#user_all_clients').click(function () {
@@ -44,7 +44,9 @@
 
                         <div class="alert alert-info">
                             <label>
-                                <input type="checkbox" name="user_all_clients" id="user_all_clients" value="1" {{ $user->user_all_clients ? 'checked="checked"' : '' }}> @@lang('user_all_clients')
+                                <input type="checkbox" name="user_all_clients" id="user_all_clients"
+                                       value="1" {{ $user->user_all_clients ? 'checked="checked"' : '' }}>
+                                @@lang('user_all_clients')
                             </label>
 
                             <div>
@@ -56,7 +58,7 @@
                             <label for="client_id">@@lang('client')</label>
                             <select name="client_id" id="client_id" class="form-control simple-select"
                                     autofocus="autofocus" required>
-@php foreach ($clients as $client) {
+                                @php foreach ($clients as $client) {
     echo '<option value="' . $client->client_id . '">' . htmlsc(format_client($client)) . '</option>';
 } @endphp
                             </select>

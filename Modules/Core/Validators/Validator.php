@@ -1,26 +1,11 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Core\Validators;
 
 use AllowDynamicProperties;
+use AllowDynamicProperties;
 use Modules\Core\Models\MyModel;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class Validator extends MyModel
 {
@@ -33,6 +18,7 @@ class Validator extends MyModel
     {
         return true;
     }
+
     /**
      * @originalName validate_date
      *
@@ -43,12 +29,15 @@ class Validator extends MyModel
         if ($value == '') {
             return;
         }
-        if (!is_date($value)) {
+        if ( ! is_date($value)) {
             $this->form_validation->set_message('validate_date', trans('invalid_date'));
+
             return false;
         }
+
         return true;
     }
+
     /**
      * @originalName validate_boolean
      *
@@ -62,8 +51,10 @@ class Validator extends MyModel
         if ($value == '') {
             return;
         }
+
         return false;
     }
+
     /**
      * @originalName validate_singlechoice
      *
@@ -75,8 +66,10 @@ class Validator extends MyModel
             return;
         }
         $this->load->model('custom_values/mdl_custom_values', 'custom_value');
+
         return $this->custom_value->columnHasValue($key, $value);
     }
+
     /**
      * @originalName validate_multiplechoice
      *
@@ -92,8 +85,10 @@ class Validator extends MyModel
         $this->load->model('custom_values/mdl_custom_values', 'custom_value');
         $this->custom_value->where('custom_field_id', $id);
         $dbvals = $this->custom_value->where_in('custom_values_id', $values)->get();
+
         return $dbvals->numRows() == count($values);
     }
+
     /**
      * @originalName validation_rules
      *
@@ -103,6 +98,7 @@ class Validator extends MyModel
     {
         return ['custom_field_table' => ['field' => 'custom_field_table', 'label' => trans('table'), 'rules' => 'required'], 'custom_field_label' => ['field' => 'custom_field_label', 'label' => trans('label'), 'rules' => 'required|max_length[50]'], 'custom_field_type' => ['field' => 'custom_field_type', 'label' => trans('type'), 'rules' => 'required']];
     }
+
     /**
      * @originalName get_field_type
      *
@@ -115,8 +111,10 @@ class Validator extends MyModel
         if ($el == null) {
             return;
         }
+
         return $el->custom_field_type;
     }
+
     /**
      * @originalName validate
      *
@@ -127,7 +125,7 @@ class Validator extends MyModel
         $this->load->model('custom_fields/mdl_custom_fields');
         $this->load->model('custom_values/mdl_custom_values');
         $db_array = $array;
-        $errors = [];
+        $errors   = [];
         if (empty($db_array)) {
             // Return true if no fields need to be validated
             return true;
@@ -158,10 +156,13 @@ class Validator extends MyModel
         if (count($errors) == 0) {
             $this->_formdata = $db_array;
             $this->fixinput();
+
             return true;
         }
+
         return $this->createErrorText($errors);
     }
+
     /**
      * @originalName validate_type
      *
@@ -169,10 +170,12 @@ class Validator extends MyModel
      */
     public function validateType($type, $value, $key)
     {
-        $nicename = $this->mdl_custom_fields->getNicename($type);
+        $nicename        = $this->mdl_custom_fields->getNicename($type);
         $validation_rule = 'validate_' . $nicename;
+
         return $this->{$validation_rule}($value, $key);
     }
+
     /**
      * @originalName fixinput
      *
@@ -204,6 +207,7 @@ class Validator extends MyModel
             }
         }
     }
+
     /**
      * @originalName create_error_text
      *
@@ -215,6 +219,7 @@ class Validator extends MyModel
         foreach ($errors as $error) {
             $string[] = sprintf(lang('validator_fail'), $error['label'], $error['error_msg']);
         }
+
         return nl2br(implode("\n", $string));
     }
 }

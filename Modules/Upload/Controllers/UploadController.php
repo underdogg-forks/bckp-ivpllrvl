@@ -2,23 +2,19 @@
 
 namespace Modules\Upload\Controllers;
 
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class UploadController extends AdminController
 {
     public $targetPath = UPLOADS_CFILES_FOLDER;
+
     // UPLOADS_FOLDER . 'customer_files/';
     public $ctype_default = 'application/octet-stream';
+
     public $content_types = [];
+
     /**
      * UploadController constructor.
      */
@@ -28,6 +24,7 @@ class UploadController extends AdminController
         $this->load->model('upload/mdl_uploads');
         $this->content_types = $this->mdl_uploads->content_types;
     }
+
     /**
      * @originalName uploadFile
      *
@@ -49,6 +46,7 @@ class UploadController extends AdminController
         $this->saveFileMetadata($customerId, $url_key, $filename);
         $this->respondMessage(200, 'upload_file_uploaded_successfully', $filename);
     }
+
     /**
      * @originalName createDir
      *
@@ -56,11 +54,13 @@ class UploadController extends AdminController
      */
     public function createDir($path, $chmod = '0755'): bool
     {
-        if (!is_dir($path) && !is_link($path)) {
+        if ( ! is_dir($path) && ! is_link($path)) {
             return mkdir($path, $chmod);
         }
+
         return true;
     }
+
     /**
      * @originalName showFiles
      *
@@ -69,11 +69,12 @@ class UploadController extends AdminController
     public function showFiles($url_key = null): void
     {
         header('Content-Type: application/json; charset=utf-8');
-        if ($url_key && !$result = $this->mdl_uploads->getFiles($url_key)) {
+        if ($url_key && ! $result = $this->mdl_uploads->getFiles($url_key)) {
             exit('{}');
         }
         exit(json_encode($result));
     }
+
     /**
      * @originalName deleteFile
      *
@@ -81,15 +82,16 @@ class UploadController extends AdminController
      */
     public function deleteFile(string $url_key): void
     {
-        $filename = urldecode($this->input->post('name'));
+        $filename  = urldecode($this->input->post('name'));
         $finalPath = $this->targetPath . $url_key . '_' . $filename;
-        if (realpath($this->targetPath) === mb_substr(realpath($finalPath), 0, mb_strlen(realpath($this->targetPath))) && (!file_exists($finalPath) || @unlink($finalPath))) {
+        if (realpath($this->targetPath) === mb_substr(realpath($finalPath), 0, mb_strlen(realpath($this->targetPath))) && ( ! file_exists($finalPath) || @unlink($finalPath))) {
             $this->mdl_uploads->deleteFile($url_key, $filename);
             $this->respondMessage(200, 'upload_file_deleted_successfully', $filename);
         }
         $ref = isset($_SERVER['HTTP_REFERER']) ? ', Referer:' . $_SERVER['HTTP_REFERER'] : '';
         $this->respondMessage(410, 'upload_error_file_delete', $finalPath . $ref);
     }
+
     /**
      * @originalName getFile
      *
@@ -98,14 +100,14 @@ class UploadController extends AdminController
     public function getFile($filename): void
     {
         $filename = urldecode($filename);
-        if (!file_exists($this->targetPath . $filename)) {
+        if ( ! file_exists($this->targetPath . $filename)) {
             $ref = isset($_SERVER['HTTP_REFERER']) ? ', Referer:' . $_SERVER['HTTP_REFERER'] : '';
             $this->respondMessage(404, 'upload_error_file_not_found', $this->targetPath . $filename . $ref);
         }
         $path_parts = pathinfo($this->targetPath . $filename);
-        $file_ext = mb_strtolower($path_parts['extension'] ?? '');
-        $ctype = $this->content_types[$file_ext] ?? $this->ctype_default;
-        $file_size = filesize($this->targetPath . $filename);
+        $file_ext   = mb_strtolower($path_parts['extension'] ?? '');
+        $ctype      = $this->content_types[$file_ext] ?? $this->ctype_default;
+        $file_size  = filesize($this->targetPath . $filename);
         header('Expires: -1');
         header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
         header('Pragma: no-cache');
@@ -114,6 +116,7 @@ class UploadController extends AdminController
         header('Content-Length: ' . $file_size);
         readfile($this->targetPath . $filename);
     }
+
     /**
      * @originalName sanitizeFileName
      *
@@ -124,6 +127,7 @@ class UploadController extends AdminController
         // Clean filename (same in dropzone script)
         return preg_replace("/[^\\p{L}\\p{N}\\s\\-_'’.]/u", '', mb_trim($filename));
     }
+
     /**
      * @originalName getTargetFilePath
      *
@@ -133,6 +137,7 @@ class UploadController extends AdminController
     {
         return $this->targetPath . $url_key . '_' . $filename;
     }
+
     /**
      * @originalName validateMimeType
      *
@@ -141,10 +146,11 @@ class UploadController extends AdminController
     private function validateMimeType(string $mimeType): void
     {
         $allowedTypes = array_values($this->content_types);
-        if (!in_array($mimeType, $allowedTypes, true)) {
+        if ( ! in_array($mimeType, $allowedTypes, true)) {
             $this->respondMessage(415, 'upload_error_unsupported_file_type', $mimeType);
         }
     }
+
     /**
      * @originalName saveFileMetadata
      *
@@ -153,10 +159,11 @@ class UploadController extends AdminController
     private function saveFileMetadata(int $customerId, string $url_key, string $filename): void
     {
         $data = ['client_id' => $customerId, 'url_key' => $url_key, 'file_name_original' => $filename, 'file_name_new' => $url_key . '_' . $filename];
-        if (!$this->mdl_uploads->create($data)) {
+        if ( ! $this->mdl_uploads->create($data)) {
             $this->respondMessage(500, 'upload_error_database', $filename);
         }
     }
+
     /**
      * @originalName moveUploadedFile
      *
@@ -167,12 +174,13 @@ class UploadController extends AdminController
         // Create the target dir (if unexist)
         $this->createDir($this->targetPath);
         // Checks to ensure that the target dir is writable
-        if (!is_writable($this->targetPath)) {
+        if ( ! is_writable($this->targetPath)) {
             $this->respondMessage(410, 'upload_error_folder_not_writable', $this->targetPath);
-        } elseif (!move_uploaded_file($tempFile, $filePath)) {
+        } elseif ( ! move_uploaded_file($tempFile, $filePath)) {
             $this->respondMessage(400, 'upload_error_invalid_move_uploaded_file', $filename);
         }
     }
+
     /**
      * @originalName respondMessage
      *

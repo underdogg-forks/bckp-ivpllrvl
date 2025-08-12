@@ -1,26 +1,12 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Guest\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\GuestController as BaseGuestController;
+
 #[AllowDynamicProperties]
-class QuotesController extends GuestController
+class QuotesController extends BaseGuestController
 {
     /**
      * QuotesController constructor.
@@ -30,6 +16,7 @@ class QuotesController extends GuestController
         parent::__construct();
         $this->load->model('quotes/mdl_quotes');
     }
+
     /**
      * @originalName index
      *
@@ -40,6 +27,7 @@ class QuotesController extends GuestController
         // Display open quotes by default
         redirect('guest/quotes/status/open');
     }
+
     /**
      * @originalName status
      *
@@ -75,6 +63,7 @@ class QuotesController extends GuestController
         $this->layout->buffer('content', 'guest/quotes_index');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName view
      *
@@ -85,7 +74,7 @@ class QuotesController extends GuestController
         redirect_to_set();
         // Sets the current URL in the session to force redirect_to()
         $quote = $this->mdl_quotes->guestVisible()->where('ip_quotes.quote_id', $quote_id)->where_in('ip_quotes.client_id', $this->user_clients)->get()->row();
-        if (!$quote) {
+        if ( ! $quote) {
             show_404();
         }
         $this->mdl_quotes->markViewed($quote->quote_id);
@@ -95,6 +84,7 @@ class QuotesController extends GuestController
         $this->layout->buffer('content', 'guest/quotes_view');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName generatePdf
      *
@@ -105,11 +95,12 @@ class QuotesController extends GuestController
         $this->load->helper('pdf');
         $this->mdl_quotes->markViewed($quote_id);
         $quote = $this->mdl_quotes->guestVisible()->where('ip_quotes.quote_id', $quote_id)->where_in('ip_quotes.client_id', $this->user_clients)->get()->row();
-        if (!$quote) {
+        if ( ! $quote) {
             show_404();
         }
         generate_quote_pdf($quote_id, $stream, $quote_template);
     }
+
     /**
      * @originalName approve
      *
@@ -123,6 +114,7 @@ class QuotesController extends GuestController
         email_quote_status($quote_id, 'approved');
         redirect_to('guest/quotes');
     }
+
     /**
      * @originalName reject
      *

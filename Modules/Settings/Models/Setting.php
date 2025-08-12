@@ -1,29 +1,15 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Settings\Models;
 
+use AllowDynamicProperties;
 use Modules\Core\Models\BaseModel;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class Setting extends BaseModel
 {
     public $settings = [];
+
     /**
      * @originalName save
      *
@@ -39,6 +25,7 @@ class Setting extends BaseModel
             $this->db->insert('ip_settings', $db_array);
         }
     }
+
     /**
      * @originalName get
      *
@@ -53,6 +40,7 @@ class Setting extends BaseModel
             return $query->row()->setting_value;
         }
     }
+
     /**
      * @originalName delete
      *
@@ -63,6 +51,7 @@ class Setting extends BaseModel
         $this->db->where('setting_key', $key);
         $this->db->delete('ip_settings');
     }
+
     /**
      * @originalName loadSettings
      *
@@ -79,6 +68,7 @@ class Setting extends BaseModel
         $this->load->model('settings/mdl_versions');
         $this->settings['current_version'] = $this->mdl_versions->getCurrentVersion();
     }
+
     /**
      * @originalName setting
      *
@@ -88,6 +78,7 @@ class Setting extends BaseModel
     {
         return isset($this->settings[$key]) && $this->settings[$key] !== '' ? $this->settings[$key] : $default;
     }
+
     /**
      * @originalName gatewaySettings
      *
@@ -97,6 +88,7 @@ class Setting extends BaseModel
     {
         return $this->db->like('setting_key', 'gateway_' . mb_strtolower($key), 'after')->get('ip_settings')->result();
     }
+
     /**
      * @originalName setSetting
      *
@@ -106,6 +98,7 @@ class Setting extends BaseModel
     {
         $this->settings[$key] = $value;
     }
+
     /**
      * @originalName getThemes
      *
@@ -115,13 +108,13 @@ class Setting extends BaseModel
     {
         $this->load->helper('directory');
         $found_folders = directory_map(THEME_FOLDER, 1);
-        $themes = [];
+        $themes        = [];
         foreach ($found_folders as $theme) {
             if ($theme == 'core') {
                 continue;
             }
             // GetController the theme info file
-            $theme = str_replace(DIRECTORY_SEPARATOR, '', $theme);
+            $theme     = str_replace(DIRECTORY_SEPARATOR, '', $theme);
             $info_path = THEME_FOLDER . $theme . '/';
             $info_file = $theme . '.theme';
             if (file_exists($info_path . $info_file)) {
@@ -130,6 +123,7 @@ class Setting extends BaseModel
                 $themes[$theme] = env('TITLE');
             }
         }
+
         return $themes;
     }
 }

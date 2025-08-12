@@ -1,4 +1,4 @@
-@php namespace Modules\Customvalues\Views;
+@php namespace Modules\CustomValues\Views;
 
 $href = site_url('custom_fields/form/' . $value->custom_field_id);
 $link = anchor($href, '<i class="fa fa-edit fa-margin"></i> ' . htmlsc($value->custom_field_label), ' class="btn btn-sm btn-default"');
@@ -13,7 +13,7 @@ $table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @end
         @php $this->layout->loadView('layout/header_buttons'); @endphp
         <div class="headerbar-item pull-right">
             <a href="{{ url('custom_values/field/' . $value->custom_field_id) }}" class="btn btn-sm btn-default">
-                                <i class="fa fa-eye fa-margin"></i> @@lang('values')</a>
+                <i class="fa fa-eye fa-margin"></i> @@lang('values')</a>
         </div>
         <div class="visible-sm visible-md visible-lg headerbar-item pull-right">
             <div class="badge">@@lang('table'): @php _trans($table); @endphp</div>
@@ -57,7 +57,7 @@ $table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @end
 
             </div>
 
-@php $this->layout->loadView('layout/partial/custom_field_usage_list', ['custom_field_table' => $value->custom_field_table]); @endphp
+            @php $this->layout->loadView('layout/partial/custom_field_usage_list', ['custom_field_table' => $value->custom_field_table]); @endphp
 
         </div>
     </div>

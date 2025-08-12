@@ -1,29 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Invoices\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\ResponseModel;
+
 #[AllowDynamicProperties]
 class InvoiceTaxRate extends ResponseModel
 {
     public $table = 'ip_invoice_tax_rates';
+
     public $primary_key = 'ip_invoice_tax_rates.invoice_tax_rate_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -35,6 +23,7 @@ class InvoiceTaxRate extends ResponseModel
         $this->db->select('ip_tax_rates.tax_rate_percent AS invoice_tax_rate_percent');
         $this->db->select('ip_invoice_tax_rates.*');
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -44,6 +33,7 @@ class InvoiceTaxRate extends ResponseModel
     {
         $this->db->join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_invoice_tax_rates.tax_rate_id');
     }
+
     /**
      * @originalName save
      *
@@ -61,6 +51,7 @@ class InvoiceTaxRate extends ResponseModel
             $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
         }
     }
+
     /**
      * @originalName validationRules
      *
@@ -68,6 +59,8 @@ class InvoiceTaxRate extends ResponseModel
      */
     public function validationRules()
     {
-        return ['invoice_id' => ['field' => 'invoice_id', 'label' => trans('invoice'), 'rules' => 'required'], 'tax_rate_id' => ['field' => 'tax_rate_id', 'label' => trans('tax_rate'), 'rules' => 'required'], 'include_item_tax' => ['field' => 'include_item_tax', 'label' => trans('tax_rate_placement'), 'rules' => 'required']];
+        return [
+            'invoice_id' => ['field' => 'invoice_id', 'label' => trans('invoice'), 'rules' => 'required'], 'tax_rate_id' => ['field' => 'tax_rate_id', 'label' => trans('tax_rate'), 'rules' => 'required'], 'include_item_tax' => ['field' => 'include_item_tax', 'label' => trans('tax_rate_placement'), 'rules' => 'required'],
+        ];
     }
 }

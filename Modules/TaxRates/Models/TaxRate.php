@@ -1,29 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
+
+namespace Modules\TaxRates\Models;
+
+use AllowDynamicProperties;
 use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Taxrates\Models;
-
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class TaxRate extends ResponseModel
 {
     public $table = 'ip_tax_rates';
+
     public $primary_key = 'ip_tax_rates.tax_rate_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -33,6 +21,7 @@ class TaxRate extends ResponseModel
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -42,6 +31,7 @@ class TaxRate extends ResponseModel
     {
         $this->db->orderBy('ip_tax_rates.tax_rate_percent');
     }
+
     /**
      * @originalName validationRules
      *

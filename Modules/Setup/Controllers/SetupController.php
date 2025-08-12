@@ -1,28 +1,15 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Setup\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use MX_Controller;
+
 #[AllowDynamicProperties]
 class SetupController extends MX_Controller
 {
     public $errors = 0;
+
     /**
      * SetupController constructor.
      */
@@ -44,13 +31,14 @@ class SetupController extends MX_Controller
         // For get_setting() in echo_helper
         $this->load->model('setup/mdl_setup');
         $this->load->module('layout');
-        if (!$this->session->userdata('ip_lang')) {
+        if ( ! $this->session->userdata('ip_lang')) {
             $this->session->set_userdata('ip_lang', 'en');
         } else {
             set_language($this->session->userdata('ip_lang'));
         }
         $this->lang->load('ip', $this->session->userdata('ip_lang'));
     }
+
     /**
      * @originalName index
      *
@@ -60,6 +48,7 @@ class SetupController extends MX_Controller
     {
         redirect('setup/lang');
     }
+
     /**
      * @originalName lang
      *
@@ -81,6 +70,7 @@ class SetupController extends MX_Controller
         $this->layout->buffer('content', 'setup/lang');
         $this->layout->render('setup');
     }
+
     /**
      * @originalName prerequisites
      *
@@ -99,6 +89,7 @@ class SetupController extends MX_Controller
         $this->layout->buffer('content', 'setup/prerequisites');
         $this->layout->render('setup');
     }
+
     /**
      * @originalName configureDatabase
      *
@@ -112,7 +103,7 @@ class SetupController extends MX_Controller
         if ($this->input->post('btn_continue')) {
             $this->loadCiDatabase();
             // This might be an upgrade - check if it is
-            if (!$this->db->table_exists('ip_versions')) {
+            if ( ! $this->db->table_exists('ip_versions')) {
                 // This appears to be an install
                 $this->session->set_userdata('install_step', 'install_tables');
                 redirect('setup/install_tables');
@@ -134,6 +125,7 @@ class SetupController extends MX_Controller
         $this->layout->buffer('content', 'setup/configure_database');
         $this->layout->render('setup');
     }
+
     /**
      * @originalName installTables
      *
@@ -153,6 +145,7 @@ class SetupController extends MX_Controller
         $this->layout->buffer('content', 'setup/install_tables');
         $this->layout->render('setup');
     }
+
     /**
      * @originalName upgradeTables
      *
@@ -164,7 +157,7 @@ class SetupController extends MX_Controller
             redirect('setup/prerequisites');
         }
         if ($this->input->post('btn_continue')) {
-            if (!$this->session->userdata('is_upgrade')) {
+            if ( ! $this->session->userdata('is_upgrade')) {
                 $this->session->set_userdata('install_step', 'create_user');
                 redirect('setup/create_user');
             } else {
@@ -181,6 +174,7 @@ class SetupController extends MX_Controller
         $this->layout->buffer('content', 'setup/upgrade_tables');
         $this->layout->render('setup');
     }
+
     /**
      * @originalName createUser
      *
@@ -195,7 +189,7 @@ class SetupController extends MX_Controller
         $this->load->model('users/mdl_users');
         $this->load->helper('country');
         if ($this->mdl_users->runValidation()) {
-            $db_array = $this->mdl_users->dbArray();
+            $db_array              = $this->mdl_users->dbArray();
             $db_array['user_type'] = 1;
             $this->mdl_users->save(null, $db_array);
             $this->session->set_userdata('install_step', 'calculation_info');
@@ -205,6 +199,7 @@ class SetupController extends MX_Controller
         $this->layout->buffer('content', 'setup/create_user');
         $this->layout->render('setup');
     }
+
     /**
      * @originalName calculationInfo
      *
@@ -232,6 +227,7 @@ class SetupController extends MX_Controller
         $this->layout->buffer('content', 'setup/calculation_info');
         $this->layout->render('setup');
     }
+
     /**
      * @originalName complete
      *
@@ -268,6 +264,7 @@ class SetupController extends MX_Controller
         $this->layout->render('setup');
         $this->session->sess_destroy();
     }
+
     /**
      * @originalName checkBasics
      *
@@ -275,8 +272,8 @@ class SetupController extends MX_Controller
      */
     private function checkBasics(): array
     {
-        $checks = [];
-        $php_required = '5.6';
+        $checks        = [];
+        $php_required  = '5.6';
         $php_installed = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
         if ($php_installed < $php_required) {
             $this->errors += 1;
@@ -284,13 +281,15 @@ class SetupController extends MX_Controller
         } else {
             $checks[] = ['message' => trans('php_version_success'), 'success' => 1];
         }
-        if (!ini_get('date.timezone')) {
+        if ( ! ini_get('date.timezone')) {
             $checks[] = ['message' => sprintf(trans('php_timezone_fail'), date_default_timezone_get()), 'success' => 1, 'warning' => 1];
         } else {
             $checks[] = ['message' => trans('php_timezone_success'), 'success' => 1];
         }
+
         return $checks;
     }
+
     /**
      * @originalName checkWritables
      *
@@ -298,11 +297,11 @@ class SetupController extends MX_Controller
      */
     private function checkWritables(): array
     {
-        $checks = [];
+        $checks    = [];
         $writables = [IPCONFIG_FILE, UPLOADS_FOLDER, UPLOADS_ARCHIVE_FOLDER, UPLOADS_CFILES_FOLDER, UPLOADS_TEMP_FOLDER, UPLOADS_TEMP_MPDF_FOLDER, LOGS_FOLDER];
         foreach ($writables as $writable) {
             $writable_check = ['message' => '<code>' . str_replace(FCPATH, '', $writable) . '</code>&nbsp;', 'success' => 1];
-            if (!is_writable($writable)) {
+            if ( ! is_writable($writable)) {
                 $writable_check['message'] .= trans('is_not_writable');
                 $writable_check['success'] .= 0;
                 $this->errors += 1;
@@ -311,8 +310,10 @@ class SetupController extends MX_Controller
             }
             $checks[] = $writable_check;
         }
+
         return $checks;
     }
+
     /**
      * @originalName loadCiDatabase
      *
@@ -322,6 +323,7 @@ class SetupController extends MX_Controller
     {
         $this->load->database();
     }
+
     /**
      * @originalName writeDatabaseConfig
      *
@@ -337,6 +339,7 @@ class SetupController extends MX_Controller
         $config = preg_replace('/DB_PORT=(.*)?/', 'DB_PORT=' . $port, $config);
         write_file(IPCONFIG_FILE, $config);
     }
+
     /**
      * @originalName checkDatabase
      *
@@ -349,12 +352,13 @@ class SetupController extends MX_Controller
         $dotenv->load();
         // Load the database config and configure it to test the connection
         include APPPATH . 'config/database.php';
-        $db = $db['default'];
+        $db             = $db['default'];
         $db['autoinit'] = false;
         $db['db_debug'] = false;
         // Check if there is some configuration set
         if (empty($db['hostname'])) {
             $this->errors += 1;
+
             return ['message' => trans('setup_database_message'), 'success' => false];
         }
         // Initialize the database connection, turn off automatic error reporting to display connection issues manually
@@ -362,12 +366,15 @@ class SetupController extends MX_Controller
         $db_object = $this->load->database($db, true);
         // Try to initialize the database connection
         $can_connect = (bool) $db_object->conn_id;
-        if (!$can_connect) {
+        if ( ! $can_connect) {
             $this->errors += 1;
+
             return ['message' => trans('setup_db_cannot_connect'), 'success' => false];
         }
+
         return ['message' => trans('database_properly_configured'), 'success' => true];
     }
+
     /**
      * @originalName setEncryptionKey
      *
@@ -385,6 +392,7 @@ class SetupController extends MX_Controller
         $config = preg_replace('/ENCRYPTION_KEY=(.*)?/', 'ENCRYPTION_KEY=' . $key, $config);
         write_file(IPCONFIG_FILE, $config);
     }
+
     /**
      * @originalName postSetupTasks
      *
@@ -397,6 +405,7 @@ class SetupController extends MX_Controller
         $config = preg_replace('/SETUP_COMPLETED=(.*)?/', 'SETUP_COMPLETED=true', $config);
         write_file(IPCONFIG_FILE, $config);
     }
+
     /**
      * @originalName checkCalculationConfig
      *
@@ -418,10 +427,13 @@ class SetupController extends MX_Controller
             if ($legacy_calc === 'true' || $legacy_calc === true) {
                 return ['needs_config' => true, 'current_value' => 'true', 'recommended' => 'false'];
             }
+
             return ['needs_config' => false, 'current_value' => 'false'];
         }
+
         return ['needs_config' => false];
     }
+
     /**
      * @originalName writeCalculationConfig
      *

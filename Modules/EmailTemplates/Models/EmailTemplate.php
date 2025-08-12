@@ -1,29 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
+
+namespace Modules\EmailTemplates\Models;
+
+use AllowDynamicProperties;
 use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Emailtemplates\Models;
-
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class EmailTemplate extends ResponseModel
 {
     public $table = 'ip_email_templates';
+
     public $primary_key = 'ip_email_templates.email_template_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -33,6 +21,7 @@ class EmailTemplate extends ResponseModel
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -42,6 +31,7 @@ class EmailTemplate extends ResponseModel
     {
         $this->db->orderBy('email_template_title');
     }
+
     /**
      * @originalName validationRules
      *

@@ -1,4 +1,4 @@
-@php namespace Modules\Customvalues\Views; @endphp
+@php namespace Modules\CustomValues\Views; @endphp
 <div id="headerbar">
     <h1 class="headerbar-title">@@lang('custom_values')</h1>
 
@@ -23,7 +23,7 @@
     {{ $this->layout->loadView('layout/alerts') }}
 
     <div id="filter_results">
-@php $this->layout->loadView('custom_values/partial_custom_values_table'); @endphp
+        @php $this->layout->loadView('custom_values/partial_custom_values_table'); @endphp
     </div>
 
 </div>

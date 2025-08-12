@@ -1,31 +1,19 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
+namespace Modules\CustomFields\Models;
 
-namespace Modules\Customfields\Models;
-
+use AllowDynamicProperties;
 use Modules\Core\Validators\Validator;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class PaymentCustom extends Validator
 {
     public static $positions = ['custom_fields'];
+
     public $table = 'ip_payment_custom';
+
     public $primary_key = 'ip_payment_custom.payment_custom_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -35,6 +23,7 @@ class PaymentCustom extends Validator
     {
         $this->db->select('SQL_CALC_FOUND_ROWS ip_payment_custom.*, ip_custom_fields.*', false);
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -44,6 +33,7 @@ class PaymentCustom extends Validator
     {
         $this->db->join('ip_custom_fields', 'ip_payment_custom.payment_custom_fieldid = ip_custom_fields.custom_field_id');
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -53,6 +43,7 @@ class PaymentCustom extends Validator
     {
         $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
+
     /**
      * @originalName saveCustom
      *
@@ -68,17 +59,20 @@ class PaymentCustom extends Validator
             }
             $payment_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array = ['payment_id' => $payment_id, 'payment_custom_fieldid' => $key, 'payment_custom_fieldvalue' => $value];
+                $db_array       = ['payment_id' => $payment_id, 'payment_custom_fieldid' => $key, 'payment_custom_fieldvalue' => $value];
                 $payment_custom = $this->where('payment_id', $payment_id)->where('payment_custom_fieldid', $key)->get();
                 if ($payment_custom->numRows()) {
                     $payment_custom_id = $payment_custom->row()->payment_custom_id;
                 }
                 parent::save($payment_custom_id, $db_array);
             }
+
             return true;
         }
+
         return $result;
     }
+
     /**
      * @originalName byId
      *
@@ -87,8 +81,10 @@ class PaymentCustom extends Validator
     public function byId($payment_id)
     {
         $this->db->where('ip_payment_custom.payment_id', $payment_id);
+
         return $this;
     }
+
     /**
      * @originalName getByPayid
      *

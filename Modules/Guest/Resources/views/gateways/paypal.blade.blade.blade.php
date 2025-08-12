@@ -15,7 +15,7 @@
     function initPayPal() {
         paypal.Buttons({
             createOrder() {
-                return fetch('{{ url('guest/gateways/paypal/paypal_create_order/' . $invoice_url_key) }}',
+                return fetch('{{ url('guest/Gateways/paypal/paypal_create_order/' . $invoice_url_key) }}',
                     {
                         method: "GET"
                     })
@@ -23,7 +23,7 @@
                     .then((order) => order.id)
             },
             onApprove: function (data) {
-                return fetch('{{ url('guest/gateways/paypal/paypal_capture_payment/') }}' + data . orderID, {
+                return fetch('{{ url('guest/Gateways/paypal/paypal_capture_payment/') }}' + data.orderID, {
                     method: 'GET'
                 })
                     .then((response) => window.location.replace('{{ url('guest/view/invoice/' . $invoice_url_key) }}'));

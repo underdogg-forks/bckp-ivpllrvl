@@ -1,4 +1,4 @@
-@php namespace Modules\Emailtemplates\Views; @endphp
+@php namespace Modules\EmailTemplates\Views; @endphp
 <div class="panel panel-default">
     <div class="panel-heading">@@lang('email_template_tags')</div>
     <div class="panel-body">
@@ -59,9 +59,9 @@
                         @@lang('tax_code')
                     </option>
                 </optgroup>
-@php $sumex = get_setting('sumex') == '1';
+                @php $sumex = get_setting('sumex') == '1';
 if ($sumex) {
-    @endphp
+                @endphp
                 <optgroup label="@@lang('sumex_information')">
                     <option value="{{{client_avs}}}">
                         @@lang('sumex_ssn')
@@ -73,23 +73,23 @@ if ($sumex) {
                         @@lang('sumex_veka')
                     </option>
                 </optgroup>
-@php
-}
-if ($custom_fields['ip_client_custom']) {
-    @endphp
+                @php
+                    }
+                    if ($custom_fields['ip_client_custom']) {
+                @endphp
                 <optgroup label="@@lang('custom_fields')">
                     @php
-    foreach ($custom_fields['ip_client_custom'] as $custom) {
-        @endphp
-                        <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
-                            {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-                        </option>
+                        foreach ($custom_fields['ip_client_custom'] as $custom) {
+                    @endphp
+                    <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
+                        {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
+                    </option>
                     @php
-    }
-    @endphp
+                        }
+                    @endphp
                 </optgroup>
-@php
-} @endphp
+                @php
+                    } @endphp
             </select>
         </div>
 
@@ -158,8 +158,8 @@ if ($custom_fields['ip_client_custom']) {
                         BIC
                     </option>
                 </optgroup>
-@php if ($sumex) {
-    @endphp
+                @php if ($sumex) {
+                @endphp
                 <optgroup label="@@lang('sumex_information')">
                     <option value="{{{user_subscribernumber}}}">
                         @@lang('user_subscriber_number')
@@ -171,23 +171,23 @@ if ($custom_fields['ip_client_custom']) {
                         @@lang('sumex_rcc')
                     </option>
                 </optgroup>
-@php
-}
-if ($custom_fields['ip_user_custom']) {
-    @endphp
+                @php
+                    }
+                    if ($custom_fields['ip_user_custom']) {
+                @endphp
                 <optgroup label="@@lang('custom_fields')">
                     @php
-    foreach ($custom_fields['ip_user_custom'] as $custom) {
-        @endphp
-                        <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
-                            {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-                        </option>
+                        foreach ($custom_fields['ip_user_custom'] as $custom) {
+                    @endphp
+                    <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
+                        {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
+                    </option>
                     @php
-    }
-    @endphp
+                        }
+                    @endphp
                 </optgroup>
-@php
-} @endphp
+                @php
+                    } @endphp
             </select>
         </div>
 
@@ -227,26 +227,26 @@ if ($custom_fields['ip_user_custom']) {
                         @@lang('guest_url')
                     </option>
                 </optgroup>
-@php if ($custom_fields['ip_quote_custom']) {
-    @endphp
+                @php if ($custom_fields['ip_quote_custom']) {
+                @endphp
 
                 <optgroup label="@@lang('custom_fields')">
                     @php
-    foreach ($custom_fields['ip_quote_custom'] as $custom) {
-        @endphp
-                        <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
-                            {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-                        </option>
+                        foreach ($custom_fields['ip_quote_custom'] as $custom) {
+                    @endphp
+                    <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
+                        {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
+                    </option>
                     @php
-    }
-    @endphp
+                        }
+                    @endphp
                 </optgroup>
-@php
-} @endphp
+                @php
+                    } @endphp
             </select>
         </div>
-@php if ($sumex) {
-    @endphp
+        @php if ($sumex) {
+        @endphp
         <div class="form-group">
             <label for="tags_sumex">@@lang('invoice_sumex')</label>
             <select id="tags_sumex" class="tag-select form-control">
@@ -273,8 +273,8 @@ if ($custom_fields['ip_user_custom']) {
                 </option>
             </select>
         </div>
-<?php
-} @endphp
+            <?php
+        } @endphp
     </div>
 </div>
-<?php 
+    <?php

@@ -1,4 +1,4 @@
-@php namespace Modules\Customfields\Views; @endphp
+@php namespace Modules\CustomFields\Views; @endphp
 <div class="table-responsive">
     <table class="table table-hover table-striped">
 
@@ -14,64 +14,64 @@
         </thead>
 
         <tbody>
-@php foreach ($custom_fields as $custom_field) {
+        @php foreach ($custom_fields as $custom_field) {
     $alpha = str_replace('-', '_', mb_strtolower($custom_field->custom_field_type));
     $position = $positions[$custom_field->custom_field_table][$custom_field->custom_field_location];
-    @endphp
-            <tr>
-                <td>@php
-    _htmlsc($custom_field->custom_field_label);
-    @endphp</td>
-                <td>@php
-    _trans($custom_tables[$custom_field->custom_field_table]);
-    @endphp</td>
-                <td>{{ $position }}</td>
-                <td>@php
-    _trans($alpha);
-    @endphp</td>
-                <td>{{ $custom_field->custom_field_order }}</td>
-                <td>
-                    <div class="options btn-group btn-group-sm">
-                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-cog"></i> @@lang('options')
-                        </a>
-@php
-    if (in_array($custom_field->custom_field_type, $custom_value_fields)) {
         @endphp
-                        <a href="{{ url('custom_values/field/' . $custom_field->custom_field_id) }}"
-                           class="btn btn-default">
-                            <i class="fa fa-list fa-margin"></i> @@lang('values')
-                        </a>
-@php
-    }
-    @endphp
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="{{ url('custom_fields/form/' . $custom_field->custom_field_id) }}">
-                                    <i class="fa fa-edit fa-margin"></i> @@lang('edit')
-                                </a>
-                            </li>
-                            <li>
-                                <form action="{{ url('custom_fields/delete/' . $custom_field->custom_field_id) }}"
-                                      method="POST">
-                                    @php
-    _csrf_field();
-    @endphp
-                                    <button type="submit" class="dropdown-button"
-                                            onclick="return confirm('@@lang('delete_record_warning')');">
-                                        <i class="fa fa-trash-o fa-margin"></i> @@lang('delete')
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-<?php
-} @endphp
+        <tr>
+            <td>@php
+                    _htmlsc($custom_field->custom_field_label);
+                @endphp</td>
+            <td>@php
+                    _trans($custom_tables[$custom_field->custom_field_table]);
+                @endphp</td>
+            <td>{{ $position }}</td>
+            <td>@php
+                    _trans($alpha);
+                @endphp</td>
+            <td>{{ $custom_field->custom_field_order }}</td>
+            <td>
+                <div class="options btn-group btn-group-sm">
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-cog"></i> @@lang('options')
+                    </a>
+                    @php
+                        if (in_array($custom_field->custom_field_type, $custom_value_fields)) {
+                    @endphp
+                    <a href="{{ url('custom_values/field/' . $custom_field->custom_field_id) }}"
+                       class="btn btn-default">
+                        <i class="fa fa-list fa-margin"></i> @@lang('values')
+                    </a>
+                    @php
+                        }
+                    @endphp
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ url('custom_fields/form/' . $custom_field->custom_field_id) }}">
+                                <i class="fa fa-edit fa-margin"></i> @@lang('edit')
+                            </a>
+                        </li>
+                        <li>
+                            <form action="{{ url('custom_fields/delete/' . $custom_field->custom_field_id) }}"
+                                  method="POST">
+                                @php
+                                    _csrf_field();
+                                @endphp
+                                <button type="submit" class="dropdown-button"
+                                        onclick="return confirm('@@lang('delete_record_warning')');">
+                                    <i class="fa fa-trash-o fa-margin"></i> @@lang('delete')
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+            <?php
+        } @endphp
         </tbody>
 
     </table>
 
 </div>
-<?php 
+<?php

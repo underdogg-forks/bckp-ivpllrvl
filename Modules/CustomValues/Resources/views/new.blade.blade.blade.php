@@ -1,4 +1,4 @@
-@php namespace Modules\Customvalues\Views;
+@php namespace Modules\CustomValues\Views;
 
 $href = site_url('custom_fields/form/' . $field->custom_field_id);
 $link = anchor($href, '<i class="fa fa-edit fa-margin"></i> ' . htmlsc($field->custom_field_label), ' class="btn btn-default"');
@@ -23,11 +23,12 @@ $alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']); @endphp
         <div class="row">
             <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-               @php $this->layout->loadView('layout/alerts'); @endphp
+                @php $this->layout->loadView('layout/alerts'); @endphp
 
                 <div class="form-group">
                     <label for="custom_values_value">@@lang('value'):</label>
-                    <input type="text" class="form-control" name="custom_values_value" id="custom_values_value" required>
+                    <input type="text" class="form-control" name="custom_values_value" id="custom_values_value"
+                           required>
                 </div>
 
                 <div class="row visible-xs">

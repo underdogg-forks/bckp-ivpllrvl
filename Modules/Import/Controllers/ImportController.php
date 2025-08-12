@@ -1,29 +1,15 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Import\Controllers;
 
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class ImportController extends AdminController
 {
     private array $allowed_files = ['clients.csv', 'invoices.csv', 'invoice_items.csv', 'payments.csv'];
+
     /**
      * ImportController constructor.
      */
@@ -32,6 +18,7 @@ class ImportController extends AdminController
         parent::__construct();
         $this->load->model('mdl_import');
     }
+
     /**
      * @originalName index
      *
@@ -45,6 +32,7 @@ class ImportController extends AdminController
         $this->layout->buffer('content', 'import/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -52,11 +40,11 @@ class ImportController extends AdminController
      */
     public function form()
     {
-        if (!$this->input->post('btn_submit')) {
+        if ( ! $this->input->post('btn_submit')) {
             $this->load->helper('directory');
             $files = directory_map('./uploads/import');
             foreach ($files as $key => $file) {
-                if (!is_numeric(array_search($file, $this->allowed_files, true))) {
+                if ( ! is_numeric(array_search($file, $this->allowed_files, true))) {
                     unset($files[$key]);
                 }
             }
@@ -69,7 +57,7 @@ class ImportController extends AdminController
             if ($this->input->post('files')) {
                 $files = $this->allowed_files;
                 foreach ($files as $key => $file) {
-                    if (!is_numeric(array_search($file, $this->input->post('files'), true))) {
+                    if ( ! is_numeric(array_search($file, $this->input->post('files'), true))) {
                         unset($files[$key]);
                     }
                 }
@@ -100,6 +88,7 @@ class ImportController extends AdminController
             redirect('import');
         }
     }
+
     /**
      * @originalName delete
      *

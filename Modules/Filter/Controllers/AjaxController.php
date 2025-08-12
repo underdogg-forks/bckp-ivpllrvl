@@ -1,29 +1,15 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Filter\Controllers;
 
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class AjaxController extends AdminController
 {
     public $ajax_controller = true;
+
     /**
      * @originalName filterInvoices
      *
@@ -32,7 +18,7 @@ class AjaxController extends AdminController
     public function filterInvoices()
     {
         $this->load->model('invoices/mdl_invoices');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {
@@ -43,6 +29,7 @@ class AjaxController extends AdminController
         $data = ['invoices' => $this->mdl_invoices->get()->result(), 'invoice_statuses' => $this->mdl_invoices->statuses()];
         $this->layout->loadView('invoices/partial_invoice_table', $data);
     }
+
     /**
      * @originalName filterQuotes
      *
@@ -51,7 +38,7 @@ class AjaxController extends AdminController
     public function filterQuotes()
     {
         $this->load->model('quotes/mdl_quotes');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {
@@ -62,6 +49,7 @@ class AjaxController extends AdminController
         $data = ['quotes' => $this->mdl_quotes->get()->result(), 'quote_statuses' => $this->mdl_quotes->statuses()];
         $this->layout->loadView('quotes/partial_quote_table', $data);
     }
+
     /**
      * @originalName filterClients
      *
@@ -70,7 +58,7 @@ class AjaxController extends AdminController
     public function filterClients()
     {
         $this->load->model('clients/mdl_clients');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {
@@ -81,6 +69,7 @@ class AjaxController extends AdminController
         $data = ['records' => $this->mdl_clients->withTotalBalance()->get()->result(), 'einvoicing' => get_setting('einvoicing')];
         $this->layout->loadView('clients/partial_client_table', $data);
     }
+
     /**
      * @originalName filterCustomFields
      *
@@ -92,7 +81,7 @@ class AjaxController extends AdminController
         $name = empty($_SERVER['HTTP_REFERER']) ? 'all' : basename($_SERVER['HTTP_REFERER']);
         // Todo: With CI?
         $this->load->model('custom_fields/mdl_custom_fields');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {
@@ -111,6 +100,7 @@ class AjaxController extends AdminController
         $data = ['custom_fields' => $custom_fields, 'custom_tables' => $custom_tables, 'custom_value_fields' => $this->mdl_custom_values->customValueFields(), 'positions' => $this->mdl_custom_fields->getPositions(true)];
         $this->layout->loadView('custom_fields/partial_custom_fields_table', $data);
     }
+
     /**
      * @originalName filterCustomValues
      *
@@ -122,7 +112,7 @@ class AjaxController extends AdminController
         $id = empty($_SERVER['HTTP_REFERER']) ? 0 : basename($_SERVER['HTTP_REFERER']);
         // Todo: With CI?
         $this->load->model(['custom_values/mdl_custom_values', 'custom_fields/mdl_custom_fields']);
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {
@@ -132,9 +122,10 @@ class AjaxController extends AdminController
         }
         $this->mdl_custom_values->grouped();
         $custom_values = $this->mdl_custom_values->get()->result();
-        $data = ['id' => $id, 'custom_values' => $custom_values, 'custom_tables' => $this->mdl_custom_fields->customTables(), 'positions' => $this->mdl_custom_fields->getPositions(true)];
+        $data          = ['id' => $id, 'custom_values' => $custom_values, 'custom_tables' => $this->mdl_custom_fields->customTables(), 'positions' => $this->mdl_custom_fields->getPositions(true)];
         $this->layout->loadView('custom_values/partial_custom_values_table', $data);
     }
+
     /**
      * @originalName filterCustomValuesField
      *
@@ -146,7 +137,7 @@ class AjaxController extends AdminController
         // custom values id Normaly always here (it's ajax). Old school but work.
         $id = empty($_SERVER['HTTP_REFERER']) ? 0 : basename($_SERVER['HTTP_REFERER']);
         // Todo: With CI?
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {
@@ -155,9 +146,10 @@ class AjaxController extends AdminController
             }
         }
         $elements = $this->mdl_custom_values->getByFid($id)->result();
-        $data = ['id' => $id, 'elements' => $elements];
+        $data     = ['id' => $id, 'elements' => $elements];
         $this->layout->loadView('custom_values/partial_custom_values_field', $data);
     }
+
     /**
      * @originalName filterProjects
      *
@@ -166,7 +158,7 @@ class AjaxController extends AdminController
     public function filterProjects()
     {
         $this->load->model('projects/mdl_projects');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         // client_id : Column 'client_id' in where clause is ambiguous (ip_clients.client_id or ip_project.client_id
         // Not showed in frontend table
@@ -180,6 +172,7 @@ class AjaxController extends AdminController
         $data = ['projects' => $this->mdl_projects->get()->result()];
         $this->layout->loadView('projects/partial_projects_table', $data);
     }
+
     /**
      * @originalName filterTasks
      *
@@ -188,7 +181,7 @@ class AjaxController extends AdminController
     public function filterTasks()
     {
         $this->load->model('tasks/mdl_tasks');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         // Column 'project_id' in where clause is ambiguous
         // Not showed in frontend table:
@@ -202,6 +195,7 @@ class AjaxController extends AdminController
         $data = ['tasks' => $this->mdl_tasks->get()->result(), 'task_statuses' => $this->mdl_tasks->statuses()];
         $this->layout->loadView('tasks/partial_tasks_table', $data);
     }
+
     /**
      * @originalName filterProducts
      *
@@ -210,7 +204,7 @@ class AjaxController extends AdminController
     public function filterProducts()
     {
         $this->load->model('products/mdl_products');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         // Columns 'tax_rate_id' & 'unit_id' in where clause is ambiguous
         // Not showed in frontend table:
@@ -224,6 +218,7 @@ class AjaxController extends AdminController
         $data = ['products' => $this->mdl_products->get()->result()];
         $this->layout->loadView('products/partial_products_table', $data);
     }
+
     /**
      * @originalName filterUsers
      *
@@ -232,7 +227,7 @@ class AjaxController extends AdminController
     public function filterUsers()
     {
         $this->load->model('users/mdl_users');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         // Not used: user_id    user_type   user_active user_date_modified  user_language   user_password   user_psalt  user_passwordreset_token
         // Not showed in frontend table:
@@ -248,6 +243,7 @@ class AjaxController extends AdminController
         $data = ['users' => $this->mdl_users->get()->result(), 'user_types' => $this->mdl_users->userTypes()];
         $this->layout->loadView('users/partial_users_table', $data);
     }
+
     /**
      * @originalName filterFamilies
      *
@@ -256,7 +252,7 @@ class AjaxController extends AdminController
     public function filterFamilies()
     {
         $this->load->model('families/mdl_families');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         // Not showed in frontend table:
         // family_id,
@@ -269,6 +265,7 @@ class AjaxController extends AdminController
         $data = ['families' => $this->mdl_families->get()->result()];
         $this->layout->loadView('families/partial_families_table', $data);
     }
+
     /**
      * @originalName filterInvoicesRecuring
      *
@@ -277,7 +274,7 @@ class AjaxController extends AdminController
     public function filterInvoicesRecuring()
     {
         $this->load->model('invoices/mdl_invoices_recurring');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         // invoice_recurring_id invoice_id
         foreach ($keywords as $keyword) {
@@ -289,6 +286,7 @@ class AjaxController extends AdminController
         $data = ['recur_frequencies' => $this->mdl_invoices_recurring->recur_frequencies, 'recurring_invoices' => $this->mdl_invoices_recurring->get()->result()];
         $this->layout->loadView('invoices/partial_invoices_recurring_table', $data);
     }
+
     /**
      * @originalName filterOnlineLogs
      *
@@ -297,7 +295,7 @@ class AjaxController extends AdminController
     public function filterOnlineLogs()
     {
         $this->load->model('payments/mdl_payment_logs');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {
@@ -308,6 +306,7 @@ class AjaxController extends AdminController
         $data = ['payment_logs' => $this->mdl_payment_logs->get()->result()];
         $this->layout->loadView('payments/partial_online_logs_table', $data);
     }
+
     /**
      * @originalName filterArchives
      *
@@ -319,6 +318,7 @@ class AjaxController extends AdminController
         $data = ['invoices_archive' => $this->mdl_invoices->getArchives($this->input->post('filter_query'))];
         $this->layout->loadView('invoices/partial_invoice_archive', $data);
     }
+
     /**
      * @originalName filterPayments
      *
@@ -327,7 +327,7 @@ class AjaxController extends AdminController
     public function filterPayments()
     {
         $this->load->model('payments/mdl_payments');
-        $query = $this->input->post('filter_query');
+        $query    = $this->input->post('filter_query');
         $keywords = explode(' ', $query);
         foreach ($keywords as $keyword) {
             if ($keyword) {

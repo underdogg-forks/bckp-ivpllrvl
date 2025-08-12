@@ -7,9 +7,6 @@ use Illuminate\Support\Str;
 
 class RouteWriter
 {
-    /**
-     * @param array<int,array{controller:string, method:string, http:string, uri:string, route:string}> $routes
-     */
     public function write(string $moduleName, array $routes): void
     {
         $dir = base_path("Modules/{$moduleName}/Routes");
@@ -18,23 +15,25 @@ class RouteWriter
         $slug = Str::of($moduleName)->snake('-')->replace('_', '-')->lower()->toString();
         $file = "{$dir}/{$slug}.php";
 
-        $lines = ['<?php', 'use Illuminate\\Support\\Facades\\Route;'];
+        $uses = array_values(array_unique(array_map(fn ($r) => $r['controller'], $routes)));
+        sort($uses);
+
+        $out   = [];
+        $out[] = '<?php';
+        $out[] = 'use Illuminate\\Support\\Facades\\Route;';
+        foreach ($uses as $fqcn) {
+            $out[] = "use {$fqcn};";
+        }
+        $out[] = '';
+        $out[] = "Route::middleware('web')->group(function () {";
         foreach ($routes as $r) {
-            $lines[] = "use {$r['controller']};";
+            $http  = mb_strtolower($r['http']);
+            $short = ltrim(mb_strrchr($r['controller'], '\\'), '\\');
+            $out[] = "    Route::{$http}('{$r['uri']}', [{$short}::class, '{$r['method']}'])->name('{$r['route']}');";
         }
-        $lines[] = '';
+        $out[] = '};' === '' ? '' : '});';
+        $out[] = '';
 
-        // Group per controller
-        $byCtrl = collect($routes)->groupBy('controller');
-        foreach ($byCtrl as $controller => $items) {
-            $lines[] = 'Route::group([], function () {';
-            foreach ($items as $r) {
-                $http    = mb_strtolower($r['http']);
-                $lines[] = "    Route::{$http}('{$r['uri']}', [{$r['controller']}::class, '{$r['method']}'])->name('{$r['route']}');";
-            }
-            $lines[] = "});\n";
-        }
-
-        File::put($file, implode("\n", $lines) . "\n");
+        File::put($file, implode("\n", $out));
     }
 }

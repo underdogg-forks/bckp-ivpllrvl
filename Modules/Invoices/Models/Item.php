@@ -1,30 +1,19 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Invoices\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\ResponseModel;
+
 #[AllowDynamicProperties]
 class Item extends ResponseModel
 {
     public $table = 'ip_invoice_items';
+
     public $primary_key = 'ip_invoice_items.item_id';
+
     public $date_created_field = 'item_date_added';
+
     /**
      * @originalName defaultSelect
      *
@@ -36,6 +25,7 @@ class Item extends ResponseModel
             item_tax_rates.tax_rate_percent AS item_tax_rate_percent,
             item_tax_rates.tax_rate_name AS item_tax_rate_name');
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -45,6 +35,7 @@ class Item extends ResponseModel
     {
         $this->db->orderBy('ip_invoice_items.item_order');
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -56,6 +47,7 @@ class Item extends ResponseModel
         $this->db->join('ip_tax_rates AS item_tax_rates', 'item_tax_rates.tax_rate_id = ip_invoice_items.item_tax_rate_id', 'left');
         $this->db->join('ip_products', 'ip_products.product_id = ip_invoice_items.item_product_id', 'left');
     }
+
     /**
      * @originalName validationRules
      *
@@ -65,6 +57,7 @@ class Item extends ResponseModel
     {
         return ['invoice_id' => ['field' => 'invoice_id', 'label' => trans('invoice'), 'rules' => 'required'], 'item_sku' => ['field' => 'item_sku', 'label' => trans('item_sku'), 'rules' => 'required|unique'], 'item_name' => ['field' => 'item_name', 'label' => trans('item_name'), 'rules' => 'required'], 'item_description' => ['field' => 'item_description', 'label' => trans('description')], 'item_quantity' => ['field' => 'item_quantity', 'label' => trans('quantity'), 'rules' => 'required'], 'item_price' => ['field' => 'item_price', 'label' => trans('price'), 'rules' => 'required'], 'item_tax_rate_id' => ['field' => 'item_tax_rate_id', 'label' => trans('item_tax_rate')], 'item_product_id' => ['field' => 'item_product_id', 'label' => trans('original_product')], 'item_date' => ['field' => 'item_date', 'label' => trans('item_date')], 'item_is_recurring' => ['field' => 'item_is_recurring', 'label' => trans('recurring')]];
     }
+
     /**
      * @originalName save
      *
@@ -80,8 +73,10 @@ class Item extends ResponseModel
         } elseif (is_array($db_array) && isset($db_array['invoice_id'])) {
             $this->mdl_invoice_amounts->calculate($db_array['invoice_id'], $global_discount);
         }
+
         return $id;
     }
+
     /**
      * @originalName delete
      *
@@ -96,7 +91,7 @@ class Item extends ResponseModel
         if ($query->numRows() == 0) {
             return false;
         }
-        $row = $query->row();
+        $row        = $query->row();
         $invoice_id = $row->invoice_id;
         // Delete the item itself
         parent::delete($item_id);
@@ -107,8 +102,10 @@ class Item extends ResponseModel
         $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($invoice_id);
         // Recalculate invoice amounts
         $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
+
         return true;
     }
+
     /**
      * @originalName getItemsSubtotal
      *
@@ -122,6 +119,7 @@ class Item extends ResponseModel
             WHERE item_id
                 IN (SELECT item_id FROM ip_invoice_items WHERE invoice_id = ' . $this->db->escape($invoice_id) . ')
             ')->row();
+
         return $row->items_subtotal;
     }
 }

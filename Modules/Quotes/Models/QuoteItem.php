@@ -1,30 +1,19 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Quotes\Models;
 
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\ResponseModel;
+
 #[AllowDynamicProperties]
 class QuoteItem extends ResponseModel
 {
     public $table = 'ip_quote_items';
+
     public $primary_key = 'ip_quote_items.item_id';
+
     public $date_created_field = 'item_date_added';
+
     /**
      * @originalName defaultSelect
      *
@@ -36,6 +25,7 @@ class QuoteItem extends ResponseModel
             item_tax_rates.tax_rate_percent AS item_tax_rate_percent,
             item_tax_rates.tax_rate_name AS item_tax_rate_name');
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -45,6 +35,7 @@ class QuoteItem extends ResponseModel
     {
         $this->db->orderBy('ip_quote_items.item_order');
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -56,6 +47,7 @@ class QuoteItem extends ResponseModel
         $this->db->join('ip_tax_rates AS item_tax_rates', 'item_tax_rates.tax_rate_id = ip_quote_items.item_tax_rate_id', 'left');
         $this->db->join('ip_products', 'ip_products.product_id = ip_quote_items.item_product_id', 'left');
     }
+
     /**
      * @originalName validationRules
      *
@@ -65,6 +57,7 @@ class QuoteItem extends ResponseModel
     {
         return ['quote_id' => ['field' => 'quote_id', 'label' => trans('quote'), 'rules' => 'required'], 'item_sku' => ['field' => 'item_sku', 'label' => trans('item_sku'), 'rules' => 'required|unique'], 'item_name' => ['field' => 'item_name', 'label' => trans('item_name'), 'rules' => 'required'], 'item_description' => ['field' => 'item_description', 'label' => trans('description')], 'item_quantity' => ['field' => 'item_quantity', 'label' => trans('quantity')], 'item_price' => ['field' => 'item_price', 'label' => trans('price')], 'item_tax_rate_id' => ['field' => 'item_tax_rate_id', 'label' => trans('item_tax_rate')], 'item_product_id' => ['field' => 'item_product_id', 'label' => trans('original_product')]];
     }
+
     /**
      * @originalName save
      *
@@ -80,8 +73,10 @@ class QuoteItem extends ResponseModel
         } elseif (is_array($db_array) && isset($db_array['quote_id'])) {
             $this->mdl_quote_amounts->calculate($db_array['quote_id'], $global_discount);
         }
+
         return $id;
     }
+
     /**
      * @originalName delete
      *
@@ -95,7 +90,7 @@ class QuoteItem extends ResponseModel
         if ($query->numRows() == 0) {
             return false;
         }
-        $row = $query->row();
+        $row      = $query->row();
         $quote_id = $row->quote_id;
         // Delete the item itself
         parent::delete($item_id);
@@ -106,8 +101,10 @@ class QuoteItem extends ResponseModel
         $global_discount['item'] = $this->mdl_quote_amounts->getGlobalDiscount($quote_id);
         // Recalculate quote amounts
         $this->mdl_quote_amounts->calculate($quote_id, $global_discount);
+
         return true;
     }
+
     /**
      * @originalName getItemsSubtotal
      *
@@ -121,6 +118,7 @@ class QuoteItem extends ResponseModel
             WHERE item_id
                 IN (SELECT item_id FROM ip_quote_items WHERE quote_id = ' . $this->db->escape($quote_id) . ')
             ')->row();
+
         return $row->items_subtotal;
     }
 }

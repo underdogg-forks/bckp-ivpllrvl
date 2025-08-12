@@ -1,25 +1,10 @@
 <?php
+
+namespace Modules\CustomFields\Controllers;
+
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Customfields\Controllers;
-
-use Modules\Core\Controllers\AdminController;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class CustomFieldsController extends AdminController
 {
@@ -31,6 +16,7 @@ class CustomFieldsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_custom_fields');
     }
+
     /**
      * @originalName index
      *
@@ -41,6 +27,7 @@ class CustomFieldsController extends AdminController
         // Display all custom_fields tables by default
         redirect('custom_fields/table/all');
     }
+
     /**
      * @originalName table
      *
@@ -61,6 +48,7 @@ class CustomFieldsController extends AdminController
         $this->layout->buffer('content', 'custom_fields/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -77,13 +65,14 @@ class CustomFieldsController extends AdminController
             $this->mdl_custom_fields->save($id);
             redirect('custom_fields');
         }
-        if ($id && !$this->input->post('btn_submit') && !$this->mdl_custom_fields->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_custom_fields->prepForm($id)) {
             show_404();
         }
         $this->layout->set(['custom_field_id' => $id, 'custom_field_tables' => $this->mdl_custom_fields->customTables(), 'custom_field_types' => $this->mdl_custom_fields->customTypes(), 'custom_field_usage' => $this->mdl_custom_fields->used($id), 'custom_field_location' => $this->mdl_custom_fields->formValue('custom_field_location'), 'positions' => $this->mdl_custom_fields->getPositions()]);
         $this->layout->buffer('content', 'custom_fields/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *
@@ -91,7 +80,7 @@ class CustomFieldsController extends AdminController
      */
     public function delete($id)
     {
-        if (!$this->mdl_custom_fields->delete($id)) {
+        if ( ! $this->mdl_custom_fields->delete($id)) {
             $this->session->set_flashdata('alert_info', trans('id') . sprintf(' "%s" ', $id) . trans('custom_fields_used_not_deletable'));
         }
         // Return to page number of custom values or fields

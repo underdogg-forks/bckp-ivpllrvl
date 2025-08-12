@@ -1,31 +1,19 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Payments\Models;
 
+use AllowDynamicProperties;
 use Modules\Core\Models\ResponseModel;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class Payment extends ResponseModel
 {
     public $table = 'ip_payments';
+
     public $primary_key = 'ip_payments.payment_id';
+
     public $validation_rules = 'validation_rules';
+
     /**
      * @originalName defaultSelect
      *
@@ -45,6 +33,7 @@ class Payment extends ResponseModel
             ip_invoices.invoice_date_created,
             ip_payments.*', false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -54,6 +43,7 @@ class Payment extends ResponseModel
     {
         $this->db->orderBy('ip_payments.payment_date DESC, ip_payments.payment_id DESC');
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -66,6 +56,7 @@ class Payment extends ResponseModel
         $this->db->join('ip_invoice_amounts', 'ip_invoice_amounts.invoice_id = ip_invoices.invoice_id');
         $this->db->join('ip_payment_methods', 'ip_payment_methods.payment_method_id = ip_payments.payment_method_id', 'left');
     }
+
     /**
      * @originalName validationRules
      *
@@ -75,6 +66,7 @@ class Payment extends ResponseModel
     {
         return ['invoice_id' => ['field' => 'invoice_id', 'label' => trans('invoice'), 'rules' => 'required'], 'payment_date' => ['field' => 'payment_date', 'label' => trans('date'), 'rules' => 'required'], 'payment_amount' => ['field' => 'payment_amount', 'label' => trans('payment'), 'rules' => 'required|callback_validate_payment_amount'], 'payment_method_id' => ['field' => 'payment_method_id', 'label' => trans('payment_method')], 'payment_note' => ['field' => 'payment_note', 'label' => trans('note')]];
     }
+
     /**
      * @originalName validatePaymentAmount
      *
@@ -82,10 +74,10 @@ class Payment extends ResponseModel
      */
     public function validatePaymentAmount($amount)
     {
-        $amount = (float) standardize_amount($amount);
+        $amount     = (float) standardize_amount($amount);
         $invoice_id = $this->input->post('invoice_id');
         $payment_id = $this->input->post('payment_id');
-        $invoice = $this->db->where('invoice_id', $invoice_id)->get('ip_invoice_amounts')->row();
+        $invoice    = $this->db->where('invoice_id', $invoice_id)->get('ip_invoice_amounts')->row();
         if ($invoice == null) {
             return false;
         }
@@ -96,10 +88,13 @@ class Payment extends ResponseModel
         }
         if ($amount > $invoice_balance) {
             $this->form_validation->set_message('validate_payment_amount', trans('payment_cannot_exceed_balance'));
+
             return false;
         }
+
         return true;
     }
+
     /**
      * @originalName save
      *
@@ -110,7 +105,7 @@ class Payment extends ResponseModel
         $db_array = $db_array ? $db_array : $this->dbArray();
         $this->load->model('invoices/mdl_invoice_amounts');
         // Save the payment
-        $id = parent::save($id, $db_array);
+        $id                      = parent::save($id, $db_array);
         $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($db_array['invoice_id']);
         // Recalculate invoice amounts
         $this->mdl_invoice_amounts->calculate($db_array['invoice_id'], $global_discount);
@@ -120,7 +115,7 @@ class Payment extends ResponseModel
             return false;
         }
         // Calculate sum for payments
-        $paid = (float) $invoice->invoice_paid;
+        $paid  = (float) $invoice->invoice_paid;
         $total = (float) $invoice->invoice_total;
         if ($paid >= $total) {
             $this->db->where('invoice_id', $db_array['invoice_id']);
@@ -130,8 +125,10 @@ class Payment extends ResponseModel
         $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($db_array['invoice_id']);
         // Recalculate invoice amounts
         $this->mdl_invoice_amounts->calculate($db_array['invoice_id'], $global_discount);
+
         return $id;
     }
+
     /**
      * @originalName dbArray
      *
@@ -139,11 +136,13 @@ class Payment extends ResponseModel
      */
     public function dbArray()
     {
-        $db_array = parent::dbArray();
-        $db_array['payment_date'] = date_to_mysql($db_array['payment_date']);
+        $db_array                   = parent::dbArray();
+        $db_array['payment_date']   = date_to_mysql($db_array['payment_date']);
         $db_array['payment_amount'] = standardize_amount($db_array['payment_amount']);
+
         return $db_array;
     }
+
     /**
      * @originalName delete
      *
@@ -173,6 +172,7 @@ class Payment extends ResponseModel
         $this->load->helper('orphan');
         delete_orphans();
     }
+
     /**
      * @originalName prepForm
      *
@@ -180,14 +180,16 @@ class Payment extends ResponseModel
      */
     public function prepForm($id = null): bool
     {
-        if (!parent::prepForm($id)) {
+        if ( ! parent::prepForm($id)) {
             return false;
         }
-        if (!$id) {
+        if ( ! $id) {
             parent::setFormValue('payment_date', date('Y-m-d'));
         }
+
         return true;
     }
+
     /**
      * @originalName byClient
      *
@@ -196,6 +198,7 @@ class Payment extends ResponseModel
     public function byClient($client_id)
     {
         $this->filter_where('ip_clients.client_id', $client_id);
+
         return $this;
     }
 }

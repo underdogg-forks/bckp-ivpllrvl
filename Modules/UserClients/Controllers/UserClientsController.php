@@ -1,26 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
+namespace Modules\UserClients\Controllers;
 
-namespace Modules\Userclients\Controllers;
-
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class UserClientsController extends AdminController
 {
@@ -34,6 +18,7 @@ class UserClientsController extends AdminController
         $this->load->model('clients/mdl_clients');
         $this->load->model('user_clients/mdl_user_clients');
     }
+
     /**
      * @originalName index
      *
@@ -43,6 +28,7 @@ class UserClientsController extends AdminController
     {
         redirect('users');
     }
+
     /**
      * @originalName user
      *
@@ -63,6 +49,7 @@ class UserClientsController extends AdminController
         $this->layout->buffer('content', 'user_clients/field');
         $this->layout->render();
     }
+
     /**
      * @originalName create
      *
@@ -70,7 +57,7 @@ class UserClientsController extends AdminController
      */
     public function create($user_id = null)
     {
-        if (!$user_id) {
+        if ( ! $user_id) {
             redirect('custom_values');
         } elseif ($this->input->post('btn_cancel')) {
             redirect('user_clients/field/' . $user_id);
@@ -88,12 +75,13 @@ class UserClientsController extends AdminController
             $this->db->update('ip_users', $user_update);
             redirect('user_clients/user/' . $user_id);
         }
-        $user = $this->mdl_users->getById($user_id);
+        $user    = $this->mdl_users->getById($user_id);
         $clients = $this->mdl_clients->getNotAssignedToUser($user_id);
         $this->layout->set(['id' => $user_id, 'user' => $user, 'clients' => $clients]);
         $this->layout->buffer('content', 'user_clients/new');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

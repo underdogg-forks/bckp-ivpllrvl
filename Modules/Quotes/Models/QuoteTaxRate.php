@@ -1,29 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Quotes\Models;
 
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\ResponseModel;
+
 #[AllowDynamicProperties]
 class QuoteTaxRate extends ResponseModel
 {
     public $table = 'ip_quote_tax_rates';
+
     public $primary_key = 'ip_quote_tax_rates.quote_tax_rate_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -35,6 +23,7 @@ class QuoteTaxRate extends ResponseModel
         $this->db->select('ip_tax_rates.tax_rate_percent AS quote_tax_rate_percent');
         $this->db->select('ip_quote_tax_rates.*');
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -44,6 +33,7 @@ class QuoteTaxRate extends ResponseModel
     {
         $this->db->join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_quote_tax_rates.tax_rate_id');
     }
+
     /**
      * @originalName save
      *
@@ -61,6 +51,7 @@ class QuoteTaxRate extends ResponseModel
             $this->mdl_quote_amounts->calculate($quote_id, $global_discount);
         }
     }
+
     /**
      * @originalName validationRules
      *

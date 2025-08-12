@@ -1,28 +1,15 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Setup\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\BaseModel;
+
 #[AllowDynamicProperties]
 class Setup extends BaseModel
 {
     public $errors = [];
+
     /**
      * @originalName installTables
      *
@@ -38,8 +25,10 @@ class Setup extends BaseModel
         }
         $this->installDefaultData();
         $this->installDefaultSettings();
+
         return true;
     }
+
     /**
      * @originalName installDefaultData
      *
@@ -52,6 +41,7 @@ class Setup extends BaseModel
         $this->db->insert('ip_payment_methods', ['payment_method_name' => 'Cash']);
         $this->db->insert('ip_payment_methods', ['payment_method_name' => 'Credit Card']);
     }
+
     /**
      * @originalName upgradeTables
      *
@@ -79,7 +69,7 @@ class Setup extends BaseModel
             $this->executeContents($file_contents);
             $this->saveVersion($sql_file);
             $upgrade_method = 'upgrade_' . str_replace('.', '_', mb_substr($sql_file, 0, -4));
-            if (!method_exists($this, $upgrade_method)) {
+            if ( ! method_exists($this, $upgrade_method)) {
                 continue;
             }
             $this->{$upgrade_method}();
@@ -88,8 +78,10 @@ class Setup extends BaseModel
             return false;
         }
         $this->installDefaultSettings();
+
         return true;
     }
+
     /**
      * @originalName upgrade006120
      *
@@ -103,13 +95,14 @@ class Setup extends BaseModel
          * greater than 100 and if v1.2.0 was not installed within this update process
          */
         $this->db->where_in('version_file', ['006_1.2.0.sql', '005_1.1.2.sql']);
-        $versions = $this->db->get('ip_versions')->result();
+        $versions     = $this->db->get('ip_versions')->result();
         $upgrade_diff = $versions[1]->version_date_applied - $versions[0]->version_date_applied;
         if ($this->session->userdata('is_upgrade') && $upgrade_diff > 100 && $versions[1]->version_date_applied > time() - 100) {
             $setup_notice = ['type' => 'alert-danger', 'content' => trans('setup_v120_alert')];
             $this->session->set_userdata('setup_notice', $setup_notice);
         }
     }
+
     /**
      * @originalName upgrade019147
      *
@@ -122,13 +115,14 @@ class Setup extends BaseModel
          * (see above for details)
          */
         $this->db->where_in('version_file', ['018_1.4.6.sql', '019_1.4.7.sql']);
-        $versions = $this->db->get('ip_versions')->result();
+        $versions     = $this->db->get('ip_versions')->result();
         $upgrade_diff = $versions[1]->version_date_applied - $versions[0]->version_date_applied;
         if ($this->session->userdata('is_upgrade') && $upgrade_diff > 100 && $versions[1]->version_date_applied > time() - 100) {
             $setup_notice = ['type' => 'alert-danger', 'content' => trans('setup_v147_alert')];
             $this->session->set_userdata('setup_notice', $setup_notice);
         }
     }
+
     /**
      * @originalName upgrade023150
      *
@@ -136,9 +130,9 @@ class Setup extends BaseModel
      */
     public function upgrade023150()
     {
-        $res = $this->db->query('SELECT * FROM ip_custom_fields');
+        $res          = $this->db->query('SELECT * FROM ip_custom_fields');
         $drop_columns = [];
-        $tables = ['client', 'invoice', 'quote', 'payment', 'user'];
+        $tables       = ['client', 'invoice', 'quote', 'payment', 'user'];
         if ($res->numRows()) {
             foreach ($res->result() as $row) {
                 $drop_columns[] = ['field_id' => $row->custom_field_id, 'column' => $row->custom_field_column, 'table' => $row->custom_field_table];
@@ -189,8 +183,8 @@ class Setup extends BaseModel
             if ($res->numRows()) {
                 foreach ($res->result() as $row) {
                     $escaped_table_type = $this->db->escape($row->{$table_type . '_id'});
-                    $escaped_column = $this->db->escape($row->{$value['column']});
-                    $query = "INSERT INTO {$table_name}\n                        (" . $table_type . '_id, ' . $table_type . '_custom_fieldid, ' . $table_type . "_custom_fieldvalue)\n                        VALUES (\n                            {$escaped_table_type},\n                            (\n                                SELECT custom_field_id\n                                FROM ip_custom_fields\n                                WHERE ip_custom_fields.custom_field_column = " . $this->db->escape($value['column']) . "\n                            ),\n                            {$escaped_column}\n                        )";
+                    $escaped_column     = $this->db->escape($row->{$value['column']});
+                    $query              = "INSERT INTO {$table_name}\n                        (" . $table_type . '_id, ' . $table_type . '_custom_fieldid, ' . $table_type . "_custom_fieldvalue)\n                        VALUES (\n                            {$escaped_table_type},\n                            (\n                                SELECT custom_field_id\n                                FROM ip_custom_fields\n                                WHERE ip_custom_fields.custom_field_column = " . $this->db->escape($value['column']) . "\n                            ),\n                            {$escaped_column}\n                        )";
                     $this->db->query($query);
                 }
             }
@@ -203,6 +197,7 @@ class Setup extends BaseModel
         }
         $this->db->query('ALTER TABLE ip_custom_fields DROP COLUMN custom_field_column');
     }
+
     /**
      * @originalName upgrade029156
      *
@@ -214,7 +209,7 @@ class Setup extends BaseModel
         // If the table already has the column it will be shown in any user query, so get one now
         $test_user = $this->db->query('SELECT * FROM `ip_users` ORDER BY `user_id` ASC LIMIT 1')->row();
         // Add new user key if applicable
-        if (!isset($test_user->user_all_clients)) {
+        if ( ! isset($test_user->user_all_clients)) {
             $this->db->query('ALTER TABLE `ip_users`
               ADD `user_all_clients` INT(1) NOT NULL DEFAULT 0
               AFTER `user_psalt`;');
@@ -225,6 +220,7 @@ class Setup extends BaseModel
         $this->load->helper('settings');
         $this->mdl_settings->save('pdf_quote_footer', get_setting('pdf_invoice_footer'));
     }
+
     /**
      * @originalName upgrade03616
      *
@@ -254,6 +250,7 @@ class Setup extends BaseModel
             }
         }
     }
+
     /**
      * @originalName upgrade039163
      *
@@ -263,8 +260,8 @@ class Setup extends BaseModel
     {
         //**Set languages to lowercase & replace include_zugferd setting to einvoicing**
         $einvoicing = '0';
-        $step = 2;
-        $rows = $this->db->query('SELECT * FROM `ip_settings`');
+        $step       = 2;
+        $rows       = $this->db->query('SELECT * FROM `ip_settings`');
         foreach ($rows->result() as $row) {
             // Set default_language to lowercase
             if ($row->setting_key == 'default_language') {
@@ -278,7 +275,7 @@ class Setup extends BaseModel
                 $step--;
             }
             // All Steps Ok
-            if (!$step) {
+            if ( ! $step) {
                 break;
             }
         }
@@ -301,8 +298,8 @@ class Setup extends BaseModel
         } else {
             // Delete Zugferd lib & conf
             $filename = 'Zugferdv10';
-            $files[] = APPPATH . 'libraries/XMLtemplates/' . $filename . 'Xml.php';
-            $files[] = APPPATH . 'Helpers/XMLconfigs/' . $filename . '.php';
+            $files[]  = APPPATH . 'libraries/XMLtemplates/' . $filename . 'Xml.php';
+            $files[]  = APPPATH . 'Helpers/XMLconfigs/' . $filename . '.php';
             foreach ($files as $file) {
                 if (file_exists($file)) {
                     unlink($file);
@@ -310,6 +307,7 @@ class Setup extends BaseModel
             }
         }
     }
+
     /**
      * @originalName executeContents
      *
@@ -319,7 +317,7 @@ class Setup extends BaseModel
     {
         $commands = explode(';', $contents);
         foreach ($commands as $command) {
-            if (!mb_trim($command)) {
+            if ( ! mb_trim($command)) {
                 continue;
             }
             $this->db->db_debug = IP_DEBUG;
@@ -330,6 +328,7 @@ class Setup extends BaseModel
             }
         }
     }
+
     /**
      * @originalName saveVersion
      *
@@ -340,6 +339,7 @@ class Setup extends BaseModel
         $version_db_array = ['version_date_applied' => time(), 'version_file' => $sql_file, 'version_sql_errors' => count($this->errors)];
         $this->db->insert('ip_versions', $version_db_array);
     }
+
     /**
      * @originalName installDefaultSettings
      *
@@ -351,7 +351,7 @@ class Setup extends BaseModel
         $default_settings = ['default_language' => $this->session->userdata('ip_lang'), 'date_format' => 'm/d/Y', 'currency_symbol' => '$', 'currency_symbol_placement' => 'before', 'currency_code' => 'USD', 'invoices_due_after' => 30, 'quotes_expire_after' => 15, 'default_invoice_group' => 3, 'default_quote_group' => 4, 'thousands_separator' => ',', 'decimal_point' => '.', 'cron_key' => random_string('alnum', 16), 'tax_rate_decimal_places' => 2, 'pdf_invoice_template' => 'InvoicePlane', 'pdf_invoice_template_paid' => 'InvoicePlane - paid', 'pdf_invoice_template_overdue' => 'InvoicePlane - overdue', 'pdf_quote_template' => 'InvoicePlane', 'public_invoice_template' => 'InvoicePlane_Web', 'public_quote_template' => 'InvoicePlane_Web', 'disable_sidebar' => 1];
         foreach ($default_settings as $setting_key => $setting_value) {
             $this->db->where('setting_key', $setting_key);
-            if (!$this->db->get('ip_settings')->numRows()) {
+            if ( ! $this->db->get('ip_settings')->numRows()) {
                 $db_array = ['setting_key' => $setting_key, 'setting_value' => $setting_value];
                 $this->db->insert('ip_settings', $db_array);
             }

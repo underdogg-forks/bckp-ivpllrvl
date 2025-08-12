@@ -1,26 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Products\Controllers;
 
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class ProductsController extends AdminController
 {
@@ -32,6 +16,7 @@ class ProductsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_products');
     }
+
     /**
      * @originalName index
      *
@@ -45,6 +30,7 @@ class ProductsController extends AdminController
         $this->layout->buffer('content', 'products/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -63,7 +49,7 @@ class ProductsController extends AdminController
             $this->mdl_products->save($id, $db_array);
             redirect('products');
         }
-        if ($id && !$this->input->post('btn_submit') && !$this->mdl_products->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_products->prepForm($id)) {
             show_404();
         }
         $this->load->model('families/mdl_families');
@@ -73,6 +59,7 @@ class ProductsController extends AdminController
         $this->layout->buffer('content', 'products/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

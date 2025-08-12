@@ -1,20 +1,21 @@
-@php namespace Modules\Emailtemplates\Views; @endphp
+@php namespace Modules\EmailTemplates\Views; @endphp
 <form method="post">
 
     @php
-_csrf_field();
-?>
+        _csrf_field();
+        ?>
 
-    <div id="headerbar">
-        <h1 class="headerbar-title">@@lang('email_template_form')</h1>
-        @php $this->layout->loadView('layout/header_buttons'); @endphp
+            <div id="headerbar">
+                <h1 class="headerbar-title">@@lang('email_template_form')</h1>
+                @php $this->layout->loadView('layout/header_buttons'); @endphp
     </div>
 
     <div id="content">
 
         @php $this->layout->loadView('layout/alerts'); @endphp
 
-        <input class="hidden" name="is_update" type="hidden" value="{{ $this->mdl_email_templates->form_value('is_update') ? '1' : '0' }}">
+        <input class="hidden" name="is_update" type="hidden"
+               value="{{ $this->mdl_email_templates->form_value('is_update') ? '1' : '0' }}">
 
         <div class="row">
             <div class="col-xs-12 col-md-8 col-md-offset-2">
@@ -94,29 +95,29 @@ _csrf_field();
                         <option value="">@@lang('none')</option>
 
                         <optgroup label="@@lang('invoices')">
-@php foreach ($invoice_templates as $template) {
-    @endphp
+                            @php foreach ($invoice_templates as $template) {
+                            @endphp
                             <option class="hidden-invoice" value="{{ $template }}"
                                 @php
-    check_select($selected_pdf_template, $template);
-    @endphp>
+                                    check_select($selected_pdf_template, $template);
+                                @endphp>
                                 {{ $template }}
                             </option>
-@php
-} @endphp
+                            @php
+                                } @endphp
                         </optgroup>
 
                         <optgroup label="@@lang('quotes')">
-@php foreach ($quote_templates as $template) {
-    @endphp
+                            @php foreach ($quote_templates as $template) {
+                            @endphp
                             <option class="hidden-quote" value="{{ $template }}"
                                 @php
-    check_select($selected_pdf_template, $template);
-    @endphp>
+                                    check_select($selected_pdf_template, $template);
+                                @endphp>
                                 {{ $template }}
                             </option>
-<?php
-} @endphp
+                                <?php
+                            } @endphp
                         </optgroup>
                     </select>
                 </div>
@@ -225,7 +226,7 @@ _csrf_field();
         }
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         // find the type of template that has been loaded and enable/disable
         // the invoice and quote selects as required
         var inputValue = $('input[type="radio"]:checked').attr("value");
@@ -241,7 +242,7 @@ _csrf_field();
 
         // if the radio input for 'type of template' gets clicked, check the
         // new value and enable/disable the invoice and quote selects as required.
-        $('input[type="radio"]').click(function() {
+        $('input[type="radio"]').click(function () {
             var inputValue = $(this).attr("value");
 
             if (inputValue === 'quote') {
@@ -255,4 +256,4 @@ _csrf_field();
         });
     });
 </script>
-<?php 
+<?php

@@ -1,17 +1,9 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Customfields\Models;
+namespace Modules\CustomFields\Models;
 
 use Modules\Core\Validators\Validator;
+
 /*
  * userPlane
  *
@@ -24,8 +16,11 @@ use Modules\Core\Validators\Validator;
 class UserCustom extends Validator
 {
     public static $positions = ['custom_fields', 'account_information', 'address', 'tax_information', 'contact_information'];
+
     public $table = 'ip_user_custom';
+
     public $primary_key = 'ip_user_custom.user_custom_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -35,6 +30,7 @@ class UserCustom extends Validator
     {
         $this->db->select('SQL_CALC_FOUND_ROWS ip_user_custom.*, ip_custom_fields.*', false);
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -44,6 +40,7 @@ class UserCustom extends Validator
     {
         $this->db->join('ip_custom_fields', 'ip_user_custom.user_custom_fieldid = ip_custom_fields.custom_field_id');
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -53,6 +50,7 @@ class UserCustom extends Validator
     {
         $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
+
     /**
      * @originalName saveCustom
      *
@@ -68,17 +66,20 @@ class UserCustom extends Validator
             }
             $user_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array = ['user_id' => $user_id, 'user_custom_fieldid' => $key, 'user_custom_fieldvalue' => $value];
+                $db_array    = ['user_id' => $user_id, 'user_custom_fieldid' => $key, 'user_custom_fieldvalue' => $value];
                 $user_custom = $this->where('user_id', $user_id)->where('user_custom_fieldid', $key)->get();
                 if ($user_custom->numRows()) {
                     $user_custom_id = $user_custom->row()->user_custom_id;
                 }
                 parent::save($user_custom_id, $db_array);
             }
+
             return true;
         }
+
         return $result;
     }
+
     /**
      * @originalName byId
      *
@@ -87,8 +88,10 @@ class UserCustom extends Validator
     public function byId($user_id)
     {
         $this->db->where('ip_user_custom.user_id', $user_id);
+
         return $this;
     }
+
     /**
      * @originalName getByUseid
      *

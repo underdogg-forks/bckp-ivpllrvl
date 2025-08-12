@@ -1,31 +1,19 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
+namespace Modules\CustomFields\Models;
 
-namespace Modules\Customfields\Models;
-
+use AllowDynamicProperties;
 use Modules\Core\Validators\Validator;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class InvoiceCustom extends Validator
 {
     public static $positions = ['custom_fields', 'properties'];
+
     public $table = 'ip_invoice_custom';
+
     public $primary_key = 'ip_invoice_custom.invoice_custom_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -35,6 +23,7 @@ class InvoiceCustom extends Validator
     {
         $this->db->select('SQL_CALC_FOUND_ROWS ip_invoice_custom.*, ip_custom_fields.*', false);
     }
+
     /**
      * @originalName defaultJoin
      *
@@ -44,6 +33,7 @@ class InvoiceCustom extends Validator
     {
         $this->db->join('ip_custom_fields', 'ip_invoice_custom.invoice_custom_fieldid = ip_custom_fields.custom_field_id');
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -53,6 +43,7 @@ class InvoiceCustom extends Validator
     {
         $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
+
     /**
      * @originalName saveCustom
      *
@@ -68,7 +59,7 @@ class InvoiceCustom extends Validator
             }
             $invoice_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array = ['invoice_id' => $invoice_id, 'invoice_custom_fieldid' => $key, 'invoice_custom_fieldvalue' => $value];
+                $db_array       = ['invoice_id' => $invoice_id, 'invoice_custom_fieldid' => $key, 'invoice_custom_fieldvalue' => $value];
                 $invoice_custom = $this->where('invoice_id', $invoice_id)->where('invoice_custom_fieldid', $key)->get();
                 if ($invoice_custom->numRows()) {
                     $invoice_custom_id = $invoice_custom->row()->invoice_custom_id;
@@ -76,10 +67,13 @@ class InvoiceCustom extends Validator
                 // why not delete when it empty value (clean db)
                 parent::save($invoice_custom_id, $db_array);
             }
+
             return true;
         }
+
         return $result;
     }
+
     /**
      * @originalName byId
      *
@@ -88,6 +82,7 @@ class InvoiceCustom extends Validator
     public function byId($invoice_id)
     {
         $this->db->where('ip_invoice_custom.invoice_id', $invoice_id);
+
         return $this;
     }
 }

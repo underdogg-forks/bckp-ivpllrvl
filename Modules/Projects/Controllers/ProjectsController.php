@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Projects\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\AdminController;
+
 #[AllowDynamicProperties]
 class ProjectsController extends AdminController
 {
@@ -30,6 +16,7 @@ class ProjectsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_projects');
     }
+
     /**
      * @originalName index
      *
@@ -43,6 +30,7 @@ class ProjectsController extends AdminController
         $this->layout->buffer('content', 'projects/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -59,7 +47,7 @@ class ProjectsController extends AdminController
             $this->mdl_projects->save($id);
             redirect('projects');
         }
-        if ($id && !$this->input->post('btn_submit') && !$this->mdl_projects->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_projects->prepForm($id)) {
             show_404();
         }
         $this->load->model('clients/mdl_clients');
@@ -67,6 +55,7 @@ class ProjectsController extends AdminController
         $this->layout->buffer('content', 'projects/form');
         $this->layout->render();
     }
+
     /**
      * @originalName view
      *
@@ -79,7 +68,7 @@ class ProjectsController extends AdminController
         }
         $this->load->model('projects/mdl_projects');
         $project = $this->mdl_projects->getById($project_id);
-        if (!$project) {
+        if ( ! $project) {
             show_404();
         }
         $this->load->model('tasks/mdl_tasks');
@@ -87,6 +76,7 @@ class ProjectsController extends AdminController
         $this->layout->buffer('content', 'projects/view');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

@@ -1,25 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Guest\Controllers\Gateways;
 
+use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class PaypalController extends BaseController
 {
@@ -28,6 +13,7 @@ class PaypalController extends BaseController
         parent::__construct();
         $this->createClient();
     }
+
     /**
      * @originalName paypalCreateOrder
      *
@@ -45,9 +31,11 @@ class PaypalController extends BaseController
         }
         //create the order
         $paypal_client = $this->lib_paypal->createOrder(['invoice_id' => $invoice->invoice_id, 'currency_code' => get_setting('gateway_paypal_currency'), 'value' => $invoice->invoice_balance, 'custom_id' => $invoice_url_key]);
+
         return $this->output->set_output($paypal_client);
         //TODO: make proper response
     }
+
     /**
      * @originalName paypalCapturePayment
      *
@@ -59,8 +47,8 @@ class PaypalController extends BaseController
         //handle the payment
         if ($paypal_response['status']) {
             $paypal_object = json_decode($paypal_response['response']->getBody());
-            $invoice_id = $paypal_object->purchase_units[0]->payments->captures[0]->invoice_id;
-            $amount = $paypal_object->purchase_units[0]->payments->captures[0]->amount->value;
+            $invoice_id    = $paypal_object->purchase_units[0]->payments->captures[0]->invoice_id;
+            $amount        = $paypal_object->purchase_units[0]->payments->captures[0]->amount->value;
             //record the payment
             $this->load->model('payments/mdl_payments');
             $this->mdl_payments->save(null, ['invoice_id' => $invoice_id, 'payment_date' => date('Y-m-d'), 'payment_amount' => $amount, 'payment_method_id' => get_setting('gateway_paypal_payment_method'), 'payment_note' => '']);
@@ -79,6 +67,7 @@ class PaypalController extends BaseController
             $this->session->keep_flashdata('alert_error');
         }
     }
+
     /**
      * @originalName createClient
      *
@@ -88,6 +77,6 @@ class PaypalController extends BaseController
     {
         $this->load->library('crypt');
         //load the REST API consumer library
-        $this->load->library('gateways/PaypalLib', ['client_id' => get_setting('gateway_paypal_clientId'), 'client_secret' => $this->crypt->decode(get_setting('gateway_paypal_clientSecret')), 'demo' => get_setting('gateway_paypal_testMode') == 1], 'lib_paypal');
+        $this->load->library('Gateways/PaypalLib', ['client_id' => get_setting('gateway_paypal_clientId'), 'client_secret' => $this->crypt->decode(get_setting('gateway_paypal_clientSecret')), 'demo' => get_setting('gateway_paypal_testMode') == 1], 'lib_paypal');
     }
 }

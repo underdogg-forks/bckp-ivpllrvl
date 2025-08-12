@@ -13,7 +13,7 @@
 
     async function loadStripe() {
         const fetchClientSecret = async () => {
-            const response = await fetch('{{ url('guest/gateways/stripe/create_checkout_session/' . $invoice_url_key) }}', {
+            const response = await fetch('{{ url('guest/Gateways/stripe/create_checkout_session/' . $invoice_url_key) }}', {
                 method: 'GET'
             })
                 .then((response) => response.json())

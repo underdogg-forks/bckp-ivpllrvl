@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Contains the lang translations for the payment gateways.
+ * Contains the lang translations for the payment Gateways.
  */
 return [
     // General strings

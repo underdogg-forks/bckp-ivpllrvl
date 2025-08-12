@@ -1,4 +1,4 @@
-@php namespace Modules\Taxrates\Views; @endphp
+@php namespace Modules\TaxRates\Views; @endphp
 <form method="post" class="form-horizontal">
 
     @php _csrf_field(); @endphp

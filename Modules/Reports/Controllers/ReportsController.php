@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Reports\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\AdminController;
+
 #[AllowDynamicProperties]
 class ReportsController extends AdminController
 {
@@ -30,6 +16,7 @@ class ReportsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_reports');
     }
+
     /**
      * @originalName salesByClient
      *
@@ -45,6 +32,7 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/sales_by_client_index')->render();
     }
+
     /**
      * @originalName invoicesPerClient
      *
@@ -60,6 +48,7 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/invoices_per_client_index')->render();
     }
+
     /**
      * @originalName paymentHistory
      *
@@ -75,6 +64,7 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/payment_history_index')->render();
     }
+
     /**
      * @originalName invoiceAging
      *
@@ -90,6 +80,7 @@ class ReportsController extends AdminController
         }
         $this->layout->buffer('content', 'reports/invoice_aging_index')->render();
     }
+
     /**
      * @originalName salesByYear
      *

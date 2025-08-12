@@ -1,4 +1,4 @@
-@php namespace Modules\Userclients\Views; @endphp
+@php namespace Modules\UserClients\Views; @endphp
 <div id="headerbar">
     <h1 class="headerbar-title">@@lang('assigned_clients')</h1>
 
@@ -39,31 +39,31 @@
 
                             <tbody>
                             @php foreach ($user_clients as $user_client) {
-    @endphp
-                                <tr>
-                                    <td>
-                                        <a href="{{ url('clients/view/' . $user_client->client_id) }}">
-                                            @php
-    _htmlsc(format_client($user_client));
-    @endphp
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <form
-                                            action="{{ url('user_clients/delete/' . $user_client->user_client_id) }}"
-                                            method="POST">
-                                            @php
-    _csrf_field();
-    @endphp
-                                            <button type="submit" class="btn btn-default btn-sm"
-                                                    onclick="return confirm('@@lang('delete_user_client_warning')');">
-                                                <i class="fa fa-trash-o fa-margin"></i> @@lang('remove')
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php
-} @endphp
+                            @endphp
+                            <tr>
+                                <td>
+                                    <a href="{{ url('clients/view/' . $user_client->client_id) }}">
+                                        @php
+                                            _htmlsc(format_client($user_client));
+                                        @endphp
+                                    </a>
+                                </td>
+                                <td>
+                                    <form
+                                        action="{{ url('user_clients/delete/' . $user_client->user_client_id) }}"
+                                        method="POST">
+                                        @php
+                                            _csrf_field();
+                                        @endphp
+                                        <button type="submit" class="btn btn-default btn-sm"
+                                                onclick="return confirm('@@lang('delete_user_client_warning')');">
+                                            <i class="fa fa-trash-o fa-margin"></i> @@lang('remove')
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                                <?php
+                            } @endphp
                             </tbody>
 
                         </table>
@@ -75,4 +75,4 @@
     </div>
 
 </div>
-<?php 
+<?php

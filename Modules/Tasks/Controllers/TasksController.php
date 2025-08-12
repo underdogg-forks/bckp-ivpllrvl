@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Tasks\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\AdminController;
+
 #[AllowDynamicProperties]
 class TasksController extends AdminController
 {
@@ -30,6 +16,7 @@ class TasksController extends AdminController
         parent::__construct();
         $this->load->model('mdl_tasks');
     }
+
     /**
      * @originalName index
      *
@@ -43,6 +30,7 @@ class TasksController extends AdminController
         $this->layout->buffer('content', 'tasks/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -59,9 +47,9 @@ class TasksController extends AdminController
             $this->mdl_tasks->save($id);
             redirect('tasks');
         }
-        if (!$this->input->post('btn_submit')) {
+        if ( ! $this->input->post('btn_submit')) {
             $prep_form = $this->mdl_tasks->prepForm($id);
-            if ($id && !$prep_form) {
+            if ($id && ! $prep_form) {
                 show_404();
             }
         }
@@ -71,6 +59,7 @@ class TasksController extends AdminController
         $this->layout->buffer('content', 'tasks/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

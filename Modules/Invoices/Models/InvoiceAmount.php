@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Invoices\Models;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Models\BaseModel;
+
 #[AllowDynamicProperties]
 class InvoiceAmount extends BaseModel
 {
@@ -26,10 +12,12 @@ class InvoiceAmount extends BaseModel
      * @var int
      */
     public $decimal_places = 2;
+
     public function __construct()
     {
         $this->decimal_places = (int) get_setting('tax_rate_decimal_places');
     }
+
     /**
      * @originalName calculate
      *
@@ -52,11 +40,11 @@ class InvoiceAmount extends BaseModel
         // Discounts calculation - since v1.6.3
         if (config_item('legacy_calculation')) {
             $invoice_item_subtotal = $invoice_amounts->invoice_item_subtotal - $invoice_amounts->invoice_item_discount;
-            $invoice_subtotal = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
-            $invoice_total = $this->calculateDiscount($invoice_id, $invoice_subtotal);
+            $invoice_subtotal      = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
+            $invoice_total         = $this->calculateDiscount($invoice_id, $invoice_subtotal);
         } else {
             $invoice_item_subtotal = $invoice_amounts->invoice_item_subtotal - $invoice_amounts->invoice_item_discount - $global_discount['item'];
-            $invoice_total = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
+            $invoice_total         = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
         }
         // GetController the amount already paid
         $query = $this->db->query('
@@ -79,13 +67,13 @@ class InvoiceAmount extends BaseModel
         $this->calculateInvoiceTaxes($invoice_id);
         // GetController invoice status
         $this->load->model('invoices/mdl_invoices');
-        $invoice = $this->mdl_invoices->getById($invoice_id);
+        $invoice           = $this->mdl_invoices->getById($invoice_id);
         $invoice_is_credit = $invoice->creditinvoice_parent_id > 0;
         // Set to paid if balance is zero
         // Check if the invoice total is not zero or negative
         if ($invoice->invoice_balance == 0 && ($invoice->invoice_total != 0 || $invoice_is_credit)) {
             $this->db->where('invoice_id', $invoice_id);
-            $payment = $this->db->get('ip_payments')->row();
+            $payment           = $this->db->get('ip_payments')->row();
             $payment_method_id = $payment->payment_method_id ? $payment->payment_method_id : 0;
             $this->db->where('invoice_id', $invoice_id);
             $this->db->set('invoice_status_id', 4);
@@ -99,6 +87,7 @@ class InvoiceAmount extends BaseModel
             }
         }
     }
+
     /**
      * @originalName calculateDiscount
      *
@@ -109,12 +98,14 @@ class InvoiceAmount extends BaseModel
         $this->db->where('invoice_id', $invoice_id);
         $invoice_data = $this->db->get('ip_invoices')->row();
         // Prevent NULL in number_format
-        $total = (float) number_format((float) $invoice_total, $this->decimal_places, '.', '');
-        $discount_amount = (float) number_format((float) $invoice_data->invoice_discount_amount, $this->decimal_places, '.', '');
+        $total            = (float) number_format((float) $invoice_total, $this->decimal_places, '.', '');
+        $discount_amount  = (float) number_format((float) $invoice_data->invoice_discount_amount, $this->decimal_places, '.', '');
         $discount_percent = (float) number_format((float) $invoice_data->invoice_discount_percent, $this->decimal_places, '.', '');
         $total -= $discount_amount;
+
         return $total - round($total / 100 * $discount_percent, $this->decimal_places);
     }
+
     /**
      * @originalName getGlobalDiscount
      *
@@ -128,8 +119,10 @@ class InvoiceAmount extends BaseModel
             WHERE item_id
                 IN (SELECT item_id FROM ip_invoice_items WHERE invoice_id = ' . $this->db->escape($invoice_id) . ')
             ')->row();
+
         return $row->global_discount;
     }
+
     /**
      * @originalName calculateInvoiceTaxes
      *
@@ -187,6 +180,7 @@ class InvoiceAmount extends BaseModel
             $this->db->update('ip_invoice_amounts', $db_array);
         }
     }
+
     /**
      * @originalName getTotalInvoiced
      *
@@ -227,6 +221,7 @@ class InvoiceAmount extends BaseModel
                 return $this->db->query('SELECT SUM(invoice_total) AS total_invoiced FROM ip_invoice_amounts')->row()->total_invoiced;
         }
     }
+
     /**
      * @originalName getTotalPaid
      *
@@ -264,6 +259,7 @@ class InvoiceAmount extends BaseModel
                 return $this->db->query('SELECT SUM(invoice_paid) AS total_paid FROM ip_invoice_amounts')->row()->total_paid;
         }
     }
+
     /**
      * @originalName getTotalBalance
      *
@@ -300,6 +296,7 @@ class InvoiceAmount extends BaseModel
                 return $this->db->query('SELECT SUM(invoice_balance) AS total_balance FROM ip_invoice_amounts')->row()->total_balance;
         }
     }
+
     /**
      * @originalName getStatusTotals
      *
@@ -369,6 +366,7 @@ class InvoiceAmount extends BaseModel
         foreach ($results as $result) {
             $return[$result['invoice_status_id']] = array_merge($return[$result['invoice_status_id']], $result);
         }
+
         return $return;
     }
 }

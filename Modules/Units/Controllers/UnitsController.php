@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Units\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\AdminController;
+
 #[AllowDynamicProperties]
 class UnitsController extends AdminController
 {
@@ -30,6 +16,7 @@ class UnitsController extends AdminController
         parent::__construct();
         $this->load->model('mdl_units');
     }
+
     /**
      * @originalName index
      *
@@ -43,6 +30,7 @@ class UnitsController extends AdminController
         $this->layout->buffer('content', 'units/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -57,7 +45,7 @@ class UnitsController extends AdminController
         // <<<--- filters _POST array for nastiness
         if ($this->input->post('is_update') == 0 && $this->input->post('unit_name') != '' && $this->input->post('unit_name_plrl') != '') {
             $check = $this->db->get_where('ip_units', ['unit_name' => $this->input->post('unit_name')])->result();
-            if (!empty($check)) {
+            if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('unit_already_exists'));
                 redirect('units/form');
             }
@@ -66,8 +54,8 @@ class UnitsController extends AdminController
             $this->mdl_units->save($id);
             redirect('units');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_units->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_units->prepForm($id)) {
                 show_404();
             }
             $this->mdl_units->setFormValue('is_update', true);
@@ -75,6 +63,7 @@ class UnitsController extends AdminController
         $this->layout->buffer('content', 'units/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

@@ -1,30 +1,17 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Families\Models;
 
+use AllowDynamicProperties;
 use Modules\Core\Models\ResponseModel;
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
+
 #[AllowDynamicProperties]
 class Family extends ResponseModel
 {
     public $table = 'ip_families';
+
     public $primary_key = 'ip_families.family_id';
+
     /**
      * @originalName defaultSelect
      *
@@ -34,6 +21,7 @@ class Family extends ResponseModel
     {
         $this->db->select('SQL_CALC_FOUND_ROWS *', false);
     }
+
     /**
      * @originalName defaultOrderBy
      *
@@ -43,6 +31,7 @@ class Family extends ResponseModel
     {
         $this->db->orderBy('ip_families.family_name');
     }
+
     /**
      * @originalName validationRules
      *

@@ -1,26 +1,12 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Guest\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\GuestController as BaseGuestController;
+
 #[AllowDynamicProperties]
-class InvoicesController extends GuestController
+class InvoicesController extends BaseGuestController
 {
     /**
      * InvoicesController constructor.
@@ -30,6 +16,7 @@ class InvoicesController extends GuestController
         parent::__construct();
         $this->load->model('invoices/mdl_invoices');
     }
+
     /**
      * @originalName index
      *
@@ -40,6 +27,7 @@ class InvoicesController extends GuestController
         // Display open invoices by default
         redirect('guest/invoices/status/open');
     }
+
     /**
      * @originalName status
      *
@@ -69,6 +57,7 @@ class InvoicesController extends GuestController
         $this->layout->buffer('content', 'guest/invoices_index');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName view
      *
@@ -77,7 +66,7 @@ class InvoicesController extends GuestController
     public function view($invoice_id): void
     {
         $invoice = $this->mdl_invoices->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $this->mdl_invoices->markViewed($invoice->invoice_id);
@@ -87,6 +76,7 @@ class InvoicesController extends GuestController
         $this->layout->buffer('content', 'guest/invoices_view');
         $this->layout->render('layout_guest');
     }
+
     /**
      * @originalName generatePdf
      *
@@ -95,13 +85,14 @@ class InvoicesController extends GuestController
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
     {
         $invoice = $this->mdl_invoices->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $this->mdl_invoices->markViewed($invoice_id);
         $this->load->helper('pdf');
         generate_invoice_pdf($invoice_id, $stream, $invoice_template, true);
     }
+
     /**
      * @originalName generateSumexPdf
      *
@@ -110,7 +101,7 @@ class InvoicesController extends GuestController
     public function generateSumexPdf($invoice_id, $stream = true, $invoice_template = null): void
     {
         $invoice = $this->mdl_invoices->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
-        if (!$invoice) {
+        if ( ! $invoice) {
             show_404();
         }
         $this->mdl_invoices->markViewed($invoice_id);

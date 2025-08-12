@@ -9,47 +9,67 @@ use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
+use Symfony\Component\Finder\Finder;
 use Throwable;
 
 class Step6Routes extends BaseModuleCommand
 {
-    protected $signature = 'modules:step6:routes';
+    protected $signature = 'modules:step6:routes {--debug}';
 
-    protected $description = 'Generate Modules/{Module}/Routes/{modulename}.php covering all public controller methods';
+    protected $description = 'Generate Modules/{Module}/Routes/{modulename}.php from public controller methods';
 
     public function handle(RouteWriter $writer): int
     {
+        $debug  = (bool) $this->option('debug');
         $parser = (new ParserFactory())->createForHostVersion();
 
         foreach ($this->modulesFromTarget() as $module) {
             $ctrlDir = base_path("{$this->modulesRoot}/{$module}/Controllers");
             if ( ! File::isDirectory($ctrlDir)) {
+                if ($debug) {
+                    $this->warn("[{$module}] no Controllers dir");
+                }
                 continue;
             }
 
+            $files  = Finder::create()->files()->in($ctrlDir)->name('*.php');
             $routes = [];
-            foreach (File::allFiles($ctrlDir) as $f) {
-                if ($f->getExtension() !== 'php') {
-                    continue;
-                }
 
+            foreach ($files as $f) {
                 $code = File::get($f->getRealPath());
                 try {
                     $ast = $parser->parse($code);
-                } catch (Throwable) {
+                    if ( ! $ast) {
+                        continue;
+                    }
+                } catch (Throwable $e) {
+                    if ($debug) {
+                        $this->warn("[{$module}] parse error: {$f->getRelativePathname()} :: {$e->getMessage()}");
+                    }
                     continue;
                 }
 
-                $fqcn    = $this->fqcn($ast, "Modules\\{$module}\\Controllers");
+                $fqcn = $this->fqcn($ast, "Modules\\{$module}\\Controllers");
+                if ( ! $fqcn) {
+                    if ($debug) {
+                        $this->warn("[{$module}] no class in {$f->getRelativePathname()}");
+                    }
+                    continue;
+                }
+
                 $methods = $this->publicMethods($ast);
+                if ( ! $methods) {
+                    if ($debug) {
+                        $this->line("[{$module}] no public methods: {$f->getRelativePathname()}");
+                    }
+                    continue;
+                }
 
-                $prefix = mb_strtolower($module); // e.g. invoices
                 foreach ($methods as $m) {
-                    $camel = $this->camel($m);
-                    $http  = $this->guessHttp($m);
-                    $uri   = $this->guessUri($module, $m);
-                    $name  = $this->guessRouteName($module, $camel);
-
+                    $camel    = $this->camel($m);
+                    $http     = $this->guessHttp($m);
+                    $uri      = $this->guessUri($module, $m);
+                    $name     = $this->guessRouteName($module, $camel);
                     $routes[] = [
                         'controller' => $fqcn,
                         'method'     => $camel,
@@ -64,30 +84,33 @@ class Step6Routes extends BaseModuleCommand
                 $writer->write($module, $routes);
                 $this->writeJson("module_refactor/{$module}/routes.json", $routes);
                 $this->info("Routes written for {$module}.");
+            } elseif ($debug) {
+                $this->warn("[{$module}] no routes discovered");
             }
         }
 
         return self::SUCCESS;
     }
 
-    private function fqcn(array $ast, string $fallbackNs): string
+    private function fqcn(array $ast, string $fallbackNs): ?string
     {
         $ns    = $fallbackNs;
         $class = null;
+
         foreach ($ast as $n) {
             if ($n instanceof Node\Stmt\Namespace_) {
-                $ns = $n->name?->toString() ?? $fallbackNs;
+                $ns = $n->name?->toString() ?: $fallbackNs;
                 foreach ($n->stmts as $s) {
-                    if ($s instanceof Node\Stmt\Class_) {
+                    if ($s instanceof Node\Stmt\Class_ && ! $s->isAnonymous() && ! $s->isAbstract()) {
                         $class = (string) $s->name;
                     }
                 }
-            } elseif ($n instanceof Node\Stmt\Class_) {
+            } elseif ($n instanceof Node\Stmt\Class_ && ! $n->isAnonymous() && ! $n->isAbstract()) {
                 $class = (string) $n->name;
             }
         }
 
-        return "{$ns}\\{$class}";
+        return $class ? "{$ns}\\{$class}" : null;
     }
 
     private function publicMethods(array $ast): array
@@ -122,7 +145,11 @@ class Step6Routes extends BaseModuleCommand
     private function guessHttp(string $m): string
     {
         $m = mb_strtolower($m);
-        if (in_array($m, ['store', 'update', 'destroy', 'save', 'post', 'upload', 'create', 'create_recurring', 'create_credit', 'change_user', 'change_client', 'copy_invoice', 'delete_item', 'save_invoice_tax_rate'])) {
+        if (in_array($m, [
+            'store', 'update', 'destroy', 'save', 'post', 'upload', 'create',
+            'create_recurring', 'create_credit', 'change_user', 'change_client',
+            'copy_invoice', 'delete_item', 'save_invoice_tax_rate',
+        ], true)) {
             return 'POST';
         }
         if (str_starts_with($m, 'post') || str_starts_with($m, 'save') || str_starts_with($m, 'upload')) {
@@ -135,20 +162,14 @@ class Step6Routes extends BaseModuleCommand
     private function guessUri(string $module, string $orig): string
     {
         $slug = Str::of($module)->snake('-')->replace('_', '-')->lower()->toString();
-        if ($orig === 'index') {
-            return "{$slug}";
-        }
 
-        return "{$slug}/" . Str::of($orig)->snake('-')->toString();
+        return $orig === 'index' ? $slug : $slug . '/' . Str::of($orig)->snake('-')->toString();
     }
 
     private function guessRouteName(string $module, string $camel): string
     {
         $prefix = Str::of($module)->snake('-')->replace('_', '-')->lower()->toString();
-        if ($camel === 'index') {
-            return "{$prefix}.index";
-        }
 
-        return "{$prefix}." . Str::of($camel)->snake('-')->toString();
+        return $camel === 'index' ? "{$prefix}.index" : "{$prefix}." . Str::of($camel)->snake('-')->toString();
     }
 }

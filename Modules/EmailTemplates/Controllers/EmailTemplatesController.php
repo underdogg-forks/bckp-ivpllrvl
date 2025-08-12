@@ -1,24 +1,10 @@
 <?php
+
+namespace Modules\EmailTemplates\Controllers;
+
+use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
 
-
-namespace Modules\Emailtemplates\Controllers;
-
-/*
- * InvoicePlane
- *
- * @author		InvoicePlane Developers & Contributors
- * @copyright	Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license		https://invoiceplane.com/license.txt
- * @link		https://invoiceplane.com
- */
 #[AllowDynamicProperties]
 class EmailTemplatesController extends AdminController
 {
@@ -30,6 +16,7 @@ class EmailTemplatesController extends AdminController
         parent::__construct();
         $this->load->model('mdl_email_templates');
     }
+
     /**
      * @originalName index
      *
@@ -43,6 +30,7 @@ class EmailTemplatesController extends AdminController
         $this->layout->buffer('content', 'email_templates/index');
         $this->layout->render();
     }
+
     /**
      * @originalName form
      *
@@ -57,7 +45,7 @@ class EmailTemplatesController extends AdminController
         // <<<--- filters _POST array for nastiness
         if ($this->input->post('is_update') == 0 && $this->input->post('email_template_title') != '') {
             $check = $this->db->get_where('ip_email_templates', ['email_template_title' => $this->input->post('email_template_title')])->result();
-            if (!empty($check)) {
+            if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('email_template_already_exists'));
                 redirect('email_templates/form');
             }
@@ -66,8 +54,8 @@ class EmailTemplatesController extends AdminController
             $this->mdl_email_templates->save($id);
             redirect('email_templates');
         }
-        if ($id && !$this->input->post('btn_submit')) {
-            if (!$this->mdl_email_templates->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit')) {
+            if ( ! $this->mdl_email_templates->prepForm($id)) {
                 show_404();
             }
             $this->mdl_email_templates->setFormValue('is_update', true);
@@ -80,6 +68,7 @@ class EmailTemplatesController extends AdminController
         $this->layout->buffer('content', 'email_templates/form');
         $this->layout->render();
     }
+
     /**
      * @originalName delete
      *

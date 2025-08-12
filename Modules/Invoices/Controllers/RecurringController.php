@@ -1,24 +1,10 @@
 <?php
-use Modules\Core\Controllers\AdminController;
-use Modules\Core\Controllers\BaseController;
-use Modules\Core\Controllers\GuestController;
-use Modules\Core\Controllers\UserController;
-use Modules\Core\Models\BaseModel;
-use Modules\Core\Models\FormValidationModel;
-use Modules\Core\Models\MyModel;
-use Modules\Core\Models\ResponseModel;
-
 
 namespace Modules\Invoices\Controllers;
 
-/*
- * InvoicePlane
- *
- * @author      InvoicePlane Developers & Contributors
- * @copyright   Copyright (c) 2012 - 2018 InvoicePlane.com
- * @license     https://invoiceplane.com/license.txt
- * @link        https://invoiceplane.com
- */
+use AllowDynamicProperties;
+use Modules\Core\Controllers\AdminController;
+
 #[AllowDynamicProperties]
 class RecurringController extends AdminController
 {
@@ -30,6 +16,7 @@ class RecurringController extends AdminController
         parent::__construct();
         $this->load->model('mdl_invoices_recurring');
     }
+
     /**
      * @originalName index
      *
@@ -43,6 +30,7 @@ class RecurringController extends AdminController
         $this->layout->buffer('content', 'invoices/index_recurring');
         $this->layout->render();
     }
+
     /**
      * @originalName stop
      *
@@ -53,6 +41,7 @@ class RecurringController extends AdminController
         $this->mdl_invoices_recurring->stop($invoice_recurring_id);
         redirect('invoices/recurring/index');
     }
+
     /**
      * @originalName delete
      *

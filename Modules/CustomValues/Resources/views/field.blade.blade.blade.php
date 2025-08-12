@@ -1,4 +1,4 @@
-@php namespace Modules\Customvalues\Views;
+@php namespace Modules\CustomValues\Views;
 
 $href = site_url('custom_fields/form/' . $field->custom_field_id);
 $link = anchor($href, '<i class="fa fa-edit fa-margin"></i> ' . htmlsc($field->custom_field_label), ' class="btn btn-sm btn-default"');
@@ -34,7 +34,7 @@ $table = strtr($field->custom_field_table, ['ip_' => '', '_custom' => '']); @end
 
             <div class="form-group">
                 <div id="filter_results">
-@php $this->layout->loadView('custom_values/partial_custom_values_field'); @endphp
+                    @php $this->layout->loadView('custom_values/partial_custom_values_field'); @endphp
                 </div>
             </div>
 
@@ -58,7 +58,7 @@ $table = strtr($field->custom_field_table, ['ip_' => '', '_custom' => '']); @end
 
         </div>
 
-@php $this->layout->loadView('layout/partial/custom_field_usage_list', ['custom_field_table' => $field->custom_field_table]); @endphp
+        @php $this->layout->loadView('layout/partial/custom_field_usage_list', ['custom_field_table' => $field->custom_field_table]); @endphp
 
     </div>
 </div>
