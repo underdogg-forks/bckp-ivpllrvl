@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="<?php _trans('cldr'); ?>">
+<html lang="@lang('cldr'); @endphp">
 <head>
-    <title><?php echo get_setting('custom_title', 'InvoicePlane', true); ?> - <?php _trans('sales_by_date'); ?></title>
-    <link rel="stylesheet" href="<?php _theme_asset('css/reports.css'); ?>" type="text/css">
+    <title>{{ get_setting('custom_title', 'InvoicePlane', true) }} - @lang('sales_by_date'); @endphp</title>
+    <link rel="stylesheet" href="@php _theme_asset('css/reports.css'); @endphp" type="text/css">
 </head>
 
 <body>
-    <h3 class="report_title"><?php _trans('sales_by_date'); ?><br><small><?php echo $from_date . ' - ' . $to_date ?></small></h3>
+<h3 class="report_title">@lang('sales_by_date'); @endphp<br><small>{{ $from_date . ' - ' . $to_date ?></small></h3>
 
     <table>
 
         <tr>
-            <th style="width:15%;text-align:center;border-bottom: none;"> <?php _trans('vat_id'); ?> </th>
-            <th style="width:50%;text-align:center;border-bottom: none;"> <?php _trans('name'); ?> </th>
-            <th style="width:15%;text-align:center;border-bottom: none;"> <?php _trans('period'); ?> </th>
-            <th style="width:20%;text-align:center;border-bottom: none;"> <?php _trans('quantity'); ?> </th>
+            <th style="width:15%;text-align:center;border-bottom: none;"> @lang('vat_id') }} </th>
+        <th style="width:50%;text-align:center;border-bottom: none;"> <?php @lang('name'); @endphp </th>
+        <th style="width:15%;text-align:center;border-bottom: none;"> @lang('period'); @endphp </th>
+        <th style="width:20%;text-align:center;border-bottom: none;"> @lang('quantity'); @endphp </th>
         </tr>
 
-        <tr><td colspan="4" style="border-bottom: none;"><hr></td></tr>
+        <tr>
+            <td colspan="4" style="border-bottom: none;">
+                <hr>
+            </td>
+        </tr>
 
-<?php
-$initial_year = 0;
+        @php $initial_year = 0;
 $final_year   = 0;
 $numYears     = 1;
 $numRows      = 1;
@@ -51,28 +54,24 @@ foreach ($results as $result) {
     if ($contRows == 0) {
         $numRows += $numYears * 4;
         $contRows = 1;
-    }
-    ?>
+    } @endphp
 
         <tr>
-            <td style="border-bottom: none;text-align:center;"><?php echo $result->VAT_ID; ?></td>
-            <td style="border-bottom: none;text-align:center;" rowspan="<?php echo $numRows; ?>"
-                valign="top"><?php _htmlsc($result->Name); ?></td>
-            <td style="border-bottom: none;text-align:center;"><?php _trans('annual'); ?></td>
-            <td style="border-bottom: none;text-align:center;"><?php echo format_currency($result->total_payment); ?></td>
+            <td style="border-bottom: none;text-align:center;">{{ $result->VAT_ID }}</td>
+            <td style="border-bottom: none;text-align:center;" rowspan="{{ $numRows }}"
+                valign="top">@php _htmlsc($result->Name); @endphp</td>
+            <td style="border-bottom: none;text-align:center;">@lang('annual'); @endphp</td>
+            <td style="border-bottom: none;text-align:center;">{{ format_currency($result->total_payment) }}</td>
         </tr>
 
-<?php
-        foreach ($result as $index => $value) {
+        @php foreach ($result as $index => $value) {
             $quarter = mb_substr($index, 8, 2);
             $year    = mb_substr($index, 11, 4);
 
-            if (preg_match($pattern, $index)) {
-                ?>
+            if (preg_match($pattern, $index)) { @endphp
         <tr>
             <td style="border-bottom: none;">&nbsp;</td>
-            <td style="border-bottom: none;text-align:center;"><?php
-                            switch ($quarter) {
+            <td style="border-bottom: none;text-align:center;">@php switch ($quarter) {
                                 case 't1':
                                     echo trans('Q1') . 'sales_by_year.php/' . $year;
                                     break;
@@ -85,20 +84,19 @@ foreach ($results as $result) {
                                 case 't4':
                                     echo trans('Q4') . 'sales_by_year.php/' . $year;
                                     break;
-                            }
-                ?></td>
-            <td style="border-bottom: none;text-align:center;"><?php echo ($value > 0) ? format_currency($value) : ''; ?></td>
+                            } @endphp</td>
+            <td style="border-bottom: none;text-align:center;">{{ ($value > 0) ? format_currency($value) : '' }}</td>
         </tr>
-<?php
-            } // End if
-        } // End foreach result
-    ?>
-        <tr><td colspan="4" style="border-bottom: none;"><hr></td></tr>
-<?php
-} // End foreach results
-?>
+        @php } // End if
+        } // End foreach result @endphp
+        <tr>
+            <td colspan="4" style="border-bottom: none;">
+                <hr>
+            </td>
+        </tr>
+        @php } // End foreach results @endphp
 
-    </table>
+        </table>
 
 </body>
 </html>

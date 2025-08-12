@@ -95,7 +95,7 @@ class InvoiceHelper
         if ($CI->mdl_settings->setting('qr_code') && $CI->mdl_settings->setting('qr_code_iban') && $CI->mdl_settings->setting('qr_code_bic')) {
             $invoice = $CI->mdl_invoices->get_by_id($invoice_id);
             if ((float) $invoice->invoice_balance) {
-                $CI->load->library('QrCode', ['invoice' => $invoice]);
+                $CI->load->library('Modules\Core\Libraries\QrCode', ['invoice' => $invoice]);
                 $qrcode_data_uri = $CI->qrcode->generate();
 
                 return '<img src="' . $qrcode_data_uri . '" alt="QR Code" id="invoice-qr-code">';

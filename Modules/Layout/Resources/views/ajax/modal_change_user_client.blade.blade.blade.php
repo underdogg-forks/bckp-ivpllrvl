@@ -22,7 +22,7 @@ $permissive = get_setting('enable_permissive_search_' . $who . 's'); @endphp
         $('#change-{{ $who;
 ?>').modal('show');
 
-        @php $this->layout->loadView($who . 's/script_select2_' . $who . '_id.js'); @endphp
+        @include($who . 's/script_select2_' . $who . '_id.js')
 
         // Change the user or client
         $('#{{ $who }}_change_confirm').click(function () {
@@ -39,8 +39,7 @@ $permissive = get_setting('enable_permissive_search_' . $who . 's'); @endphp
                     if (response.success === 1) {
                         // The validation was successful and quote/invoice was Updated
                         window.location = "{{ url($type . 's/view') }}/" + response.{{ $type }}_id;
-                    }
-                    else {
+                    } else {
                         // The validation was not successful
                         $('.control-group').removeClass('has-error');
                         for (var key in response.validation_errors) {
@@ -53,7 +52,8 @@ $permissive = get_setting('enable_permissive_search_' . $who . 's'); @endphp
     });
 </script>
 
-<div id="change-{{ $who }}" class="modal modal-lg" role="dialog" aria-labelledby="modal_change_{{ $who }}" aria-hidden="true">
+<div id="change-{{ $who }}" class="modal modal-lg" role="dialog" aria-labelledby="modal_change_{{ $who }}"
+     aria-hidden="true">
     <form class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
@@ -64,23 +64,22 @@ $permissive = get_setting('enable_permissive_search_' . $who . 's'); @endphp
                 <label for="change_{{ $who }}_id">@php _trans($who); @endphp</label>
                 <div class="input-group">
                     <span id="toggle_permissive_search_{{ $who }}s" class="input-group-addon"
-                          title="@php _trans('enable_permissive_search_' . $who . 's'); @endphp" style="cursor:pointer;">
+                          title="@php _trans('enable_permissive_search_' . $who . 's'); @endphp"
+                          style="cursor:pointer;">
                         <i class="fa fa-toggle-{{ $permissive ? 'on' : 'off' }} fa-fw"></i>
                     </span>
                     <select name="{{ $who }}_id" id="change_{{ $who }}_id" class="{{ $who }}-id-select form-control"
                             autofocus="autofocus" required>
-@php $who_id = ${$who}->{$who_id} ?? $this->input->post($who_id);
+                        @php $who_id = ${$who}->{$who_id} ?? $this->input->post($who_id);
 if ($who_id) {
     $format = 'format_' . $who;
     // func name
     $name = $who . '_name';
     // user or client property
     $name = empty(${$who}->{$name}) ? $format($who_id) : $user->{$name} }}
-                        <option value="{{ $who_id }}">@php
-    _htmlsc($name);
-    @endphp</option>
-<?php
-} @endphp
+                        <option value="{{ $who_id }}">{!! $name !!}</option>
+                            <?php
+                        } @endphp
                     </select>
                 </div>
             </div>
@@ -92,14 +91,14 @@ if ($who_id) {
         <div class="modal-footer">
             <div class="btn-group">
                 <button class="btn btn-success ajax_loader" id="{{ $who }}_change_confirm" type="button">
-                    <i class="fa fa-check"></i> @@lang('submit')
+                    <i class="fa fa-check"></i> @lang('submit')
                 </button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">
-                    <i class="fa fa-times"></i> @@lang('cancel')
+                    <i class="fa fa-times"></i> @lang('cancel')
                 </button>
             </div>
         </div>
 
     </form>
 </div>
-<?php 
+<?php

@@ -1,20 +1,20 @@
-<?php  ?>
+@php  @endphp
 
 An uncaught Exception was encountered
 
-Type:        <?php echo get_class($exception), "\n"; ?>
-Message:     <?php echo $message, "\n"; ?>
-Filename:    <?php echo $exception->getFile(), "\n"; ?>
-Line Number: <?php echo $exception->getLine(); ?>
+Type:        {{ get_class($exception), "\n" }}
+Message:     {{ $message, "\n" }}
+Filename:    {{ $exception->getFile(), "\n" }}
+Line Number: {{ $exception->getLine() }}
 
-<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) : ?>
+@if(defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE)
     Backtrace:
-    <?php foreach ($exception->getTrace() as $error) : ?>
-        <?php if (isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH))) : ?>
-            File: <?php echo $error['file'], "\n"; ?>
-            Line: <?php echo $error['line'], "\n"; ?>
-            Function: <?php echo $error['function'], "\n\n"; ?>
-        <?php endif ?>
-    <?php endforeach ?>
+    @foreach($exception->getTrace() as $error)
+        @if(isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH)))
+            File: {{ $error['file'], "\n" }}
+            Line: {{ $error['line'], "\n" }}
+            Function: {{ $error['function'], "\n\n" }}
+        @php endif @endphp
+    @php endforeach @endphp
 
 <?php endif;

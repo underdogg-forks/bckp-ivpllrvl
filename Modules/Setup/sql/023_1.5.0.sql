@@ -33,7 +33,7 @@ ALTER TABLE `ip_custom_fields`
   ADD `custom_field_type` VARCHAR(255) DEFAULT 'TEXT' NOT NULL
   AFTER `custom_field_label`;
 
-# Sumex changes
+# Modules\Core\Libraries\Sumex changes
 CREATE TABLE `ip_invoice_sumex` (
   `sumex_id`             INT(11)      NOT NULL,
   `sumex_invoice`        INT(11)      NOT NULL,
@@ -80,7 +80,7 @@ ALTER TABLE `ip_users`
 ALTER TABLE `ip_products`
   ADD COLUMN product_tariff INT(11) DEFAULT NULL;
 
-# End Sumex Changes
+# End Modules\Core\Libraries\Sumex Changes
 
 # Delete and re-add the ip_sessions table for CI 3
 DROP TABLE `ip_sessions`;

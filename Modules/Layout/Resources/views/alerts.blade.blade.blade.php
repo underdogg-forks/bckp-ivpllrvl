@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Modules\Layout\Views;
 
 $alert_class = 'alert';

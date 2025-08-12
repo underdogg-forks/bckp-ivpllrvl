@@ -150,7 +150,7 @@ class PdfHelper
         $CI = & get_instance();
         $CI->load->model('invoices/mdl_items');
         $invoice = $CI->mdl_invoices->get_by_id($invoice_id);
-        $CI->load->library('Sumex', ['invoice' => $invoice, 'items' => $CI->mdl_items->where('invoice_id', $invoice_id)->get()->result()]);
+        $CI->load->library('Modules\Core\Libraries\Sumex', ['invoice' => $invoice, 'items' => $CI->mdl_items->where('invoice_id', $invoice_id)->get()->result()]);
         $sumexPDF = $CI->sumex->pdf($invoice_template);
         $sha1sum  = sha1($sumexPDF);
         $shortsum = mb_substr($sha1sum, 0, 8);

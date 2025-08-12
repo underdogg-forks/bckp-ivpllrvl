@@ -1,14 +1,14 @@
 @php namespace Modules\Layout\Views; @endphp
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
 <!--[if lt IE 7]>
-<html class="no-js ie6 oldie" lang="@@lang('cldr')"> <![endif]-->
+<html class="no-js ie6 oldie" lang="@lang('cldr')"> <![endif]-->
 <!--[if IE 7]>
-<html class="no-js ie7 oldie" lang="@@lang('cldr')"> <![endif]-->
+<html class="no-js ie7 oldie" lang="@lang('cldr')"> <![endif]-->
 <!--[if IE 8]>
-<html class="no-js ie8 oldie" lang="@@lang('cldr')"> <![endif]-->
+<html class="no-js ie8 oldie" lang="@lang('cldr')"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" lang="@@lang('cldr')"> <!--<![endif]-->
+<html class="no-js" lang="@lang('cldr')"> <!--<![endif]-->
 
 <head>
     <title>{{ get_setting('custom_title', 'InvoicePlane', true) }}</title>
@@ -27,15 +27,13 @@
     <link rel="stylesheet" href="@php _theme_asset('css/style.css'); @endphp" type="text/css">
     <link rel="stylesheet" href="@php _core_asset('css/custom.css'); @endphp" type="text/css">
 
-@php if (get_setting('monospace_amounts') == 1) {
-    @endphp
+    @if(get_setting('monospace_amounts') == 1)
     <link rel="stylesheet" href="@php
     _theme_asset('css/monospace.css');
     @endphp" type="text/css">
-@php
-} @endphp
+    @endif
 
-    <!--[if lt IE 9]>
+        <!--[if lt IE 9]>
     <script src="@php _core_asset('js/legacy.min.js'); @endphp"></script>
     <![endif]-->
 
@@ -66,8 +64,8 @@
                 <li>
                     <a href="{{ url('sessions/logout') }}"
                        class="tip icon logout" data-placement="bottom"
-                       title="@@lang('logout')">
-                        <span class="visible-xs">&nbsp;@@lang('logout')</span>
+                       title="@lang('logout')">
+                        <span class="visible-xs">&nbsp;@lang('logout')</span>
                         <i class="fa fa-power-off"></i>
                     </a>
                 </li>
@@ -81,26 +79,26 @@
     <div class="sidebar hidden-xs{{ get_setting('disable_sidebar') == 1 ? ' hidden' : '' }}">
         <ul>
             <li>
-                <a href="{{ url('guest') }}" title="@@lang('dashboard')" class="tip"
+                <a href="{{ url('guest') }}" title="@lang('dashboard')" class="tip"
                    data-placement="right">
                     <i class="fa fa-dashboard"></i>
                 </a>
             </li>
             <li>
-                <a href="{{ url('guest/quotes/index') }}" title="@@lang('quotes')"
+                <a href="{{ url('guest/quotes/index') }}" title="@lang('quotes')"
                    class="tip"
                    data-placement="right">
                     <i class="fa fa-file"></i>
                 </a>
             </li>
             <li>
-                <a href="{{ url('guest/invoices/index') }}" title="@@lang('invoices')"
+                <a href="{{ url('guest/invoices/index') }}" title="@lang('invoices')"
                    class="tip" data-placement="right">
                     <i class="fa fa-file-text"></i>
                 </a>
             </li>
             <li>
-                <a href="{{ url('guest/payments/index') }}" title="@@lang('payments')"
+                <a href="{{ url('guest/payments/index') }}" title="@lang('payments')"
                    class="tip" data-placement="right">
                     <i class="fa fa-money"></i>
                 </a>
@@ -119,14 +117,13 @@
 {{ $this->layout->loadView('layout/includes/fullpage-loader') }}
 
 <script defer src="@php _core_asset('js/scripts.min.js'); @endphp"></script>
-@php if (trans('cldr') != 'en') {
-    @endphp
-    <script src="@php
+@if(trans('cldr') != 'en')
+<script src="@php
     _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js');
     @endphp"></script>
-<?php
+    <?php
 } @endphp
 
 </body>
 </html>
-<?php 
+<?php

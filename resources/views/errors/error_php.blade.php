@@ -34,9 +34,9 @@
 <div class="php-error-box">
     <div class="php-error-box--title">A PHP Error was encountered</div>
     <ul class="php-error-box--list">
-        <li class="php-error-box--item">Severity: <?php echo $severity; ?></li>
-        <li class="php-error-box--item">Message: <?php echo $message; ?></li>
-        <li class="php-error-box--item">Filename: <?php echo $filepath; ?></li>
-        <li class="php-error-box--item">Line Number: <?php echo $line; ?></li>
+        <li class="php-error-box--item">Severity: {{ $severity }}</li>
+        <li class="php-error-box--item">Message: {{ $message }}</li>
+        <li class="php-error-box--item">Filename: {{ $filepath }}</li>
+        <li class="php-error-box--item">Line Number: {{ $line }}</li>
     </ul>
 </div>

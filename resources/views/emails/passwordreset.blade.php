@@ -16,6 +16,7 @@
     }
 </style>
 <div>
-    <p><?php echo trans('password_reset_email'); ?></p>
-    <p><a href="<?php echo $resetlink ?>"><?php echo $resetlink ?></a></p>
+    <p>{{ trans('password_reset_email') }}</p>
+    <p><a href="@php echo $resetlink @endphp">@php echo $resetlink @endphp</a></p>
 </div>
+

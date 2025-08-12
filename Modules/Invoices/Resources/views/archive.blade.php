@@ -1,0 +1,14 @@
+@php namespace Modules\Invoices\Views; @endphp
+<div id="headerbar">
+
+    <h1 class="headerbar-title">@lang('invoice_archive')</h1>
+
+</div>
+
+<div id="content" class="table-content">
+
+    <div id="filter_results">
+        @include('invoices/partial_invoice_archive')
+    </div>
+
+</div>

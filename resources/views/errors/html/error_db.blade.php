@@ -1,11 +1,9 @@
-<?php
-
-?>
+@php  @endphp
 <!DOCTYPE html>
 <html style="display:table;width:100%;">
 <head>
     <meta charset="utf-8">
-    <title>InvoicePlane - <?php echo $heading; ?></title>
+    <title>InvoicePlane - {{ $heading }}</title>
     <style>
         html,
         html * {
@@ -36,7 +34,7 @@
     </style>
 </head>
 <body>
-<h4><?php echo $heading; ?></h4>
-<p><?php echo $message; ?></p>
+<h4>{{ $heading }}</h4>
+<p>{{ $message }}</p>
 </body>
 </html>

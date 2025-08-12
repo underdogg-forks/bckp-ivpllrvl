@@ -1,14 +1,14 @@
 @php namespace Modules\Layout\Views; @endphp
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
 <!--[if lt IE 7]>
-<html class="no-js ie6 oldie" lang="@@lang('cldr')"> <![endif]-->
+<html class="no-js ie6 oldie" lang="@lang('cldr')"> <![endif]-->
 <!--[if IE 7]>
-<html class="no-js ie7 oldie" lang="@@lang('cldr')"> <![endif]-->
+<html class="no-js ie7 oldie" lang="@lang('cldr')"> <![endif]-->
 <!--[if IE 8]>
-<html class="no-js ie8 oldie" lang="@@lang('cldr')"> <![endif]-->
+<html class="no-js ie8 oldie" lang="@lang('cldr')"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" lang="@@lang('cldr')"> <!--<![endif]-->
+<html class="no-js" lang="@lang('cldr')"> <!--<![endif]-->
 
 <head>
     <title>InvoicePlane Setup</title>
@@ -31,7 +31,7 @@
 <body>
 
 <noscript>
-    <div class="alert alert-danger no-margin">@@lang('please_enable_js')</div>
+    <div class="alert alert-danger no-margin">@lang('please_enable_js')</div>
 </noscript>
 
 {{ $content }}

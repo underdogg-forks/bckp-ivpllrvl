@@ -100,7 +100,7 @@ class Invoice extends ResponseModel
             $this->load->model('invoice_groups/mdl_invoice_groups');
             $invgroup = $this->mdl_invoice_groups->where('invoice_group_id', $invoice_group)->get()->row();
             if (preg_match('/sumex/i', $invgroup->invoice_group_name)) {
-                // If the Invoice Group includes "Sumex", make the invoice a Sumex one
+                // If the Invoice Group includes "Modules\Core\Libraries\Sumex", make the invoice a Modules\Core\Libraries\Sumex one
                 $db_array = ['sumex_invoice' => $invoice_id];
                 $this->db->insert('ip_invoice_sumex', $db_array);
             }
@@ -367,7 +367,7 @@ class Invoice extends ResponseModel
         return $this;
     }
 
-    // Used to check if the invoice is Sumex
+    // Used to check if the invoice is Modules\Core\Libraries\Sumex
     /**
      * @originalName isSumex
      *

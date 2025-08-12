@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title><?php echo $heading; ?> - InvoicePlane</title>
+    <title>{{ $heading }} - InvoicePlane</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
 
@@ -53,7 +53,7 @@
     </style>
 </head>
 <body>
-<h1><?php echo $heading; ?></h1>
-<?php echo $message; ?>
+<h1>{{ $heading }}</h1>
+{{ $message }}
 </body>
 </html>

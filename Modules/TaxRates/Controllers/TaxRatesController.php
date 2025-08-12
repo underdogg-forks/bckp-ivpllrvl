@@ -59,6 +59,31 @@ class TaxRatesController extends AdminController
     }
 
     /**
+     * @originalName form
+     *
+     * @originalFile TaxRatesController.php
+     */
+    public function formStore()
+    {
+        if ($this->input->post('btn_cancel')) {
+            redirect('tax_rates');
+        }
+        $this->filterInput();
+        // <<<--- filters _POST array for nastiness
+        if ($this->mdl_tax_rates->runValidation()) {
+            $this->mdl_tax_rates->form_values['tax_rate_percent'] = standardize_amount($this->mdl_tax_rates->form_values['tax_rate_percent']);
+            // We need to use the correct decimal point for sql IPT-310
+            $db_array                     = $this->mdl_tax_rates->dbArray();
+            $db_array['tax_rate_percent'] = standardize_amount($this->input->post('tax_rate_percent'));
+            $this->mdl_tax_rates->save($id, $db_array);
+            redirect('tax_rates');
+        }
+        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_tax_rates->prepForm($id)) {
+            show_404();
+        }
+    }
+
+    /**
      * @originalName delete
      *
      * @originalFile TaxRatesController.php

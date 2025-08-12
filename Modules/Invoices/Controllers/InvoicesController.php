@@ -260,7 +260,7 @@ class InvoicesController extends AdminController
     public function generateSumexCopy($invoice_id): void
     {
         $this->load->model('invoices/mdl_items');
-        $this->load->library('Sumex', ['invoice' => $this->mdl_invoices->getById($invoice_id), 'items' => $this->mdl_items->where('invoice_id', $invoice_id)->get()->result(), 'options' => ['copy' => '1', 'storno' => '0']]);
+        $this->load->library('Modules\Core\Libraries\Sumex', ['invoice' => $this->mdl_invoices->getById($invoice_id), 'items' => $this->mdl_items->where('invoice_id', $invoice_id)->get()->result(), 'options' => ['copy' => '1', 'storno' => '0']]);
         $this->output->set_content_type('application/pdf');
         $this->output->set_output($this->sumex->pdf());
     }

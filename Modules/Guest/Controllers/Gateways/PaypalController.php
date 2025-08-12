@@ -77,6 +77,6 @@ class PaypalController extends BaseController
     {
         $this->load->library('crypt');
         //load the REST API consumer library
-        $this->load->library('Gateways/PaypalLib', ['client_id' => get_setting('gateway_paypal_clientId'), 'client_secret' => $this->crypt->decode(get_setting('gateway_paypal_clientSecret')), 'demo' => get_setting('gateway_paypal_testMode') == 1], 'lib_paypal');
+        $this->load->library('Gateways/Modules\Core\Libraries\gateways\PaypalLib', ['client_id' => get_setting('gateway_paypal_clientId'), 'client_secret' => $this->crypt->decode(get_setting('gateway_paypal_clientSecret')), 'demo' => get_setting('gateway_paypal_testMode') == 1], 'lib_paypal');
     }
 }

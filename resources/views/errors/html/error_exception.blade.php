@@ -1,32 +1,24 @@
-<?php
-
-?>
+@php  @endphp
 
 <div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
 
     <h4>An uncaught Exception was encountered</h4>
 
-    <p>Type: <?php echo get_class($exception); ?></p>
-    <p>Message: <?php echo $message; ?></p>
-    <p>Filename: <?php echo $exception->getFile(); ?></p>
-    <p>Line Number: <?php echo $exception->getLine(); ?></p>
-<?php
-if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) {
-    ?>
+    <p>Type: {{ get_class($exception) }}</p>
+    <p>Message: {{ $message }}</p>
+    <p>Filename: {{ $exception->getFile() }}</p>
+    <p>Line Number: {{ $exception->getLine() }}</p>
+@php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) { @endphp
     <p>Backtrace:</p>
-<?php
-        foreach ($exception->getTrace() as $error) {
-            if (isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH))) {
-                ?>
+@php foreach ($exception->getTrace() as $error) {
+            if (isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH))) { @endphp
     <p style="margin-left:10px">
-        File: <?php echo $error['file']; ?><br>
-        Line: <?php echo $error['line']; ?><br>
-        Function: <?php echo $error['function']; ?>
+        File: {{ $error['file'] }}<br>
+        Line: {{ $error['line'] }}<br>
+        Function: {{ $error['function'] }}
     </p>
-<?php
-            }
+@php }
         }
-}
-?>
+} @endphp
 
 </div>

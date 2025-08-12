@@ -85,7 +85,7 @@ class Product extends ResponseModel
             'family_id'           => ['field' => 'family_id', 'label' => trans('family'), 'rules' => 'numeric'],
             'unit_id'             => ['field' => 'unit_id', 'label' => trans('unit'), 'rules' => 'numeric'],
             'tax_rate_id'         => ['field' => 'tax_rate_id', 'label' => trans('tax_rate'), 'rules' => 'numeric'],
-            // Sumex
+            // Modules\Core\Libraries\Sumex
             'product_tariff' => ['field' => 'product_tariff', 'label' => trans('product_tariff')],
         ];
     }
