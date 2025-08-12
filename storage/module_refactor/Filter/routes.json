@@ -1,0 +1,107 @@
+[
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterInvoices",
+        "http": "GET",
+        "uri": "filter/filter-invoices",
+        "route": "filter.filter-invoices"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterQuotes",
+        "http": "GET",
+        "uri": "filter/filter-quotes",
+        "route": "filter.filter-quotes"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterClients",
+        "http": "GET",
+        "uri": "filter/filter-clients",
+        "route": "filter.filter-clients"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterCustomFields",
+        "http": "GET",
+        "uri": "filter/filter-custom-fields",
+        "route": "filter.filter-custom-fields"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterCustomValues",
+        "http": "GET",
+        "uri": "filter/filter-custom-values",
+        "route": "filter.filter-custom-values"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterCustomValuesField",
+        "http": "GET",
+        "uri": "filter/filter-custom-values-field",
+        "route": "filter.filter-custom-values-field"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterProjects",
+        "http": "GET",
+        "uri": "filter/filter-projects",
+        "route": "filter.filter-projects"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterTasks",
+        "http": "GET",
+        "uri": "filter/filter-tasks",
+        "route": "filter.filter-tasks"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterProducts",
+        "http": "GET",
+        "uri": "filter/filter-products",
+        "route": "filter.filter-products"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterUsers",
+        "http": "GET",
+        "uri": "filter/filter-users",
+        "route": "filter.filter-users"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterFamilies",
+        "http": "GET",
+        "uri": "filter/filter-families",
+        "route": "filter.filter-families"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterInvoicesRecuring",
+        "http": "GET",
+        "uri": "filter/filter-invoices-recuring",
+        "route": "filter.filter-invoices-recuring"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterOnlineLogs",
+        "http": "GET",
+        "uri": "filter/filter-online-logs",
+        "route": "filter.filter-online-logs"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterArchives",
+        "http": "GET",
+        "uri": "filter/filter-archives",
+        "route": "filter.filter-archives"
+    },
+    {
+        "controller": "Modules\\Filter\\Controllers\\AjaxController",
+        "method": "filterPayments",
+        "http": "GET",
+        "uri": "filter/filter-payments",
+        "route": "filter.filter-payments"
+    }
+]

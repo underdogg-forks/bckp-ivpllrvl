@@ -1,0 +1,23 @@
+[
+    {
+        "controller": "Modules\\PaymentMethods\\Controllers\\PaymentMethodsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "payment-methods",
+        "route": "payment-methods.index"
+    },
+    {
+        "controller": "Modules\\PaymentMethods\\Controllers\\PaymentMethodsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "payment-methods/form",
+        "route": "payment-methods.form"
+    },
+    {
+        "controller": "Modules\\PaymentMethods\\Controllers\\PaymentMethodsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "payment-methods/delete",
+        "route": "payment-methods.delete"
+    }
+]

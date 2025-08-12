@@ -1,0 +1,23 @@
+[
+    {
+        "controller": "Modules\\Import\\Controllers\\ImportController",
+        "method": "index",
+        "http": "GET",
+        "uri": "import",
+        "route": "import.index"
+    },
+    {
+        "controller": "Modules\\Import\\Controllers\\ImportController",
+        "method": "form",
+        "http": "GET",
+        "uri": "import/form",
+        "route": "import.form"
+    },
+    {
+        "controller": "Modules\\Import\\Controllers\\ImportController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "import/delete",
+        "route": "import.delete"
+    }
+]

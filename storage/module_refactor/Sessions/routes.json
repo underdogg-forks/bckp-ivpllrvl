@@ -1,0 +1,37 @@
+[
+    {
+        "controller": "Modules\\Sessions\\Controllers\\SessionsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "sessions",
+        "route": "sessions.index"
+    },
+    {
+        "controller": "Modules\\Sessions\\Controllers\\SessionsController",
+        "method": "login",
+        "http": "GET",
+        "uri": "sessions/login",
+        "route": "sessions.login"
+    },
+    {
+        "controller": "Modules\\Sessions\\Controllers\\SessionsController",
+        "method": "authenticate",
+        "http": "GET",
+        "uri": "sessions/authenticate",
+        "route": "sessions.authenticate"
+    },
+    {
+        "controller": "Modules\\Sessions\\Controllers\\SessionsController",
+        "method": "logout",
+        "http": "GET",
+        "uri": "sessions/logout",
+        "route": "sessions.logout"
+    },
+    {
+        "controller": "Modules\\Sessions\\Controllers\\SessionsController",
+        "method": "passwordreset",
+        "http": "GET",
+        "uri": "sessions/passwordreset",
+        "route": "sessions.passwordreset"
+    }
+]

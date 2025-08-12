@@ -1,0 +1,37 @@
+[
+    {
+        "controller": "Modules\\Upload\\Controllers\\UploadController",
+        "method": "uploadFile",
+        "http": "POST",
+        "uri": "upload/upload-file",
+        "route": "upload.upload-file"
+    },
+    {
+        "controller": "Modules\\Upload\\Controllers\\UploadController",
+        "method": "createDir",
+        "http": "GET",
+        "uri": "upload/create-dir",
+        "route": "upload.create-dir"
+    },
+    {
+        "controller": "Modules\\Upload\\Controllers\\UploadController",
+        "method": "showFiles",
+        "http": "GET",
+        "uri": "upload/show-files",
+        "route": "upload.show-files"
+    },
+    {
+        "controller": "Modules\\Upload\\Controllers\\UploadController",
+        "method": "deleteFile",
+        "http": "GET",
+        "uri": "upload/delete-file",
+        "route": "upload.delete-file"
+    },
+    {
+        "controller": "Modules\\Upload\\Controllers\\UploadController",
+        "method": "getFile",
+        "http": "GET",
+        "uri": "upload/get-file",
+        "route": "upload.get-file"
+    }
+]

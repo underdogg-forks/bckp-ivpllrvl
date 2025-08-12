@@ -1,0 +1,79 @@
+[
+    {
+        "controller": "Modules\\Clients\\Controllers\\AjaxController",
+        "method": "nameQuery",
+        "http": "GET",
+        "uri": "clients/name-query",
+        "route": "clients.name-query"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\AjaxController",
+        "method": "getLatest",
+        "http": "GET",
+        "uri": "clients/get-latest",
+        "route": "clients.get-latest"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\AjaxController",
+        "method": "savePreferencePermissiveSearchClients",
+        "http": "POST",
+        "uri": "clients/save-preference-permissive-search-clients",
+        "route": "clients.save-preference-permissive-search-clients"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\AjaxController",
+        "method": "deleteClientNote",
+        "http": "GET",
+        "uri": "clients/delete-client-note",
+        "route": "clients.delete-client-note"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\AjaxController",
+        "method": "saveClientNote",
+        "http": "POST",
+        "uri": "clients/save-client-note",
+        "route": "clients.save-client-note"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\AjaxController",
+        "method": "loadClientNotes",
+        "http": "GET",
+        "uri": "clients/load-client-notes",
+        "route": "clients.load-client-notes"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\ClientsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "clients",
+        "route": "clients.index"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\ClientsController",
+        "method": "status",
+        "http": "GET",
+        "uri": "clients/status",
+        "route": "clients.status"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\ClientsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "clients/form",
+        "route": "clients.form"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\ClientsController",
+        "method": "view",
+        "http": "GET",
+        "uri": "clients/view",
+        "route": "clients.view"
+    },
+    {
+        "controller": "Modules\\Clients\\Controllers\\ClientsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "clients/delete",
+        "route": "clients.delete"
+    }
+]

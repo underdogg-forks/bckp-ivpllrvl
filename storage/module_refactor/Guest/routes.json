@@ -1,0 +1,205 @@
+[
+    {
+        "controller": "Modules\\Guest\\Controllers\\InvoicesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "guest",
+        "route": "guest.index"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\InvoicesController",
+        "method": "status",
+        "http": "GET",
+        "uri": "guest/status",
+        "route": "guest.status"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\InvoicesController",
+        "method": "view",
+        "http": "GET",
+        "uri": "guest/view",
+        "route": "guest.view"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\InvoicesController",
+        "method": "generatePdf",
+        "http": "GET",
+        "uri": "guest/generate-pdf",
+        "route": "guest.generate-pdf"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\InvoicesController",
+        "method": "generateSumexPdf",
+        "http": "GET",
+        "uri": "guest/generate-sumex-pdf",
+        "route": "guest.generate-sumex-pdf"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\GuestController",
+        "method": "index",
+        "http": "GET",
+        "uri": "guest",
+        "route": "guest.index"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\QuotesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "guest",
+        "route": "guest.index"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\QuotesController",
+        "method": "status",
+        "http": "GET",
+        "uri": "guest/status",
+        "route": "guest.status"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\QuotesController",
+        "method": "view",
+        "http": "GET",
+        "uri": "guest/view",
+        "route": "guest.view"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\QuotesController",
+        "method": "generatePdf",
+        "http": "GET",
+        "uri": "guest/generate-pdf",
+        "route": "guest.generate-pdf"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\QuotesController",
+        "method": "approve",
+        "http": "GET",
+        "uri": "guest/approve",
+        "route": "guest.approve"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\QuotesController",
+        "method": "reject",
+        "http": "GET",
+        "uri": "guest/reject",
+        "route": "guest.reject"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\PaymentsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "guest",
+        "route": "guest.index"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\View",
+        "method": "invoice",
+        "http": "GET",
+        "uri": "guest/invoice",
+        "route": "guest.invoice"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\View",
+        "method": "generateInvoicePdf",
+        "http": "GET",
+        "uri": "guest/generate-invoice-pdf",
+        "route": "guest.generate-invoice-pdf"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\View",
+        "method": "generateSumexPdf",
+        "http": "GET",
+        "uri": "guest/generate-sumex-pdf",
+        "route": "guest.generate-sumex-pdf"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\View",
+        "method": "quote",
+        "http": "GET",
+        "uri": "guest/quote",
+        "route": "guest.quote"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\View",
+        "method": "generateQuotePdf",
+        "http": "GET",
+        "uri": "guest/generate-quote-pdf",
+        "route": "guest.generate-quote-pdf"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\View",
+        "method": "approveQuote",
+        "http": "GET",
+        "uri": "guest/approve-quote",
+        "route": "guest.approve-quote"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\View",
+        "method": "rejectQuote",
+        "http": "GET",
+        "uri": "guest/reject-quote",
+        "route": "guest.reject-quote"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\Gateways\\StripeController",
+        "method": "createCheckoutSession",
+        "http": "GET",
+        "uri": "guest/create-checkout-session",
+        "route": "guest.create-checkout-session"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\Gateways\\StripeController",
+        "method": "callback",
+        "http": "GET",
+        "uri": "guest/callback",
+        "route": "guest.callback"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\Gateways\\PaypalController",
+        "method": "paypalCreateOrder",
+        "http": "GET",
+        "uri": "guest/paypal-create-order",
+        "route": "guest.paypal-create-order"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\Gateways\\PaypalController",
+        "method": "paypalCapturePayment",
+        "http": "GET",
+        "uri": "guest/paypal-capture-payment",
+        "route": "guest.paypal-capture-payment"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\PaymentInformation",
+        "method": "form",
+        "http": "GET",
+        "uri": "guest/form",
+        "route": "guest.form"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\PaymentInformation",
+        "method": "stripe",
+        "http": "GET",
+        "uri": "guest/stripe",
+        "route": "guest.stripe"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\PaymentInformation",
+        "method": "paypal",
+        "http": "GET",
+        "uri": "guest/paypal",
+        "route": "guest.paypal"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\GetController",
+        "method": "showFiles",
+        "http": "GET",
+        "uri": "guest/show-files",
+        "route": "guest.show-files"
+    },
+    {
+        "controller": "Modules\\Guest\\Controllers\\GetController",
+        "method": "getFile",
+        "http": "GET",
+        "uri": "guest/get-file",
+        "route": "guest.get-file"
+    }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "controller": "Modules\\Payments\\Controllers\\AjaxController",
+        "method": "add",
+        "http": "GET",
+        "uri": "payments/add",
+        "route": "payments.add"
+    },
+    {
+        "controller": "Modules\\Payments\\Controllers\\AjaxController",
+        "method": "modalAddPayment",
+        "http": "GET",
+        "uri": "payments/modal-add-payment",
+        "route": "payments.modal-add-payment"
+    },
+    {
+        "controller": "Modules\\Payments\\Controllers\\PaymentsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "payments",
+        "route": "payments.index"
+    },
+    {
+        "controller": "Modules\\Payments\\Controllers\\PaymentsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "payments/form",
+        "route": "payments.form"
+    },
+    {
+        "controller": "Modules\\Payments\\Controllers\\PaymentsController",
+        "method": "onlineLogs",
+        "http": "GET",
+        "uri": "payments/online-logs",
+        "route": "payments.online-logs"
+    },
+    {
+        "controller": "Modules\\Payments\\Controllers\\PaymentsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "payments/delete",
+        "route": "payments.delete"
+    }
+]

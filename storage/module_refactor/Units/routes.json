@@ -1,0 +1,23 @@
+[
+    {
+        "controller": "Modules\\Units\\Controllers\\UnitsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "units",
+        "route": "units.index"
+    },
+    {
+        "controller": "Modules\\Units\\Controllers\\UnitsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "units/form",
+        "route": "units.form"
+    },
+    {
+        "controller": "Modules\\Units\\Controllers\\UnitsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "units/delete",
+        "route": "units.delete"
+    }
+]

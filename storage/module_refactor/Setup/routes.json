@@ -1,0 +1,65 @@
+[
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "index",
+        "http": "GET",
+        "uri": "setup",
+        "route": "setup.index"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "language",
+        "http": "GET",
+        "uri": "setup/language",
+        "route": "setup.language"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "prerequisites",
+        "http": "GET",
+        "uri": "setup/prerequisites",
+        "route": "setup.prerequisites"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "configureDatabase",
+        "http": "GET",
+        "uri": "setup/configure-database",
+        "route": "setup.configure-database"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "installTables",
+        "http": "GET",
+        "uri": "setup/install-tables",
+        "route": "setup.install-tables"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "upgradeTables",
+        "http": "GET",
+        "uri": "setup/upgrade-tables",
+        "route": "setup.upgrade-tables"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "createUser",
+        "http": "GET",
+        "uri": "setup/create-user",
+        "route": "setup.create-user"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "calculationInfo",
+        "http": "GET",
+        "uri": "setup/calculation-info",
+        "route": "setup.calculation-info"
+    },
+    {
+        "controller": "Modules\\Setup\\Controllers\\SetupController",
+        "method": "complete",
+        "http": "GET",
+        "uri": "setup/complete",
+        "route": "setup.complete"
+    }
+]

@@ -1,0 +1,23 @@
+[
+    {
+        "controller": "Modules\\TaxRates\\Controllers\\TaxRatesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "tax-rates",
+        "route": "tax-rates.index"
+    },
+    {
+        "controller": "Modules\\TaxRates\\Controllers\\TaxRatesController",
+        "method": "form",
+        "http": "GET",
+        "uri": "tax-rates/form",
+        "route": "tax-rates.form"
+    },
+    {
+        "controller": "Modules\\TaxRates\\Controllers\\TaxRatesController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "tax-rates/delete",
+        "route": "tax-rates.delete"
+    }
+]
