@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Modules\Core\Libraries\ClientTitleEnum;
+
 class ClientHelper
 {
     /**
