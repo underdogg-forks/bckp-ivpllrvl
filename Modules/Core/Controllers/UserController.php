@@ -3,7 +3,6 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-use AllowDynamicProperties;
 
 #[AllowDynamicProperties]
 class UserController extends BaseController

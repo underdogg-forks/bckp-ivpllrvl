@@ -3,7 +3,6 @@
 namespace Modules\Core\Validators;
 
 use AllowDynamicProperties;
-use AllowDynamicProperties;
 use Modules\Core\Models\MyModel;
 
 #[AllowDynamicProperties]

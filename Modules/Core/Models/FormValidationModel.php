@@ -3,7 +3,6 @@
 namespace Modules\Core\Models;
 
 use AllowDynamicProperties;
-use AllowDynamicProperties;
 
 #[AllowDynamicProperties]
 class FormValidationModel extends MyModel
