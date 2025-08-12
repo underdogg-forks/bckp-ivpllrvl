@@ -1,7 +1,7 @@
 {
     "preset": "per",
     "exclude": [
-        "application/modules/**/views/",
+        "application/modules/",
         "application/views/**/pdf/",
         "resources",
         "storage"

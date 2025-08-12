@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to undefined constant PhpParser\\ParserFactory\:\:PREFER_PHP7\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Console/Commands/Modules/Step6Routes.php
-
-		-
 			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Console/Commands/Modules/Step6Routes\.php\:97\:\:enterNode\(\) should return array\<PhpParser\\Node\>\|int\|PhpParser\\Node\|null but return statement is missing\.$#'
 			identifier: return.missing
 			count: 2
@@ -25,49 +19,43 @@ parameters:
 			path: app/Support/Modules/PhpAst/CallSiteRewriter.php
 
 		-
-			message: '#^Access to undefined constant PhpParser\\ParserFactory\:\:PREFER_PHP7\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Support/Modules/PhpAst/MethodCamelizer.php
-
-		-
-			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:105\:\:enterNode\(\) should return array\<PhpParser\\Node\>\|int\|PhpParser\\Node\|null but return statement is missing\.$#'
+			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:106\:\:enterNode\(\) should return array\<PhpParser\\Node\>\|int\|PhpParser\\Node\|null but return statement is missing\.$#'
 			identifier: return.missing
 			count: 2
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
 
 		-
-			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:38\:\:afterTraverse\(\) never returns null so it can be removed from the return type\.$#'
+			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:39\:\:afterTraverse\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
 
 		-
-			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:38\:\:enterNode\(\) never returns PhpParser\\Node so it can be removed from the return type\.$#'
+			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:39\:\:enterNode\(\) never returns PhpParser\\Node so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
 
 		-
-			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:38\:\:enterNode\(\) never returns array\<PhpParser\\Node\> so it can be removed from the return type\.$#'
+			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:39\:\:enterNode\(\) never returns array\<PhpParser\\Node\> so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
 
 		-
-			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:38\:\:enterNode\(\) never returns int so it can be removed from the return type\.$#'
+			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:39\:\:enterNode\(\) never returns int so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
 
 		-
-			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:38\:\:enterNode\(\) should return array\<PhpParser\\Node\>\|int\|PhpParser\\Node\|null but empty return statement found\.$#'
+			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:39\:\:enterNode\(\) should return array\<PhpParser\\Node\>\|int\|PhpParser\\Node\|null but empty return statement found\.$#'
 			identifier: return.empty
 			count: 1
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
 
 		-
-			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:38\:\:enterNode\(\) should return array\<PhpParser\\Node\>\|int\|PhpParser\\Node\|null but return statement is missing\.$#'
+			message: '#^Method PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:39\:\:enterNode\(\) should return array\<PhpParser\\Node\>\|int\|PhpParser\\Node\|null but return statement is missing\.$#'
 			identifier: return.missing
 			count: 2
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
@@ -79,7 +67,7 @@ parameters:
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
 
 		-
-			message: '#^Property PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:38\:\:\$methodMap is never read, only written\.$#'
+			message: '#^Property PhpParser\\NodeVisitorAbstract@anonymous/Support/Modules/PhpAst/MethodCamelizer\.php\:39\:\:\$methodMap is never read, only written\.$#'
 			identifier: property.onlyWritten
 			count: 1
 			path: app/Support/Modules/PhpAst/MethodCamelizer.php
