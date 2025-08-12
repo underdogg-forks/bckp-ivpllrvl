@@ -20,6 +20,8 @@
 /storage/*.key
 /storage/pail
 /vendor
+stan.txt
+phpunit.txt
 Homestead.json
 Homestead.yaml
 Thumbs.db
