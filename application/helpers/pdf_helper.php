@@ -73,7 +73,7 @@ function generate_invoice_pdf($invoice_id, $stream = true, $invoice_template = n
     $invoice = $CI->mdl_invoices->get_by_id($invoice_id);
     $invoice = $CI->mdl_invoices->get_payments($invoice);
 
-    // Override system language with client language
+    // Override system lang with client lang
     set_language($invoice->client_language);
 
     if ( ! $invoice_template) {
@@ -98,7 +98,7 @@ function generate_invoice_pdf($invoice_id, $stream = true, $invoice_template = n
         }
     }
 
-    // Get all custom fields
+    // GetController all custom fields
     $custom_fields = [
         'invoice' => $CI->mdl_custom_fields->get_values_for_fields('mdl_invoice_custom', $invoice->invoice_id),
         'client'  => $CI->mdl_custom_fields->get_values_for_fields('mdl_client_custom', $invoice->client_id),
@@ -118,7 +118,7 @@ function generate_invoice_pdf($invoice_id, $stream = true, $invoice_template = n
     $associatedFiles = null;
     if (get_setting('einvoicing')) {
         $CI->load->helper('e-invoice');
-        // Get eInvoice name (version), user checks & shift legacy_calculation mode
+        // GetController eInvoice name (version), user checks & shift legacy_calculation mode
         $einvoice = get_einvoice_usage($invoice, $items, false);
         // Set eInvoice config (false if Client & User not Ok)
         $xml_id  = $einvoice->user ? $einvoice->name : false;
@@ -137,8 +137,8 @@ function generate_invoice_pdf($invoice_id, $stream = true, $invoice_template = n
             // Create the CII XML file
             $associatedFiles = [[
                 'path'           => generate_xml_invoice_file($invoice, $items, $generator, $filename, $options),
-                'name'           => $_SERVER['CIIname'] ?? $XMLname,   // Get from generator or from config
-                'mime'           => $_SERVER['CIImime'] ?? 'text/xml', // Get mime from generator
+                'name'           => $_SERVER['CIIname'] ?? $XMLname,   // GetController from generator or from config
+                'mime'           => $_SERVER['CIImime'] ?? 'text/xml', // GetController mime from generator
                 'description'    => $xml_id . ' e-' . trans('invoice'),
                 'AFRelationship' => 'Alternative',
             ]];
@@ -280,7 +280,7 @@ function generate_quote_pdf($quote_id, $stream = true, $quote_template = null)
 
     $quote = $CI->mdl_quotes->get_by_id($quote_id);
 
-    // Override language with system language
+    // Override lang with system lang
     set_language($quote->client_language);
 
     if ( ! $quote_template) {
@@ -298,7 +298,7 @@ function generate_quote_pdf($quote_id, $stream = true, $quote_template = null)
         }
     }
 
-    // Get all custom fields
+    // GetController all custom fields
     $custom_fields = [
         'quote'  => $CI->mdl_custom_fields->get_values_for_fields('mdl_quote_custom', $quote->quote_id),
         'client' => $CI->mdl_custom_fields->get_values_for_fields('mdl_client_custom', $quote->client_id),

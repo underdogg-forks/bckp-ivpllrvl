@@ -1,0 +1,14 @@
+{
+    "models/MdlUnits.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "get_name": "getName",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_units.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "get_name": "getName",
+        "validation_rules": "validationRules"
+    }
+}

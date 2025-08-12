@@ -1,0 +1,38 @@
+{
+    "controllers/Ajax.php": {
+        "modal_add_payment": "modalAddPayment"
+    },
+    "controllers/Payments.php": {
+        "online_logs": "onlineLogs"
+    },
+    "models/MdlPaymentLogs.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin"
+    },
+    "models/MdlPayments.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "validate_payment_amount": "validatePaymentAmount",
+        "db_array": "dbArray",
+        "prep_form": "prepForm",
+        "by_client": "byClient"
+    },
+    "models/Mdl_payment_logs.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin"
+    },
+    "models/Mdl_payments.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "validate_payment_amount": "validatePaymentAmount",
+        "db_array": "dbArray",
+        "prep_form": "prepForm",
+        "by_client": "byClient"
+    }
+}

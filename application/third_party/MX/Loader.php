@@ -121,7 +121,7 @@ class MX_Loader extends CI_Loader
         }
 
         // autoload helpers, plugins, languages
-        foreach (['helper', 'plugin', 'language'] as $type) {
+        foreach (['helper', 'plugin', 'lang'] as $type) {
             if (isset($autoload[$type])) {
                 foreach ($autoload[$type] as $item) {
                     $this->{$type}($item);
@@ -378,7 +378,7 @@ class MX_Loader extends CI_Loader
         return $this;
     }
 
-    /** Load a module language file **/
+    /** Load a module lang file **/
     public function language($langfile, $idiom = '', $return = false, $add_suffix = true, $alt_path = '')
     {
         CI::$APP->lang->load($langfile, $idiom, $return, $add_suffix, $alt_path, $this->_module);

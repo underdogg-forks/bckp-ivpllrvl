@@ -148,7 +148,7 @@ class Modules
 
             include_once $location;
         } else {
-            // load config or language array
+            // load config or lang array
             include $location;
 
             if ( ! isset(${$type}) || ! is_array(${$type})) {

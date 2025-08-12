@@ -14,7 +14,7 @@ if ( ! defined('BASEPATH')) {
  */
 
 /**
- * Output a language string, supports language fallback if a string wasn't found.
+ * Output a lang string, supports lang fallback if a string wasn't found.
  *
  * @param string      $line
  * @param string      $id
@@ -27,26 +27,26 @@ function trans($line, ?string $id = '', $default = null)
     $CI          = & get_instance();
     $lang_string = $CI->lang->line($line);
 
-    // Fall back to default language if the current language has no translated string
+    // Fall back to default lang if the current lang has no translated string
     if (empty($lang_string)) {
-        // Save the current application language (code borrowed from Base_Controller.php)
+        // Save the current application lang (code borrowed from Modules\Core\Controllers\Base_Controller.php)
         $current_language = $CI->session->userdata('user_language');
 
         if (empty($current_language) || $current_language == 'system') {
             // todo gives error at startup, fix later
             // #1034: Translation breaks in PDF-template
-            $current_language = get_setting('default_language') ?? 'english';
+            $current_language = get_setting('default_language') ?? 'en';
         }
 
-        // Load the default language and translate the string
-        set_language('english');
+        // Load the default lang and translate the string
+        set_language('en');
         $lang_string = $CI->lang->line($line);
 
-        // Restore the application language to its previous setting
+        // Restore the application lang to its previous setting
         set_language($current_language);
     }
 
-    // Fall back to the $line value if the default language has no translation either
+    // Fall back to the $line value if the default lang has no translation either
     if (empty($lang_string)) {
         $lang_string = $default != null ? $default : $line;
     }
@@ -59,25 +59,25 @@ function trans($line, ?string $id = '', $default = null)
 }
 
 /**
- * Load the translations for the given language.
+ * Load the translations for the given lang.
  *
  * @param string $language
  */
 function set_language($language): void
 {
-    // Clear the current loaded language
+    // Clear the current loaded lang
     $CI                  = & get_instance();
     $CI->lang->is_loaded = [];
     $CI->lang->language  = [];
 
-    // Load system language if no custom language is set
-    $default_lang = isset($CI->mdl_settings) ? $CI->mdl_settings->setting('default_language') : 'english';
+    // Load system lang if no custom lang is set
+    $default_lang = isset($CI->mdl_settings) ? $CI->mdl_settings->setting('default_language') : 'en';
     $new_language = ($language == 'system' ? $default_lang : $language);
 
     $app_dir  = $CI->config->_config_paths[0];
-    $lang_dir = $app_dir . DIRECTORY_SEPARATOR . 'language';
+    $lang_dir = $app_dir . DIRECTORY_SEPARATOR . 'lang';
 
-    // Set the new language
+    // Set the new lang
     $CI->lang->load('ip', $new_language);
     $CI->lang->load('form_validation', $new_language);
     if (file_exists($lang_dir . DIRECTORY_SEPARATOR . $default_lang . DIRECTORY_SEPARATOR . 'custom_lang.php')) {
@@ -97,7 +97,7 @@ function get_available_languages()
     $CI = & get_instance();
     $CI->load->helper('directory');
 
-    $languages = directory_map(APPPATH . 'language', true);
+    $languages = directory_map(APPPATH . 'lang', true);
     sort($languages);
     $counter = count($languages);
 

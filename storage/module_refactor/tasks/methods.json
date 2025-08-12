@@ -1,0 +1,36 @@
+{
+    "controllers/Ajax.php": {
+        "modal_task_lookups": "modalTaskLookups",
+        "process_task_selections": "processTaskSelections"
+    },
+    "models/MdlTasks.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "get_latest": "getLatest",
+        "by_task": "byTask",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray",
+        "prep_form": "prepForm",
+        "get_invoice_for_task": "getInvoiceForTask",
+        "get_tasks_to_invoice": "getTasksToInvoice",
+        "update_on_invoice_delete": "updateOnInvoiceDelete",
+        "update_status": "updateStatus",
+        "update_on_project_delete": "updateOnProjectDelete"
+    },
+    "models/Mdl_tasks.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "get_latest": "getLatest",
+        "by_task": "byTask",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray",
+        "prep_form": "prepForm",
+        "get_invoice_for_task": "getInvoiceForTask",
+        "get_tasks_to_invoice": "getTasksToInvoice",
+        "update_on_invoice_delete": "updateOnInvoiceDelete",
+        "update_status": "updateStatus",
+        "update_on_project_delete": "updateOnProjectDelete"
+    }
+}

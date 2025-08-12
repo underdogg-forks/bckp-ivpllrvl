@@ -132,7 +132,7 @@ class MethodCamelizer
 
     private function namespaceFromPath(string $absPath, string $baseModulesRoot): ?string
     {
-        $rel = Str::after($absPath, base_path($baseModulesRoot) . DIRECTORY_SEPARATOR); // e.g. Invoices/Controllers/Foo.php
+        $rel = Str::after($absPath, base_path($baseModulesRoot) . DIRECTORY_SEPARATOR); // e.g. InvoicesController/Controllers/Foo.php
         if ($rel === $absPath) {
             return null;
         }
@@ -142,7 +142,7 @@ class MethodCamelizer
         );
 
         $parts = $parts->slice(0, max(1, $parts->count() - 1)); // drop filename
-        $ns    = 'Modules\\' . $parts->implode('\\');             // Modules\Invoices\Controllers
+        $ns    = 'Modules\\' . $parts->implode('\\');             // Modules\InvoicesController\Controllers
 
         return trim($ns, '\\') ?: null;
     }

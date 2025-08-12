@@ -167,7 +167,7 @@ function get_req_fields_einvoice($client = null, $user_id = ''): object
     // $show_table = $c->einvoicing_empty_fields;
     $show_table = 0; // Only user
 
-    // Get user(s) fields for eInvoicing
+    // GetController user(s) fields for eInvoicing
     $users = get_admin_active_users($user_id);
     foreach ($users as $o) {
         $u = new stdClass();
@@ -282,7 +282,7 @@ function get_items_tax_usages($items): array
  * Return if a is standardized taxes with legacy_calculation false in ipconfig
  * For obtain a Valid xml data. See in temp/einvoice-test.xml (debug true).
  *
- * @Scopes Invoices controllers
+ * @Scopes InvoicesController controllers
  *
  * @param $items
  */

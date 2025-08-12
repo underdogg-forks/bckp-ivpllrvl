@@ -1,0 +1,23 @@
+{
+    "controllers/Reports.php": {
+        "sales_by_client": "salesByClient",
+        "invoices_per_client": "invoicesPerClient",
+        "payment_history": "paymentHistory",
+        "invoice_aging": "invoiceAging",
+        "sales_by_year": "salesByYear"
+    },
+    "models/MdlReports.php": {
+        "sales_by_client": "salesByClient",
+        "payment_history": "paymentHistory",
+        "invoice_aging": "invoiceAging",
+        "invoices_per_client": "invoicesPerClient",
+        "sales_by_year": "salesByYear"
+    },
+    "models/Mdl_reports.php": {
+        "sales_by_client": "salesByClient",
+        "payment_history": "paymentHistory",
+        "invoice_aging": "invoiceAging",
+        "invoices_per_client": "invoicesPerClient",
+        "sales_by_year": "salesByYear"
+    }
+}

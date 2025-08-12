@@ -3,7 +3,7 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Default Mailer
+    | Default MailerController
     |--------------------------------------------------------------------------
     |
     | This option controls the default mailer that is used to send all email
@@ -17,7 +17,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Mailer Configurations
+    | MailerController Configurations
     |--------------------------------------------------------------------------
     |
     | Here you may configure all of the mailers used by your application plus

@@ -14,7 +14,7 @@ if ( ! defined('BASEPATH')) {
  */
 
 /**
- * Get a setting value.
+ * GetController a setting value.
  *
  * @param string $setting_key
  * @param mixed  $default
@@ -31,7 +31,7 @@ function get_setting($setting_key, $default = '', $escape = false)
 }
 
 /**
- * Get the settings for a payment gateway.
+ * GetController the settings for a payment gateway.
  *
  * @param string $gateway
  *

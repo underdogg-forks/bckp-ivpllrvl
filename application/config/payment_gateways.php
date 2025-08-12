@@ -442,7 +442,7 @@ $config['payment_gateways'] = [
             'label' => 'Test Mode',
         ),
     ), */
-    'Stripe' => [
+    'StripeController' => [
         'apiKey' => [
             'type'  => 'password',
             'label' => 'Secret key',

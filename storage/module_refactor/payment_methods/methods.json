@@ -1,0 +1,12 @@
+{
+    "models/MdlPaymentMethods.php": {
+        "default_select": "defaultSelect",
+        "order_by": "orderBy",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_payment_methods.php": {
+        "default_select": "defaultSelect",
+        "order_by": "orderBy",
+        "validation_rules": "validationRules"
+    }
+}

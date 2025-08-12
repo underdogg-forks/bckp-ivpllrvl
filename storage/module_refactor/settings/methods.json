@@ -1,0 +1,30 @@
+{
+    "controllers/Ajax.php": {
+        "get_cron_key": "getCronKey"
+    },
+    "controllers/Settings.php": {
+        "remove_logo": "removeLogo"
+    },
+    "models/MdlSettings.php": {
+        "load_settings": "loadSettings",
+        "gateway_settings": "gatewaySettings",
+        "set_setting": "setSetting",
+        "get_themes": "getThemes"
+    },
+    "models/MdlVersions.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "get_current_version": "getCurrentVersion"
+    },
+    "models/Mdl_settings.php": {
+        "load_settings": "loadSettings",
+        "gateway_settings": "gatewaySettings",
+        "set_setting": "setSetting",
+        "get_themes": "getThemes"
+    },
+    "models/Mdl_versions.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "get_current_version": "getCurrentVersion"
+    }
+}

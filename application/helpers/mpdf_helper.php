@@ -39,7 +39,7 @@ function pdf_create(
 ) {
     $CI = & get_instance();
 
-    // Get the invoice from the archive if available
+    // GetController the invoice from the archive if available
     $invoice_array = [];
 
     // mPDF loading

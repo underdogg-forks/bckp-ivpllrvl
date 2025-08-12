@@ -84,13 +84,13 @@ function parse_template($object, $body)
                 default:
                     // Check if it's a custom field
                     if (preg_match('/ip_cf_(\d.*)/', $var, $cf_id)) {
-                        // Get the custom field
+                        // GetController the custom field
                         $CI = & get_instance();
                         $CI->load->model('custom_fields/mdl_custom_fields');
                         $cf = $CI->mdl_custom_fields->get_by_id($cf_id[1]);
 
                         if ($cf) {
-                            // Get the values for the custom field
+                            // GetController the values for the custom field
                             $cf_model = str_replace('ip_', 'mdl_', $cf->custom_field_table);
                             $replace  = $CI->mdl_custom_fields->get_value_for_field($cf_id[1], $cf_model, $object);
                             if ($cf->custom_field_type == 'SINGLE-CHOICE') {

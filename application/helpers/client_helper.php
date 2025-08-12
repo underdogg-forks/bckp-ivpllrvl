@@ -19,7 +19,7 @@ if ( ! defined('BASEPATH')) {
  */
 function format_client($client, $show_title = true): string
 {
-    // Get an id
+    // GetController an id
     if ($client && is_numeric($client)) {
         $CI = & get_instance();
         if ( ! property_exists($CI, 'mdl_clients')) {

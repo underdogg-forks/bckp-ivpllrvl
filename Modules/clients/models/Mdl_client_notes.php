@@ -1,9 +1,10 @@
 <?php
 
-if ( ! defined('BASEPATH')) {
+namespace Modules\Clients\Models;
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
-
 /*
  * InvoicePlane
  *
@@ -12,52 +13,45 @@ if ( ! defined('BASEPATH')) {
  * @license		https://invoiceplane.com/license.txt
  * @link		https://invoiceplane.com
  */
-
 #[AllowDynamicProperties]
-class Mdl_Client_Notes extends Response_Model
+class MdlClientNotes extends ResponseModel
 {
     public $table = 'ip_client_notes';
-
     public $primary_key = 'ip_client_notes.client_note_id';
-
-    public function default_order_by()
+    /**
+     * @originalName defaultOrderBy
+     * @originalFile Mdl_client_notes.php
+     */
+    public function defaultOrderBy()
     {
-        $this->db->order_by('ip_client_notes.client_note_date DESC');
+        $this->db->orderBy('ip_client_notes.client_note_date DESC');
     }
-
-    public function validation_rules()
+    /**
+     * @originalName validationRules
+     * @originalFile Mdl_client_notes.php
+     */
+    public function validationRules()
     {
-        return [
-            'client_id' => [
-                'field' => 'client_id',
-                'label' => trans('client'),
-                'rules' => 'required',
-            ],
-            'client_note' => [
-                'field' => 'client_note',
-                'label' => trans('note'),
-                'rules' => 'required',
-            ],
-        ];
+        return ['client_id' => ['field' => 'client_id', 'label' => trans('client'), 'rules' => 'required'], 'client_note' => ['field' => 'client_note', 'label' => trans('note'), 'rules' => 'required']];
     }
-
-    public function db_array()
+    /**
+     * @originalName dbArray
+     * @originalFile Mdl_client_notes.php
+     */
+    public function dbArray()
     {
-        $db_array = parent::db_array();
-
+        $db_array = parent::dbArray();
         $db_array['client_note_date'] = date('Y-m-d');
-
         return $db_array;
     }
-
     /**
-     * @param int $id
+     * @originalName delete
+     * @originalFile Mdl_client_notes.php
      */
     public function delete($id): bool
     {
         parent::delete($id);
-
-        // For Ajax Check if deletion was successful
+        // For AjaxController Check if deletion was successful
         return true;
     }
 }

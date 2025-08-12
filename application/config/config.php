@@ -116,12 +116,12 @@ $config['url_suffix'] = '';
 | Default Language
 |--------------------------------------------------------------------------
 |
-| This determines which set of language files should be used. Make sure
+| This determines which set of lang files should be used. Make sure
 | there is an available translation if you intend to use something other
-| than english.
+| than en.
 |
 */
-$config['language'] = 'english';
+$config['lang'] = 'en';
 
 /*
 |--------------------------------------------------------------------------
@@ -141,7 +141,7 @@ $config['charset'] = 'UTF-8';
 | Enable/Disable System Hooks
 |--------------------------------------------------------------------------
 |
-| If you would like to use the 'hooks' feature you must enable it by
+| If you would like to use the 'Hooks' feature you must enable it by
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */

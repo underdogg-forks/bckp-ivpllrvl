@@ -1,0 +1,163 @@
+{
+    "controllers/Ajax.php": {
+        "save_invoice_tax_rate": "saveInvoiceTaxRate",
+        "delete_item": "deleteItem",
+        "get_item": "getItem",
+        "modal_copy_invoice": "modalCopyInvoice",
+        "copy_invoice": "copyInvoice",
+        "modal_change_user": "modalChangeUser",
+        "change_user": "changeUser",
+        "modal_change_client": "modalChangeClient",
+        "change_client": "changeClient",
+        "modal_create_invoice": "modalCreateInvoice",
+        "create_recurring": "createRecurring",
+        "modal_create_recurring": "modalCreateRecurring",
+        "get_recur_start_date": "getRecurStartDate",
+        "modal_create_credit": "modalCreateCredit",
+        "create_credit": "createCredit"
+    },
+    "controllers/Invoices.php": {
+        "generate_pdf": "generatePdf",
+        "generate_xml": "generateXml",
+        "generate_sumex_pdf": "generateSumexPdf",
+        "generate_sumex_copy": "generateSumexCopy",
+        "delete_invoice_tax": "deleteInvoiceTax",
+        "recalculate_all_invoices": "recalculateAllInvoices"
+    },
+    "models/MdlInvoiceAmounts.php": {
+        "calculate_discount": "calculateDiscount",
+        "get_global_discount": "getGlobalDiscount",
+        "calculate_invoice_taxes": "calculateInvoiceTaxes",
+        "get_total_invoiced": "getTotalInvoiced",
+        "get_total_paid": "getTotalPaid",
+        "get_total_balance": "getTotalBalance",
+        "get_status_totals": "getStatusTotals"
+    },
+    "models/MdlInvoiceSumex.php": {
+        "default_select": "defaultSelect",
+        "validation_rules": "validationRules"
+    },
+    "models/MdlInvoiceTaxRates.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules"
+    },
+    "models/MdlInvoices.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "validation_rules_save_invoice": "validationRulesSaveInvoice",
+        "copy_invoice": "copyInvoice",
+        "copy_credit_invoice": "copyCreditInvoice",
+        "db_array": "dbArray",
+        "get_payments": "getPayments",
+        "get_date_due": "getDateDue",
+        "get_invoice_number": "getInvoiceNumber",
+        "get_url_key": "getUrlKey",
+        "get_invoice_group_id": "getInvoiceGroupId",
+        "get_parent_invoice_number": "getParentInvoiceNumber",
+        "get_custom_values": "getCustomValues",
+        "get_archives": "getArchives",
+        "is_open": "isOpen",
+        "is_sumex": "isSumex",
+        "guest_visible": "guestVisible",
+        "is_draft": "isDraft",
+        "is_sent": "isSent",
+        "is_viewed": "isViewed",
+        "is_paid": "isPaid",
+        "is_overdue": "isOverdue",
+        "by_client": "byClient",
+        "mark_viewed": "markViewed",
+        "mark_sent": "markSent",
+        "generate_invoice_number_if_applicable": "generateInvoiceNumberIfApplicable",
+        "update_invoice_due_date": "updateInvoiceDueDate"
+    },
+    "models/MdlInvoicesRecurring.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray",
+        "set_next_recur_date": "setNextRecurDate"
+    },
+    "models/MdlItems.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "get_items_subtotal": "getItemsSubtotal"
+    },
+    "models/MdlTemplates.php": {
+        "get_invoice_templates": "getInvoiceTemplates",
+        "get_quote_templates": "getQuoteTemplates",
+        "remove_extension": "removeExtension"
+    },
+    "models/Mdl_invoice_amounts.php": {
+        "calculate_discount": "calculateDiscount",
+        "get_global_discount": "getGlobalDiscount",
+        "calculate_invoice_taxes": "calculateInvoiceTaxes",
+        "get_total_invoiced": "getTotalInvoiced",
+        "get_total_paid": "getTotalPaid",
+        "get_total_balance": "getTotalBalance",
+        "get_status_totals": "getStatusTotals"
+    },
+    "models/Mdl_invoice_sumex.php": {
+        "default_select": "defaultSelect",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_invoice_tax_rates.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_invoices.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "validation_rules_save_invoice": "validationRulesSaveInvoice",
+        "copy_invoice": "copyInvoice",
+        "copy_credit_invoice": "copyCreditInvoice",
+        "db_array": "dbArray",
+        "get_payments": "getPayments",
+        "get_date_due": "getDateDue",
+        "get_invoice_number": "getInvoiceNumber",
+        "get_url_key": "getUrlKey",
+        "get_invoice_group_id": "getInvoiceGroupId",
+        "get_parent_invoice_number": "getParentInvoiceNumber",
+        "get_custom_values": "getCustomValues",
+        "get_archives": "getArchives",
+        "is_open": "isOpen",
+        "is_sumex": "isSumex",
+        "guest_visible": "guestVisible",
+        "is_draft": "isDraft",
+        "is_sent": "isSent",
+        "is_viewed": "isViewed",
+        "is_paid": "isPaid",
+        "is_overdue": "isOverdue",
+        "by_client": "byClient",
+        "mark_viewed": "markViewed",
+        "mark_sent": "markSent",
+        "generate_invoice_number_if_applicable": "generateInvoiceNumberIfApplicable",
+        "update_invoice_due_date": "updateInvoiceDueDate"
+    },
+    "models/Mdl_invoices_recurring.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray",
+        "set_next_recur_date": "setNextRecurDate"
+    },
+    "models/Mdl_items.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "get_items_subtotal": "getItemsSubtotal"
+    },
+    "models/Mdl_templates.php": {
+        "get_invoice_templates": "getInvoiceTemplates",
+        "get_quote_templates": "getQuoteTemplates",
+        "remove_extension": "removeExtension"
+    }
+}

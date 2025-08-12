@@ -1,7 +1,7 @@
 <?php
 
 $config = [
-    // Works in conjunction with MY_Model to provide pagination style
+    // Works in conjunction with Modules\Core\Models\MY_Model to provide pagination style
     'pagination_style' => [
         'first_link'      => '&lsaquo;&lsaquo;',
         'next_link'       => '&rsaquo;',

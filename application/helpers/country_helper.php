@@ -14,8 +14,8 @@ if ( ! defined('BASEPATH')) {
  */
 
 /**
- * Returns an array list of cldr => country, translated in the language $cldr.
- * If there is no translated country list, return the english one.
+ * Returns an array list of cldr => country, translated in the lang $cldr.
+ * If there is no translated country list, return the en one.
  *
  * @param $cldr
  *
@@ -31,7 +31,7 @@ function get_country_list(string $cldr)
 }
 
 /**
- * Returns the countryname of a given $countrycode, translated in the language $cldr.
+ * Returns the countryname of a given $countrycode, translated in the lang $cldr.
  *
  * @param $cldr
  * @param $countrycode

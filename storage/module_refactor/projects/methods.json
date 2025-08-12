@@ -1,0 +1,18 @@
+{
+    "models/MdlProjects.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "get_latest": "getLatest",
+        "validation_rules": "validationRules",
+        "get_tasks": "getTasks"
+    },
+    "models/Mdl_projects.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "get_latest": "getLatest",
+        "validation_rules": "validationRules",
+        "get_tasks": "getTasks"
+    }
+}

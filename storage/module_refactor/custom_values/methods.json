@@ -1,0 +1,38 @@
+{
+    "models/MdlCustomValues.php": {
+        "custom_types": "customTypes",
+        "user_input_types": "userInputTypes",
+        "custom_value_fields": "customValueFields",
+        "save_custom": "saveCustom",
+        "validation_rules": "validationRules",
+        "custom_tables": "customTables",
+        "delete_all_fid": "deleteAllFid",
+        "get_by_fid": "getByFid",
+        "get_by_column": "getByColumn",
+        "get_by_id": "getById",
+        "get_by_ids": "getByIds",
+        "column_has_value": "columnHasValue",
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "default_group_by": "defaultGroupBy"
+    },
+    "models/Mdl_custom_values.php": {
+        "custom_types": "customTypes",
+        "user_input_types": "userInputTypes",
+        "custom_value_fields": "customValueFields",
+        "save_custom": "saveCustom",
+        "validation_rules": "validationRules",
+        "custom_tables": "customTables",
+        "delete_all_fid": "deleteAllFid",
+        "get_by_fid": "getByFid",
+        "get_by_column": "getByColumn",
+        "get_by_id": "getById",
+        "get_by_ids": "getByIds",
+        "column_has_value": "columnHasValue",
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "default_group_by": "defaultGroupBy"
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "models/MdlFamilies.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_families.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules"
+    }
+}

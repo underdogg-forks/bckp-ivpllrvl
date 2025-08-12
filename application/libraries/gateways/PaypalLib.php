@@ -26,13 +26,13 @@ class PaypalLib
         $this->client_id                   = $params['client_id'];
         $this->client_secret               = $params['client_secret'];
 
-        log_message('debug', 'Paypal library initialization started');
+        log_message('debug', 'PaypalController library initialization started');
 
         $this->client = new Client([
             'base_uri' => $this->endpoint,
         ]);
 
-        log_message('debug', 'Paypal library client created');
+        log_message('debug', 'PaypalController library client created');
 
         $this->authorize();
     }
@@ -46,7 +46,7 @@ class PaypalLib
      */
     public function createOrder(array $order_information): string|array
     {
-        log_message('debug', 'Paypal library order creation started');
+        log_message('debug', 'PaypalController library order creation started');
         try {
             $response = $this->client->request('POST', 'v2/checkout/orders', [
                 'headers' => [
@@ -65,11 +65,11 @@ class PaypalLib
                     'intent' => 'CAPTURE',
                 ]),
             ]);
-            log_message('debug', 'Paypal library order creation completed');
+            log_message('debug', 'PaypalController library order creation completed');
 
             return $response->getBody()->getContents();
         } catch (ClientException $clientException) {
-            log_message('debug', 'Paypal library order creation failed');
+            log_message('debug', 'PaypalController library order creation failed');
 
             return ['status' => false, 'error' => $clientException];
         }
@@ -82,7 +82,7 @@ class PaypalLib
      */
     public function captureOrder(string $order_id): array
     {
-        log_message('debug', 'Paypal library order capturing started');
+        log_message('debug', 'PaypalController library order capturing started');
         try {
             $response = $this->client->request('POST', 'v2/checkout/orders/' . $order_id . '/capture', [
                 'headers' => [
@@ -90,24 +90,24 @@ class PaypalLib
                     'Authorization' => 'Bearer ' . $this->bearer_token,
                 ],
             ]);
-            log_message('debug', 'Paypal library order capturing completed');
+            log_message('debug', 'PaypalController library order capturing completed');
 
             return ['status' => true, 'response' => $response];
         } catch (ClientException $clientException) {
-            log_message('debug', 'Paypal library order capturing failed');
+            log_message('debug', 'PaypalController library order capturing failed');
 
             return ['status' => false, 'error' => $clientException];
         }
     }
 
     /**
-     * Get the details of a paypal order by order id.
+     * GetController the details of a paypal order by order id.
      *
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_get
      */
     public function showOrderDetails(string $order_id): array
     {
-        log_message('debug', 'Paypal library show order started');
+        log_message('debug', 'PaypalController library show order started');
         try {
             $response = $this->client->request('GET', 'v2/checkout/orders/' . $order_id, [
                 'headers' => [
@@ -115,11 +115,11 @@ class PaypalLib
                     'Authorization' => 'Bearer ' . $this->bearer_token,
                 ],
             ]);
-            log_message('debug', 'Paypal library show order completed');
+            log_message('debug', 'PaypalController library show order completed');
 
             return ['status' => true, 'response' => $response];
         } catch (ClientException $clientException) {
-            log_message('debug', 'Paypal library show order failed');
+            log_message('debug', 'PaypalController library show order failed');
 
             return ['status' => false, 'error' => $clientException];
         }
@@ -132,7 +132,7 @@ class PaypalLib
      */
     protected function authorize()
     {
-        log_message('debug', 'Paypal library authorization started');
+        log_message('debug', 'PaypalController library authorization started');
         try {
             $response = $this->client->request('post', 'v1/oauth2/token', [
                 'headers' => [
@@ -143,9 +143,9 @@ class PaypalLib
             ]);
 
             $this->bearer_token = json_decode($response->getBody())->access_token;
-            log_message('debug', 'Paypal library authorization obtained');
+            log_message('debug', 'PaypalController library authorization obtained');
         } catch (ClientException $clientException) {
-            log_message('error', 'Paypal library authorization failed');
+            log_message('error', 'PaypalController library authorization failed');
 
             return $clientException->getResponse()->getBody();
         }

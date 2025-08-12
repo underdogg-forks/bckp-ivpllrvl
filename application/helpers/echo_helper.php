@@ -62,7 +62,7 @@ function _htmle($output)
 }
 
 /**
- * Echo a language string with the trans helper.
+ * Echo a lang string with the trans helper.
  *
  * @param string      $line
  * @param string      $id

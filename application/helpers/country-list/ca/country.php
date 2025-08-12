@@ -58,7 +58,7 @@ return [
     'SK' => 'Eslovàquia',
     'SI' => 'Eslovènia',
     'ES' => 'Espanya',
-    'US' => 'Estats Units',
+    'US' => 'Estats UnitsController',
     'EE' => 'Estònia',
     'ET' => 'Etiòpia',
     'FJ' => 'Fiji',

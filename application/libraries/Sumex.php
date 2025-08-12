@@ -259,7 +259,7 @@ class Sumex
             ]
         );
 
-        // Override system language with client language
+        // Override system lang with client lang
         set_language($this->invoice->client_language);
 
         if ( ! $invoice_template) {
@@ -282,7 +282,7 @@ class Sumex
             }
         }
 
-        // Get all custom fields
+        // GetController all custom fields
         $custom_fields = [
             'invoice' => $CI->mdl_custom_fields->get_values_for_fields('mdl_invoice_custom', $this->invoice->invoice_id),
             'client'  => $CI->mdl_custom_fields->get_values_for_fields('mdl_client_custom', $this->invoice->client_id),
@@ -357,7 +357,7 @@ class Sumex
         $node->setAttribute('xmlns:nsxenc', 'http://www.w3.org/2001/04/xmlenc#');
         $node->setAttribute('xsi:schemaLocation', 'http://www.forum-datenaustausch.ch/invoice generalInvoiceRequest_440.xsd');
         $node->setAttribute('modus', $this->_mode);
-        $node->setAttribute('language', $this->_lang);
+        $node->setAttribute('lang', $this->_lang);
 
         return $node;
     }

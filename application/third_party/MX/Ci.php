@@ -54,7 +54,7 @@ class CI
 
         global $LANG, $CFG;
 
-        // re-assign language and config for modules
+        // re-assign lang and config for modules
         if ( ! $LANG instanceof MX_Lang) {
             $LANG = new MX_Lang();
         }

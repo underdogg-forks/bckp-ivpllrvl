@@ -1,0 +1,24 @@
+{
+    "controllers/Ajax.php": {
+        "modal_product_lookups": "modalProductLookups",
+        "process_product_selections": "processProductSelections"
+    },
+    "models/MdlProducts.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "by_product": "byProduct",
+        "by_family": "byFamily",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray"
+    },
+    "models/Mdl_products.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "by_product": "byProduct",
+        "by_family": "byFamily",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray"
+    }
+}

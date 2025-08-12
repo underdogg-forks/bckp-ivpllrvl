@@ -17,7 +17,7 @@ if ( ! defined('BASEPATH')) {
  */
 function format_user($user): string
 {
-    // Get an id
+    // GetController an id
     if ($user && is_numeric($user)) {
         $CI = & get_instance();
         if ( ! property_exists($CI, 'mdl_users')) {
