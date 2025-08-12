@@ -3,10 +3,10 @@
 namespace Modules\Setup\Controllers;
 
 use AllowDynamicProperties;
-use MX_Controller;
+use App\Http\Controllers\Controller as MXController;
 
 #[AllowDynamicProperties]
-class SetupController extends MX_Controller
+class SetupController extends MXController
 {
     public $errors = 0;
 

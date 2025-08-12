@@ -3,10 +3,10 @@
 namespace Modules\Layout\Controllers;
 
 use AllowDynamicProperties;
-use MX_Controller;
+use App\Http\Controllers\Controller as MXController;
 
 #[AllowDynamicProperties]
-class LayoutController extends MX_Controller
+class LayoutController extends MXController
 {
     public $view_data = [];
 

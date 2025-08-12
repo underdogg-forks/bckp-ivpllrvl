@@ -3,10 +3,10 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-use MX_Controller;
+use App\Http\Controllers\Controller as MXController;
 
 #[AllowDynamicProperties]
-class BaseController extends MX_Controller
+class BaseController extends MXController
 {
     /** @var bool */
     public $ajax_controller = false;
