@@ -1,7 +1,5 @@
 <?php
 
-defined('BASEPATH') || exit('No direct script access allowed');
-
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -84,7 +82,7 @@ $db['default'] = [
     'dbdriver'     => 'mysqli',
     'dbprefix'     => '',
     'pconnect'     => false,
-    'db_debug'     => (ENVIRONMENT !== 'production'),
+    'db_debug'     => (env('ENVIRONMENT') !== 'production'),
     'cache_on'     => false,
     'cachedir'     => '',
     'char_set'     => 'utf8',

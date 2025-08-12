@@ -71,10 +71,10 @@ if ($invoice->client_address_2) {
 if ($invoice->client_city || $invoice->client_state || $invoice->client_zip) {
     echo '<div>';
     if ($invoice->client_city) {
-        echo htmlsc($invoice->client_city) . ' ';
+        echo htmlsc($invoice->client_city) . ' InvoicePlane.php';
     }
     if ($invoice->client_state) {
-        echo htmlsc($invoice->client_state) . ' ';
+        echo htmlsc($invoice->client_state) . ' InvoicePlane.php';
     }
     if ($invoice->client_zip) {
         echo htmlsc($invoice->client_zip);
@@ -110,10 +110,10 @@ if ($invoice->user_address_2) {
 if ($invoice->user_city || $invoice->user_state || $invoice->user_zip) {
     echo '<div>';
     if ($invoice->user_city) {
-        echo htmlsc($invoice->user_city) . ' ';
+        echo htmlsc($invoice->user_city) . ' InvoicePlane.php';
     }
     if ($invoice->user_state) {
-        echo htmlsc($invoice->user_state) . ' ';
+        echo htmlsc($invoice->user_state) . ' InvoicePlane.php';
     }
     if ($invoice->user_zip) {
         echo htmlsc($invoice->user_zip);

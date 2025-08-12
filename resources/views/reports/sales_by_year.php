@@ -74,16 +74,16 @@ foreach ($results as $result) {
             <td style="border-bottom: none;text-align:center;"><?php
                             switch ($quarter) {
                                 case 't1':
-                                    echo trans('Q1') . '/' . $year;
+                                    echo trans('Q1') . 'sales_by_year.php/' . $year;
                                     break;
                                 case 't2':
-                                    echo trans('Q2') . '/' . $year;
+                                    echo trans('Q2') . 'sales_by_year.php/' . $year;
                                     break;
                                 case 't3':
-                                    echo trans('Q3') . '/' . $year;
+                                    echo trans('Q3') . 'sales_by_year.php/' . $year;
                                     break;
                                 case 't4':
-                                    echo trans('Q4') . '/' . $year;
+                                    echo trans('Q4') . 'sales_by_year.php/' . $year;
                                     break;
                             }
                 ?></td>

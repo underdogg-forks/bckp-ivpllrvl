@@ -1,9 +1,5 @@
 <?php
 
-if ( ! defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
-
 /*
  * InvoicePlane
  *
@@ -74,7 +70,7 @@ class Zugferdv10Xml
     }
 
     // ===========================================================================
-    // elements helpers
+    // elements Helpers
     // ===========================================================================
 
     /**
@@ -335,7 +331,7 @@ class Zugferdv10Xml
     }
 
     // ===========================================================================
-    // helpers
+    // Helpers
     // ===========================================================================
 
     protected function xmlSpecifiedSupplyChainTradeAgreement($item)

@@ -1,9 +1,5 @@
 <?php
 
-if ( ! defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
-
 defined('EXT') || define('EXT', '.php');
 
 global $CFG;
@@ -35,8 +31,8 @@ function myEach($arr): array|false
  * @see    http://codeigniter.com
  *
  * Description:
- * This library provides functions to load and instantiate controllers
- * and module controllers allowing use of modules and the HMVC design pattern.
+ * This library provides functions to load and instantiate Controllers
+ * and module Controllers allowing use of modules and the HMVC design pattern.
  *
  * Install this file as application/third_party/MX/Modules.php
  *
@@ -119,7 +115,7 @@ class Modules
             }
 
             // set the module directory
-            $path = APPPATH . 'controllers/' . CI::$APP->router->directory;
+            $path = APPPATH . 'Controllers/' . CI::$APP->router->directory;
 
             // load the controller class
             $class .= CI::$APP->config->item('controller_suffix');
@@ -226,7 +222,7 @@ class Modules
     /**
      * Find a file
      * Scans for files located within modules directories.
-     * Also scans application directories for models, plugins and views.
+     * Also scans application directories for Models, plugins and views.
      * Generates fatal error if file not found.
      *
      * @return mixed[]
@@ -249,7 +245,7 @@ class Modules
             foreach ($modules as $module => $subpath) {
                 $fullpath = $location . $module . '/' . $base . $subpath;
 
-                if ($base == 'libraries/' || $base == 'models/') {
+                if ($base == 'libraries/' || $base == 'Models/') {
                     if (is_file($fullpath . ucfirst($file_ext))) {
                         return [$fullpath, ucfirst($file)];
                     }

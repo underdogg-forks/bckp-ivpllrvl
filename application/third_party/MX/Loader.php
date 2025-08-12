@@ -1,9 +1,5 @@
 <?php
 
-if ( ! defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
-
 /**
  * Modular Extensions - HMVC.
  *
@@ -120,7 +116,7 @@ class MX_Loader extends CI_Loader
             }
         }
 
-        // autoload helpers, plugins, languages
+        // autoload Helpers, plugins, languages
         foreach (['helper', 'plugin', 'lang'] as $type) {
             if (isset($autoload[$type])) {
                 foreach ($autoload[$type] as $item) {
@@ -150,14 +146,14 @@ class MX_Loader extends CI_Loader
             }
         }
 
-        // autoload models
+        // autoload Models
         if (isset($autoload['model'])) {
             foreach ($autoload['model'] as $model => $alias) {
                 (is_int($model)) ? $this->model($alias) : $this->model($model, $alias);
             }
         }
 
-        // autoload module controllers
+        // autoload module Controllers
         if (isset($autoload['modules'])) {
             foreach ($autoload['modules'] as $controller) {
                 if ($controller != $this->_module) {
@@ -259,7 +255,7 @@ class MX_Loader extends CI_Loader
         }
 
         // check module
-        list($path, $_model) = Modules::find(mb_strtolower($model), $this->_module, 'models/');
+        list($path, $_model) = Modules::find(mb_strtolower($model), $this->_module, 'Models/');
 
         if ($path == false) {
             // check application & packages
@@ -288,7 +284,7 @@ class MX_Loader extends CI_Loader
         return $this;
     }
 
-    /** Load an array of models **/
+    /** Load an array of Models **/
     public function models($models)
     {
         foreach ($models as $model => $alias) {
@@ -311,7 +307,7 @@ class MX_Loader extends CI_Loader
         return $this;
     }
 
-    /** Load an array of controllers **/
+    /** Load an array of Controllers **/
     public function modules($modules)
     {
         foreach ($modules as $_module) {
@@ -347,7 +343,7 @@ class MX_Loader extends CI_Loader
             return;
         }
 
-        list($path, $_helper) = Modules::find($helper . '_helper', $this->_module, 'helpers/');
+        list($path, $_helper) = Modules::find($helper . '_helper', $this->_module, 'Helpers/');
 
         if ($path === false) {
             return parent::helper($helper);
@@ -359,7 +355,7 @@ class MX_Loader extends CI_Loader
         return $this;
     }
 
-    /** Load an array of helpers **/
+    /** Load an array of Helpers **/
     public function helpers($helpers = [])
     {
         foreach ($helpers as $_helper) {

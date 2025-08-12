@@ -38,10 +38,10 @@ if ($quote->client_address_2) {
 if ($quote->client_city || $quote->client_state || $quote->client_zip) {
     echo '<div>';
     if ($quote->client_city) {
-        echo htmlsc($quote->client_city) . ' ';
+        echo htmlsc($quote->client_city) . ' InvoicePlane.php';
     }
     if ($quote->client_state) {
-        echo htmlsc($quote->client_state) . ' ';
+        echo htmlsc($quote->client_state) . ' InvoicePlane.php';
     }
     if ($quote->client_zip) {
         echo htmlsc($quote->client_zip);
@@ -78,10 +78,10 @@ if ($quote->user_address_2) {
 if ($quote->user_city || $quote->user_state || $quote->user_zip) {
     echo '<div>';
     if ($quote->user_city) {
-        echo htmlsc($quote->user_city) . ' ';
+        echo htmlsc($quote->user_city) . ' InvoicePlane.php';
     }
     if ($quote->user_state) {
-        echo htmlsc($quote->user_state) . ' ';
+        echo htmlsc($quote->user_state) . ' InvoicePlane.php';
     }
     if ($quote->user_zip) {
         echo htmlsc($quote->user_zip);

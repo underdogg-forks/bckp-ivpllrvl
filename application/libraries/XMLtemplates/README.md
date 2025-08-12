@@ -2,11 +2,13 @@
 
 To Activate the e-invoicing system, there are 2 files that need to be placed in their respective folder.
 
-> Add the xml-template file like `Shortidv10Xml.php` in this folder and add the configuration file `Shortidv10.php` in the `helpers/XMLconfigs/` folder.
+> Add the xml-template file like `Shortidv10Xml.php` in this folder and add the configuration file `Shortidv10.php` in
+> the `helpers/XMLconfigs/` folder.
 
-> [For more explanation see the README in XMLconfigs folder](../../helpers/XMLconfigs/README.md).
+> [For more explanation see the README in XMLconfigs folder](../../../app/Helpers/XMLconfigs/README.md).
 
-> You find more examples in [InvoicePlane-e-invoices](https://github.com/InvoicePlane/InvoicePlane-e-invoices) repository.
+> You find more examples in [InvoicePlane-e-invoices](https://github.com/InvoicePlane/InvoicePlane-e-invoices)
+> repository.
 
 ## Minimal Example of generator
 

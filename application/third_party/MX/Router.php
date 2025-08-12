@@ -1,7 +1,5 @@
 <?php
 
-defined('BASEPATH') || exit('No direct script access allowed');
-
 // load the MX core module class
 require dirname(__FILE__) . '/Modules.php';
 
@@ -68,9 +66,9 @@ class MX_Router extends CI_Router
         // check modules
         foreach (Modules::$locations as $location => $offset) {
             // module exists?
-            if (is_dir($source = $location . $module . '/controllers/')) {
+            if (is_dir($source = $location . $module . '/Controllers/')) {
                 $this->module    = $module;
-                $this->directory = $offset . $module . '/controllers/';
+                $this->directory = $offset . $module . '/Controllers/';
 
                 // module sub-controller exists?
                 if ($directory) {
@@ -115,29 +113,29 @@ class MX_Router extends CI_Router
 
         // application sub-directory controller exists?
         if ($directory) {
-            if (is_file(APPPATH . 'controllers/' . $module . '/' . ucfirst($directory) . $ext)) {
+            if (is_file(APPPATH . 'Controllers/' . $module . '/' . ucfirst($directory) . $ext)) {
                 $this->directory = $module . '/';
 
                 return array_slice($segments, 1);
             }
 
             // application sub-sub-directory controller exists?
-            if ($controller && is_file(APPPATH . 'controllers/' . $module . '/' . $directory . '/' . ucfirst($controller) . $ext)) {
+            if ($controller && is_file(APPPATH . 'Controllers/' . $module . '/' . $directory . '/' . ucfirst($controller) . $ext)) {
                 $this->directory = $module . '/' . $directory . '/';
 
                 return array_slice($segments, 2);
             }
         }
 
-        // application controllers sub-directory exists?
-        if (is_dir(APPPATH . 'controllers/' . $module . '/')) {
+        // application Controllers sub-directory exists?
+        if (is_dir(APPPATH . 'Controllers/' . $module . '/')) {
             $this->directory = $module . '/';
 
             return array_slice($segments, 1);
         }
 
         // application controller exists?
-        if (is_file(APPPATH . 'controllers/' . ucfirst($module) . $ext)) {
+        if (is_file(APPPATH . 'Controllers/' . ucfirst($module) . $ext)) {
             return $segments;
         }
 

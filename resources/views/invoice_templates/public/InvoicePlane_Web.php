@@ -83,10 +83,10 @@ if ($invoice->user_address_2) {
     echo htmlsc($invoice->user_address_2) . '<br>';
 }
 if ($invoice->user_city) {
-    echo htmlsc($invoice->user_city) . ' ';
+    echo htmlsc($invoice->user_city) . ' InvoicePlane_Web.php';
 }
 if ($invoice->user_state) {
-    echo htmlsc($invoice->user_state) . ' ';
+    echo htmlsc($invoice->user_state) . ' InvoicePlane_Web.php';
 }
 if ($invoice->user_zip) {
     echo htmlsc($invoice->user_zip) . '<br>';
@@ -122,10 +122,10 @@ if ($invoice->client_address_2) {
     echo htmlsc($invoice->client_address_2) . '<br>';
 }
 if ($invoice->client_city) {
-    echo htmlsc($invoice->client_city) . ' ';
+    echo htmlsc($invoice->client_city) . ' InvoicePlane_Web.php';
 }
 if ($invoice->client_state) {
-    echo htmlsc($invoice->client_state) . ' ';
+    echo htmlsc($invoice->client_state) . ' InvoicePlane_Web.php';
 }
 if ($invoice->client_zip) {
     echo htmlsc($invoice->client_zip) . '<br>';
@@ -248,7 +248,7 @@ foreach ($invoice_tax_rates as $invoice_tax_rate) {
                                 <tr>
                                     <td class="no-bottom-border" colspan="4"></td>
                                     <td class="amount">
-                                        <?php echo htmlsc($invoice_tax_rate->invoice_tax_rate_name) . ' ' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '&nbsp;%'; ?>
+                                        <?php echo htmlsc($invoice_tax_rate->invoice_tax_rate_name) . ' InvoicePlane_Web.php' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '&nbsp;%'; ?>
                                     </td>
                                     <td class="amount"><?php echo format_currency($invoice_tax_rate->invoice_tax_rate_amount); ?></td>
                                 </tr>
