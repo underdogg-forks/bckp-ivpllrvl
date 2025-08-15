@@ -2,8 +2,6 @@
 
 namespace Modules\Projects\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -28,6 +26,7 @@ class ProjectsController extends AdminController
     {
         (new ProjectsService())->paginate(site_url('projects/index'), $page);
         $projects = (new ProjectsService())->result();
+
         return view('projects.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_projects'), 'filter_method' => 'filter_projects', 'projects' => $projects]);
     }
 
@@ -51,6 +50,7 @@ class ProjectsController extends AdminController
             show_404();
         }
         $this->load->model('clients/mdl_clients');
+
         return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => (new ClientsService())->where('client_active', 1)->get()->result()]);
     }
 
@@ -70,6 +70,7 @@ class ProjectsController extends AdminController
             show_404();
         }
         $this->load->model('tasks/mdl_tasks');
+
         return view('projects.view', ['project' => $project, 'tasks' => (new ProjectsService())->getTasks($project->project_id), 'task_statuses' => (new TasksService())->statuses()]);
     }
 

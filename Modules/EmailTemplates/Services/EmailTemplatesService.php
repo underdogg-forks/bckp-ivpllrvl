@@ -3,7 +3,7 @@
 namespace Modules\EmailTemplates\Services;
 
 use AllowDynamicProperties;
-use App\Services\BaseService;
+use Modules\Core\Services\BaseService;
 
 #[AllowDynamicProperties]
 class EmailTemplatesService extends BaseService

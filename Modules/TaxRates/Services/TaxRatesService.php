@@ -3,7 +3,7 @@
 namespace Modules\TaxRates\Services;
 
 use AllowDynamicProperties;
-use App\Services\BaseService;
+use Modules\Core\Services\BaseService;
 
 #[AllowDynamicProperties]
 class TaxRatesService extends BaseService

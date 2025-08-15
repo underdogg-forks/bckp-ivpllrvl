@@ -2,8 +2,6 @@
 
 namespace Modules\Families\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Families\Services\FamiliesService;
@@ -29,6 +27,7 @@ class FamiliesController extends AdminController
     {
         (new FamiliesService())->paginate(site_url('families/index'), $page);
         $families = (new FamiliesService())->result();
+
         return view('families.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_families'), 'filter_method' => 'filter_families', 'families' => $families]);
     }
 

@@ -2,10 +2,10 @@
 
 namespace Modules\Tasks\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Projects\Services\ProjectsService;
+use Modules\Tasks\Services\TasksService;
 
 #[AllowDynamicProperties]
 class TasksController extends AdminController
@@ -28,6 +28,7 @@ class TasksController extends AdminController
     {
         (new TasksService())->paginate(site_url('tasks/index'), $page);
         $tasks = (new TasksService())->result();
+
         return view('tasks.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_tasks'), 'filter_method' => 'filter_tasks', 'tasks' => $tasks, 'task_statuses' => (new TasksService())->statuses()]);
     }
 
@@ -55,6 +56,7 @@ class TasksController extends AdminController
         }
         $this->load->model('projects/mdl_projects');
         $this->load->model('tax_rates/mdl_tax_rates');
+
         return view('tasks.form', ['projects' => (new ProjectsService())->get()->result(), 'task_statuses' => (new TasksService())->statuses(), 'tax_rates' => (new TaxRatesService())->get()->result()]);
     }
 

@@ -2,8 +2,6 @@
 
 namespace Modules\Quotes\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -60,6 +58,7 @@ class QuotesController extends AdminController
         }
         (new QuotesService())->paginate(site_url('quotes/status/' . $status), $page);
         $quotes = (new QuotesService())->result();
+
         return view('quotes.index', ['quotes' => $quotes, 'status' => $status, 'filter_display' => true, 'filter_placeholder' => trans('filter_quotes'), 'filter_method' => 'filter_quotes', 'quote_statuses' => (new QuotesService())->statuses()]);
     }
 

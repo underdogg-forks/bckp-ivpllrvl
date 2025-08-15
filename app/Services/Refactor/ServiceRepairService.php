@@ -35,7 +35,7 @@ class ServiceRepairService
             }
 
             // Fix 3: Add the use statement for BaseService
-            $namespace = 'App\\Services\\BaseService;';
+            $namespace = 'Modules\\Core\\Services\\BaseService;';
             if ( ! Str::contains($contents, $namespace)) {
                 $contents = preg_replace('/(namespace\s+.*?;)/s', "$1\n\nuse {$namespace}", $contents, 1);
             }

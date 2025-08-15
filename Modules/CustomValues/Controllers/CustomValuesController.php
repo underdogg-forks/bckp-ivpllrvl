@@ -2,8 +2,6 @@
 
 namespace Modules\CustomValues\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -33,6 +31,7 @@ class CustomValuesController extends AdminController
         $custom_tables = (new CustomFieldsService())->customTables();
         // load positions by table name
         $positions = (new CustomFieldsService())->getPositions(true);
+
         return view('custom_values.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_custom_values'), 'filter_method' => 'filter_custom_values', 'custom_tables' => $custom_tables, 'custom_values' => $custom_values, 'positions' => $positions]);
     }
 
@@ -54,6 +53,7 @@ class CustomValuesController extends AdminController
         $positions     = (new CustomFieldsService())->getPositions(true);
         $position      = $positions[$field->custom_field_table][$field->custom_field_location];
         unset($positions);
+
         return view('custom_values.field', ['filter_display' => true, 'filter_placeholder' => trans('filter_custom_values'), 'filter_method' => 'filter_custom_values_field', 'id' => $id, 'field' => $field, 'elements' => $result, 'custom_field_usage' => (new CustomFieldsService())->used($id), 'position' => $position, 'table' => $custom_tables[$field->custom_field_table]]);
     }
 
@@ -77,6 +77,7 @@ class CustomValuesController extends AdminController
         $positions = (new CustomFieldsService())->getPositions(true);
         $position  = $positions[$value->custom_field_table][$value->custom_field_location];
         unset($positions);
+
         return view('custom_values.edit', ['id' => $id, 'fid' => $fid, 'value' => $value, 'position' => $position, 'custom_field_usage' => (new CustomValuesService())->used($id)]);
     }
 
@@ -107,6 +108,7 @@ class CustomValuesController extends AdminController
         $positions = (new CustomFieldsService())->getPositions(true);
         $position  = $positions[$field->custom_field_table][$field->custom_field_location];
         unset($positions);
+
         return view('custom_values.new', ['id' => $id, 'field' => $field, 'table' => $table, 'position' => $position]);
     }
 

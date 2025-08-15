@@ -3,7 +3,7 @@
 namespace Modules\Invoices\Services;
 
 use AllowDynamicProperties;
-use App\Services\BaseService;
+use Modules\Core\Services\BaseService;
 
 #[AllowDynamicProperties]
 class InvoiceAmountsService extends BaseService

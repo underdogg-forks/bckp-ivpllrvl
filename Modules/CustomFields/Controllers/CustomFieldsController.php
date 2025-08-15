@@ -2,8 +2,6 @@
 
 namespace Modules\CustomFields\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -46,6 +44,7 @@ class CustomFieldsController extends AdminController
         (new CustomFieldsService())->paginate(site_url('custom_fields/name/' . $name), $page);
         $custom_fields = (new CustomFieldsService())->result();
         $this->load->model('custom_values/mdl_custom_values');
+
         return view('custom_fields.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_custom_fields'), 'filter_method' => 'filter_custom_fields', 'custom_fields' => $custom_fields, 'custom_tables' => $custom_tables, 'custom_value_fields' => (new CustomValuesService())->customValueFields(), 'positions' => (new CustomFieldsService())->getPositions(true)]);
     }
 
@@ -68,6 +67,7 @@ class CustomFieldsController extends AdminController
         if ($id && ! $this->input->post('btn_submit') && ! (new CustomFieldsService())->prepForm($id)) {
             show_404();
         }
+
         return view('custom_fields.form', ['custom_field_id' => $id, 'custom_field_tables' => (new CustomFieldsService())->customTables(), 'custom_field_types' => (new CustomFieldsService())->customTypes(), 'custom_field_usage' => (new CustomFieldsService())->used($id), 'custom_field_location' => (new CustomFieldsService())->formValue('custom_field_location'), 'positions' => (new CustomFieldsService())->getPositions()]);
     }
 

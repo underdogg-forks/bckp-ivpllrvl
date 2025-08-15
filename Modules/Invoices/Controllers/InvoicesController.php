@@ -2,9 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
+use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
 use Modules\Invoices\Services\InvoiceAmountsService;
 use Modules\Invoices\Services\InvoicesService;
@@ -60,6 +59,7 @@ class InvoicesController extends AdminController
         }
         (new InvoicesService())->paginate(site_url('invoices/status/' . $status), $page);
         $invoices = (new InvoicesService())->result();
+
         return view('invoices.index', ['invoices' => $invoices, 'status' => $status, 'filter_display' => true, 'filter_placeholder' => trans('filter_invoices'), 'filter_method' => 'filter_invoices', 'invoice_statuses' => (new InvoicesService())->statuses()]);
     }
 
@@ -71,6 +71,7 @@ class InvoicesController extends AdminController
     public function archive()
     {
         $invoice_array = (new InvoicesService())->getArchives(0);
+
         return view('invoices.archive', ['filter_display' => true, 'filter_placeholder' => trans('filter_archives'), 'filter_method' => 'filter_archives', 'invoices_archive' => $invoice_array]);
     }
 

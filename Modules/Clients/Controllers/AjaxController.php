@@ -2,8 +2,6 @@
 
 namespace Modules\Clients\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 

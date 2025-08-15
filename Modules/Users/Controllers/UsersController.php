@@ -2,8 +2,6 @@
 
 namespace Modules\Users\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -28,6 +26,7 @@ class UsersController extends AdminController
     {
         (new UsersService())->paginate(site_url('users/index'), $page);
         $users = (new UsersService())->result();
+
         return view('users.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_users'), 'filter_method' => 'filter_users', 'users' => $users, 'user_types' => (new UsersService())->userTypes()]);
     }
 
@@ -98,6 +97,7 @@ class UsersController extends AdminController
         }
         // Need in remittance text tags selector (template-tags-invoices)
         $custom_fields['ip_invoice_custom'] = (new CustomFieldsService())->byTable('ip_invoice_custom')->get()->result();
+
         return view('users.form', ['id' => $id, 'user_types' => (new UsersService())->userTypes(), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', $id)->get()->result(), 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'countries' => get_country_list(trans('cldr')), 'selected_country' => (new UsersService())->formValue('user_country') ?: get_setting('default_country'), 'clients' => (new ClientsService())->where('client_active', 1)->get()->result(), 'languages' => get_available_languages(), 'einvoicing' => get_setting('einvoicing')]);
     }
 

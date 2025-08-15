@@ -3,7 +3,7 @@
 namespace Modules\Settings\Services;
 
 use AllowDynamicProperties;
-use App\Services\BaseService;
+use Modules\Core\Services\BaseService;
 
 #[AllowDynamicProperties]
 class VersionsService extends BaseService

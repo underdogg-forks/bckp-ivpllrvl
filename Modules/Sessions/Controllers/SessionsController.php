@@ -2,9 +2,8 @@
 
 namespace Modules\Sessions\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
+use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\BaseController;
 
 #[AllowDynamicProperties]

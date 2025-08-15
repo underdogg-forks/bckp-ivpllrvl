@@ -3,7 +3,7 @@
 namespace Modules\Quotes\Services;
 
 use AllowDynamicProperties;
-use App\Services\BaseService;
+use Modules\Core\Services\BaseService;
 
 #[AllowDynamicProperties]
 class QuoteAmountsService extends BaseService

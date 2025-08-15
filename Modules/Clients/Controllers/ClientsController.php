@@ -2,8 +2,6 @@
 
 namespace Modules\Clients\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -56,6 +54,7 @@ class ClientsController extends AdminController
             }
             unset($client);
         }
+
         return view('clients.index', ['records' => $clients, 'filter_display' => true, 'filter_placeholder' => trans('filter_clients'), 'filter_method' => 'filter_clients', 'einvoicing' => get_setting('einvoicing')]);
     }
 
@@ -157,17 +156,18 @@ class ClientsController extends AdminController
             }
         }
         $this->load->helper(['custom_values', 'e-invoice']);
+
         // e-invoice - since 1.6.3
-        return view('clients.form', ['client_id'            => $id,
-            'custom_fields'        => $custom_fields,
-            'custom_values'        => $custom_values,
-            'countries'            => get_country_list(trans('cldr')),
-            'selected_country'     => (new ClientsService())->formValue('client_country') ?: get_setting('default_country'),
-            'languages'            => get_available_languages(),
-            'client_title_choices' => $this->getClientTitleChoices(),
-            'xml_templates'        => get_xml_template_files(),
+        return view('clients.form', ['client_id' => $id,
+            'custom_fields'                      => $custom_fields,
+            'custom_values'                      => $custom_values,
+            'countries'                          => get_country_list(trans('cldr')),
+            'selected_country'                   => (new ClientsService())->formValue('client_country') ?: get_setting('default_country'),
+            'languages'                          => get_available_languages(),
+            'client_title_choices'               => $this->getClientTitleChoices(),
+            'xml_templates'                      => get_xml_template_files(),
             // eInvoicing
-            'req_einvoicing' => $req_einvoicing,]);
+            'req_einvoicing' => $req_einvoicing, ]);
     }
 
     /**

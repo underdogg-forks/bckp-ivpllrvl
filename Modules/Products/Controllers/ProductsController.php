@@ -2,8 +2,6 @@
 
 namespace Modules\Products\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -28,6 +26,7 @@ class ProductsController extends AdminController
     {
         (new ProductsService())->paginate(site_url('products/index'), $page);
         $products = (new ProductsService())->result();
+
         return view('products.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_products'), 'filter_method' => 'filter_products', 'products' => $products]);
     }
 
@@ -55,6 +54,7 @@ class ProductsController extends AdminController
         $this->load->model('families/mdl_families');
         $this->load->model('units/mdl_units');
         $this->load->model('tax_rates/mdl_tax_rates');
+
         return view('products.form', ['families' => (new FamiliesService())->get()->result(), 'units' => (new UnitsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result()]);
     }
 

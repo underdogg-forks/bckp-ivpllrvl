@@ -2,10 +2,9 @@
 
 namespace Modules\Setup\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller as MXController;
+use Illuminate\Support\Facades\Log;
 use Modules\Setup\Services\SetupService;
 
 #[AllowDynamicProperties]

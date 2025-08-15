@@ -2,9 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
+use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Invoices\Services\InvoiceSumexService;

@@ -2,8 +2,6 @@
 
 namespace Modules\UserClients\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -46,6 +44,7 @@ class UserClientsController extends AdminController
             redirect()->route('users');
         }
         $user_clients = (new UserClientsService())->assignedTo($id)->get()->result();
+
         return view('user_clients.new', ['user' => $user, 'user_clients' => $user_clients]);
         $this->layout->set('id', $id);
         $this->layout->buffer('content', 'user_clients/field');

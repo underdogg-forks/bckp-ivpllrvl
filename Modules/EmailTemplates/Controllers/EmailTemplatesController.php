@@ -2,8 +2,6 @@
 
 namespace Modules\EmailTemplates\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -66,6 +64,7 @@ class EmailTemplatesController extends AdminController
         foreach (array_keys((new CustomFieldsService())->customTables()) as $table) {
             $custom_fields[$table] = (new CustomFieldsService())->byTable($table)->get()->result();
         }
+
         return view('email_templates.form', ['custom_fields' => $custom_fields, 'invoice_templates' => (new TemplatesService())->getInvoiceTemplates(), 'quote_templates' => (new TemplatesService())->getQuoteTemplates(), 'selected_pdf_template' => (new EmailTemplatesService())->formValue('email_template_pdf_template')]);
     }
 

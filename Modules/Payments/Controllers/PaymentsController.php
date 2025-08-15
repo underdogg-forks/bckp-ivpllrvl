@@ -2,8 +2,6 @@
 
 namespace Modules\Payments\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -28,6 +26,7 @@ class PaymentsController extends AdminController
     {
         (new PaymentsService())->paginate(site_url('payments/index'), $page);
         $payments = (new PaymentsService())->result();
+
         return view('payments.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_payments'), 'filter_method' => 'filter_payments', 'payments' => $payments]);
     }
 
@@ -95,6 +94,7 @@ class PaymentsController extends AdminController
             $amounts['invoice' . $open_invoice->invoice_id]                 = format_amount($open_invoice->invoice_balance);
             $invoice_payment_methods['invoice' . $open_invoice->invoice_id] = $open_invoice->payment_method;
         }
+
         return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => (new PaymentMethodsService())->get()->result(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
         if ($id) {
             $this->layout->set('payment', (new PaymentsService())->where('ip_payments.payment_id', $id)->get()->row());

@@ -2,8 +2,6 @@
 
 namespace Modules\Mailer\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -49,6 +47,7 @@ class MailerController extends AdminController
         foreach (array_keys((new CustomFieldsService())->customTables()) as $table) {
             $custom_fields[$table] = (new CustomFieldsService())->byTable($table)->get()->result();
         }
+
         return view('mailer.invoice', ['selected_email_template' => $email_template_id, 'selected_pdf_template' => select_pdf_invoice_template($invoice), 'email_templates' => (new EmailTemplatesService())->where('email_template_type', 'invoice')->get()->result(), 'email_template' => $email_template, 'custom_fields' => $custom_fields, 'pdf_templates' => (new TemplatesService())->getInvoiceTemplates(), 'invoice' => $invoice]);
     }
 
@@ -74,6 +73,7 @@ class MailerController extends AdminController
         foreach (array_keys((new CustomFieldsService())->customTables()) as $table) {
             $custom_fields[$table] = (new CustomFieldsService())->byTable($table)->get()->result();
         }
+
         return view('mailer.quote', ['selected_email_template' => $email_template_id, 'selected_pdf_template' => get_setting('pdf_quote_template'), 'email_templates' => (new EmailTemplatesService())->where('email_template_type', 'quote')->get()->result(), 'email_template' => $email_template, 'custom_fields' => $custom_fields, 'pdf_templates' => (new TemplatesService())->getQuoteTemplates(), 'quote' => (new QuotesService())->getById($quote_id)]);
     }
 

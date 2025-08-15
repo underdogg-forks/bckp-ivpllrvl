@@ -2,8 +2,6 @@
 
 namespace Modules\Settings\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -107,6 +105,7 @@ class SettingsController extends AdminController
         $public_quote_templates   = (new TemplatesService())->getQuoteTemplates('public');
         // GetController all themes
         $available_themes = (new SettingsService())->getThemes();
+
         // Set data in the layout
         return view('settings.index', ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'payment_methods' => (new PaymentMethodsService())->get()->result(), 'public_invoice_templates' => $public_invoice_templates, 'pdf_invoice_templates' => $pdf_invoice_templates, 'public_quote_templates' => $public_quote_templates, 'pdf_quote_templates' => $pdf_quote_templates, 'languages' => get_available_languages(), 'countries' => get_country_list(trans('cldr')), 'date_formats' => date_formats(), 'current_date' => new DateTime(), 'available_themes' => $available_themes, 'email_templates_quote' => (new EmailTemplatesService())->where('email_template_type', 'quote')->get()->result(), 'email_templates_invoice' => (new EmailTemplatesService())->where('email_template_type', 'invoice')->get()->result(), 'custom_fields' => ['ip_invoice_custom' => (new CustomFieldsService())->byTable('ip_invoice_custom')->get()->result()], 'gateway_drivers' => $gateways, 'number_formats' => $number_formats, 'gateway_currency_codes' => get_currencies(), 'first_days_of_weeks' => ['0' => lang('sunday'), '1' => lang('monday')], 'legacy_calculation' => config_item('legacy_calculation')]);
     }
