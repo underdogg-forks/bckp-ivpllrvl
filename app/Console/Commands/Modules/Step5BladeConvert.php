@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Modules;
 
-use App\Support\Modules\Views\BladeConverter;
+use App\Services\Refactor\BladeConverter;
 use Illuminate\Support\Facades\File;
 
 class Step5BladeConvert extends BaseModuleCommand
