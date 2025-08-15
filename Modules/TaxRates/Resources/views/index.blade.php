@@ -1,4 +1,4 @@
-@php namespace Modules\TaxRates\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('tax_rates')</h1>
 

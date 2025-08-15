@@ -1,4 +1,4 @@
-@php namespace Modules\Users\Views; @endphp
+
 <script>
     $(function () {
         var user_client_modal = $('#add-user-client');

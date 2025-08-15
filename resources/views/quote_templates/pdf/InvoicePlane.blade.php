@@ -190,7 +190,7 @@ if ($add_table_and_head_for_sums) {
             <td class="text-right">{{ format_currency($quote->quote_item_subtotal) }}</td>
         </tr>
 
-        @php if ($quote->quote_item_tax_total > 0) { @endphp
+        @if($quote->quote_item_tax_total > 0) { @endphp
         <tr>
             <td class="text-right" colspan="{{ $colspan @endphp">
                 @lang('item_tax') }}

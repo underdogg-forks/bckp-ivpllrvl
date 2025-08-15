@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 <div class="table-responsive">
     <table class="table table-hover table-striped">
 

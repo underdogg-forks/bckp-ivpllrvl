@@ -1,4 +1,4 @@
-@php namespace Modules\Filter\Views; @endphp
+
 <script>
     var delay = (function () {
         var timer = 0;

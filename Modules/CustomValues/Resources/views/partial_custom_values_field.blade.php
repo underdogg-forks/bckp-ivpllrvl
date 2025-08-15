@@ -1,4 +1,4 @@
-@php namespace Modules\CustomValues\Views; @endphp
+
 <table class="table table-bordered">
 
     <thead>

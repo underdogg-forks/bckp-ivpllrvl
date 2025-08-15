@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 <script>
     $(function () {
         // Display the copy quote modal

@@ -1,4 +1,4 @@
-@php namespace Modules\EmailTemplates\Views; @endphp
+
 <form method="post">
 
     @php

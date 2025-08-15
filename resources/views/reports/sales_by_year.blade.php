@@ -72,20 +72,22 @@ foreach ($results as $result) {
         <tr>
             <td style="border-bottom: none;">&nbsp;</td>
             <td style="border-bottom: none;text-align:center;">@switch($quarter)
+@switch($quarter)
 @php switch ($quarter) {
-                                @case('t1'):
+                                @@case(('t1')):
                                     echo trans('Q1') . 'sales_by_year.php/' . $year;
                                     @break
-                                @case('t2'):
+                                @@case(('t2')):
                                     echo trans('Q2') . 'sales_by_year.php/' . $year;
                                     @break
-                                @case('t3'):
+                                @@case(('t3')):
                                     echo trans('Q3') . 'sales_by_year.php/' . $year;
                                     @break
-                                @case('t4'):
+                                @@case(('t4')):
                                     echo trans('Q4') . 'sales_by_year.php/' . $year;
                                     @break
                             } @endphp
+@endswitch
 @endswitch</td>
             <td style="border-bottom: none;text-align:center;">{{ ($value > 0) ? format_currency($value) : '' }}</td>
         </tr>

@@ -1,4 +1,4 @@
-@php namespace Modules\Settings\Views; @endphp
+
 <script>
     $(function () {
         toggle_smtp_settings();

@@ -1,4 +1,4 @@
-@php namespace Modules\Tasks\Views; @endphp
+
 <div class="table-responsive">
     <table id="tasks_table" class="table table-hover table-bordered table-striped no-margin">
         <tr>

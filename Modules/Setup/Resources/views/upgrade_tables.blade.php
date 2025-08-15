@@ -1,4 +1,4 @@
-@php namespace Modules\Setup\Views; @endphp
+
 <div class="container">
     <div class="install-panel">
 

@@ -1,4 +1,4 @@
-@php namespace Modules\Payments\Views; @endphp
+
 <script>
     $(function () {
         var $invoice_id = $('#invoice_id');

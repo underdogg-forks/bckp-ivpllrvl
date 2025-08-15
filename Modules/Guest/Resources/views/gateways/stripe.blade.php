@@ -1,4 +1,4 @@
-@php namespace Modules\Guest\Views\Gateways; @endphp
+
 <div id="stripe-checkout"></div>
 
 <script>

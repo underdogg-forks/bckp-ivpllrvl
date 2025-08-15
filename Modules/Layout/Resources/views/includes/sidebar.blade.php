@@ -1,4 +1,4 @@
-@php namespace Modules\Layout\Views\Includes; @endphp
+
 <div class="sidebar hidden-xs">
     <ul>
         <li>

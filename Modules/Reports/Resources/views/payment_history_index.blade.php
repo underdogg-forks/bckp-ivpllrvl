@@ -1,4 +1,4 @@
-@php namespace Modules\Reports\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('payment_history')</h1>
 </div>

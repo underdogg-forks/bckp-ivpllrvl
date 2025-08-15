@@ -1,4 +1,4 @@
-@php namespace Modules\Clients\Views; @endphp
+
 <div id="headerbar">
 
     <h1 class="headerbar-title">@lang('clients')</h1>

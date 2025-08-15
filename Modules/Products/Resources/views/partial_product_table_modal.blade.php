@@ -1,4 +1,4 @@
-@php namespace Modules\Products\Views; @endphp
+
 <div class="table-responsive">
     <table id="products_table" class="table table-hover table-bordered table-striped">
         <tr>

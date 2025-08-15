@@ -1,4 +1,4 @@
-@php namespace Modules\Guest\Views\Gateways; @endphp
+
 <div class="container">
     <div id="paypal-buttons" class="col-xs-12 col-md-8 col-md-offset-2"></div>
 </div>

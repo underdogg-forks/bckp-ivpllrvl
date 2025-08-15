@@ -1,4 +1,4 @@
-@php namespace Modules\Mailer\Views; @endphp
+
 <form method="post" class="form-horizontal">
 
     <div id="headerbar">

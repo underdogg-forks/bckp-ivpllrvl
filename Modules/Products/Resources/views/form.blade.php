@@ -1,4 +1,4 @@
-@php namespace Modules\Products\Views; @endphp
+
 <form method="post">
 
     @php

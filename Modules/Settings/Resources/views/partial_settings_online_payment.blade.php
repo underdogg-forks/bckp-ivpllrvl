@@ -1,4 +1,4 @@
-@php namespace Modules\Settings\Views; @endphp
+
 <script>
     $(function () {
         var online_payment_select = $('#online-payment-select');

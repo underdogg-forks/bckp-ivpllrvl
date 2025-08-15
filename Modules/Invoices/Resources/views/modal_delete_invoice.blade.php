@@ -1,4 +1,4 @@
-@php namespace Modules\Invoices\Views; @endphp
+
 <div id="delete-invoice" class="modal modal-lg" role="dialog" aria-labelledby="delete-invoice" aria-hidden="true">
 
     <div class="modal-content">

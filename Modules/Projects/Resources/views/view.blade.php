@@ -1,4 +1,4 @@
-@php namespace Modules\Projects\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">{!! $project->project_name);
             ?></h1>

@@ -1,4 +1,4 @@
-@php namespace Modules\EmailTemplates\Views; @endphp
+
 <div class="panel panel-default">
     <div class="panel-heading">@lang('email_template_tags')</div>
     <div class="panel-body">

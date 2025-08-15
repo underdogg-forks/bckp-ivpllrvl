@@ -1,4 +1,4 @@
-@php namespace Modules\Invoices\Views; @endphp
+
 <div class="table-responsive">
     <table class="table table-striped">
 

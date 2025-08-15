@@ -1,4 +1,4 @@
-@php namespace Modules\InvoiceGroups\Views; @endphp
+
 <form method="post">
 
     @csrf

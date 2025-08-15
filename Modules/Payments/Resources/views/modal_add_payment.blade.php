@@ -1,4 +1,4 @@
-@php namespace Modules\Payments\Views; @endphp
+
 <script>
     $(function () {
         $('#enter-payment').modal('show');

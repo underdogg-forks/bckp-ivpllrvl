@@ -142,7 +142,7 @@ if ($invoice->client_phone) {
                                     <td style=" text-align:right;
                         ">{{ format_currency($invoice->invoice_balance) }}</td>
                         </tr>
-                        @php if ($payment_method) { @endphp
+                        @if($payment_method) { @endphp
                         <tr>
                             <td>@lang('payment_method'); @endphp</td>
                             <td>{!! $payment_method->payment_method_name !!}</td>

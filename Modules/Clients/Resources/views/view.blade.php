@@ -1,4 +1,4 @@
-@php namespace Modules\Clients\Views; @endphp
+
 <script>
     // e-invoice user switch anima
     const switch_fa_toggle = function (id){

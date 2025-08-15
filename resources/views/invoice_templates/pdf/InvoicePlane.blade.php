@@ -140,7 +140,7 @@ if ($invoice->user_fax) {
         <table class="large">
             <tr>
                 <td rowspan="{{ $payment_method ? 5 : 4 @endphp"
-                    style="width:40%;text-align:left;">@php echo $stamp @endphp</td>
+                    style="width:40%;text-align:left;">{{ $stamp @endphp</td>
             </tr>
             <tr>
                 <td>@lang('invoice_date'):</td>
@@ -158,7 +158,7 @@ if ($invoice->user_fax) {
                 <td
                     {{ $text_class_balance }}>@php echo format_currency($invoice->invoice_balance) }}</td>
             </tr>
-            @php if ($payment_method) { @endphp
+            @if($payment_method) { @endphp
             <tr>
                 <td>@lang('payment_method') }}:</td>
                 <td>{!! $payment_method->payment_method_name !!}</td>
@@ -173,7 +173,7 @@ if ($invoice->user_fax) {
         <thead>
         <tr>
             <th class="item-name">@lang('item') }}</th>
-            <th class=" item-desc">@php @lang('description'); @endphp</th>
+            <th class=" item-desc">@php @lang('description') }}</th>
     <th class="item-amount text-right">@lang('qty'); @endphp</th>
     <th class="item-price text-right">@lang('price'); @endphp</th>
     @if($show_item_discounts) { @endphp
@@ -245,7 +245,7 @@ if ($add_table_and_head_for_sums) {
             ">{{ format_currency($invoice->invoice_item_subtotal) }}</td>
         </tr>
 
-        @php if ($invoice->invoice_item_tax_total > 0) { @endphp
+        @if($invoice->invoice_item_tax_total > 0) { @endphp
         <tr>
             <td class="text-right" colspan="{{ $colspan @endphp">
                 @lang('item_tax') }}
@@ -260,11 +260,11 @@ if ($add_table_and_head_for_sums) {
         @foreach($invoice_tax_rates as $invoice_tax_rate) { @endphp
         <tr>
             <td class="text-right" colspan="{{ $colspan @endphp">
-                {{ htmlsc($invoice_tax_rate->invoice_tax_rate_name) . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%)' }}
+                {!! $invoice_tax_rate->invoice_tax_rate_name) . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%)' }}
             </td>
             <td class=" text-right
             ">
-            {{ format_currency($invoice_tax_rate->invoice_tax_rate_amount) }}
+            {{ format_currency($invoice_tax_rate->invoice_tax_rate_amount !!}
             </td>
         </tr>
         @php } @endphp
@@ -297,7 +297,7 @@ if ($add_table_and_head_for_sums) {
             </td>
             <td class=" text-right
             {{ $text_class @endphp">
-                           <b>@php echo format_currency($invoice->invoice_balance) }}</b>
+                           <b>{{ format_currency($invoice->invoice_balance) }}</b>
             </td>
         </tr>
         </tbody>
@@ -313,7 +313,7 @@ if ($show_qrcode) { @endphp
                     {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
                 </div>
                 <div>
-                    <strong>@lang('qr_code_settings_iban'); @endphp:</strong>
+                    <strong>@lang('qr_code_settings_iban') }}:</strong>
                     {{ $invoice->user_iban ?: get_setting('qr_code_iban') }}
                 </div>
                 <div>

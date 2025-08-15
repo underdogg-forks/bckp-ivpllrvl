@@ -1,4 +1,4 @@
-@php namespace Modules\Invoices\Views; @endphp
+
 <script>
     $(function () {
         $('#modal-create-credit-invoice').modal('show');

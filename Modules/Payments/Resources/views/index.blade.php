@@ -1,4 +1,4 @@
-@php namespace Modules\Payments\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('payments')</h1>
 

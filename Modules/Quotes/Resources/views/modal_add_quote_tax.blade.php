@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 <script>
     $(function () {
         $('#quote_tax_submit').click(function () {

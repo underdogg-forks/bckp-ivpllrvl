@@ -1,4 +1,4 @@
-@php namespace Modules\Layout\Views\Includes; @endphp
+
 <title>{{ get_setting('custom_title', 'InvoicePlane', true);
 ?></title>
 

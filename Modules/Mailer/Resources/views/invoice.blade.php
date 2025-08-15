@@ -1,4 +1,4 @@
-@php namespace Modules\Mailer\Views; @endphp
+
 <script>
     $(function () {
         var template_fields = ["body", "subject", "from_name", "from_email", "cc", "bcc", "pdf_template"];

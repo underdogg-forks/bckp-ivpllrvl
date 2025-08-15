@@ -1,4 +1,4 @@
-@php namespace Modules\Sessions\Views; @endphp
+
     <!doctype html>
 
 <!--[if lt IE 7]>

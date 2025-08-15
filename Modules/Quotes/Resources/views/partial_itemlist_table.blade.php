@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 
 <div class="table-responsive">
     <table id="item_table" class="items table table-condensed table-bordered no-margin">

@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 
 <div class="row">
     <div id="item_table" class="items table col-xs-12">

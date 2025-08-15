@@ -1,4 +1,4 @@
-@php namespace Modules\Guest\Views; @endphp
+
     <!DOCTYPE html>
 
 <!--[if lt IE 7]>

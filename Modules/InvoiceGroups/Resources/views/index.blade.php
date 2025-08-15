@@ -1,4 +1,4 @@
-@php namespace Modules\InvoiceGroups\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('invoice_groups')</h1>
 

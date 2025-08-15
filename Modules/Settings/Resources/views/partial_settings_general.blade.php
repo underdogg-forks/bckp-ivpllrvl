@@ -1,4 +1,4 @@
-@php namespace Modules\Settings\Views; @endphp
+
 <script>
     $(function () {
         $('#btn_generate_cron_key').click(function () {

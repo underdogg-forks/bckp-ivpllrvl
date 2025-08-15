@@ -1,4 +1,4 @@
-@php namespace Modules\Reports\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('sales_by_date')</h1>
 </div>

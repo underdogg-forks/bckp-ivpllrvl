@@ -1,4 +1,4 @@
-@php namespace Modules\Projects\Views; @endphp
+
 <script>
     $(function () {
         @php

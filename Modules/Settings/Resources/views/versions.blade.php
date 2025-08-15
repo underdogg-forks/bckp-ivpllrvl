@@ -1,4 +1,4 @@
-@php namespace Modules\Settings\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('version_history')</h1>
 

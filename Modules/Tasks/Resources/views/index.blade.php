@@ -1,4 +1,4 @@
-@php namespace Modules\Tasks\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('tasks')</h1>
 

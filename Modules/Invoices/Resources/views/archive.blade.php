@@ -1,4 +1,4 @@
-@php namespace Modules\Invoices\Views; @endphp
+
 <div id="headerbar">
 
     <h1 class="headerbar-title">@lang('invoice_archive')</h1>

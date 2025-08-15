@@ -1,4 +1,4 @@
-@php namespace Modules\CustomValues\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('custom_values')</h1>
 

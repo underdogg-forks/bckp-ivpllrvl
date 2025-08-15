@@ -1,4 +1,4 @@
-@php namespace Modules\Reports\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('invoices_per_client')</h1>
 </div>

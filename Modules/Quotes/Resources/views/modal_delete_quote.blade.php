@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 <div id="delete-quote" class="modal modal-lg" role="dialog" aria-labelledby="modal_delete_quote" aria-hidden="true">
     <div class="modal-content">
         <div class="modal-header">

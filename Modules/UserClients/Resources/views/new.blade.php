@@ -1,4 +1,4 @@
-@php namespace Modules\UserClients\Views; @endphp
+
 <script>
     $(function () {
         $('#user_all_clients').click(function () {

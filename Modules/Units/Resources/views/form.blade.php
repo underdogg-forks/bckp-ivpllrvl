@@ -1,4 +1,4 @@
-@php namespace Modules\Units\Views; @endphp
+
 <form method="post">
 
     @csrf

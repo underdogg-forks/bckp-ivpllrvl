@@ -1,4 +1,4 @@
-@php namespace Modules\Dashboard\Views; @endphp
+
 <div id="content">
     {{ $this->layout->loadView('layout/alerts');
 ?>

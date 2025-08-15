@@ -1,4 +1,4 @@
-@php namespace Modules\Clients\Views; @endphp
+
 <span class="client-address-street-line">
     {{ $client->client_address_1 ? htmlsc($client->client_address_1) . '<br>' : '' }}
 </span>

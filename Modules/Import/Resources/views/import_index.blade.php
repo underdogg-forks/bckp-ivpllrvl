@@ -1,4 +1,4 @@
-@php namespace Modules\Import\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('import_data')</h1>
 </div>

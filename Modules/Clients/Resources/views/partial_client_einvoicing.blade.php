@@ -1,4 +1,4 @@
-@php namespace Modules\Clients\Views; @endphp
+
 <script type="text/javascript">
     $(function () {
         // Cache jQuery selectors

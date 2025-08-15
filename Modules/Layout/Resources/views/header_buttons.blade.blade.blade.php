@@ -1,4 +1,4 @@
-@php namespace Modules\Layout\Views; @endphp
+
 <div class="headerbar-item pull-right">
     <div class="btn-group btn-group-sm">
         @if(!isset($hide_submit_button))

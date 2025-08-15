@@ -1,4 +1,4 @@
-@php namespace Modules\PaymentMethods\Views; @endphp
+
 <form method="post" class="form-horizontal">
 
     @csrf

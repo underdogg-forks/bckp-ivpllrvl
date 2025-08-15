@@ -1,4 +1,4 @@
-@php namespace Modules\EmailTemplates\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('email_templates')</h1>
 

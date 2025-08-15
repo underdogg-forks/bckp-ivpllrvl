@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 <div id="headerbar">
 
     <h1 class="headerbar-title">@lang('quotes')</h1>

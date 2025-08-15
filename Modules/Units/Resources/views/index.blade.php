@@ -1,4 +1,4 @@
-@php namespace Modules\Units\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('units')</h1>
 

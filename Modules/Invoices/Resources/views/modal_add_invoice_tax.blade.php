@@ -1,4 +1,4 @@
-@php namespace Modules\Invoices\Views; @endphp
+
 <script>
     $(function () {
 

@@ -1,4 +1,4 @@
-@php namespace Modules\Guest\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('dashboard')</h1>
 </div>

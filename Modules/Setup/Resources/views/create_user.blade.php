@@ -1,4 +1,4 @@
-@php namespace Modules\Setup\Views; @endphp
+
 <script>
     $(function () {
         $("[name='user_country']").select2({

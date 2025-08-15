@@ -1,4 +1,4 @@
-@php namespace Modules\Tasks\Views; @endphp
+
 <script>
     $(function () {
         // Display the create invoice modal

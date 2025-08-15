@@ -1,4 +1,4 @@
-@php namespace Modules\Quotes\Views; @endphp
+
 <tr>
     <td class="td-vert-middle">@lang('global_discount')</td>
     <td class="clearfix">

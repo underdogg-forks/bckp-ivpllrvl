@@ -1,4 +1,4 @@
-@php namespace Modules\Users\Views; @endphp
+
 <script src="@php _core_asset('js/zxcvbn.js'); @endphp"></script>
 
 <form method="post">

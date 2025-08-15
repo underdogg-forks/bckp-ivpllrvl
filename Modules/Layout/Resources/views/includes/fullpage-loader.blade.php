@@ -1,4 +1,4 @@
-@php namespace Modules\Layout\Views\Includes; @endphp
+
 <div id="fullpage-loader" style="display: none">
     <div class="loader-content">
         <i id="loader-icon" class="fa fa-cog fa-spin"></i>

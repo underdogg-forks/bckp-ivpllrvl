@@ -1,4 +1,4 @@
-@php namespace Modules\EmailTemplates\Views; @endphp
+
 <div class="form-group">
     <label for="tags_invoice">@lang('invoices')</label>
     <select id="tags_invoice" class="tag-select form-control">

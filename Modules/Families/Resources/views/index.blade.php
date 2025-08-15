@@ -1,4 +1,4 @@
-@php namespace Modules\Families\Views; @endphp
+
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('families')</h1>
 
