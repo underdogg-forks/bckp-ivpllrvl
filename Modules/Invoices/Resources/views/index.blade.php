@@ -89,6 +89,6 @@
 
 <div id="content" class="table-content">
     <div id="filter_results">
-        @include('invoices/partial_invoice_table')
+        @include('invoices.partial_invoice_table')
     </div>
 </div>

@@ -23,7 +23,7 @@ foreach ($results as $result) { @endphp
             <td>{{ date_from_mysql($result->payment_date, true) }}</td>
             <td>{{ $result->invoice_number }}</td>
             <td>{{ format_client($result) }}</td>
-            <td>@php _htmlsc($result->payment_method_name); @endphp</td>
+            <td>{!! $result->payment_method_name !!}</td>
             <td>{{ nl2br(htmlsc($result->payment_note)) }}</td>
             <td class="amount">{{ format_currency($result->payment_amount) }}</td>
         </tr>

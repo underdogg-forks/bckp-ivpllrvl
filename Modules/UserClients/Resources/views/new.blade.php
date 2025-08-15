@@ -23,7 +23,7 @@
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('assign_client')</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
     </div>
 
     <div id="content">
@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-                @include('layout/alerts')
+                @include('layout.alerts')
 
                 <input type="hidden" name="user_id" id="user_id"
                        value="{{ $user->user_id }}" required>
@@ -58,7 +58,7 @@
                             <label for="client_id">@lang('client')</label>
                             <select name="client_id" id="client_id" class="form-control simple-select"
                                     autofocus="autofocus" required>
-                                @php foreach ($clients as $client) {
+                                @foreach($clients as $client) {
     echo '<option value="' . $client->client_id . '">' . htmlsc(format_client($client)) . '</option>';
 } @endphp
                             </select>

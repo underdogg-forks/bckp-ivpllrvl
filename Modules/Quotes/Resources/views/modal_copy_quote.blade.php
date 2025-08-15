@@ -90,8 +90,7 @@
                         {{ get_setting('default_quote_group') != $invoice_group->invoice_group_id ? '' : 'selected="selected"' }}>
                 {!! $invoice_group->invoice_group_name !!}
                 </option>
-                    <?php
-                } @endphp
+                    @endif
             </select>
         </div>
 

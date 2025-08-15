@@ -38,7 +38,7 @@
 
     <div id="content">
 
-        @include('layout/alerts')
+        @include('layout.alerts')
 
         <div class="form-group">
             <div class="col-xs-12 col-sm-2 text-right text-left-xs">
@@ -102,9 +102,7 @@
             </div>
             <div class="col-xs-12 col-sm-6 payment-method-wrapper">
 
-                @php // Add a hidden input field if a payment method was set to pass the disabled attribute
-if ($this->mdl_payments->form_value('payment_method_id')) {
-                @endphp
+@if($this->mdl_payments->form_value('payment_method_id'))
                 <input type="hidden" name="payment_method_id" class="hidden"
                        value="{{ $this->mdl_payments->form_value('payment_method_id') }}">
                 @endif
@@ -117,8 +115,7 @@ if ($this->mdl_payments->form_value('payment_method_id')) {
                             {{ $this->mdl_payments->form_value('payment_method_id') == $payment_method->payment_method_id ? 'selected="selected"' : '' }}>
                             {{ $payment_method->payment_method_name }}
                         </option>
-                            <?php
-                        } @endphp
+                            @endif
                 </select>
             </div>
         </div>

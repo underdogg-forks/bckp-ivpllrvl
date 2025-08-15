@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-            @include('layout/alerts')
+            @include('layout.alerts')
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -27,8 +27,7 @@ foreach ($files as $file) {
                                 {{ $file }}
                             </label>
                         </div>
-                            <?php
-                        } @endphp
+                            @endif
                         <input type="submit" class="btn btn-default" name="btn_submit" value="@lang('import')">
 
                     </form>

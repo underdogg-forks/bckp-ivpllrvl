@@ -40,7 +40,7 @@
 
         <br/>
 
-        <div class="row">@include('layout/alerts')</div>
+        <div class="row">@include('layout.alerts')</div>
 
         <form method="post" action="{{ url('sessions/passwordreset') }}">
 

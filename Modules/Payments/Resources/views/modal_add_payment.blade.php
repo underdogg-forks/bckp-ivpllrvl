@@ -88,9 +88,8 @@
                     <label for="payment_method_id">@lang('payment_method')</label>
 
                     <div class="controls">
-                        @php // Add a hidden input field if a payment method was set to pass the disabled attribute
-if ($this->mdl_payments->form_value('payment_method_id')) {
-                        @endphp
+
+@if($this->mdl_payments->form_value('payment_method_id'))
                         <input type="hidden" name="payment_method_id" class="hidden"
                                value="{{ $this->mdl_payments->form_value('payment_method_id') }}">
                         @endif

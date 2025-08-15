@@ -16,9 +16,9 @@
         <th class="amount">@lang('invoice_aging_above_30'); @endphp</th>
         <th class="amount">@lang('total'); @endphp</th>
     </tr>
-    @php foreach ($results as $result) { @endphp
+    @foreach($results as $result) { @endphp
     <tr>
-        <td>@php _htmlsc(format_client($result)); @endphp</td>
+        <td>{!! format_client($result) !!}</td>
         <td class="amount">{{ format_currency($result->range_1) }}</td>
         <td class="amount">{{ format_currency($result->range_2) }}</td>
         <td class="amount">{{ format_currency($result->range_3) }}</td>

@@ -143,8 +143,7 @@ if ($logo) {
                    href="{{ url('guest/payment_information/form/' . $invoice->invoice_url_key . '/' . $gateway) }}">{{ ucwords(str_replace('_', ' ', $gateway)) }}</a>
                 @endif
             </ul>
-                <?php
-            } @endphp
+                @endif
         </div>
     </div>
 

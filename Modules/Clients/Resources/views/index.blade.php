@@ -65,10 +65,10 @@
 
 <div id="content" class="table-content">
 
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     <div id="filter_results">
-        @include('clients/partial_client_table')
+        @include('clients.partial_client_table')
     </div>
 
 </div>

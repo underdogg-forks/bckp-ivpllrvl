@@ -27,8 +27,7 @@
                 <td>{{ $version->version_file }}</td>
                 <td>{{ $version->version_sql_errors }}</td>
             </tr>
-                <?php
-            } @endphp
+                @endif
             </tbody>
 
         </table>

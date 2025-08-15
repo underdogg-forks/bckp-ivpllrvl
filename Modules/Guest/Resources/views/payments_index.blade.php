@@ -10,7 +10,7 @@
 
 <div id="content" class="table-content">
 
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     <div id="filter_results">
         <div class="table-responsive">
@@ -39,8 +39,7 @@
                     <td>{{ $payment->payment_method_name }}</td>
                     <td>{!! $payment->payment_note !!}</td>
                 </tr>
-                    <?php
-                } @endphp
+                    @endif
                 </tbody>
 
             </table>

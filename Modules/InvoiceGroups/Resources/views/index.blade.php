@@ -16,7 +16,7 @@
 
 <div id="content" class="table-content">
 
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     <div class="table-responsive">
         <table class="table table-hover table-striped">
@@ -62,8 +62,7 @@
                     </div>
                 </td>
             </tr>
-                <?php
-            } @endphp
+                @endif
             </tbody>
 
         </table>

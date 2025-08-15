@@ -7,7 +7,7 @@ $is_update = $this->mdl_families->form_value('is_update'); @endphp
 
     <div id="headerbar">
         <h1 class="headerbar-title">@php _trans($is_update ? 'family' : 'add_family'); @endphp</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
     </div>
 
     <div id="content">
@@ -15,7 +15,7 @@ $is_update = $this->mdl_families->form_value('is_update'); @endphp
         <div class="row">
             <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-                @include('layout/alerts')
+                @include('layout.alerts')
 
                 <input class="hidden" name="is_update" type="hidden" value="{{ $is_update ? '1' : '0' }}">
 

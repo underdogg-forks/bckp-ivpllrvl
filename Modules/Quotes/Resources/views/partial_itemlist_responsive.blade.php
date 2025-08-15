@@ -92,7 +92,7 @@
                                     <span name="subtotal"></span>
                                 </div>
                             </div>
-                            @php if (!$legacy_calculation) {
+                            @if(!$legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show');
 } @endphp
                             <div class="row mb-1">
@@ -103,7 +103,7 @@
                                     <span name="item_tax_total"></span>
                                 </div>
                             </div>
-                            @php if ($legacy_calculation) {
+                            @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show');
 } @endphp
                             <div class="row mb-1">
@@ -122,7 +122,7 @@
             </div>
         </div>
 
-        @php foreach ($items as $item)
+        @foreach($items as $item)
         <div class="form-group details-box item">
             <div class="row">
                 <div class="col-xs-12 col-sm-7 col-md-6 col-lg-5">
@@ -148,7 +148,7 @@
                                 <label for="item_name_{{ $item->item_id }}"
                                        class="input-group-addon ig-addon-aligned">@lang('item')</label>
                                 <input type="text" name="item_name" id="item_name_{{ $item->item_id }}"
-                                       class="form-control" value="{{ _htmlsc($item->item_name) }}">
+                                       class="form-control" value="{{ htmlspecialchars($item->item_name) }}">
                             </div>
                             <div class="input-group">
                                 <label for="item_description_{{ $item->item_id }}"
@@ -174,8 +174,7 @@
                                 <select name="item_product_unit_id" id="item_product_unit_id_{{ $item->item_id }}"
                                         class="form-control">
                                     <option value="0">@lang('none')</option>
-                                    @php
-                                        foreach ($units as $unit)
+                                    @foreach($units as $unit)
                                     <option value="{{ $unit->unit_id }}"
                                         @php
                                             check_select($item->item_product_unit_id, $unit->unit_id);
@@ -203,8 +202,7 @@
         <select name="item_tax_rate_id" id="item_tax_rate_id_{{ $item->item_id }}"
                 class="form-control">
             <option value="0">@lang('none')</option>
-            @php
-                foreach ($tax_rates as $tax_rate)
+            @foreach($tax_rates as $tax_rate)
             <option value="{{ $tax_rate->tax_rate_id }}"
                 @php
                     check_select($item->item_tax_rate_id, $tax_rate->tax_rate_id);
@@ -229,8 +227,7 @@
             {{ format_currency($item->item_subtotal) }}
         </div>
     </div>
-    @php
-        if (!$legacy_calculation) {
+    @if(!$legacy_calculation) {
             $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item]);
         }
     @endphp
@@ -242,8 +239,7 @@
             {{ format_currency($item->item_tax_total) }}
         </div>
     </div>
-    @php
-        if ($legacy_calculation) {
+    @if($legacy_calculation) {
             $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item]);
         }
     @endphp
@@ -283,7 +279,7 @@
 
     <div class="col-xs-12 col-md-6 col-md-offset-2 col-lg-4 col-lg-offset-4">
         <table class="table table-bordered text-right">
-            @php if (!$legacy_calculation) {
+            @if(!$legacy_calculation) {
     $this->layout->loadView('quotes/partial_itemlist_table_quote_discount');
 } @endphp
             <tr>
@@ -295,7 +291,7 @@
                 <td>@lang('item_tax')</td>
                 <td class="amount">{{ format_currency($quote->quote_item_tax_total) }}</td>
             </tr>
-            @php if ($legacy_calculation)
+            @if($legacy_calculation)
             <tr>
                 <td>@lang('quote_tax')</td>
                 <td>

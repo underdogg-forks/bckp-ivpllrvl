@@ -196,13 +196,12 @@ echo $legacy_calculation ? $modal_add_quote_tax : '';
 <div id="headerbar">
     <h1 class="headerbar-title">
         <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing') }}: <?php
-                                                                                          _htmlsc(PHP_EOL . format_user($quote->user_id)) }
+                                                                                          htmlspecialchars(PHP_EOL . format_user($quote->user_id)) }
                                                                                           }">
             {{ trans('quote') . ' ' . ($quote->quote_number ? '#' . $quote->quote_number : trans('id') . ': ' . $quote->quote_id) }}
         </span>
-@php // Nb Admins > 1 only
-if ($change_user) {
-    @endphp
+
+@if($change_user)
         <a data-toggle="tooltip" data-placement="bottom"
            title="{{ $edit_user_title }}"
 href="{{ url('users/form/' . $quote->user_id) }}">
@@ -226,9 +225,8 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                 <i class="fa fa-caret-down no-margin"></i> @lang('options')
             </a>
             <ul class="dropdown-menu">
-                @php // Legacy calculation have global taxes - since v1.6.3
-if ($legacy_calculation) {
-                @endphp
+
+@if($legacy_calculation)
                 <li>
                     <a href="#add-quote-tax" data-toggle="modal">
                         <i class="fa fa-plus fa-margin"></i>
@@ -403,7 +401,7 @@ if ($legacy_calculation) {
                                         <select name="quote_status_id" id="quote_status_id"
                                                 class="form-control simple-select"
                                                 data-minimum-results-for-search="Infinity">
-                                            @php foreach ($quote_statuses as $key => $status) {
+                                            @foreach($quote_statuses as $key => $status) {
     $is_selected = $key == $quote->quote_status_id ? ' selected="selected"' : '';
                                             @endphp
                                             <option value="{{ $key }}"{{ $is_selected }}>
@@ -505,6 +503,5 @@ foreach ($custom_fields as $custom_field) {
                 }
                 // End if custom_fields @endphp
         </div>
-
 
 _dropzone_script($quote->quote_url_key, $quote->client_id);

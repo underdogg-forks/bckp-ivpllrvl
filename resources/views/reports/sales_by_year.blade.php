@@ -59,32 +59,34 @@ foreach ($results as $result) {
         <tr>
             <td style="border-bottom: none;text-align:center;">{{ $result->VAT_ID }}</td>
             <td style="border-bottom: none;text-align:center;" rowspan="{{ $numRows }}"
-                valign="top">@php _htmlsc($result->Name); @endphp</td>
+                valign="top">{!! $result->Name !!}</td>
             <td style="border-bottom: none;text-align:center;">@lang('annual'); @endphp</td>
             <td style="border-bottom: none;text-align:center;">{{ format_currency($result->total_payment) }}</td>
         </tr>
 
-        @php foreach ($result as $index => $value) {
+        @foreach($result as $index => $value) {
             $quarter = mb_substr($index, 8, 2);
             $year    = mb_substr($index, 11, 4);
 
             if (preg_match($pattern, $index)) { @endphp
         <tr>
             <td style="border-bottom: none;">&nbsp;</td>
-            <td style="border-bottom: none;text-align:center;">@php switch ($quarter) {
-                                case 't1':
+            <td style="border-bottom: none;text-align:center;">@switch($quarter)
+@php switch ($quarter) {
+                                @case('t1'):
                                     echo trans('Q1') . 'sales_by_year.php/' . $year;
-                                    break;
-                                case 't2':
+                                    @break
+                                @case('t2'):
                                     echo trans('Q2') . 'sales_by_year.php/' . $year;
-                                    break;
-                                case 't3':
+                                    @break
+                                @case('t3'):
                                     echo trans('Q3') . 'sales_by_year.php/' . $year;
-                                    break;
-                                case 't4':
+                                    @break
+                                @case('t4'):
                                     echo trans('Q4') . 'sales_by_year.php/' . $year;
-                                    break;
-                            } @endphp</td>
+                                    @break
+                            } @endphp
+@endswitch</td>
             <td style="border-bottom: none;text-align:center;">{{ ($value > 0) ? format_currency($value) : '' }}</td>
         </tr>
         @php } // End if

@@ -52,8 +52,7 @@
             </option>
             @endif
         </optgroup>
-            <?php
-        } @endphp
+            @endif
     </select>
 </div>
     <?php

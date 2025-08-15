@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        @php foreach ($gateway_drivers as $driver => $fields) {
+        @foreach($gateway_drivers as $driver => $fields) {
     $d = mb_strtolower($driver);
         @endphp
         <div id="gateway-settings-{{ $d }}"
@@ -74,8 +74,7 @@
 
             <div class="panel-body small">
 
-                @php
-                    foreach ($fields as $key => $setting)
+                @foreach($fields as $key => $setting)
                 @if($setting['type'] == 'checkbox')
                 <div class="checkbox">
                     <label>
@@ -159,8 +158,7 @@
             </div>
 
         </div>
-            <?php
-        } @endphp
+            @endif
 
     </div>
 </div>

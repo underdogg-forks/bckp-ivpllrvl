@@ -31,8 +31,7 @@
                 {{ format_currency($product->product_price) }}
             </td>
         </tr>
-            <?php
-        } @endphp
+            @endif
 
     </table>
 </div>

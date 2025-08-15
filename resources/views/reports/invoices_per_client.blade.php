@@ -14,7 +14,7 @@ foreach ($results as $result) {
     if ($client_id != $result->client_id) {
         $client_id = $result->client_id }}
         <tr>
-            <th><?php _htmlsc(format_client($result)); @endphp</th>
+            <th><?php htmlspecialchars(format_client($result)); @endphp</th>
             <th></th>
             <th></th>
         </tr>

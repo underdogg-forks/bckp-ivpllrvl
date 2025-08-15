@@ -116,13 +116,13 @@ foreach ($custom_fields as $custom_field) {
 
         <div id="client-details" class="tab-pane tab-rich-content{{ $activeTab == 'detail' ? ' active' : '' }}">
 
-            @include('layout/alerts')
+            @include('layout.alerts')
 
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
 
                     <h3>{!! format_client($client) !!}</h3>
-                    <p>@include('clients/partial_client_address')</p>
+                    <p>@include('clients.partial_client_address')</p>
 
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
@@ -325,10 +325,7 @@ foreach ($custom_fields as $custom_field) {
                                 </tr>
                             </table>
 
-@php
-    // eInvoicing panel Client checks table
-    if ($client->client_einvoicing_active && $user_fields_nook) {
-        @endphp
+@if($client->client_einvoicing_active && $user_fields_nook)
                             <div class="alert alert-warning small" style="margin: 0px 10px 10px;">
                                 <table>
                                     <tr>
@@ -503,8 +500,7 @@ if ($default_custom)
                         <div class="panel-heading">@lang('custom_fields')</div>
                         <div class="panel-body table-content">
                             <table class="table no-margin">
-@php
-    foreach ($custom_fields as $custom_field) {
+@foreach($custom_fields as $custom_field) {
         if (!$custom_field->custom_field_location) {
             // == 0
             $column = $custom_field->custom_field_label;
@@ -554,7 +550,7 @@ if ($default_custom)
             </div>
 
         </div>
-@php foreach (explode(' ', 'quote invoice payment') as $what) {
+@foreach(explode(' ', 'quote invoice payment') as $what) {
     $table = $what . '_table';
     // dynamic var name
     @endphp
@@ -566,8 +562,7 @@ if ($default_custom)
             </div>
             {{ ${$table} }}
         </div>
-<?php
-} @endphp
+@endif
     </div>
 </div>
 <?php

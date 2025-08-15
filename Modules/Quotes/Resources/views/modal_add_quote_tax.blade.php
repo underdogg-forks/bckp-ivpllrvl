@@ -43,8 +43,7 @@
                             <option value="{{ $tax_rate->tax_rate_id }}">
                                 {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . htmlsc($tax_rate->tax_rate_name) }}
                             </option>
-                        <?php
-} @endphp
+                        @endif
                     </select>
                 </div>
             </div>

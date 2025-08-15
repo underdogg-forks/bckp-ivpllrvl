@@ -444,7 +444,7 @@
                                 @lang('qr_code_settings_remittance_text_tags')
                             </div>
                             <div class="panel-body">
-                                @include('email_templates/template-tags-invoices')
+                                @include('email_templates.template-tags-invoices')
                             </div>
                         </div>
                     </div>

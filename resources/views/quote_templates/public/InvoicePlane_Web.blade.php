@@ -31,7 +31,7 @@
                     <i class="fa fa-dashboard"></i> @lang('dashboard'); @endphp
                 </a>
                 @php } @endphp
-                @php if (in_array($quote->quote_status_id, [2, 3])) { @endphp
+                @if(in_array($quote->quote_status_id, [2, 3])) { @endphp
                 <a href="{{ url('guest/view/approve_quote/' . $quote_url_key) }}"
                    class="btn btn-success">
                     <i class="fa fa-check"></i>@lang('approve_this_quote'); @endphp
@@ -51,7 +51,7 @@
 
         <hr>
 
-        @php if ($flash_message) { @endphp
+        @if($flash_message) { @endphp
         <div class="alert alert-info">
             {{ $flash_message }}
         </div>
@@ -61,15 +61,15 @@
 
         <div class="quote">
 
-            @php if ($logo = invoice_logo()) {
+            @if($logo = invoice_logo()) {
     echo $logo . '<br><br>';
 } @endphp
 
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-5">
 
-                    <h4>@php _htmlsc(format_client($quote)); @endphp</h4>
-                    <p>@php if ($quote->user_vat_id) {
+                    <h4>{!! format_client($quote) !!}</h4>
+                    <p>@if($quote->user_vat_id) {
                                 echo @lang('vat_id_short') . ': ' . $quote->user_vat_id . '<br>';
                             }
 if ($quote->user_tax_code) {
@@ -103,8 +103,8 @@ if ($quote->user_fax) {
                 <div class="col-lg-2"></div>
                 <div class="col-xs-12 col-md-6 col-lg-5 text-right">
 
-                    <h4>@php _htmlsc($quote->client_name); @endphp</h4>
-                    <p>@php if ($quote->client_vat_id) {
+                    <h4>{!! $quote->client_name !!}</h4>
+                    <p>@if($quote->client_vat_id) {
     @lang('vat_id_short');
     echo ': ' . $quote->client_vat_id . '<br>';
 }
@@ -148,7 +148,7 @@ if ($quote->client_phone) {
                         </td>
                         </tr>
                         <tr>
-                            <td><?php @lang('total'); @endphp</td>
+                            <td>@php @lang('total'); @endphp</td>
                             <td class="amount">{{ format_currency($quote->quote_total) }}</td>
                         </tr>
                         </tbody>
@@ -173,15 +173,15 @@ if ($quote->client_phone) {
                         </tr>
                         </thead>
                         <tbody>
-                        @php foreach ($items as $item) { @endphp
+                        @foreach($items as $item) { @endphp
                         <tr>
-                            <td>@php _htmlsc($item->item_name); @endphp</td>
+                            <td>{!! $item->item_name !!}</td>
                             <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
                             <td class="amount">
                                 {{ format_quantity($item->item_quantity) }}
-                                @php if ($item->item_product_unit)
+                                @if($item->item_product_unit)
                                             <br>
-                                            <small><?php _htmlsc($item->item_product_unit); @endphp</small>
+                                            <small><?php htmlspecialchars($item->item_product_unit); @endphp</small>
                                 @endif
                             </td>
                             <td class="amount">{{ format_currency($item->item_price) }}</td>
@@ -190,11 +190,11 @@ if ($quote->client_phone) {
                         </tr>
                         @php } @endphp
 
-                        @php if ( ! $legacy_calculation) { @endphp
+                        @if( ! $legacy_calculation) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('discount'); @endphp</td>
-                            <td class="amount">@php if ($quote->quote_discount_percent > 0) {
+                            <td class="amount">@if($quote->quote_discount_percent > 0) {
                                                 echo format_amount($quote->quote_discount_percent) . '&nbsp;%';
                                             } else {
                                                 echo format_currency($quote->quote_discount_amount);
@@ -208,7 +208,7 @@ if ($quote->client_phone) {
                             <td class="amount">{{ format_currency($quote->quote_item_subtotal) }}</td>
                         </tr>
 
-                        @php if ($quote->quote_item_tax_total > 0) { @endphp
+                        @if($quote->quote_item_tax_total > 0) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('item_tax'); @endphp</td>
@@ -216,7 +216,7 @@ if ($quote->client_phone) {
                         </tr>
                         @php } @endphp
 
-                        @php foreach ($quote_tax_rates as $quote_tax_rate) { @endphp
+                        @foreach($quote_tax_rates as $quote_tax_rate) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">
@@ -226,11 +226,11 @@ if ($quote->client_phone) {
                         </tr>
                         @php } @endphp
 
-                        @php if ($legacy_calculation) { @endphp
+                        @if($legacy_calculation) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('discount'); @endphp</td>
-                            <td class="amount">@php if ($quote->quote_discount_percent > 0) {
+                            <td class="amount">@if($quote->quote_discount_percent > 0) {
                                                 echo format_amount($quote->quote_discount_percent) . '&nbsp;%';
                                             } else {
                                                 echo format_currency($quote->quote_discount_amount);
@@ -241,7 +241,7 @@ if ($quote->client_phone) {
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('total'); @endphp</td>
-                            <td class="amount">{{ format_currency($quote->quote_total) ?></td>
+                            <td class="amount">{{ format_currency($quote->quote_total) @endphp</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -249,20 +249,19 @@ if ($quote->client_phone) {
 
                     <div class="row">
 
-@php if ($quote->notes) { @endphp
+@if($quote->notes) { @endphp
                         <div class="col-xs-12 col-md-6">
                             <h4>@lang('notes') }}</h4>
                                 <p>{{ nl2br(htmlsc($quote->notes)) }}</p>
                 </div>
-                <?php
-} @endphp
+                @endif
 
-                @php if (count($attachments) > 0) { @endphp
+                @if(count($attachments) > 0) { @endphp
                 <div class="col-xs-12 col-md-6">
                     <h4>@lang('attachments'); @endphp</h4>
                     <div class="table-responsive">
                         <table class="table table-condensed">
-                            @php foreach ($attachments as $attachment) { @endphp
+                            @foreach($attachments as $attachment) { @endphp
                             <tr class="attachments">
                                 <td>{{ $attachment['name'] }}</td>
                                 <td>

@@ -326,8 +326,7 @@
                             <tr>
                                 <td>
                                     <span class="label {{ $task_statuses[$task->task_status]['class'] ?? '' }}">
-                                        @php
-                                            if (isset($task_statuses[$task->task_status]['label'])) {
+                                        @if(isset($task_statuses[$task->task_status]['label'])) {
                                                 echo $task_statuses[$task->task_status]['label'];
                                             }
                                         @endphp

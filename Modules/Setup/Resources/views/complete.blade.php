@@ -18,14 +18,13 @@
             @lang('setup_complete_secure_setup')
         </p>
 
-        @php if ($this->session->userdata('setup_notice')) {
+        @if($this->session->userdata('setup_notice')) {
     $setup_notice = $this->session->userdata('setup_notice');
         @endphp
         <div class="alert {{ $setup_notice['type'] }}">
             {{ $setup_notice['content'] }}
         </div>
-            <?php
-        } @endphp
+            @endif
 
         <a href="{{ url('sessions/login') }}" class="btn btn-success">
             <i class="fa fa-check fa-margin"></i> @lang('login')

@@ -80,9 +80,7 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : ''; @
                                        value="{{ $this->mdl_users->form_value('user_email', true) }}" required>
                             </div>
 
-@php // New user
-if (!$id) {
-    @endphp
+@if(!$id)
                             <div class="form-group">
                                 <label for="user_password">
                                     @lang('password')
@@ -193,7 +191,7 @@ foreach ($user_types as $key => $type) {
 @endif
                                     </select>
                                 </div>
-@php foreach ($custom_fields['ip_user_custom'] as $custom_field) {
+@foreach($custom_fields['ip_user_custom'] as $custom_field) {
     if ($custom_field->custom_field_location == 2) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
@@ -217,7 +215,7 @@ foreach ($user_types as $key => $type) {
                                            value="{{ $this->mdl_users->form_value('user_tax_code', true) }}">
                                 </div>
 
-@php foreach ($custom_fields['ip_user_custom'] as $custom_field) {
+@foreach($custom_fields['ip_user_custom'] as $custom_field) {
     if ($custom_field->custom_field_location == 3) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
@@ -262,7 +260,7 @@ foreach ($user_types as $key => $type) {
                                         @lang('qr_code_settings_remittance_text_tags')
                                     </div>
                                     <div class="panel-body">
-                                        @include('email_templates/template-tags-invoices')
+                                        @include('email_templates.template-tags-invoices')
                                     </div>
                                 </div>
                             </div>

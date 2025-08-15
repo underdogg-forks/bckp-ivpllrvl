@@ -13,6 +13,5 @@ if (!$legacy_calculation && $item_global_discount) {
             class="amount">{{ format_currency($item_global_discount) }}</span>
     = <span data-toggle="tooltip" data-placement="bottom" title="@lang('discount') (@lang('subtotal'))"
             class="amount">{{ format_currency($item_global_discount + $item->item_discount) }}</span>
-        <?php
-    } @endphp
+        @endif
 </td><?php

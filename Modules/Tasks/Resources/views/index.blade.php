@@ -16,10 +16,10 @@
 
 <div id="content" class="table-content">
 
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     <div id="filter_results">
-        @include('tasks/partial_tasks_table')
+        @include('tasks.partial_tasks_table')
     </div>
 
 </div>

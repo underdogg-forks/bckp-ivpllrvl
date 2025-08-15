@@ -18,6 +18,5 @@ if (!$legacy_calculation && $item_global_discount) {
     <div class="col-xs-9 col-sm-8">@lang('discount') (@lang('subtotal')):</div>
     <div class="col-xs-3 col-sm-4">{{ format_currency($item_global_discount + $item->item_discount) }}</div>
 </div>
-    <?php
-} @endphp
+    @endif
 <hr class="no-margin"><?php

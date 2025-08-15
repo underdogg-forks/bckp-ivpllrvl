@@ -15,9 +15,9 @@
         <th class="amount">@lang('sales'); @endphp</th>
         <th class="amount">@lang('sales_with_tax'); @endphp</th>
         </tr>
-        @php foreach ($results as $result) { @endphp
+        @foreach($results as $result) { @endphp
         <tr>
-            <td>@php _htmlsc(format_client($result)); @endphp</td>
+            <td>{!! format_client($result) !!}</td>
             <td class="amount">{{ $result->invoice_count }}</td>
             <td class="amount">{{ format_currency($result->sales) }}</td>
             <td class="amount">{{ format_currency($result->sales_with_tax) }}</td>

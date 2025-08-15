@@ -18,9 +18,9 @@ $colspan = $show_item_discounts ? 5 : 4; @endphp<!DOCTYPE html>
 
     <div id="client">
         <div>
-            <b>@php _htmlsc(format_client($quote)); @endphp</b>
+            <b>{!! format_client($quote) !!}</b>
         </div>
-        @php if ($quote->client_vat_id) {
+        @if($quote->client_vat_id) {
     echo '<div>' . trans('vat_id_short') . ': ' . htmlsc($quote->client_vat_id) . '</div>';
 }
 if ($quote->client_tax_code) {
@@ -57,8 +57,8 @@ if ($quote->client_phone) {
 
     </div>
     <div id="company">
-        <div><b>@php _htmlsc($quote->user_name); @endphp</b></div>
-        @php if ($quote->user_vat_id) {
+        <div><b>{!! $quote->user_name !!}</b></div>
+        @if($quote->user_vat_id) {
     echo '<div>' . trans('vat_id_short') . ': ' . htmlsc($quote->user_vat_id) . '</div>';
 }
 if ($quote->user_tax_code) {
@@ -118,7 +118,7 @@ if ($quote->user_fax) {
         </table>
     </div>
 
-    <h1 class="invoice-title">@lang('quote'); @endphp @php _htmlsc($quote->quote_number); @endphp</h1>
+    <h1 class="invoice-title">@lang('quote'); @endphp {!! $quote->quote_number !!}</h1>
 
     <table class="item-table">
         <thead>
@@ -127,7 +127,7 @@ if ($quote->user_fax) {
             <th class="item-desc">@lang('description'); @endphp</th>
             <th class="item-amount text-right">@lang('qty'); @endphp</th>
             <th class="item-price text-right">@lang('price'); @endphp</th>
-            @php if ($show_item_discounts) { @endphp
+            @if($show_item_discounts) { @endphp
             <th class="item-discount text-right">@lang('discount'); @endphp</th>
             @php } @endphp
             <th class="item-total text-right">@lang('total'); @endphp</th>
@@ -135,21 +135,21 @@ if ($quote->user_fax) {
         </thead>
         <tbody>
 
-        @php foreach ($items as $item) { @endphp
+        @foreach($items as $item) { @endphp
         <tr>
-            <td>@php _htmlsc($item->item_name); @endphp</td>
+            <td>{!! $item->item_name !!}</td>
             <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
             <td class="text-right">
                 {{ format_quantity($item->item_quantity) }}
-                @php if ($item->item_product_unit) { @endphp
+                @if($item->item_product_unit) { @endphp
                 <br>
-                <small>@php _htmlsc($item->item_product_unit); @endphp</small>
+                <small>{!! $item->item_product_unit !!}</small>
                 @php } @endphp
             </td>
             <td class="text-right">
                 {{ format_currency($item->item_price) }}
             </td>
-            @php if ($show_item_discounts) { @endphp
+            @if($show_item_discounts) { @endphp
             <td class="text-right">
                 {{ format_currency($item->item_discount) }}
             </td>
@@ -175,26 +175,24 @@ if ($add_table_and_head_for_sums) {
             </th>
         </tr>
         </thead>
-<?php
-} // fi add_table_head_for_totals @endphp
+@php } // fi add_table_head_for_totals @endphp
         <tbody class="invoice-sums">
 
-@php if ( ! $legacy_calculation) {
+@if( ! $legacy_calculation) {
     discount_global_print_in_pdf($quote, $show_item_discounts, 'quote'); // in Helpers/pdf_helper
 } @endphp
 
         <tr>
             <td class=" text-right
-            " colspan="{{ $colspan ?>">
+            " colspan="{{ $colspan @endphp">
                 @lang('subtotal') }}
             </td>
             <td class="text-right">{{ format_currency($quote->quote_item_subtotal) }}</td>
         </tr>
 
-        <?php
-if ($quote->quote_item_tax_total > 0) { @endphp
+        @php if ($quote->quote_item_tax_total > 0) { @endphp
         <tr>
-            <td class="text-right" colspan="{{ $colspan ?>">
+            <td class="text-right" colspan="{{ $colspan @endphp">
                 @lang('item_tax') }}
             </td>
             <td class=" text-right
@@ -202,28 +200,26 @@ if ($quote->quote_item_tax_total > 0) { @endphp
             {{ format_currency($quote->quote_item_tax_total) }}
             </td>
         </tr>
-        <?php
-} @endphp
+        @php } @endphp
 
-        @php foreach ($quote_tax_rates as $quote_tax_rate) { @endphp
+        @foreach($quote_tax_rates as $quote_tax_rate) { @endphp
         <tr>
-            <td class="text-right" colspan="{{ $colspan ?>">
-                @php echo $quote_tax_rate->quote_tax_rate_name . ' (' . format_amount($quote_tax_rate->quote_tax_rate_percent) . '%)' }}
+            <td class="text-right" colspan="{{ $colspan @endphp">
+                {{ $quote_tax_rate->quote_tax_rate_name . ' (' . format_amount($quote_tax_rate->quote_tax_rate_percent) . '%)' }}
             </td>
             <td class=" text-right
             ">
             {{ format_currency($quote_tax_rate->quote_tax_rate_amount) }}
             </td>
         </tr>
-        <?php
-} @endphp
+        @php } @endphp
 
-        @php if ($legacy_calculation) {
+        @if($legacy_calculation) {
     discount_global_print_in_pdf($quote, $show_item_discounts, 'quote'); // in Helpers/pdf_helper
 } @endphp
 
         <tr>
-            <td class="text-right" colspan="{{ $colspan ?>">
+            <td class="text-right" colspan="{{ $colspan @endphp">
                 <b>@lang('total') }}</b>
             </td>
             <td class=" text-right
@@ -239,7 +235,7 @@ if ($quote->quote_item_tax_total > 0) { @endphp
     <?php
 if ($quote->notes) { @endphp
     <div class="notes">
-        <b>@lang('notes'); @endphp</b><br/>
+        <b>@lang('notes') }}</b><br/>
         {{ nl2br(htmlsc($quote->notes)) }}
     </div>
     @php } @endphp

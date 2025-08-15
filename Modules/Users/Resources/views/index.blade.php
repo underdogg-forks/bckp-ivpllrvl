@@ -19,7 +19,7 @@
     {{ $this->layout->loadView('layout/alerts') }}
 
     <div id="filter_results">
-        @include('users/partial_users_table')
+        @include('users.partial_users_table')
     </div>
 
 </div>

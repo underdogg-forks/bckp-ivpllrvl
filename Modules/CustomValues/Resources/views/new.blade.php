@@ -9,7 +9,7 @@ $alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']); @endphp
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('custom_values_new')</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
         <div class="visible-sm visible-md visible-lg headerbar-item pull-right">
             <div class="badge">@lang('table'): @php _trans($table); @endphp</div>
             <div class="badge">@lang('position'): {{ $position }}</div>
@@ -23,7 +23,7 @@ $alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']); @endphp
         <div class="row">
             <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-                @include('layout/alerts')
+                @include('layout.alerts')
 
                 <div class="form-group">
                     <label for="custom_values_value">@lang('value'):</label>

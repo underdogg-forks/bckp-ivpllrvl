@@ -48,7 +48,7 @@
                     </label>
                     <select name="settings[system_theme]" id="settings[system_theme]"
                             class="form-control simple-select" data-minimum-results-for-search="Infinity">
-                        @php foreach ($available_themes as $theme_key => $theme_name)
+                        @foreach($available_themes as $theme_key => $theme_name)
                         <option value="{{ $theme_key }}" @php
                             check_select(get_setting('system_theme'), $theme_key);
                         @endphp>
@@ -447,8 +447,7 @@
                                 <img class="personal_logo"
                                      src="{{ url() }}uploads/{{ get_setting('login_logo') }}"><br>
                                     {{ anchor('settings/remove_logo/login', trans('remove_logo')) }}<br/>
-                                        <?php
-                                    } @endphp
+                                        @endif
                                     <input type="file" name="login_logo" id="login_logo" class="form-control"/>
                             </div>
                         </div>

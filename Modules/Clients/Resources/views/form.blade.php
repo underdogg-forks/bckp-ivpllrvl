@@ -31,7 +31,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
             allowClear: true
         });
 
-@include('clients/js/script_select_client_title.js')
+@include('clients.js.script_select_client_title.js')
 
     });
 
@@ -42,11 +42,11 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('client_form')</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
     </div>
     <div id="content">
 
-        @include('layout/alerts')
+        @include('layout.alerts')
 
         <input class="hidden" name="is_update" type="hidden" value="{{ $this->mdl_clients->form_value('is_update') ? '1' : '0' }}">
 
@@ -217,7 +217,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                             <div class="controls">
                                 <select name="client_country" id="client_country" class="form-control">
                                     <option value="">@lang('none')</option>
-                                    @php foreach ($countries as $cldr => $country)
+                                    @foreach($countries as $cldr => $country)
                                         <option value="{{ $cldr }}"
                                             @php
     check_select($selected_country, $cldr);
@@ -227,7 +227,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                                 </select>
                             </div>
                         </div>
-@php foreach ($custom_fields as $custom_field) {
+@foreach($custom_fields as $custom_field) {
     if ($custom_field->custom_field_location == 1) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
@@ -301,7 +301,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                             </div>
                         </div>
 
-@php foreach ($custom_fields as $custom_field) {
+@foreach($custom_fields as $custom_field) {
     if ($custom_field->custom_field_location == 2) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
@@ -338,7 +338,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                             </div>
                         </div>
 
-@php foreach ($custom_fields as $custom_field) {
+@foreach($custom_fields as $custom_field) {
     if ($custom_field->custom_field_location == 4) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
@@ -466,7 +466,7 @@ foreach ($custom_fields as $custom_field) {
             </div>
         </div>
 
-@php if ($default_custom)
+@if($default_custom)
         <div class="row"><!-- Custom -->
             <div class="col-xs-12">
 

@@ -10,7 +10,7 @@ $table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @end
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('custom_values_edit')</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
         <div class="headerbar-item pull-right">
             <a href="{{ url('custom_values/field/' . $value->custom_field_id) }}" class="btn btn-sm btn-default">
                 <i class="fa fa-eye fa-margin"></i> @lang('values')</a>
@@ -28,7 +28,7 @@ $table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @end
         <div class="row">
             <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-                @include('layout/alerts')
+                @include('layout.alerts')
 
                 <div class="form-group">
                     <label for="custom_values_value">@lang('label'):</label>

@@ -23,7 +23,7 @@
     {{ $this->layout->loadView('layout/alerts') }}
 
     <div id="filter_results">
-        @include('custom_values/partial_custom_values_table')
+        @include('custom_values.partial_custom_values_table')
     </div>
 
 </div>

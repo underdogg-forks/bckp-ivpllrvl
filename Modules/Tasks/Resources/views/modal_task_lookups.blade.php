@@ -85,7 +85,7 @@
         </div>
 
         <div class="modal-body">
-            @include('tasks/partial_task_table_modal')
+            @include('tasks.partial_task_table_modal')
         </div>
 
         <div class="modal-footer">

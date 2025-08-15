@@ -5,7 +5,7 @@
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('invoice_group_form')</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
     </div>
 
     <div id="content">
@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-                @include('layout/alerts')
+                @include('layout.alerts')
 
                 <div class="form-group">
                     <label class="control-label" for="invoice_group_name">

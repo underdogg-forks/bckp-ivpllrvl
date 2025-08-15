@@ -120,8 +120,7 @@
                                                placeholder="{{ $filter_placeholder }}">
                                     </div>
                                 </form>
-                            <?php
-                } @endphp
+                            @endif
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
@@ -159,12 +158,12 @@
                     <li>
                         <a href="{{ url('users/form/' . $this->session->userdata('user_id')) }}"
                            class="tip icon" data-placement="bottom"
-                           title="@php _htmlsc($this->session->userdata('user_name'));
+                           title="@php htmlspecialchars($this->session->userdata('user_name'));
 if ($this->session->userdata('user_company')) {
     echo ' (' . htmlsc($this->session->userdata('user_company')) . ')';
 } @endphp">
                             <i class="fa fa-user"></i>
-                            <span class="visible-xs">&nbsp;@php _htmlsc($this->session->userdata('user_name'));
+                            <span class="visible-xs">&nbsp;@php htmlspecialchars($this->session->userdata('user_name'));
 if ($this->session->userdata('user_company')) {
     echo ' (' . htmlsc($this->session->userdata('user_company')) . ')';
 } @endphp</span>

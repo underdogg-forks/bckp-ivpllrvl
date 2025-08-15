@@ -5,12 +5,12 @@
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('tax_rate_form')</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
     </div>
 
     <div id="content">
 
-        @include('layout/alerts')
+        @include('layout.alerts')
 
         <div class="form-group">
             <div class="col-xs-12 col-sm-2 text-right text-left-xs">

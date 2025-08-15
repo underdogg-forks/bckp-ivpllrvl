@@ -173,8 +173,7 @@
                                     @endphp>
                                     {{ $email_template->email_template_title }}
                                 </option>
-                                    <?php
-                                } @endphp
+                                    @endif
                             </select>
                         </div>
 

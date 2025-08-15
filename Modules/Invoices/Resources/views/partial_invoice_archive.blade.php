@@ -24,8 +24,7 @@
             </td>
 
         </tr>
-            <?php
-        } @endphp
+            @endif
         </tbody>
 
     </table>

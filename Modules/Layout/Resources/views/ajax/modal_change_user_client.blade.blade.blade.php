@@ -78,8 +78,7 @@ if ($who_id) {
     // user or client property
     $name = empty(${$who}->{$name}) ? $format($who_id) : $user->{$name} }}
                         <option value="{{ $who_id }}">{!! $name !!}</option>
-                            <?php
-                        } @endphp
+                            @endif
                     </select>
                 </div>
             </div>

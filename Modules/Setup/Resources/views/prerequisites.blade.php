@@ -46,8 +46,7 @@
             @else
             <input class="btn btn-success" type="submit" name="btn_continue"
                    value="@lang('continue')">
-            <?php
-} @endphp
+            @endif
 
             </form>
 

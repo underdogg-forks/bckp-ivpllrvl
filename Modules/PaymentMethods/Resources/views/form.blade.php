@@ -5,15 +5,15 @@
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('payment_method_form')</h1>
-        @include('layout/header_buttons')
+        @include('layout.header_buttons')
     </div>
 
     <div id="content">
 
-        @include('layout/alerts')
+        @include('layout.alerts')
 
         <input class="hidden" name="is_update" type="hidden"
-            @php if ($this->mdl_payment_methods->form_value('is_update')) {
+            @if($this->mdl_payment_methods->form_value('is_update')) {
     echo 'value="1"';
 } else {
     echo 'value="0"';

@@ -22,7 +22,7 @@
             </td>
             <td>
                 <b>@php
-            _htmlsc($task->task_name) }}</b>
+            htmlspecialchars($task->task_name) }}</b>
                         </td>
                         <td>
                             <b>{{ date_from_mysql($task->task_finish_date) }}</b>
@@ -34,8 +34,7 @@
                             {{ format_currency($task->task_price) }}
                         </td>
                     </tr>
-                <?php
-        } @endphp
+                @endif
 
     </table>
 </div><?php

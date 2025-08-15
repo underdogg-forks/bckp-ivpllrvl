@@ -42,10 +42,9 @@
         @else
         <h1>@php
             @lang('login') }}</h1>
-        <?php
-        } @endphp
+        @endif
 
-        <div class="row">@include('layout/alerts')</div>
+        <div class="row">@include('layout.alerts')</div>
 
         <form method="post" action="{{ url($this->uri->uri_string()) }}">
 

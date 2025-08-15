@@ -36,8 +36,7 @@
 
     @if(trans('cldr') != 'en')
     $.fn.select2.defaults.set('language', '@lang('cldr')');
-    <?php
-} @endphp
+    @endif
 
     $(function () {
     $('.nav-tabs').tab();

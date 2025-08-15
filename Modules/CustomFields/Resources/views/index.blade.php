@@ -27,8 +27,7 @@
                     _trans($table);
                 @endphp
             </a>
-                <?php
-            } @endphp
+                @endif
         </div>
     </div>
 </div>
@@ -38,7 +37,7 @@
     {{ $this->layout->loadView('layout/alerts') }}
 
     <div id="filter_results">
-        @include('custom_fields/partial_custom_fields_table')
+        @include('custom_fields.partial_custom_fields_table')
     </div>
 
 </div>

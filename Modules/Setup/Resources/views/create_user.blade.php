@@ -160,8 +160,7 @@
                         @endphp>
                         {{ $country }}
                     </option>
-                        <?php
-                    } @endphp
+                        @endif
                 </select>
             </div>
 

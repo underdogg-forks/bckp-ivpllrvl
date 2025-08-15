@@ -237,13 +237,12 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
 <div id="headerbar">
     <h1 class="headerbar-title">
         <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing') }}: <?php
-                                                                                          _htmlsc(PHP_EOL . format_user($invoice->user_id)) }
+                                                                                          htmlspecialchars(PHP_EOL . format_user($invoice->user_id)) }
                                                                                           }">
             {{ trans('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
         </span>
-@php // Nb Admins > 1 only
-if ($change_user) {
-    @endphp
+
+@if($change_user)
         <a data-toggle="tooltip" data-placement="bottom"
            title="{{ $edit_user_title }}"
 href="{{ url('users/form/' . $invoice->user_id) }}">
@@ -288,7 +287,7 @@ href="{{ url('users/form/' . $invoice->user_id) }}">
                             <i class="fa fa-minus fa-margin"></i> @lang('create_credit_invoice')
                         </a>
                     </li>
-                    @php if ($invoice->invoice_balance != 0)
+                    @if($invoice->invoice_balance != 0)
             <li>
                 <a href="#" class="invoice-add-payment"
                    data-invoice-id="{{ $invoice_id }}"
@@ -307,9 +306,8 @@ href="{{ url('users/form/' . $invoice->user_id) }}">
                     @lang('download_pdf')
                 </a>
             </li>
-            @php // eInvoice & user fields OK: Show download XML Option
-if ($einvoice->user) {
-                    @endphp
+
+@if($einvoice->user)
                     <li>
                         <a href="#" id="btn_generate_xml"
                            data-invoice-id="{{ $invoice_id }}">
@@ -444,7 +442,7 @@ if ($einvoice->user) {
                                 <div class="col-xs-12 col-md-6">
 
                                     <div class="invoice-properties">
-                                        @php if ($einvoice->name)
+                                        @if($einvoice->name)
                                     <label class="pull-right" id="e_invoice_active"
                                            data-toggle="tooltip" data-placement="bottom"
                                            title="e-{{ trans('invoice') . ' ' . ($einvoice->user ? trans('version') . ' ' . $einvoice->name . ' 🗸' : '🚫 ' . trans('einvoicing_user_fields_error')) }}"
@@ -533,7 +531,7 @@ if ($einvoice->user) {
                                             {{ $invoice->is_read_only == 1 && $invoice->invoice_status_id == 4 ? 'disabled="disabled"' : '' }}
                                         >
                                             <option value="0">@lang('select_payment_method')</option>
-                                            @php foreach ($payment_methods as $payment_method)
+                                            @foreach($payment_methods as $payment_method)
                                         <option @php
                                                     check_select($invoice->payment_method, $payment_method->payment_method_id);
                                             @endphp

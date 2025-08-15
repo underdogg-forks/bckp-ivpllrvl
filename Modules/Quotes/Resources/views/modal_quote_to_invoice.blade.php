@@ -95,8 +95,7 @@
                     @php
                         check_select(get_setting('default_invoice_group'), $invoice_group->invoice_group_id) }}>
                                                 {!! $invoice_group->invoice_group_name !!}</option>
-                        <?php
-                    } @endphp
+                        @endif
                 </select>
             </div>
 

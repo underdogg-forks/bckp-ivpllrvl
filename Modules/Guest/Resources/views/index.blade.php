@@ -13,7 +13,7 @@
 
         <div class="panel-body no-padding">
 
-            @php if ($open_quotes) {
+            @if($open_quotes) {
     echo $this->layout->loadView('guest/partial_quotes_table', ['quotes' => $open_quotes]);
 } else {
             @endphp
@@ -26,7 +26,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">@lang('overdue_invoices')</div>
         <div class="panel-body no-padding">
-            @php if ($overdue_invoices) {
+            @if($overdue_invoices) {
     echo $this->layout->loadView('guest/partial_invoices_table', ['invoices' => $overdue_invoices]);
 } else {
             @endphp
@@ -42,13 +42,12 @@
 
         <div class="panel-body no-padding">
 
-            @php if ($overdue_invoices) {
+            @if($overdue_invoices) {
     echo $this->layout->loadView('guest/partial_invoices_table', ['invoices' => $open_invoices]);
 } else {
             @endphp
             <div class="alert text-success no-margin">@lang('no_open_invoices')</div>
-                <?php
-            } @endphp
+                @endif
 
         </div>
 

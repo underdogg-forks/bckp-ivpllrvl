@@ -16,7 +16,7 @@
         </thead>
 
         <tbody>
-        @php foreach ($custom_values as $custom_values) {
+        @foreach($custom_values as $custom_values) {
     $href = site_url('custom_fields/form/' . $custom_values->custom_field_id);
     $alpha = str_replace('-', '_', mb_strtolower($custom_values->custom_field_type));
     $position = $positions[$custom_values->custom_field_table][$custom_values->custom_field_location];
@@ -57,8 +57,7 @@
                 </div>
             </td>
         </tr>
-            <?php
-        } @endphp
+            @endif
         </tbody>
     </table>
 </div>

@@ -78,8 +78,7 @@
     </p>
     <input type="submit" class="btn btn-success" name="btn_continue"
            value="@lang('continue')">
-        <?php
-    } @endphp
+        @endif
 
     </form>
 

@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label for="client_id">@lang('client')</label>
                 <select name="client_id" id="client_id" class="form-control simple-select" autofocus="autofocus">
-                    @php foreach ($clients as $client) {
+                    @foreach($clients as $client) {
     echo '<option value="' . $client->client_id . '">' . htmlsc(format_client($client)) . '</option>';
 } @endphp
                 </select>

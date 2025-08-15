@@ -27,14 +27,14 @@ $table = strtr($field->custom_field_table, ['ip_' => '', '_custom' => '']); @end
 </div>
 
 <div id="content">
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
 
             <div class="form-group">
                 <div id="filter_results">
-                    @include('custom_values/partial_custom_values_field')
+                    @include('custom_values.partial_custom_values_field')
                 </div>
             </div>
 

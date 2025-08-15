@@ -37,7 +37,7 @@
     <div id="password_reset"
          class="panel panel-default panel-body col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
 
-        <div class="row">@include('layout/alerts')</div>
+        <div class="row">@include('layout.alerts')</div>
 
         <h3>@lang('password_reset')</h3>
 

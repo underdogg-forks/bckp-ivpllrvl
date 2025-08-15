@@ -11,7 +11,7 @@ $custom_field_type = $this->mdl_custom_fields->form_value('custom_field_type'); 
 
             <div id="headerbar">
                 <h1 class="headerbar-title">@lang('custom_field_form')</h1>
-                @include('layout/header_buttons')
+                @include('layout.header_buttons')
     <div class="headerbar-item pull-right">
         <a href="{{ url('custom_values/field/' . $custom_field_id) }}" class="btn btn-sm btn-default">
             <i class="fa fa-list fa-margin"></i> @lang('values')</a>
@@ -25,7 +25,7 @@ $custom_field_type = $this->mdl_custom_fields->form_value('custom_field_type'); 
 
         <div class="col-xs-12 col-md-6 col-md-offset-3">
 
-            @include('layout/alerts')
+            @include('layout.alerts')
 
             <div class="form-group">
                 <label for="custom_field_label">@lang('label')</label>
@@ -60,7 +60,7 @@ foreach ($custom_field_tables as $table => $label) {
                 <label for="custom_field_type">@lang('type')</label>
                 <select name="custom_field_type" id="custom_field_type"
                         class="form-control simple-select"{{ $disabled ?: ' required' }}>
-                    @php foreach ($custom_field_types as $type) {
+                    @foreach($custom_field_types as $type) {
     $alpha = str_replace('-', '_', mb_strtolower($type));
                     @endphp
                     <option value="{{ $type }}" @php
@@ -68,8 +68,7 @@ foreach ($custom_field_tables as $table => $label) {
                     @endphp>@php
                             _trans($alpha);
                         @endphp</option>
-                        <?php
-                    } @endphp
+                        @endif
                 </select>
             </div>
             <div class="form-group">

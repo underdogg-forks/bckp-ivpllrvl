@@ -196,12 +196,11 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
 <div id="headerbar">
     <h1 class="headerbar-title">
         <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing') }}: <?php
-_htmlsc(PHP_EOL . format_user($invoice->user_id)); @endphp">
+htmlspecialchars(PHP_EOL . format_user($invoice->user_id)); @endphp">
 {{ trans('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
 </span>
-@php // Nb Admins > 1 only
-if ($change_user) {
-@endphp
+
+@if($change_user)
 <a data-toggle="tooltip" data-placement="bottom"
    title="{{ $edit_user_title }}"
    href="{{ site_url('users/form/' . $invoice->user_id) }}">
@@ -243,7 +242,7 @@ if ($change_user) {
                         <i class="fa fa-minus fa-margin"></i> @lang('create_credit_invoice')
                     </a>
                 </li>
-@php if ($invoice->invoice_balance != 0)
+@if($invoice->invoice_balance != 0)
                 <li>
                     <a href="#" class="invoice-add-payment"
                        data-invoice-id="{{ $invoice_id }}"
@@ -354,15 +353,13 @@ if ($change_user) {
     }
     if ($invoice->client_phone) {
 @endphp
-                            <div>@lang('phone'):&nbsp;@php
-                                    _htmlsc($invoice->client_phone !!}</div>
+                            <div>@lang('phone'):&nbsp;{!! $invoice->client_phone !!}</div>
 @php
     }
     if ($invoice->client_email) {
 @endphp
                             <div>@lang('email'):&nbsp;@php
-                                    _auto_link($invoice->client_email);
-                                @endphp</div>
+                                    _auto_link($invoice->client_email !!}</div>
 @php
     }
     if ($invoice->client_birthdate || $invoice->client_gender) {
@@ -563,7 +560,7 @@ if ($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4) {
                                             {{ $invoice->is_read_only == 1 && $invoice->invoice_status_id == 4 ? 'disabled="disabled"' : '' }}
                                     >
                                         <option value="0">@lang('select_payment_method')</option>
-@php foreach ($payment_methods as $payment_method)
+@foreach($payment_methods as $payment_method)
                                         <option @php
                                                     check_select($invoice->payment_method, $payment_method->payment_method_id);
 @endphp

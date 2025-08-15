@@ -197,8 +197,7 @@ if ($quote_tax_rates) {
                         if ($legacy_calculation) {
                     @endphp
                     <td class="amount">{{ $global_discount }}</td>
-                        <?php
-                    } @endphp
+                        @endif
                     <td class="amount"><b>{{ format_currency($quote->quote_total) }}</b></td>
                 </tr>
                 </tbody>

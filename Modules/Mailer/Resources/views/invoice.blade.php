@@ -59,11 +59,9 @@
         <div class="row">
             <div class="col-xs-12 col-md-8 col-md-offset-2">
 
-                @include('layout/alerts')
+                @include('layout.alerts')
 
-                @php // e-invoice alert when client or user empty required field
-if ($invoice->client_einvoicing_version != '' && $invoice->client_einvoicing_active == 0) {
-                @endphp
+@if($invoice->client_einvoicing_version != '' && $invoice->client_einvoicing_active == 0)
                 <div class="alert alert-warning">
                     <table style="margin-left: auto; margin-right: auto;">
                         <tr>
@@ -135,8 +133,7 @@ if ($invoice->client_einvoicing_version != '' && $invoice->client_einvoicing_act
                             @endphp>
                             {{ $pdf_template }}
                         </option>
-                            <?php
-                        } @endphp
+                            @endif
                     </select>
                 </div>
 
@@ -204,7 +201,7 @@ if ($invoice->client_einvoicing_version != '' && $invoice->client_einvoicing_act
                     </div>
                     <div class="col-xs-12 col-md-6">
 
-                        @include('email_templates/template-tags')
+                        @include('email_templates.template-tags')
 
                     </div>
                 </div>

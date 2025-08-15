@@ -211,8 +211,7 @@ if ($invoice_tax_rates) {
                 <strong>@lang('invoice_terms')</strong><br/>
                 {{ nl2br(htmlsc($invoice->invoice_terms)) }}
             </div>
-                <?php
-            } @endphp
+                @endif
         </div>
 
     </form>

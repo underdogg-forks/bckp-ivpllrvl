@@ -35,7 +35,7 @@
                    class="btn btn-primary">
                     <i class="fa fa-print"></i> @lang('download_pdf'); @endphp
                 </a>
-                @php if (get_setting('enable_online_payments') == 1 && $invoice->invoice_balance > 0) { @endphp
+                @if(get_setting('enable_online_payments') == 1 && $invoice->invoice_balance > 0) { @endphp
                 <a href="{{ url('guest/payment_information/form/' . $invoice_url_key) }}"
                    class="btn btn-success">
                     <i class="fa fa-credit-card"></i> @lang('pay_now'); @endphp
@@ -59,8 +59,8 @@ if ($logo) {
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-5">
 
-                    <h4>@php _htmlsc($invoice->user_name); @endphp</h4>
-                    <p>@php if ($invoice->user_vat_id) {
+                    <h4>{!! $invoice->user_name !!}</h4>
+                    <p>@if($invoice->user_vat_id) {
                                 echo trans('vat_id_short') . ': ' . $invoice->user_vat_id . '<br>';
                             }
 if ($invoice->user_tax_code) {
@@ -94,8 +94,8 @@ if ($invoice->user_fax) {
                 <div class="col-lg-2"></div>
                 <div class="col-xs-12 col-md-6 col-lg-5 text-right">
 
-                    <h4>@php _htmlsc(format_client($invoice)); @endphp</h4>
-                    <p>@php if ($invoice->client_vat_id) {
+                    <h4>{!! format_client($invoice) !!}</h4>
+                    <p>@if($invoice->client_vat_id) {
         @lang('vat_id_short');
         echo ': ' . $invoice->client_vat_id . '<br>';
     }
@@ -142,11 +142,10 @@ if ($invoice->client_phone) {
                                     <td style=" text-align:right;
                         ">{{ format_currency($invoice->invoice_balance) }}</td>
                         </tr>
-                        <?php
-if ($payment_method) { @endphp
+                        @php if ($payment_method) { @endphp
                         <tr>
                             <td>@lang('payment_method'); @endphp</td>
-                            <td>@php _htmlsc($payment_method->payment_method_name); @endphp</td>
+                            <td>{!! $payment_method->payment_method_name !!}</td>
                         </tr>
                         @php } @endphp
                         </tbody>
@@ -171,15 +170,15 @@ if ($payment_method) { @endphp
                         </tr>
                         </thead>
                         <tbody>
-                        @php foreach ($items as $item) { @endphp
+                        @foreach($items as $item) { @endphp
                         <tr>
-                            <td>@php _htmlsc($item->item_name); @endphp</td>
+                            <td>{!! $item->item_name !!}</td>
                             <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
                             <td class="amount">
                                 {{ format_quantity($item->item_quantity) }}
-                                @php if ($item->item_product_unit)
+                                @if($item->item_product_unit)
                                             <br>
-                                            <small><?php _htmlsc($item->item_product_unit); @endphp</small>
+                                            <small><?php htmlspecialchars($item->item_product_unit); @endphp</small>
                                 @endif
                             </td>
                             <td class="amount">{{ format_currency($item->item_price) }}</td>
@@ -188,11 +187,11 @@ if ($payment_method) { @endphp
                         </tr>
                         @php } // End foreach @endphp
 
-                        @php if ( ! $legacy_calculation) { @endphp
+                        @if( ! $legacy_calculation) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('discount'); @endphp</td>
-                            <td class="amount">@php if ($invoice->invoice_discount_percent > 0) {
+                            <td class="amount">@if($invoice->invoice_discount_percent > 0) {
                                                 echo format_amount($invoice->invoice_discount_percent) . '&nbsp;%';
                                             } else {
                                                 echo format_currency($invoice->invoice_discount_amount);
@@ -206,7 +205,7 @@ if ($payment_method) { @endphp
                             <td class="amount">{{ format_currency($invoice->invoice_item_subtotal) }}</td>
                         </tr>
 
-                        @php if ($invoice->invoice_item_tax_total > 0) { @endphp
+                        @if($invoice->invoice_item_tax_total > 0) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('item_tax'); @endphp</td>
@@ -214,7 +213,7 @@ if ($payment_method) { @endphp
                         </tr>
                         @php } @endphp
 
-                        @php foreach ($invoice_tax_rates as $invoice_tax_rate) { @endphp
+                        @foreach($invoice_tax_rates as $invoice_tax_rate) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">
@@ -224,11 +223,11 @@ if ($payment_method) { @endphp
                         </tr>
                         @php } @endphp
 
-                        @php if ($legacy_calculation) { @endphp
+                        @if($legacy_calculation) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('discount'); @endphp</td>
-                            <td class="amount">@php if ($invoice->invoice_discount_percent > 0) {
+                            <td class="amount">@if($invoice->invoice_discount_percent > 0) {
                                                 echo format_amount($invoice->invoice_discount_percent) . '&nbsp;%';
                                             } else {
                                                 echo format_currency($invoice->invoice_discount_amount);
@@ -245,20 +244,20 @@ if ($payment_method) { @endphp
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('paid'); @endphp</td>
-                            <td class="amount">{{ format_currency($invoice->invoice_paid) ?></td>
+                            <td class="amount">{{ format_currency($invoice->invoice_paid) @endphp</td>
                                 </tr>
-                                <tr class="@php echo ($invoice->invoice_balance > 0) ? 'overdue' : 'text-success' }}">
+                                <tr class="{{ ($invoice->invoice_balance > 0) ? 'overdue' : 'text-success' }}">
                             <td class="no-bottom-border" colspan="4"></td>
-                            <td class="amount"><?php @lang('balance'); @endphp</td>
+                            <td class="amount">@php @lang('balance') }}</td>
                             <td class="amount">
-                                <b>{{ format_currency($invoice->invoice_balance) ?></b>
+                                <b>{{ format_currency($invoice->invoice_balance) @endphp</b>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-@php if ($invoice->invoice_balance == 0) {
+@if($invoice->invoice_balance == 0) {
     echo '<span class="stamp rotate bottom paid">' . trans('paid') . '</span>';
 } elseif ($is_overdue) {
     echo '<span class="stamp rotate bottom overdue">' . trans('overdue') . '</span>';
@@ -268,7 +267,7 @@ if ($payment_method) { @endphp
 
                 <hr>
 
-@php if (get_setting('qr_code') && $invoice->invoice_balance > 0) { @endphp
+@if(get_setting('qr_code') && $invoice->invoice_balance > 0) { @endphp
                 <table class="invoice-qr-code-table">
                     <tbody>
                         <tr>
@@ -302,19 +301,19 @@ if ($payment_method) { @endphp
 
                 <div class="row">
 
-                    @php if ($invoice->invoice_terms) { @endphp
+                    @if($invoice->invoice_terms) { @endphp
                     <div class="col-xs-12 col-md-6">
                         <h4>@lang('terms'); @endphp</h4>
                         <p>{{ nl2br(htmlsc($invoice->invoice_terms)) }}</p>
                     </div>
                     @php } @endphp
 
-                    @php if (count($attachments) > 0) { @endphp
+                    @if(count($attachments) > 0) { @endphp
                     <div class="col-xs-12 col-md-6">
                         <h4>@lang('attachments'); @endphp</h4>
                         <div class="table-responsive">
                             <table class="table table-condensed">
-                                @php foreach ($attachments as $attachment) { @endphp
+                                @foreach($attachments as $attachment) { @endphp
                                 <tr class="attachments">
                                     <td>{{ $attachment['name'] }}</td>
                                     <td>

@@ -98,7 +98,7 @@
 <div id="content" class="table-content">
 
     <div id="filter_results">
-        @include('quotes/partial_quote_table')
+        @include('quotes.partial_quote_table')
     </div>
 
 </div>

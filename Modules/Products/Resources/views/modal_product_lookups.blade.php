@@ -135,15 +135,13 @@
                         <option value="">@lang('any_family')</option>
                         @foreach($families as $family)
                         <option value="{{ $family->family_id }}"
-                            @php
-                                if (isset($filter_family) && $family->family_id == $filter_family) {
+                            @if(isset($filter_family) && $family->family_id == $filter_family) {
                                     echo ' selected="selected"';
                                 }
                             @endphp>
                         {!! $family->family_name) }}
                                                     </option>
-                                                <?php
-                        } @endphp
+                                                @endif
                     </select>
                 </div>
                 <div class="form-group">

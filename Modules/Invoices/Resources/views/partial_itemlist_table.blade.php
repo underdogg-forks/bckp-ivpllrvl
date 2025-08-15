@@ -89,7 +89,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
             </td>
         </tr>
         <tr>
-            @php if ($invoice->sumex_id == '')
+            @if($invoice->sumex_id == '')
             <td class="td-textarea">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('description')</span>
@@ -110,7 +110,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                     <span class="input-group-addon">@lang('product_unit')</span>
                     <select name="item_product_unit_id" class="form-control">
                         <option value="0">@lang('none')</option>
-                        @php foreach ($units as $unit)
+                        @foreach($units as $unit)
                         <option value="{{ $unit->unit_id }}">
                             {{ $unit->unit_name . '/' . $unit->unit_name_plrl }}
                         </option>
@@ -129,7 +129,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                 <span>@lang('tax')</span><br/>
                 <span name="item_tax_total" class="amount"></span>
             </td>
-            @php if ($legacy_calculation) {
+            @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show');
 } @endphp
             <td class="td-amount td-vert-middle">
@@ -187,8 +187,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                     <div class="input-group-addon">{{ get_setting('currency_symbol') }}</div>
                 </div>
             </td>
-            @php
-                if (!$legacy_calculation) {
+            @if(!$legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_input', ['item' => $item]);
                 }
             @endphp
@@ -197,8 +196,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                     <span class="input-group-addon">@lang('tax_rate')</span>
                     <select name="item_tax_rate_id" class="form-control"{{ $invoice_disabled }}>
                         <option value="0">@lang('none')</option>
-                        @php
-                            foreach ($tax_rates as $tax_rate)
+                        @foreach($tax_rates as $tax_rate)
                         <option value="{{ $tax_rate->tax_rate_id }}"
                             @php
                                 check_select($item->item_tax_rate_id, $tax_rate->tax_rate_id);
@@ -214,8 +212,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                 }
             @endphp
             <td class="td-icon text-right td-vert-middle">
-                @php
-                    if ($invoice->is_read_only != 1)
+                @if($invoice->is_read_only != 1)
                 <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')"
                         data-item-id="{{ $item->item_id }}">
                     <i class="fa fa-trash-o text-danger"></i>
@@ -248,8 +245,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                     <span class="input-group-addon">@lang('product_unit')</span>
                     <select name="item_product_unit_id" class="form-control">
                         <option value="0">@lang('none')</option>
-                        @php
-                            foreach ($units as $unit)
+                        @foreach($units as $unit)
                         <option value="{{ $unit->unit_id }}"
                             @php
                                 check_select($item->item_product_unit_id, $unit->unit_id);
@@ -276,8 +272,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                         {{ format_currency($item->item_tax_total) }}
                     </span>
             </td>
-            @php
-                if ($legacy_calculation) {
+            @if($legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show', ['item' => $item]);
                 }
             @endphp
@@ -301,7 +296,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
 <div class="row">
     <div class="col-xs-12 col-md-4">
         <div class="btn-group">
-            @php if ($invoice->is_read_only != 1)
+            @if($invoice->is_read_only != 1)
             <a href="javascript:void(0);" class="btn_add_row btn btn-sm btn-default">
                 <i class="fa fa-plus"></i> @lang('add_new_row')
             </a>
@@ -333,7 +328,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                 <td>@lang('item_tax')</td>
                 <td class="amount">{{ format_currency($invoice->invoice_item_tax_total) }}</td>
             </tr>
-            @php if ($legacy_calculation)
+            @if($legacy_calculation)
             <tr>
                 <td>@lang('invoice_tax')</td>
                 <td>

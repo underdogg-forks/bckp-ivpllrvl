@@ -180,7 +180,7 @@ if ($sumex) {
             </select>
         </div>
 
-        @include('email_templates/template-tags-invoices')
+        @include('email_templates.template-tags-invoices')
 
         <div class="form-group">
             <label for="tags_quote">@lang('quotes')</label>
@@ -255,8 +255,7 @@ if ($sumex) {
                 </option>
             </select>
         </div>
-            <?php
-        } @endphp
+            @endif
     </div>
 </div>
     <?php

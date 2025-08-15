@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col-xs-12 col-md-8 col-md-offset-2">
 
-                @include('layout/alerts')
+                @include('layout.alerts')
 
                 <div class="form-group">
                     <label for="to_email">@lang('to_email')</label>
@@ -122,8 +122,7 @@
                             @endphp>
                             {{ $pdf_template }}
                         </option>
-                            <?php
-                        } @endphp
+                            @endif
                     </select>
                 </div>
 
@@ -191,7 +190,7 @@
                     </div>
                     <div class="col-xs-12 col-md-6">
 
-                        @include('email_templates/template-tags')
+                        @include('email_templates.template-tags')
 
                     </div>
                 </div>

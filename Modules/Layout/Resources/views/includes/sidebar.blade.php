@@ -40,8 +40,7 @@
                     <i class="fa fa-check-square-o"></i>
                 </a>
             </li>
-        <?php
-} @endphp
+        @endif
         <li>
             <a href="{{ url('settings') }}" title="@lang('system_settings')"
             class="tip" data-placement="right">

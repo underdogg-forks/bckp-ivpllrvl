@@ -66,16 +66,14 @@ echo $credit_date; @endphp">
                 <select name="invoice_group_id" id="invoice_group_id" class="hidden">
                     @foreach($invoice_groups as $invoice_group)
                         <option value="{{ $invoice_group->invoice_group_id }}"
-                            @php
-    if (get_setting('default_invoice_group') == $invoice_group->invoice_group_id) {
+                            @if(get_setting('default_invoice_group') == $invoice_group->invoice_group_id) {
         echo 'selected="selected"';
         $credit_invoice_group = htmlsc($invoice_group->invoice_group_name);
     }
     @endphp>
                             {{ $credit_invoice_group }}
                         </option>
-                    <?php
-} @endphp
+                    @endif
                 </select>
             </div>
 

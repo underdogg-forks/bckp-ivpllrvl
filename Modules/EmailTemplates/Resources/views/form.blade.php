@@ -7,12 +7,12 @@
 
             <div id="headerbar">
                 <h1 class="headerbar-title">@lang('email_template_form')</h1>
-                @include('layout/header_buttons')
+                @include('layout.header_buttons')
     </div>
 
     <div id="content">
 
-        @include('layout/alerts')
+        @include('layout.alerts')
 
         <input class="hidden" name="is_update" type="hidden"
                value="{{ $this->mdl_email_templates->form_value('is_update') ? '1' : '0' }}">
@@ -113,8 +113,7 @@
                                 @endphp>
                                 {{ $template }}
                             </option>
-                                <?php
-                            } @endphp
+                                @endif
                         </optgroup>
                     </select>
                 </div>
@@ -187,7 +186,7 @@
                     </div>
                     <div class="col-xs-12 col-md-6">
 
-                        @include('email_templates/template-tags')
+                        @include('email_templates.template-tags')
 
                     </div>
                 </div>

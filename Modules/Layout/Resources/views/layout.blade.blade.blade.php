@@ -43,8 +43,7 @@ if (get_setting('disable_sidebar') != 1) {
 <script src="@php
     _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js');
     @endphp"></script>
-    <?php
-} @endphp
+    @endif
 
 </body>
 </html>

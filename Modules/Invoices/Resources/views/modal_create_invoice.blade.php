@@ -96,14 +96,13 @@
             <label for="invoice_group_id">@lang('invoice_group')</label>
             <select name="invoice_group_id" id="invoice_group_id"
                     class="form-control simple-select" data-minimum-results-for-search="Infinity" required>
-                @php foreach ($invoice_groups as $invoice_group) {
+                @foreach($invoice_groups as $invoice_group) {
     $is_selected = get_setting('default_invoice_group') == $invoice_group->invoice_group_id ? ' selected="selected"' : '';
                 @endphp
                 <option value="{{ $invoice_group->invoice_group_id }}" {{ $is_selected }}>
                 {!! $invoice_group->invoice_group_name !!}
                 </option>
-                    <?php
-                } @endphp
+                    @endif
             </select>
         </div>
 

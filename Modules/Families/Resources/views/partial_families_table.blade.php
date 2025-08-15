@@ -39,8 +39,7 @@
                 </div>
             </td>
         </tr>
-            <?php
-        } @endphp
+            @endif
         </tbody>
 
     </table>

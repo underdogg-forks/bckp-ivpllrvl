@@ -28,7 +28,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong>@php
-                        _htmlsc(format_client($project) !!}</strong>
+                        htmlspecialchars(format_client($project) !!}</strong>
             </div>
             <div class="panel-body">
                 <div class="client-address">
@@ -85,8 +85,7 @@
         <div class="panel-body">
             <div class="alert alert-info no-margin">{{ trans('alert_no_tasks_found') }}</div>
         </div>
-        <?php
-} @endphp
+        @endif
     </div>
 </div>
 </div>

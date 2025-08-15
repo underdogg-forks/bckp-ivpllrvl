@@ -52,9 +52,9 @@ switch ($invoice_mode) {
 
     <div id="client">
         <div>
-            <b>@php _htmlsc(format_client($invoice)); @endphp</b>
+            <b>{!! format_client($invoice) !!}</b>
         </div>
-        @php if ($invoice->client_vat_id) {
+        @if($invoice->client_vat_id) {
     echo '<div>' . trans('vat_id_short') . ': ' . htmlsc($invoice->client_vat_id) . '</div>';
 }
 if ($invoice->client_tax_code) {
@@ -90,8 +90,8 @@ if ($invoice->client_phone) {
 } @endphp
     </div>
     <div id="company">
-        <div><b>@php _htmlsc($invoice->user_name); @endphp</b></div>
-        @php if ($invoice->user_vat_id) {
+        <div><b>{!! $invoice->user_name !!}</b></div>
+        @if($invoice->user_vat_id) {
     echo '<div>' . trans('vat_id_short') . ': ' . htmlsc($invoice->user_vat_id) . '</div>';
 }
 if ($invoice->user_tax_code) {
@@ -139,7 +139,7 @@ if ($invoice->user_fax) {
     <div class="invoice-details clearfix">
         <table class="large">
             <tr>
-                <td rowspan="@php echo $payment_method ? 5 : 4 @endphp"
+                <td rowspan="{{ $payment_method ? 5 : 4 @endphp"
                     style="width:40%;text-align:left;">@php echo $stamp @endphp</td>
             </tr>
             <tr>
@@ -158,26 +158,25 @@ if ($invoice->user_fax) {
                 <td
                     {{ $text_class_balance }}>@php echo format_currency($invoice->invoice_balance) }}</td>
             </tr>
-            <?php
-if ($payment_method) { @endphp
+            @php if ($payment_method) { @endphp
             <tr>
-                <td>@lang('payment_method'); @endphp:</td>
-                <td>@php _htmlsc($payment_method->payment_method_name); @endphp</td>
+                <td>@lang('payment_method') }}:</td>
+                <td>{!! $payment_method->payment_method_name !!}</td>
             </tr>
             @php } @endphp
         </table>
     </div>
 
-    <h1 class="invoice-title {{ $text_class ?>">@lang('invoice') @endphp @php _htmlsc($invoice->invoice_number) @endphp</h1>
+    <h1 class="invoice-title {{ $text_class @endphp">@lang('invoice') @endphp {!! $invoice->invoice_number !!}</h1>
 
     <table class="item-table">
         <thead>
         <tr>
             <th class="item-name">@lang('item') }}</th>
-            <th class=" item-desc"><?php @lang('description'); @endphp</th>
+            <th class=" item-desc">@php @lang('description'); @endphp</th>
     <th class="item-amount text-right">@lang('qty'); @endphp</th>
     <th class="item-price text-right">@lang('price'); @endphp</th>
-    @php if ($show_item_discounts) { @endphp
+    @if($show_item_discounts) { @endphp
     <th class="item-discount text-right">@lang('discount'); @endphp</th>
     @php } @endphp
     <th class="item-total text-right">@lang('total'); @endphp</th>
@@ -185,21 +184,21 @@ if ($payment_method) { @endphp
     </thead>
     <tbody>
 
-    @php foreach ($items as $item) { @endphp
+    @foreach($items as $item) { @endphp
     <tr>
-        <td>@php _htmlsc($item->item_name); @endphp</td>
+        <td>{!! $item->item_name !!}</td>
         <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
         <td class="text-right">
             {{ format_quantity($item->item_quantity) }}
-            @php if ($item->item_product_unit) { @endphp
+            @if($item->item_product_unit) { @endphp
             <br>
-            <small>@php _htmlsc($item->item_product_unit); @endphp</small>
+            <small>{!! $item->item_product_unit !!}</small>
             @php } @endphp
         </td>
         <td class="text-right">
             {{ format_currency($item->item_price) }}
         </td>
-        @php if ($show_item_discounts) { @endphp
+        @if($show_item_discounts) { @endphp
         <td class="text-right">
             {{ format_currency($item->item_discount) }}
         </td>
@@ -233,23 +232,22 @@ if ($add_table_and_head_for_sums) {
         <tbody class=" invoice-sums
         ">
 
-        @php if ( ! $legacy_calculation) {
+        @if( ! $legacy_calculation) {
     discount_global_print_in_pdf($invoice, $show_item_discounts); // in Helpers/pdf_helper
 } @endphp
 
         <tr>
             <td class=" text-right
-        " colspan="{{ $colspan ?>">
+        " colspan="{{ $colspan @endphp">
                 @lang('subtotal') }}
         </td>
         <td class=" text-right
             ">{{ format_currency($invoice->invoice_item_subtotal) }}</td>
         </tr>
 
-        <?php
-if ($invoice->invoice_item_tax_total > 0) { @endphp
+        @php if ($invoice->invoice_item_tax_total > 0) { @endphp
         <tr>
-            <td class="text-right" colspan="{{ $colspan ?>">
+            <td class="text-right" colspan="{{ $colspan @endphp">
                 @lang('item_tax') }}
             </td>
             <td class=" text-right
@@ -257,28 +255,26 @@ if ($invoice->invoice_item_tax_total > 0) { @endphp
             {{ format_currency($invoice->invoice_item_tax_total) }}
             </td>
         </tr>
-        <?php
-} @endphp
+        @php } @endphp
 
-        @php foreach ($invoice_tax_rates as $invoice_tax_rate) { @endphp
+        @foreach($invoice_tax_rates as $invoice_tax_rate) { @endphp
         <tr>
-            <td class="text-right" colspan="{{ $colspan ?>">
-                @php echo htmlsc($invoice_tax_rate->invoice_tax_rate_name) . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%)' }}
+            <td class="text-right" colspan="{{ $colspan @endphp">
+                {{ htmlsc($invoice_tax_rate->invoice_tax_rate_name) . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%)' }}
             </td>
             <td class=" text-right
             ">
             {{ format_currency($invoice_tax_rate->invoice_tax_rate_amount) }}
             </td>
         </tr>
-        <?php
-} @endphp
+        @php } @endphp
 
-        @php if ($legacy_calculation) {
+        @if($legacy_calculation) {
     discount_global_print_in_pdf($invoice, $show_item_discounts); // in Helpers/pdf_helper
 } @endphp
 
         <tr>
-            <td class="text-right" colspan="{{ $colspan ?>">
+            <td class="text-right" colspan="{{ $colspan @endphp">
                 <b>@lang('total') }}</b>
             </td>
             <td class=" text-right
@@ -313,7 +309,7 @@ if ($show_qrcode) { @endphp
         <tr>
             <td>
                 <div>
-                    <strong>@lang('qr_code_settings_recipient'); @endphp:</strong>
+                    <strong>@lang('qr_code_settings_recipient') }}:</strong>
                     {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
                 </div>
                 <div>
@@ -339,7 +335,7 @@ if ($show_qrcode) { @endphp
 </main>
 
 <div class="invoice-terms">
-    @php if ($invoice->invoice_terms) { @endphp
+    @if($invoice->invoice_terms) { @endphp
     <div class="notes">
         <b>@lang('terms'); @endphp</b><br/>
         {{ nl2br(htmlsc($invoice->invoice_terms)) }}

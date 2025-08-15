@@ -79,39 +79,39 @@
         <div class="tab-content">
 
             <div class="col-xs-12 col-md-8 col-md-offset-2">
-                @include('layout/alerts')
+                @include('layout.alerts')
             </div>
 
             <div id="settings-general" class="tab-pane active">
-                @include('settings/partial_settings_general')
+                @include('settings.partial_settings_general')
             </div>
 
             <div id="settings-invoices" class="tab-pane">
-                @include('settings/partial_settings_invoices')
+                @include('settings.partial_settings_invoices')
             </div>
 
             <div id="settings-quotes" class="tab-pane">
-                @include('settings/partial_settings_quotes')
+                @include('settings.partial_settings_quotes')
             </div>
 
             <div id="settings-taxes" class="tab-pane">
-                @include('settings/partial_settings_taxes')
+                @include('settings.partial_settings_taxes')
             </div>
 
             <div id="settings-email" class="tab-pane">
-                @include('settings/partial_settings_email')
+                @include('settings.partial_settings_email')
             </div>
 
             <div id="settings-online-payment" class="tab-pane">
-                @include('settings/partial_settings_online_payment')
+                @include('settings.partial_settings_online_payment')
             </div>
 
             <div id="settings-projects-tasks" class="tab-pane">
-                @include('settings/partial_settings_projects_tasks')
+                @include('settings.partial_settings_projects_tasks')
             </div>
 
             <div id="settings-updates" class="tab-pane">
-                @include('settings/partial_settings_updates')
+                @include('settings.partial_settings_updates')
             </div>
 
         </div>

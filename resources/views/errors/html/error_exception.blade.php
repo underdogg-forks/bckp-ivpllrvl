@@ -8,9 +8,9 @@
     <p>Message: {{ $message }}</p>
     <p>Filename: {{ $exception->getFile() }}</p>
     <p>Line Number: {{ $exception->getLine() }}</p>
-@php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) { @endphp
+@if(defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) { @endphp
     <p>Backtrace:</p>
-@php foreach ($exception->getTrace() as $error) {
+@foreach($exception->getTrace() as $error) {
             if (isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH))) { @endphp
     <p style="margin-left:10px">
         File: {{ $error['file'] }}<br>

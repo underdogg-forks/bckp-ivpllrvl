@@ -16,10 +16,10 @@
 
 <div id="content" class="table-content">
 
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     <div id="filter_results">
-        @include('payments/partial_payments_table')
+        @include('payments.partial_payments_table')
     </div>
 
 </div>

@@ -58,7 +58,7 @@
                     <span class="input-group-addon">@lang('tax_rate')</span>
                     <select name="item_tax_rate_id" class="form-control">
                         <option value="0">@lang('none')</option>
-                        @php foreach ($tax_rates as $tax_rate)
+                        @foreach($tax_rates as $tax_rate)
                         <option value="{{ $tax_rate->tax_rate_id }}">
                             {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . $tax_rate->tax_rate_name }}
                         </option>
@@ -88,7 +88,7 @@
                     <select name="item_product_unit_id"
                             class="form-control">
                         <option value="0">@lang('none')</option>
-                        @php foreach ($units as $unit)
+                        @foreach($units as $unit)
                         <option value="{{ $unit->unit_id }}">
                             {!! $unit->unit_name) . '/' . htmlsc($unit->unit_name_plrl !!}
                         </option>
@@ -107,7 +107,7 @@
                 <span>@lang('tax')</span><br/>
                 <span name="item_tax_total" class="amount"></span>
             </td>
-            @php if ($legacy_calculation) {
+            @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show');
 } @endphp
             <td class="td-amount td-vert-middle">
@@ -117,7 +117,7 @@
         </tr>
         </tbody>
 
-        @php foreach ($items as $item)
+        @foreach($items as $item)
         <tbody class="item">
         <tr>
             <td rowspan="2" class="td-icon"><i class="fa fa-arrows cursor-move"></i></td>
@@ -156,8 +156,7 @@
                     <span class="input-group-addon">@lang('tax_rate')</span>
                     <select name="item_tax_rate_id" class="form-control">
                         <option value="0">@lang('none')</option>
-                        @php
-                            foreach ($tax_rates as $tax_rate) {
+                        @foreach($tax_rates as $tax_rate) {
                                 $is_selected = $item->item_tax_rate_id == $tax_rate->tax_rate_id ? ' selected="selected"' : '';
                         @endphp
                         <option value="{{ $tax_rate->tax_rate_id }}"{{ $is_selected }}>
@@ -167,8 +166,7 @@
                     </select>
                 </div>
             </td>
-            @php
-                if ($legacy_calculation) {
+            @if($legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_input', ['item' => $item]);
                 }
             @endphp
@@ -193,8 +191,7 @@
                     <select name="item_product_unit_id"
                             class="form-control">
                         <option value="0">@lang('none')</option>
-                        @php
-                            foreach ($units as $unit)
+                        @foreach($units as $unit)
                         <option value="{{ $unit->unit_id }}"
                             @php
                                 check_select($item->item_product_unit_id, $unit->unit_id);
@@ -221,8 +218,7 @@
                         {{ format_currency($item->item_tax_total) }}
                     </span>
             </td>
-            @php
-                if ($legacy_calculation) {
+            @if($legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show', ['item' => $item]);
                 }
             @endphp
@@ -261,7 +257,7 @@
 
     <div class="col-xs-12 col-md-6 col-md-offset-2 col-lg-4 col-lg-offset-4">
         <table class="table table-bordered text-right">
-            @php if (!$legacy_calculation) {
+            @if(!$legacy_calculation) {
     $this->layout->loadView('quotes/partial_itemlist_table_quote_discount');
 } @endphp
             <tr>
@@ -272,7 +268,7 @@
                 <td>@lang('item_tax')</td>
                 <td class="amount">{{ format_currency($quote->quote_item_tax_total) }}</td>
             </tr>
-            @php if ($legacy_calculation)
+            @if($legacy_calculation)
             <tr>
                 <td>@lang('quote_tax')</td>
                 <td>

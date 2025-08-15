@@ -10,10 +10,10 @@
 
 <div id="content" class="table-content">
 
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     <div id="filter_results">
-        @include('payments/partial_online_logs_table')
+        @include('payments.partial_online_logs_table')
     </div>
 
 </div>

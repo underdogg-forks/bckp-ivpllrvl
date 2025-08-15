@@ -103,8 +103,7 @@
                     @endphp>
                 {!! $invoice_group->invoice_group_name !!}
                 </option>
-                    <?php
-                } @endphp
+                    @endif
             </select>
         </div>
 

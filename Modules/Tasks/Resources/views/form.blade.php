@@ -18,12 +18,12 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
 
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('tasks_form')</h1>
-    @include('layout/header_buttons')
+    @include('layout.header_buttons')
 </div>
 
 <div id="content">
 
-    @include('layout/alerts')
+    @include('layout.alerts')
 
     @if($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4)
     <div class="alert alert-warning small">{{ trans('info_task_readonly') }}</div>
@@ -125,15 +125,14 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
                     <label for="project_id">@lang('project'): </label>
                     <select name="project_id" id="project_id" class="form-control simple-select">
                         <option value="">@lang('select_project')</option>
-                        @php foreach ($projects as $project)
+                        @foreach($projects as $project)
                         <option value="{{ $project->project_id }}"
                             @php
                                 check_select($this->mdl_tasks->form_value('project_id'), $project->project_id);
                             @endphp>
                             {{ htmlspecialchars($project->project_name, ENT_COMPAT) }}
                         </option>
-                        <?php
-} @endphp
+                        @endif
                     </select>
                 </div>
 
