@@ -1,4 +1,3 @@
-
 <script>
     $(function () {
         var user_client_modal = $('#add-user-client');
@@ -13,10 +12,10 @@
                 client_id: $('#client_id').val()
             }, function (data) {
                 @if(config('app.ip_debug'))
-'console.log(data);'
-@else
-''
-@endif
+                    'console.log(data);'
+                @else
+                    ''
+                @endif
                 $('#div_user_client_table').load('{{ url('users/ajax/load_user_client_table') }}', {
                     user_id: '{{ $user_id }}'
                 });
@@ -41,8 +40,9 @@
                 <label for="client_id">@lang('client')</label>
                 <select name="client_id" id="client_id" class="form-control simple-select" autofocus="autofocus">
                     @foreach($clients as $client) {
-    echo '<option value="' . $client->client_id . '">' . htmlsc(format_client($client)) . '</option>';
-} @endphp
+                    echo '
+                    <option value="' . $client->client_id . '">' . htmlsc(format_client($client)) . '</option>';
+                    } @endphp
                 </select>
             </div>
 
