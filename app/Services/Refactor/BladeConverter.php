@@ -71,6 +71,7 @@ class BladeConverter
         $code = $this->convertIncludes($code);
         $code = $this->convertGenericEchos($code);
         $code = $this->convertEchoUrlHelpers($code);
+        $code = $this->convertAssets($code);
         $code = $this->convertForms($code);
 
         // Step 4: Final cleanup
@@ -79,6 +80,17 @@ class BladeConverter
         $code = $this->fixDanglingPhpTags($code);
         $code = $this->fixDoubleBladePrefix($code);
         $code = $this->tidy($code);
+
+        return $code;
+    }
+
+    private function convertAssets(string $code): string
+    {
+        $code = preg_replace('/_core_asset\((.*?)\)/', "asset('vendor/composer-package/$1')", $code);
+        $code = preg_replace('/_theme_asset\((.*?)\)/', "asset('themes/$1')", $code);
+
+        $code = preg_replace('/@php\s*_core_asset\((.*?)\)/s', "{{ asset('vendor/composer-package/$1') }}", $code);
+        $code = preg_replace('/@php\s*_theme_asset\((.*?)\)/s', "{{ asset('themes/$1') }}", $code);
 
         return $code;
     }
@@ -137,7 +149,6 @@ class BladeConverter
         $code = preg_replace('/<\?php\s*echo\s*form_close\(\)\s*;\s*\?>/i', '</form>', $code);
         $code = preg_replace('/<\?=\s*form_close\(\)\s*\?>/i', '</form>', $code);
 
-        // New: Convert `_csrf_field` to `@csrf`
         $code = preg_replace('/@php\s*_csrf_field\(\)\s*;?\s*@endphp/i', '@csrf', $code);
         $code = preg_replace('/<\?php\s*_csrf_field\(\)\s*;\s*\?>/i', '@csrf', $code);
 
@@ -151,7 +162,11 @@ class BladeConverter
         $code = preg_replace('/<\?php\s+print\s+(.*?);\s*\?>/s', '{{ $1 }}', $code);
         $code = preg_replace('/@php\s+echo\s+(.*?);\s+@endphp/s', '{{ $1 }}', $code);
 
-        $code = preg_replace('/\{\{\s*nl2br\s*\(\s*htmlsc\s*\((.*?)\)\s*\)\s*\}\}/s', '{{ nl2br(e($1)) }}', $code);
+        $code = preg_replace_callback('/\{\{\s*nl2br\s*\(\s*e\s*\((.*?)\)\s*\)\s*\}\}/s', function (array $m): string {
+            return "{{ nl2br(e($m[1])) }}";
+        }, $code);
+
+        $code = preg_replace('/\{\{\s*format_currency\((.*?)\s*!!}/', '{{ format_currency($1) }}', $code);
 
         return $code;
     }
@@ -178,11 +193,23 @@ class BladeConverter
             $code
         );
 
-        $code = preg_replace('/@foreach\s*\((.*?)\)\s*\{\s*@endphp/', '@foreach($1)', $code);
-        $code = preg_replace('/@php\s*\}\s*@endforeach/', '@endforeach', $code);
+        $code = preg_replace_callback(
+            '/@if\s*\((.*?)\)\s*(.*?)\s*@endif\s*else\s*\{\s*\?>/s',
+            function ($matches) {
+                $condition = $matches[1];
+                $content = $matches[2];
+                $content = preg_replace('/echo\s+(.*?);/s', '{{ $1 }}', $content);
+                return "@if($condition)\n$content\n@else";
+            },
+            $code
+        );
+
+        $code = preg_replace('/@if\s*\((.*?)\)\s*\{\s*\?>/s', '@if($1)', $code);
+        $code = preg_replace('/@foreach\s*\((.*?)\)\s*\{\s*\?>/s', '@foreach($1)', $code);
 
         $code = preg_replace('/@php\s*foreach\s*\((.*?)\)\s*\{\s*@endphp/s', '@foreach($1)', $code);
         $code = preg_replace('/@php\s*if\s*\((.*?)\)\s*\{\s*@endphp/s', '@if($1)', $code);
+        $code = preg_replace('/@php\s*\}\s*@endforeach/', '@endforeach', $code);
 
         $code = preg_replace('/<\?php\s+if\s*\((.*?)\)\s*:\s*\?>/s', '@if($1)', $code);
         $code = preg_replace('/<\?php\s+elseif\s*\((.*?)\)\s*:\s*\?>/s', '@elseif($1)', $code);
@@ -203,7 +230,6 @@ class BladeConverter
             $code
         );
 
-        // New: Handle mismatched `@foreach` and `@endif`
         $code = preg_replace('/@foreach\s*\((.*?)\)(.*?)\s*@endif/s', '@foreach($1)$2@endforeach', $code);
 
         return $code;
@@ -232,6 +258,17 @@ class BladeConverter
         $code = preg_replace('/@php\s*\$this->layout->loadView\(\s*([^)]+)\)\s*!!}/s', '@include($1)', $code);
 
         $code = preg_replace_callback(
+            '/\{\$this->layout->loadView\((.*?)\s*,\s*\[(.*?)\]\)\}/s',
+            function (array $m): string {
+                $view = trim($m[1]);
+                $data = $m[2];
+                $view = str_replace('"', "'", $view);
+                return "@include({$view}, [{$data}])";
+            },
+            $code
+        );
+
+        $code = preg_replace_callback(
             "/@include\('([^']*)'\)/",
             function ($matches) {
                 $viewPath = Str::replace('/', '.', $matches[1]);
@@ -255,6 +292,8 @@ class BladeConverter
         $code = str_replace('@trans', '@lang', $code);
 
         $code = preg_replace('/@lang\((.*?)\);\s*@endphp/s', '@lang($1)', $code);
+
+        $code = preg_replace('/\{\{ @lang\((.*?)\)\s*\}\}/s', '@lang($1)', $code);
 
         return $code;
     }
@@ -282,6 +321,10 @@ class BladeConverter
     {
         $code = preg_replace('/\}\s*\/\/\s*endif\s*@endphp/', '@endif', $code);
         $code = preg_replace('/\}\s*\/\/\s*End\s*foreach\s*@endphp/', '@endforeach', $code);
+
+        $code = preg_replace_callback('/@if\((.*?)\)(.*?)@endforeach/', function ($matches) {
+            return "@if({$matches[1]}){$matches[2]}@endif";
+        }, $code);
 
         $code = preg_replace('/<\?php\s*\}\s*@endphp/s', '@endif', $code);
         $code = preg_replace('/<\?php\s*endforeach\s*;\s*\?>/s', '@endforeach', $code);
@@ -328,6 +371,18 @@ class BladeConverter
         $code = preg_replace("/\n{3,}/", "\n\n", $code);
         $code = preg_replace('/@endphp/', '', $code);
         $code = preg_replace('/\{!!\s*htmlsc\((.*?)\)\s*!!}/', '{{ htmlspecialchars($1) }}', $code);
+        $code = preg_replace('/\{\s*@endphp/', '@endphp', $code);
+
+        $code = preg_replace('/_dropzone_html\(\)/', '@php _dropzone_html() @endphp', $code);
+        $code = preg_replace('/_dropzone_script\((.*?)\)/', '@php _dropzone_script($1) @endphp', $code);
+
+        $code = preg_replace('/\{!!\s*\$logo\s*<br><br>\s*}/', '{!! $logo !!}<br><br>', $code);
+        $code = preg_replace('/<td rowspan=\"(.*?)\s*@endphp"/', '<td rowspan="$1"', $code);
+        $code = preg_replace('/{{ trans\((.*?)\) }}/', '@lang($1)', $code);
+
+        $code = preg_replace('/@if\((.*?)\)\s*{\s*@endphp(.*?)@endif\s*else\s*\{\s*/s', '@if($1)$2@else', $code);
+
+        $code = preg_replace('/@if\((.*?)\)\s*{\s*echo\s*(.*?);}\s*@endphp/', "@if($1)\n{{$2}}\n@endif", $code);
 
         return $code;
     }

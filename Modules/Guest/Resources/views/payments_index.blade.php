@@ -1,4 +1,3 @@
-
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('payments')</h1>
 
@@ -28,19 +27,19 @@
 
                 <tbody>
                 @foreach($payments as $payment)
-                <tr>
-                    <td>{{ date_from_mysql($payment->payment_date) }}</td>
-                    <td>
-                        <a href="{{ url('guest/invoices/view/' . $payment->invoice_id) }}">
-                            {{ $payment->invoice_number }}
-                        </a>
-                    </td>
-                    <td>{{ format_currency($payment->payment_amount) }}</td>
-                    <td>{{ $payment->payment_method_name }}</td>
-                    <td>{!! $payment->payment_note !!}</td>
-                </tr>@endforeach
+                    <tr>
+                        <td>{{ date_from_mysql($payment->payment_date) }}</td>
+                        <td>
+                            <a href="{{ url('guest/invoices/view/' . $payment->invoice_id) }}">
+                                {{ $payment->invoice_number }}
+                            </a>
+                        </td>
+                        <td>{{ format_currency($payment->payment_amount) }}</td>
+                        <td>{{ $payment->payment_method_name }}</td>
+                        <td>{!! $payment->payment_note !!}</td>
+                    </tr>
+                @endforeach
                 </tbody>
-
             </table>
         </div>
     </div>
