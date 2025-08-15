@@ -4,62 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+#[AllowDynamicProperties]
 class FormValidationModel extends BaseModel
 {
-    /** @use HasFactory<\Database\Factories\FormValidationModelFactory> */
-    use HasFactory;
-
-    public $timestamps = false;
-
-    protected $casts = [];
-
-    protected $guarded = [];
-
-    #region Static Methods
-    /*
-    |--------------------------------------------------------------------------
-    | Static Methods
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Relationships
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Accessors
-    /*
-    |--------------------------------------------------------------------------
-    | Accessors
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Mutators
-    /*
-    |--------------------------------------------------------------------------
-    | Mutators
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Scopes
-    /*
-    |--------------------------------------------------------------------------
-    | Scopes
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Factory
-    /*
-    |--------------------------------------------------------------------------
-    | Factory
-    |--------------------------------------------------------------------------
-    */
-    #endregion
+    /**
+     * Modules\Core\Models\Form_Validation_Model constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('form_validation');
+        $this->form_validation->CI = & $this;
+    }
 }

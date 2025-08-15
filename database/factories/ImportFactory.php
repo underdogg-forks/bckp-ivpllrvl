@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Import>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Import\Models\Import>
  */
 class ImportFactory extends AbstractFactory
 {

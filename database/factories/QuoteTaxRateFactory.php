@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\QuoteTaxRate>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Quotes\Models\QuoteTaxRate>
  */
 class QuoteTaxRateFactory extends AbstractFactory
 {

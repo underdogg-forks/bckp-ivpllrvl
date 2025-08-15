@@ -15,7 +15,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName customTypes
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public static function customTypes()
     {
@@ -25,7 +25,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName userInputTypes
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public static function userInputTypes()
     {
@@ -35,7 +35,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName customValueFields
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public static function customValueFields()
     {
@@ -45,7 +45,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName saveCustom
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function saveCustom($fid)
     {
@@ -62,7 +62,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName validationRules
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function validationRules()
     {
@@ -72,7 +72,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName customTables
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function customTables()
     {
@@ -82,7 +82,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName used
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function used($id = null, $get = true)
     {
@@ -108,7 +108,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName delete
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function delete($id): bool
     {
@@ -124,7 +124,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName deleteAllFid
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function deleteAllFid($id)
     {
@@ -134,7 +134,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName getByFid
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function getByFid($id)
     {
@@ -144,7 +144,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName getByColumn
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function getByColumn($id)
     {
@@ -154,7 +154,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName getById
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function getById($id)
     {
@@ -164,7 +164,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName getByIds
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function getByIds($ids)
     {
@@ -179,7 +179,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName columnHasValue
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function columnHasValue($fid, $id)
     {
@@ -193,7 +193,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName grouped
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function grouped()
     {
@@ -207,7 +207,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName defaultSelect
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function defaultSelect()
     {
@@ -217,7 +217,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName defaultJoin
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function defaultJoin()
     {
@@ -227,7 +227,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName defaultOrderBy
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function defaultOrderBy()
     {
@@ -237,7 +237,7 @@ class CustomValuesService extends BaseService
     /**
      * @originalName defaultGroupBy
      *
-     * @originalFile CustomValues.php
+     * @originalFile CustomValue.php
      */
     public function defaultGroupBy()
     {

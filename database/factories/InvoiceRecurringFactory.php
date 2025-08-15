@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\InvoiceRecurring>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Invoices\Models\InvoiceRecurring>
  */
 class InvoiceRecurringFactory extends AbstractFactory
 {

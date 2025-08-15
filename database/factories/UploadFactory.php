@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Upload>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Upload\Models\Upload>
  */
 class UploadFactory extends AbstractFactory
 {

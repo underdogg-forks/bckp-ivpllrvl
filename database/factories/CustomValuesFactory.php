@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CustomValues>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\CustomValues\Models\CustomValue>
  */
 class CustomValuesFactory extends AbstractFactory
 {

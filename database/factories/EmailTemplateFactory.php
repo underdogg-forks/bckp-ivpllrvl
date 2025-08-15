@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EmailTemplate>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\EmailTemplates\Models\EmailTemplate>
  */
 class EmailTemplateFactory extends AbstractFactory
 {

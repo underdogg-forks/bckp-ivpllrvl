@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserCustom>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Users\Models\UserCustom>
  */
 class UserCustomFactory extends AbstractFactory
 {

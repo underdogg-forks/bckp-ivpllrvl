@@ -2,64 +2,38 @@
 
 namespace App\Models;
 
+use AllowDynamicProperties;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ResponseModel extends BaseModel
+#[AllowDynamicProperties]
+class ResponseModel
 {
-    /** @use HasFactory<\Database\Factories\ResponseModelFactory> */
-    use HasFactory;
+    /**
+     * @originalName save
+     *
+     * @originalFile ResponseModel.php
+     */
+    public function save($id = null, $db_array = null)
+    {
+        if ($id) {
+            $this->session->set_flashdata('alert_success', trans('record_successfully_updated'));
+            parent::save($id, $db_array);
+        } else {
+            $this->session->set_flashdata('alert_success', trans('record_successfully_created'));
+            $id = parent::save(null, $db_array);
+        }
 
-    public $timestamps = false;
+        return $id;
+    }
 
-    protected $casts = [];
-
-    protected $guarded = [];
-
-    #region Static Methods
-    /*
-    |--------------------------------------------------------------------------
-    | Static Methods
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Relationships
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Accessors
-    /*
-    |--------------------------------------------------------------------------
-    | Accessors
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Mutators
-    /*
-    |--------------------------------------------------------------------------
-    | Mutators
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Scopes
-    /*
-    |--------------------------------------------------------------------------
-    | Scopes
-    |--------------------------------------------------------------------------
-    */
-
-    #endregion
-    #region Factory
-    /*
-    |--------------------------------------------------------------------------
-    | Factory
-    |--------------------------------------------------------------------------
-    */
-    #endregion
+    /**
+     * @originalName delete
+     *
+     * @originalFile ResponseModel.php
+     */
+    public function delete($id)
+    {
+        parent::delete($id);
+        $this->session->set_flashdata('alert_success', trans('record_successfully_deleted'));
+    }
 }

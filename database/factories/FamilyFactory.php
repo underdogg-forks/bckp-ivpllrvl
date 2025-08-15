@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Family>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Families\Models\Family>
  */
 class FamilyFactory extends AbstractFactory
 {

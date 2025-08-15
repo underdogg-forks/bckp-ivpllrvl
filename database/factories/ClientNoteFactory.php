@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ClientNote>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Clients\Models\ClientNote>
  */
 class ClientNoteFactory extends AbstractFactory
 {

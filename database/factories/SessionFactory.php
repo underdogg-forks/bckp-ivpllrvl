@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Session>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Sessions\Models\Session>
  */
 class SessionFactory extends AbstractFactory
 {
