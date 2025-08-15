@@ -1,4 +1,4 @@
-@php namespace Modules\Clients\Views; @endphp
+
 
 $client_active = $this->mdl_clients->form_value('client_active');
 $active = $client_active == 1 || !is_numeric($client_active) ? ' checked="checked"' : '';

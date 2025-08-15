@@ -163,8 +163,7 @@
                             <img class="personal_logo"
                                  src="{{ url() }}uploads/{{ get_setting('invoice_logo') }}">
                             <br>
-                            {{ anchor('settings/remove_logo/invoice', trans('remove_logo')) }}<br/>
-                            @endif
+                            {{ anchor('settings/remove_logo/invoice', trans('remove_logo')) }}<br/>@endforeach
                             <input type="file" name="invoice_logo" size="40" class="form-control"/>
                         </div>
 
@@ -556,8 +555,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     @php
                                         _trans('invoice_sumex_sliptype-' . $v);
 
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                             <p class="help-block">@lang('invoice_sumex_sliptype_help')</p>
                         </div>

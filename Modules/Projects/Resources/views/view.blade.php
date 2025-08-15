@@ -83,8 +83,7 @@
         @if(empty($tasks))
         <div class="panel-body">
             <div class="alert alert-info no-margin">{{ trans('alert_no_tasks_found') }}</div>
-        </div>
-        @endif
+        </div>@endforeach
     </div>
 </div>
 </div>

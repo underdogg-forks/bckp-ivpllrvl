@@ -513,8 +513,7 @@ if ($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4)
                                            @if($invoice->invoice_number)
                                                value="{{ $invoice->invoice_number }}"
                                            @else
-                                               placeholder="@lang('not_set')"
-                                        @endif
+                                               placeholder="@lang('not_set')"@endforeach
                                         {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
                                     >
                                 </div>

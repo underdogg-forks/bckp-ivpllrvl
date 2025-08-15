@@ -141,8 +141,7 @@ if ($logo)
                 @foreach($gateways as $gateway)
                 <a class="list-group-item list-group-item-action"
                    href="{{ url('guest/payment_information/form/' . $invoice->invoice_url_key . '/' . $gateway) }}">{{ ucwords(str_replace('_', ' ', $gateway)) }}</a>@endforeach
-            </ul>
-                @endif
+            </ul>@endforeach
         </div>
     </div>
 

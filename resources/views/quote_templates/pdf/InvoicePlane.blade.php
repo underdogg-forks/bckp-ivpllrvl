@@ -26,9 +26,9 @@ $colspan = $show_item_discounts ? 5 : 4; <!DOCTYPE html>
 if ($quote->client_tax_code)
 {<div>  trans(tax_code_short)  :   htmlsc($quote->client_tax_code)  </div>}
 @endif
-if ($quote->client_address_1) {
-    echo '<div>' . htmlsc($quote->client_address_1) . '</div>';
-}
+if ($quote->client_address_1)
+{<div>  htmlsc($quote->client_address_1)  </div>}
+@endif
 if ($quote->client_address_2) {
     echo '<div>' . htmlsc($quote->client_address_2) . '</div>';
 }
@@ -64,9 +64,9 @@ if ($quote->client_phone) {
 if ($quote->user_tax_code)
 {<div>  trans(tax_code_short)  :   htmlsc($quote->user_tax_code)  </div>}
 @endif
-if ($quote->user_address_1) {
-    echo '<div>' . htmlsc($quote->user_address_1) . '</div>';
-}
+if ($quote->user_address_1)
+{<div>  htmlsc($quote->user_address_1)  </div>}
+@endif
 if ($quote->user_address_2) {
     echo '<div>' . htmlsc($quote->user_address_2) . '</div>';
 }
@@ -155,9 +155,7 @@ if ($quote->user_fax) {
 
             <td class="text-right">
                 {{ format_currency($item->item_discount) }}
-            </td>
-
-@endif
+            </td>@endforeach
             <td class="text-right">
                 {{ format_currency($item->item_total) }}
             </td>

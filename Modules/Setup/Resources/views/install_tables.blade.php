@@ -28,8 +28,7 @@
         <p>
             <i class="fa fa-check text-success fa-margin"></i>
             @lang('setup_tables_success')
-        </p>
-        @endif
+        </p>@endforeach
 
         @if($errors)
         <input type="submit" class="btn btn-primary" name="btn_try_again"

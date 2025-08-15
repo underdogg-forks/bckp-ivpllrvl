@@ -60,9 +60,9 @@ switch ($invoice_mode) {
 if ($invoice->client_tax_code)
 {<div>  trans(tax_code_short)  :   htmlsc($invoice->client_tax_code)  </div>}
 @endif
-if ($invoice->client_address_1) {
-    echo '<div>' . htmlsc($invoice->client_address_1) . '</div>';
-}
+if ($invoice->client_address_1)
+{<div>  htmlsc($invoice->client_address_1)  </div>}
+@endif
 if ($invoice->client_address_2) {
     echo '<div>' . htmlsc($invoice->client_address_2) . '</div>';
 }
@@ -97,9 +97,9 @@ if ($invoice->client_phone) {
 if ($invoice->user_tax_code)
 {<div>  trans(tax_code_short)  :   htmlsc($invoice->user_tax_code)  </div>}
 @endif
-if ($invoice->user_address_1) {
-    echo '<div>' . htmlsc($invoice->user_address_1) . '</div>';
-}
+if ($invoice->user_address_1)
+{<div>  htmlsc($invoice->user_address_1)  </div>}
+@endif
 if ($invoice->user_address_2) {
     echo '<div>' . htmlsc($invoice->user_address_2) . '</div>';
 }
@@ -206,9 +206,7 @@ if ($invoice->user_fax) {
 
         <td class="text-right">
             {{ format_currency($item->item_discount) }}
-        </td>
-
-@endif
+        </td>@endforeach
         <td class="text-right">
             {{ format_currency($item->item_total) }}
         </td>
@@ -347,9 +345,7 @@ if ($show_qrcode)
     <div class="notes">
         <b>@lang('terms')</b><br/>
         {{ nl2br(e($invoice->invoice_terms)) }}
-    </div>
-
-@endif
+    </div>@endforeach
 </div>
 
 <htmlpagefooter name="footer">

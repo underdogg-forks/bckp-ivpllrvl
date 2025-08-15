@@ -101,8 +101,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                     <input type="text" name="item_date" class="form-control datepicker"
                            value="{{ format_date(date('y-m-d')) }}"{{ $invoice_disabled }}>
                 </div>
-            </td>
-            @endif
+            </td>@endforeach
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('product_unit')</span>
@@ -210,8 +209,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                 <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')"
                         data-item-id="{{ $item->item_id }}">
                     <i class="fa fa-trash-o text-danger"></i>
-                </button>
-                @endif
+                </button>@endforeach
             </td>
         </tr>
 
@@ -299,8 +297,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <a href="javascript:void(0);"
                class="btn_add_task btn btn-sm btn-default{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' }}">
                 <i class="fa fa-database"></i> @lang('add_task')
-            </a>
-            @endif
+            </a>@endforeach
         </div>
     </div>
 

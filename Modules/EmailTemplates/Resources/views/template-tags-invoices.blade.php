@@ -50,8 +50,7 @@
             <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
                 {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
             </option>@endforeach
-        </optgroup>
-            @endif
+        </optgroup>@endforeach
     </select>
 </div>
     <?php

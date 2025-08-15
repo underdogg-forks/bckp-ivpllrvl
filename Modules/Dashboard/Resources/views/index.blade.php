@@ -104,8 +104,7 @@
                 <span class="pull-right text-danger">
                     {{ format_currency($overdue_invoices_total) }}
                 </span>
-            </div>
-        @endif
+            </div>@endforeach
 
     </div>
 </div>
@@ -234,8 +233,7 @@
                                 <a href="{{ url('invoices/generate_pdf/' . $invoice->invoice_id) }}"
                                    target="_blank" title="@lang('download_pdf')">
                                     <i class="fa fa-file-pdf-o"></i>
-                                </a>
-                            @endif
+                                </a>@endforeach
                         </td>
                     </tr>
                     @endif
@@ -283,8 +281,7 @@
                                     @else
                                         -@endforeach
                                 </td>
-                            </tr>
-                            @endif
+                            </tr>@endforeach
                             <tr>
                                 <td colspan="6" class="text-right small">
                                     {{ anchor('projects/index', trans('view_all')) }}
@@ -338,8 +335,7 @@
                                 <td>
                                     {{ empty($task->project_id) ? '' : anchor('projects/view/' . $task->project_id, htmlsc($task->project_name)) }}
                                 </td>
-                            </tr>
-                            @endif
+                            </tr>@endforeach
                             <tr>
                                 <td colspan="6" class="text-right small">
                                     {{ anchor('tasks/index', trans('view_all')) }}

@@ -418,8 +418,7 @@ foreach ($custom_fields as $custom_field) {
                         </div>
                     </div>
                 </div>
-                <!-- /eInvoicing panel -->
-@endif
+                <!-- /eInvoicing panel -->@endforeach
             </div>
 
 @if($client->client_surname != '') {

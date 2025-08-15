@@ -427,8 +427,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                             <i class="fa fa-clipboard fa-fw"></i>
                                         </span>
                                             </div>
-                                        </div>
-                                    @endif
+                                        </div>@endforeach
 
                                 </div>
                                 @php $default_custom = false;

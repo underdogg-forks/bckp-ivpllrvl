@@ -176,8 +176,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                             <input type="hidden" name="invoice_id" value="{{ $invoice_id }}">
                             <input type="hidden" name="item_id" value="{{ $item->item_id }}"{{ $invoice_disabled }}>
                             <input type="hidden" name="item_task_id" class="item-task-id" value="@if($item->item_task_id)
-{$item->item_task_id}
-@endif
+{$item->item_task_id}@endforeach
     ">
                             <input type="hidden" name="item_product_id" value="{{ $item->item_product_id }}">
 
@@ -299,8 +298,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                     </div>
                 </div>
             </div>
-        </div>
-        @endif
+        </div>@endforeach
     </div>
 </div>
 

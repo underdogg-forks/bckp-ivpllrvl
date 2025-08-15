@@ -82,7 +82,7 @@ if ($quote->user_address_1) {
     {!! $quote->user_address_1) . '<br>' }}
 }
 if ($quote->user_address_2) {
-    {{ htmlsc($quote->user_address_2) . '<br>' }}
+    {!! $quote->user_address_2) . '<br>' }}
 }
 if ($quote->user_city) {
     {{ htmlsc($quote->user_city) . ' InvoicePlane_Web.php' }}
@@ -144,7 +144,7 @@ if ($quote->client_phone) {
                             <td style="text-align:right;">{{ date_from_mysql($quote->quote_date_created !!}</td>
                         </tr>
                         <tr class="{{ $is_expired ? 'overdue' : '' ?>">
-                                    <td>@lang('expires') }}</td>
+                                    <td>@lang('expires' !!}</td>
                                     <td class=" amount
                         ">
                         {{ date_from_mysql($quote->quote_date_expires) }}
@@ -189,9 +189,7 @@ if ($quote->client_phone) {
                             <td class="amount">{{ format_currency($item->item_price) }}</td>
                             <td class="amount">{{ format_currency($item->item_discount) }}</td>
                             <td class="amount">{{ format_currency($item->item_subtotal) }}</td>
-                        </tr>
-
-@endif
+                        </tr>@endforeach
 
                         @if( ! $legacy_calculation)
 
@@ -261,8 +259,7 @@ if ($quote->client_phone) {
                         <div class="col-xs-12 col-md-6">
                             <h4>@lang('notes') }}</h4>
                                 <p>{{ nl2br(e($quote->notes)) }}</p>
-                </div>
-                @endif
+                </div>@endforeach
 
                 @if(count($attachments) > 0) {
                 <div class="col-xs-12 col-md-6">

@@ -105,8 +105,7 @@
                     >
                     @if($setting['type'] == 'password')
                     <input type="hidden" value="1"
-                           name="settings[gateway_{{ $d . '_' . $key }}_field_is_password]">
-                    @endif
+                           name="settings[gateway_{{ $d . '_' . $key }}_field_is_password]">@endforeach
                 </div>
 
                 @endif
@@ -149,8 +148,7 @@
 
             </div>
 
-        </div>
-            @endif
+        </div>@endforeach
 
     </div>
 </div>

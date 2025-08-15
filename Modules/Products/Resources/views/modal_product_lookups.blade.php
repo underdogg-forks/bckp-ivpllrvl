@@ -137,8 +137,7 @@
 { selected="selected"}@endforeach
                             >
                     {!! $family->family_name) }}
-                                                </option>
-                                            @endif
+                                                </option>@endforeach
                 </select>
             </div>
             <div class="form-group">

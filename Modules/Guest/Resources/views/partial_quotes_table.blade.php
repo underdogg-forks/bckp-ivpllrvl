@@ -45,8 +45,7 @@
                     </a>
                     <a class="btn btn-danger" href="{{ url('guest/quotes/reject/' . $quote->quote_id) }}">
                         <i class="fa fa-ban"></i> @lang('reject')
-                    </a>
-                    @endif
+                    </a>@endforeach
                 </div>
             </td>
         </tr>

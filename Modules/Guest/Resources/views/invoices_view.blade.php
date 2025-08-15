@@ -160,8 +160,7 @@ if ($invoice_tax_rates) {
                     <thead>
                     <tr>
                         @if(!$legacy_calculation)
-                        <th class="text-right">@lang('global_discount')</th>
-                        @endif
+                        <th class="text-right">@lang('global_discount')</th>@endforeach
                         <th class="text-right">@lang('subtotal')</th>
                         <th class="text-right">@lang('item_tax')</th>
                         @if($invoice_tax_rates)

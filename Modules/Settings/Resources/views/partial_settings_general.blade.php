@@ -432,8 +432,7 @@
                                 <br/>
                                 <img class="personal_logo"
                                      src="{{ url() }}uploads/{{ get_setting('login_logo') }}"><br>
-                                    {{ anchor('settings/remove_logo/login', trans('remove_logo')) }}<br/>
-                                        @endif
+                                    {{ anchor('settings/remove_logo/login', trans('remove_logo')) }}<br/>@endforeach
                                     <input type="file" name="login_logo" id="login_logo" class="form-control"/>
                             </div>
                         </div>

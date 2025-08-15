@@ -68,9 +68,9 @@ if ($logo)
 if ($invoice->user_tax_code)
 {trans(tax_code_short)  :   $invoice->user_tax_code  <br>}
 @endif
-if ($invoice->user_address_1) {
-    echo htmlsc($invoice->user_address_1) . '<br>';
-}
+if ($invoice->user_address_1)
+{htmlsc($invoice->user_address_1)  <br>}
+@endif
 if ($invoice->user_address_2) {
     echo htmlsc($invoice->user_address_2) . '<br>';
 }
@@ -111,9 +111,9 @@ if ($invoice->client_address_1)
 if ($invoice->client_address_2)
 {htmlsc($invoice->client_address_2)  <br>}
 @endif
-if ($invoice->client_city) {
-    echo htmlsc($invoice->client_city) . ' InvoicePlane_Web.php';
-}
+if ($invoice->client_city)
+{htmlsc($invoice->client_city)   InvoicePlane_Webphp}
+@endif
 if ($invoice->client_state) {
     echo htmlsc($invoice->client_state) . ' InvoicePlane_Web.php';
 }
@@ -200,9 +200,7 @@ if ($invoice->client_phone) {
                                             } else {
                                                 {{ format_currency($invoice->invoice_discount_amount) }}
                                             } </td>
-                        </tr>
-
-@endif
+                        </tr>@endforeach
 
                         <tr>
                             <td colspan="4"></td>
@@ -265,8 +263,7 @@ if ($invoice->client_phone) {
                     </div>
 
 @if($invoice->invoice_balance == 0)
-{<span class="stamp rotate bottom paid">  trans(paid)  </span>}
-@endif elseif ($is_overdue)
+{<span class="stamp rotate bottom paid">  trans(paid)  </span>}@endforeach elseif ($is_overdue)
 {<span class="stamp rotate bottom overdue">  trans(overdue)  </span>}
 @endif
 

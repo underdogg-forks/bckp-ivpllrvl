@@ -71,8 +71,7 @@ echo $credit_date; ">
         $credit_invoice_group = htmlsc($invoice_group->invoice_group_name)}@endforeach
     >
                             {{ $credit_invoice_group }}
-                        </option>
-                    @endif
+                        </option>@endforeach
                 </select>
             </div>
 
