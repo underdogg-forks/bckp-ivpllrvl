@@ -2,10 +2,8 @@
 
 namespace Modules\Setup\Services;
 
-use App\Services\BaseService;
-
 use AllowDynamicProperties;
-use Modules\Core\Models\BaseModel;
+use App\Services\BaseService;
 
 #[AllowDynamicProperties]
 class SetupService extends BaseService

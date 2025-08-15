@@ -22,6 +22,7 @@ trait LogsRefactorChanges
             return true;
         }
         File::put($path, $new);
+
         return true;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Services\Refactor;
 
-use App\Support\Modules\Views\BladeConverter;
-use Symfony\Component\Finder\Finder;
-use Illuminate\Support\Facades\File;
 use App\Services\Refactor\Traits\LogsRefactorChanges;
+use App\Support\Modules\Views\BladeConverter;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\Finder\Finder;
 
 class BladeRefactorService
 {
@@ -20,11 +20,11 @@ class BladeRefactorService
 
     public function refactor(string $path, bool $dry, string $log): int
     {
-        $count = 0;
+        $count  = 0;
         $finder = (new Finder())->files()->in($path)->name('*.php');
         foreach ($finder as $file) {
             $rel = $file->getRealPath();
-            if (! $this->isBladeTarget($rel)) {
+            if ( ! $this->isBladeTarget($rel)) {
                 continue;
             }
 
@@ -44,15 +44,16 @@ class BladeRefactorService
         $bladeFinder = (new Finder())->files()->in($path)->name('*.blade.php');
         foreach ($bladeFinder as $file) {
             $rel = $file->getRealPath();
-            if (! $this->isBladeTarget($rel)) {
+            if ( ! $this->isBladeTarget($rel)) {
                 continue;
             }
             $contents = File::get($rel);
-            $updated = $this->converter->convertContent($contents);
+            $updated  = $this->converter->convertContent($contents);
             if ($this->putIfChanged($rel, $updated, $dry, $log, 'Blade fixed')) {
                 $count++;
             }
         }
+
         return $count;
     }
 
@@ -61,9 +62,7 @@ class BladeRefactorService
         if (str_contains($fullPath, DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR)) {
             return true;
         }
-        if (preg_match('#Modules[/\\\\][^/\\\\]+[/\\\\]Resources[/\\\\]views[/\\\\]#', $fullPath)) {
-            return true;
-        }
-        return false;
+
+        return (bool) (preg_match('#Modules[/\\\\][^/\\\\]+[/\\\\]Resources[/\\\\]views[/\\\\]#', $fullPath));
     }
 }

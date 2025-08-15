@@ -2,10 +2,8 @@
 
 namespace Modules\CustomValues\Services;
 
-use App\Services\BaseService;
-
 use AllowDynamicProperties;
-use Modules\Core\Models\MyModel;
+use App\Services\BaseService;
 
 #[AllowDynamicProperties]
 class CustomValuesService extends BaseService

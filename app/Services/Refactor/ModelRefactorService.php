@@ -2,12 +2,11 @@
 
 namespace App\Services\Refactor;
 
-use Symfony\Component\Finder\Finder;
+use App\Services\Refactor\Traits\LogsRefactorChanges;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use App\Services\Refactor\Traits\LogsRefactorChanges;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Console\Command;
 
 class ModelRefactorService
 {
@@ -15,23 +14,23 @@ class ModelRefactorService
 
     public function refactor(string $modulesPath, bool $dry, string $log, Command $command): int
     {
-        $count = 0;
+        $count             = 0;
         $moduleDirectories = File::directories($modulesPath);
         $command->line('Found ' . count($moduleDirectories) . ' module directories.');
 
         foreach ($moduleDirectories as $moduleDir) {
             $moduleName = basename($moduleDir);
-            $modelDir = $moduleDir . DIRECTORY_SEPARATOR . 'Models';
+            $modelDir   = $moduleDir . DIRECTORY_SEPARATOR . 'Models';
             $command->comment("Processing module: {$moduleName}");
 
             if (File::isDirectory($modelDir)) {
                 foreach (File::files($modelDir) as $file) {
-                    if ($file->getExtension() !== 'php' || !Str::endsWith($file->getFilename(), '.php')) {
+                    if ($file->getExtension() !== 'php' || ! Str::endsWith($file->getFilename(), '.php')) {
                         continue;
                     }
 
-                    $oldName = pathinfo($file, PATHINFO_FILENAME);
-                    $serviceName = $this->serviceName($oldName);
+                    $oldName      = pathinfo($file, PATHINFO_FILENAME);
+                    $serviceName  = $this->serviceName($oldName);
                     $eloquentName = $this->eloquentName($oldName);
 
                     $command->info("  - Refactoring model: {$oldName} -> {$serviceName} / {$eloquentName}");
@@ -42,10 +41,10 @@ class ModelRefactorService
                     $contents = preg_replace("/class\s+{$oldName}\s+extends\s+ResponseModel/s", "class {$serviceName} extends BaseService", $contents);
 
                     $serviceDir = dirname($modelDir) . DIRECTORY_SEPARATOR . 'Services';
-                    $newPath = $serviceDir . DIRECTORY_SEPARATOR . $serviceName . '.php';
+                    $newPath    = $serviceDir . DIRECTORY_SEPARATOR . $serviceName . '.php';
 
-                    if (!$dry) {
-                        if (!File::exists($serviceDir)) {
+                    if ( ! $dry) {
+                        if ( ! File::exists($serviceDir)) {
                             File::makeDirectory($serviceDir, 0777, true, true);
                         }
                         // Write the updated content to the new file path
@@ -57,10 +56,10 @@ class ModelRefactorService
 
                         // Fix 3: Run make:model command and check for output
                         $exitCode = Artisan::call('make:model', [
-                            'name' => $eloquentName,
+                            'name'        => $eloquentName,
                             '--migration' => true,
-                            '--factory' => true,
-                            '--seed' => true
+                            '--factory'   => true,
+                            '--seed'      => true,
                         ]);
 
                         if ($exitCode === 0) {
@@ -74,9 +73,10 @@ class ModelRefactorService
                     $count++;
                 }
             } else {
-                $command->line("  - No Models directory found.");
+                $command->line('  - No Models directory found.');
             }
         }
+
         return $count;
     }
 
@@ -92,13 +92,13 @@ class ModelRefactorService
 
     private function updateNamespace(string $filePath): void
     {
-        $c = File::get($filePath);
+        $c      = File::get($filePath);
         $module = basename(dirname($filePath, 2));
-        $ns = "Modules\\{$module}\\Services";
+        $ns     = "Modules\\{$module}\\Services";
 
         $c = preg_replace('/^namespace\s+Modules\\\\[^\\\\]+\\\\Models;/m', "namespace {$ns};", $c);
 
-        if (!str_contains($c, 'namespace')) {
+        if ( ! str_contains($c, 'namespace')) {
             $c = preg_replace('/^<\?php/', "<?php\n\nnamespace {$ns};", $c);
         }
 

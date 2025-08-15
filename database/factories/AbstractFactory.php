@@ -2,18 +2,16 @@
 
 namespace Database\Factories;
 
-use Database\Factories\AbstractSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ResponseModel>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BaseModel>
  */
-class ResponseModelFactory extends AbstractFactory
+class AbstractFactory extends AbstractFactory
 {
     public function definition(): array
     {
         return [
-            //
         ];
     }
 

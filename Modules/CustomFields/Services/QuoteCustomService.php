@@ -2,9 +2,8 @@
 
 namespace Modules\CustomFields\Services;
 
-use App\Services\BaseService;
-
 use AllowDynamicProperties;
+use App\Services\BaseService;
 
 #[AllowDynamicProperties]
 class QuoteCustomService extends BaseService

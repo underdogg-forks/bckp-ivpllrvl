@@ -2,10 +2,8 @@
 
 namespace Modules\CustomFields\Services;
 
-use App\Services\BaseService;
-
 use AllowDynamicProperties;
-use Modules\Core\Validators\Validator;
+use App\Services\BaseService;
 
 #[AllowDynamicProperties]
 class PaymentCustomService extends BaseService

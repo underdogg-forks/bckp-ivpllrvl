@@ -2,9 +2,8 @@
 
 namespace Modules\Core\Services;
 
-use App\Services\BaseService;
-
 use AllowDynamicProperties;
+use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Model;
 
 /**

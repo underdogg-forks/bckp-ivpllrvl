@@ -4,8 +4,6 @@ namespace Modules\CustomFields\Services;
 
 use App\Services\BaseService;
 
-use Modules\Core\Validators\Validator;
-
 /*
  * userPlane
  *

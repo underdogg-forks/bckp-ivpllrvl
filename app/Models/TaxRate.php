@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
-use App\Models\Concerns\BelongsToFranchise;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class TaxRate extends BaseModel
 {
-    use BelongsToFranchise;
     /** @use HasFactory<\Database\Factories\TaxRateFactory> */
     use HasFactory;
 

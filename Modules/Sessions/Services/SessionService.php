@@ -2,10 +2,8 @@
 
 namespace Modules\Sessions\Services;
 
-use App\Services\BaseService;
-
 use AllowDynamicProperties;
-use Modules\Core\Models\BaseModel;
+use App\Services\BaseService;
 
 #[AllowDynamicProperties]
 class SessionService extends BaseService

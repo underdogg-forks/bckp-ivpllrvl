@@ -2,9 +2,8 @@
 
 namespace Modules\Core\Services;
 
-use App\Services\BaseService;
-
 use AllowDynamicProperties;
+use App\Services\BaseService;
 
 #[AllowDynamicProperties]
 class FormValidationModelService extends BaseService

@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Refactor\ServiceRepairService;
-use Illuminate\Console\Command;
 use App\Services\Refactor\BladeRefactorService;
-use App\Services\Refactor\ModelRefactorService;
 use App\Services\Refactor\ControllerRefactorService;
 use App\Services\Refactor\HelperRefactorService;
+use App\Services\Refactor\ModelRefactorService;
+use App\Services\Refactor\ServiceRepairService;
+use Illuminate\Console\Command;
 
 class FixmeRefactorCommand extends Command
 {
@@ -32,19 +32,19 @@ class FixmeRefactorCommand extends Command
         $dry = (bool) $this->option('dry-run');
         $log = storage_path('logs/project_refactor.log');
 
-        $runAll = (bool) $this->option('all');
-        $runBlade = $runAll || (bool) $this->option('blade');
-        $runModels = $runAll || (bool) $this->option('models');
+        $runAll         = (bool) $this->option('all');
+        $runBlade       = $runAll || (bool) $this->option('blade');
+        $runModels      = $runAll || (bool) $this->option('models');
         $runControllers = $runAll || (bool) $this->option('controllers');
-        $runHelpers = $runAll || (bool) $this->option('helpers');
-        $runRepair = $runAll || (bool) $this->option('repair'); // Add this line
+        $runHelpers     = $runAll || (bool) $this->option('helpers');
+        $runRepair      = $runAll || (bool) $this->option('repair'); // Add this line
 
         $totals = [
-            'blade' => 0,
-            'models' => 0,
+            'blade'       => 0,
+            'models'      => 0,
             'controllers' => 0,
-            'helpers' => 0,
-            'services' => 0, // Add this line
+            'helpers'     => 0,
+            'services'    => 0, // Add this line
         ];
 
         if ($runBlade) {
@@ -79,6 +79,7 @@ class FixmeRefactorCommand extends Command
         }
 
         $this->info('Done: ' . json_encode($totals));
+
         return self::SUCCESS;
     }
 }

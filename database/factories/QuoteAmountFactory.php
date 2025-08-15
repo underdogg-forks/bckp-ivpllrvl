@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Database\Factories\AbstractSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -13,7 +12,6 @@ class QuoteAmountFactory extends AbstractFactory
     public function definition(): array
     {
         return [
-            //
         ];
     }
 

@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\AbstractSeeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
 class ReportSeeder extends AbstractSeeder
 {
     public function run(): void
