@@ -2,6 +2,7 @@
 
 namespace App\Services\Refactor;
 
+use App\Support\Modules\Views\BladeConverter;
 use Symfony\Component\Finder\Finder;
 use Illuminate\Support\Facades\File;
 use App\Services\Refactor\Traits\LogsRefactorChanges;
@@ -10,17 +11,44 @@ class BladeRefactorService
 {
     use LogsRefactorChanges;
 
+    protected BladeConverter $converter;
+
+    public function __construct(BladeConverter $converter)
+    {
+        $this->converter = $converter;
+    }
+
     public function refactor(string $path, bool $dry, string $log): int
     {
         $count = 0;
-        $finder = (new Finder())->files()->in($path)->name('*.blade.php');
+        $finder = (new Finder())->files()->in($path)->name('*.php');
         foreach ($finder as $file) {
             $rel = $file->getRealPath();
             if (! $this->isBladeTarget($rel)) {
                 continue;
             }
+
+            // Check if the file is already a Blade file
+            if (str_ends_with($rel, '.blade.php')) {
+                continue;
+            }
+
+            // The BladeConverter handles the content and file renaming.
+            $this->converter->convertDir(File::dirname($rel), true);
+
+            // Since BladeConverter handles the file operations, we can just increment the count.
+            $count++;
+        }
+
+        // We also need to process the files that are already .blade.php
+        $bladeFinder = (new Finder())->files()->in($path)->name('*.blade.php');
+        foreach ($bladeFinder as $file) {
+            $rel = $file->getRealPath();
+            if (! $this->isBladeTarget($rel)) {
+                continue;
+            }
             $contents = File::get($rel);
-            $updated = $this->repairBlade($contents);
+            $updated = $this->converter->convertContent($contents);
             if ($this->putIfChanged($rel, $updated, $dry, $log, 'Blade fixed')) {
                 $count++;
             }
@@ -37,19 +65,5 @@ class BladeRefactorService
             return true;
         }
         return false;
-    }
-
-    private function repairBlade(string $c): string
-    {
-        // Fix double @ symbols
-        $c = preg_replace('/@@lang/', '@lang', $c);
-
-        // Convert include paths from slash to dot notation
-        $c = preg_replace("/@include\s*\(\s*['\"]([^'\"]+)\/([^'\"]+)['\"]\s*\)/", "@include('$1.$2')", $c);
-
-        // Remove PHP namespace declarations in Blade files
-        $c = preg_replace('/^@php\s+namespace\s+.*?;?\s+@endphp/s', '', $c);
-
-        return $c;
     }
 }
