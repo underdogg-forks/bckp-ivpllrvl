@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Families\Services\FamiliesService;
 
 #[AllowDynamicProperties]
 class FamiliesController extends AdminController

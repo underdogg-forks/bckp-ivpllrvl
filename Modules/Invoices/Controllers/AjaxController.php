@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Log;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Invoices\Services\InvoicesService;
+use Modules\Invoices\Services\InvoiceSumexService;
+use Modules\Invoices\Services\InvoiceTaxRatesService;
 
 #[AllowDynamicProperties]
 class AjaxController extends AdminController

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
+use Modules\Invoices\Services\InvoiceTaxRatesService;
 
 #[AllowDynamicProperties]
 class InvoicesController extends BaseGuestController

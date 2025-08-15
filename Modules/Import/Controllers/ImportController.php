@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Import\Services\ImportService;
 
 #[AllowDynamicProperties]
 class ImportController extends AdminController

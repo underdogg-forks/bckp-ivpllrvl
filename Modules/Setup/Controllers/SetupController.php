@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller as MXController;
+use Modules\Setup\Services\SetupService;
 
 #[AllowDynamicProperties]
 class SetupController extends MXController

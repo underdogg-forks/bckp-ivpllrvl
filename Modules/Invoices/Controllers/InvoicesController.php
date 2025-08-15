@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Log;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Invoices\Services\InvoiceAmountsService;
+use Modules\Invoices\Services\InvoicesService;
+use Modules\TaxRates\Services\TaxRatesService;
 
 #[AllowDynamicProperties]
 class InvoicesController extends AdminController
@@ -35,7 +38,7 @@ class InvoicesController extends AdminController
      *
      * @originalFile InvoicesController.php
      */
-    public function status(string $status = 'all', $page = 0): void
+    public function status(string $status = 'all', $page = 0)
     {
         // Determine which group of invoices to load
         switch ($status) {
@@ -65,7 +68,7 @@ class InvoicesController extends AdminController
      *
      * @originalFile InvoicesController.php
      */
-    public function archive(): void
+    public function archive()
     {
         $invoice_array = (new InvoicesService())->getArchives(0);
         return view('invoices.archive', ['filter_display' => true, 'filter_placeholder' => trans('filter_archives'), 'filter_method' => 'filter_archives', 'invoices_archive' => $invoice_array]);

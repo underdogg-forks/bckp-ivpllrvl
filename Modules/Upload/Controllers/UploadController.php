@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Upload\Services\UploadService;
 
 #[AllowDynamicProperties]
 class UploadController extends AdminController
@@ -24,7 +25,7 @@ class UploadController extends AdminController
     {
         parent::__construct();
         $this->load->model('upload/mdl_uploads');
-        $this->content_types = (new UploadsService())->content_types;
+        $this->content_types = (new UploadService())->content_types;
     }
 
     /**
@@ -71,7 +72,7 @@ class UploadController extends AdminController
     public function showFiles($url_key = null): void
     {
         header('Content-Type: application/json; charset=utf-8');
-        if ($url_key && ! $result = (new UploadsService())->getFiles($url_key)) {
+        if ($url_key && ! $result = (new UploadService())->getFiles($url_key)) {
             exit('{}');
         }
         exit(json_encode($result));
@@ -87,7 +88,7 @@ class UploadController extends AdminController
         $filename  = urldecode($this->input->post('name'));
         $finalPath = $this->targetPath . $url_key . '_' . $filename;
         if (realpath($this->targetPath) === mb_substr(realpath($finalPath), 0, mb_strlen(realpath($this->targetPath))) && ( ! file_exists($finalPath) || @unlink($finalPath))) {
-            (new UploadsService())->deleteFile($url_key, $filename);
+            (new UploadService())->deleteFile($url_key, $filename);
             $this->respondMessage(200, 'upload_file_deleted_successfully', $filename);
         }
         $ref = isset($_SERVER['HTTP_REFERER']) ? ', Referer:' . $_SERVER['HTTP_REFERER'] : '';
@@ -161,7 +162,7 @@ class UploadController extends AdminController
     private function saveFileMetadata(int $customerId, string $url_key, string $filename): void
     {
         $data = ['client_id' => $customerId, 'url_key' => $url_key, 'file_name_original' => $filename, 'file_name_new' => $url_key . '_' . $filename];
-        if ( ! (new UploadsService())->create($data)) {
+        if ( ! (new UploadService())->create($data)) {
             $this->respondMessage(500, 'upload_error_database', $filename);
         }
     }
