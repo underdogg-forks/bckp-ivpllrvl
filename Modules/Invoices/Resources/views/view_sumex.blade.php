@@ -424,8 +424,7 @@ foreach ($reasons as $key => $reason) {
                                                     @endphp
                                                 </option>
 @php
-    }
-    // End foreach @endphp
+    @endforeach
                                             </select>
                                         </div>
                                     </td>
@@ -568,8 +567,7 @@ if ($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4) {
                                         {{ $payment_method->payment_method_name }}
                                         </option>
 @php
-    }
-    // End foreach @endphp
+    @endforeach
                                     </select>
                                 </div>
 

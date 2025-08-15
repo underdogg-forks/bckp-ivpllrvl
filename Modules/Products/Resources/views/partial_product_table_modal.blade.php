@@ -25,7 +25,7 @@
                 <b>{!! $product->product_name !!}</b>
             </td>
             <td>
-                {{ nl2br(htmlsc($product->product_description)) }}
+                {{ nl2br(e($product->product_description)) }}
             </td>
             <td class="amount">
                 {{ format_currency($product->product_price) }}

@@ -138,7 +138,7 @@ if ($quote->user_fax) {
         @foreach($items as $item) { @endphp
         <tr>
             <td>{!! $item->item_name !!}</td>
-            <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
+            <td>{{ nl2br(e($item->item_description)) }}</td>
             <td class="text-right">
                 {{ format_quantity($item->item_quantity) }}
                 @if($item->item_product_unit) { @endphp
@@ -236,7 +236,7 @@ if ($add_table_and_head_for_sums) {
 if ($quote->notes) { @endphp
     <div class="notes">
         <b>@lang('notes') }}</b><br/>
-        {{ nl2br(htmlsc($quote->notes)) }}
+        {{ nl2br(e($quote->notes)) }}
     </div>
     @php } @endphp
 </div>

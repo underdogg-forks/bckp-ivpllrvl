@@ -124,7 +124,7 @@ if ($quote_tax_rates) {
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-muted">{{ nl2br(htmlsc($item->item_description)) }}</td>
+                    <td class="text-muted">{{ nl2br(e($item->item_description)) }}</td>
                     <td>
                         <span class="pull-left">@lang('discount')</span>
                         <span class="pull-right amount">

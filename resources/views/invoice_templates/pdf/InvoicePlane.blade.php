@@ -156,7 +156,7 @@ if ($invoice->user_fax) {
                 <td{{ $text_class_balance }}>@lang('amount_due') }}:
                 </td>
                 <td
-                    {{ $text_class_balance }}>@php echo format_currency($invoice->invoice_balance) }}</td>
+                    {{ $text_class_balance }}>{{ format_currency($invoice->invoice_balance) }}</td>
             </tr>
             @if($payment_method) { @endphp
             <tr>
@@ -174,7 +174,7 @@ if ($invoice->user_fax) {
         <tr>
             <th class="item-name">@lang('item') }}</th>
             <th class=" item-desc">@php @lang('description') }}</th>
-    <th class="item-amount text-right">@lang('qty'); @endphp</th>
+    <th class="item-amount text-right">@lang('qty') }}</th>
     <th class="item-price text-right">@lang('price'); @endphp</th>
     @if($show_item_discounts) { @endphp
     <th class="item-discount text-right">@lang('discount'); @endphp</th>
@@ -187,7 +187,7 @@ if ($invoice->user_fax) {
     @foreach($items as $item) { @endphp
     <tr>
         <td>{!! $item->item_name !!}</td>
-        <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
+        <td>{{ nl2br(e($item->item_description)) }}</td>
         <td class="text-right">
             {{ format_quantity($item->item_quantity) }}
             @if($item->item_product_unit) { @endphp
@@ -338,7 +338,7 @@ if ($show_qrcode) { @endphp
     @if($invoice->invoice_terms) { @endphp
     <div class="notes">
         <b>@lang('terms'); @endphp</b><br/>
-        {{ nl2br(htmlsc($invoice->invoice_terms)) }}
+        {{ nl2br(e($invoice->invoice_terms)) }}
     </div>
     @php } @endphp
 </div>

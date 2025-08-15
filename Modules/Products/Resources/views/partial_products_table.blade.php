@@ -26,16 +26,14 @@ if ($sumex_active) {
             <td><a href="{{ url('families/form/' . $product->family_id) }}"><i class="fa fa-edit"></i> {!! $product->family_name !!}</a></td>
             <td>{!! $product->product_sku !!}</td>
             <td><a href="{{ url('products/form/' . $product->product_id) }}"><i class="fa fa-edit"></i> {!! $product->product_name !!}</a></td>
-            <td>{{ nl2br(htmlsc($product->product_description)) }}</td>
+            <td>{{ nl2br(e($product->product_description)) }}</td>
             <td class="amount last">{{ format_currency($product->product_price) }}</td>
             <td>{!! $product->unit_name !!}</td>
             <td>{{ $product->tax_rate_id ? htmlsc($product->tax_rate_name) : trans('none') }}</td>
             @if($sumex_active)
             <td>{!! $product->product_tariff !!}</td>
             @php
-                }
-                // endif
-            @endphp
+                @endif
             <td>
                 <div class="options btn-group">
                     <a class="btn btn-default btn-sm dropdown-toggle"
@@ -63,8 +61,7 @@ if ($sumex_active) {
             </td>
         </tr>
     <?php
-}
-// End foreach @endphp
+@endforeach
 </tbody >
 
         </table >

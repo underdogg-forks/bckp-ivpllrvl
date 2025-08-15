@@ -88,8 +88,7 @@ foreach ($quotes as $quote) {
         </tr>
     <?php
     $quote_idx++;
-}
-// End foreach @endphp
+@endforeach
 </tbody >
 
     </table >

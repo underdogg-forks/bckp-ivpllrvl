@@ -176,7 +176,7 @@ if ($quote->client_phone) {
                         @foreach($items as $item) { @endphp
                         <tr>
                             <td>{!! $item->item_name !!}</td>
-                            <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
+                            <td>{{ nl2br(e($item->item_description)) }}</td>
                             <td class="amount">
                                 {{ format_quantity($item->item_quantity) }}
                                 @if($item->item_product_unit)
@@ -252,7 +252,7 @@ if ($quote->client_phone) {
 @if($quote->notes) { @endphp
                         <div class="col-xs-12 col-md-6">
                             <h4>@lang('notes') }}</h4>
-                                <p>{{ nl2br(htmlsc($quote->notes)) }}</p>
+                                <p>{{ nl2br(e($quote->notes)) }}</p>
                 </div>
                 @endif
 

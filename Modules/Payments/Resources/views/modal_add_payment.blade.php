@@ -103,8 +103,7 @@
                                                             {!! $payment_method->payment_method_name !!}
                             </option>
                             <?php
-}
-// End foreach @endphp
+@endforeach
                         </select>
                     </div>
                 </div>

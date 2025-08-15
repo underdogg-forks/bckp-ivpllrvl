@@ -173,7 +173,7 @@ if ($invoice->client_phone) {
                         @foreach($items as $item) { @endphp
                         <tr>
                             <td>{!! $item->item_name !!}</td>
-                            <td>{{ nl2br(htmlsc($item->item_description)) }}</td>
+                            <td>{{ nl2br(e($item->item_description)) }}</td>
                             <td class="amount">
                                 {{ format_quantity($item->item_quantity) }}
                                 @if($item->item_product_unit)
@@ -185,7 +185,7 @@ if ($invoice->client_phone) {
                             <td class="amount">{{ format_currency($item->item_discount) }}</td>
                             <td class="amount">{{ format_currency($item->item_subtotal) }}</td>
                         </tr>
-                        @php } // End foreach @endphp
+                        @php @endforeach
 
                         @if( ! $legacy_calculation) { @endphp
                         <tr>
@@ -304,7 +304,7 @@ if ($invoice->client_phone) {
                     @if($invoice->invoice_terms) { @endphp
                     <div class="col-xs-12 col-md-6">
                         <h4>@lang('terms'); @endphp</h4>
-                        <p>{{ nl2br(htmlsc($invoice->invoice_terms)) }}</p>
+                        <p>{{ nl2br(e($invoice->invoice_terms)) }}</p>
                     </div>
                     @php } @endphp
 

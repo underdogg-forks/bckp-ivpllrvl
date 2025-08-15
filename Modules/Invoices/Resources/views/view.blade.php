@@ -539,8 +539,7 @@ href="{{ url('users/form/' . $invoice->user_id) }}">
                                             {{ $payment_method->payment_method_name }}
                                             </option>
                                             @php
-                                                }
-                                                // End foreach @endphp
+                                                @endforeach
                                         </select>
                                     </div>
 
