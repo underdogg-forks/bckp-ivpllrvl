@@ -56,6 +56,9 @@ class BladeConverter
     {
         $code = $this->normalizeLineEndings($code);
 
+        // Step 0: Remove unwanted declarations
+        $code = $this->removeNamespaceDeclaration($code);
+
         // Step 1: Handle all language and htmlsc conversions first.
         $code = $this->convertI18n($code);
         $code = $this->convertHtmlscFirst($code);
@@ -71,11 +74,17 @@ class BladeConverter
         // Step 4: Final cleanup
         $code = $this->convertTernaryToIf($code);
         $code = $this->wrapRemainingPhp($code);
-        $code = $this->fixDanglingPhpTags($code); // New
+        $code = $this->fixDanglingPhpTags($code);
         $code = $this->fixDoubleBladePrefix($code);
         $code = $this->tidy($code);
 
         return $code;
+    }
+
+    // New Method
+    private function removeNamespaceDeclaration(string $code): string
+    {
+        return preg_replace('/@php\s+namespace\s+.*?\s*@endphp/', '', $code);
     }
 
     private function convertGenericEchos(string $code): string
@@ -92,8 +101,6 @@ class BladeConverter
     {
         $code = preg_replace('/@php\s*_htmlsc\((.*?)\)\s*;?\s*@endphp/s', '{!! $1 !!}', $code);
         $code = preg_replace('/\{\{\s*htmlsc\((.*?)\)\s*\}\}/s', '{!! $1 !!}', $code);
-
-        // New: Convert standalone _htmlsc() calls
         $code = preg_replace('/_htmlsc\((.*?)\)/s', 'htmlspecialchars($1)', $code);
 
         return $code;
@@ -101,12 +108,10 @@ class BladeConverter
 
     private function convertControlBlocks(string $code): string
     {
-        // New: Convert dangling PHP/Blade foreach/if blocks to Blade
         $code = preg_replace('/@php\s*foreach\s*\((.*?)\)(.*?)/s', '@foreach($1)$2', $code);
         $code = preg_replace('/@php\s*if\s*\((.*?)\)(.*?)/s', '@if($1)$2', $code);
         $code = preg_replace('/@php\s*\}\s*@endforeach/s', '@endforeach', $code);
 
-        // Convert full PHP blocks to Blade
         $code = preg_replace('/<\?php\s+if\s*\((.*?)\)\s*:\s*\?>/s', '@if($1)', $code);
         $code = preg_replace('/<\?php\s+elseif\s*\((.*?)\)\s*:\s*\?>/s', '@elseif($1)', $code);
         $code = preg_replace('/<\?php\s+else\s*:\s*\?>/s', '@else', $code);
@@ -142,11 +147,9 @@ class BladeConverter
 
     private function convertIncludes(string $code): string
     {
-        // Convert CI includes
         $code = preg_replace('/<\?php\s*\$this->layout->loadView\(\s*([^)]+)\s*\)\s*;\s*\?>/s', '@include($1)', $code);
         $code = preg_replace('/<\?php\s*\$this->load->view\(\s*([^)]+)\s*\)\s*;\s*\?>/s', '@include($1)', $code);
 
-        // NEW: Convert Blade includes with slashes to dot notation
         $code = preg_replace_callback(
             "/@include\('([^']*)'\)/",
             function ($matches) {
@@ -166,7 +169,6 @@ class BladeConverter
         $code = preg_replace('/__\(\s*([\'"][^\'"]+[\'"])\s*\)/', '@lang($1)', $code);
         $code = preg_replace('/\blang\(\s*([\'"][^\'"]+[\'"])\s*\)/', '@lang($1)', $code);
 
-        // New: Convert @trans() to @lang()
         $code = str_replace('@trans', '@lang', $code);
 
         return $code;
@@ -174,10 +176,8 @@ class BladeConverter
 
     private function wrapRemainingPhp(string $code): string
     {
-        // New: Handle PHP with HTML comments
         $code = preg_replace('/@php\s*\/\/\s*([^\r\n]+)\s*if\s*\((.*?)\)\s*\{\s*@endphp/', "\n@if($2)", $code);
 
-        // Convert the rest
         if (!str_contains($code, '<?php')) {
             return $code;
         }
@@ -193,10 +193,8 @@ class BladeConverter
         return is_string($result) ? $result : $code;
     }
 
-    // New
     private function fixDanglingPhpTags(string $code): string
     {
-        // Convert dangling `<?php ... }` at the end of loops
         $code = preg_replace('/<\?php\s*\}\s*@endphp/s', '@endif', $code);
         $code = preg_replace('/<\?php\s*endforeach\s*;\s*\?>/s', '@endforeach', $code);
         $code = preg_replace('/<\?php\s*endif\s*;\s*\?>/s', '@endif', $code);
@@ -205,10 +203,8 @@ class BladeConverter
         return $code;
     }
 
-    // Remaining helper functions...
     private function convertTernaryToIf(string $code): string
     {
-        // Same as before
         return $code;
     }
 
