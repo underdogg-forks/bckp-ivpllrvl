@@ -25,7 +25,7 @@ class InvoicesController extends AdminController
     public function index(): void
     {
         // Display all invoices by default
-        redirect('invoices/status/all');
+        redirect()->route('invoices/status/all');
     }
 
     /**
@@ -183,7 +183,7 @@ class InvoicesController extends AdminController
             $this->session->set_flashdata('alert_error', trans('invoice_deletion_forbidden'));
         }
         // Redirect to invoice index
-        redirect('invoices/index');
+        redirect()->route('invoices/index');
     }
 
     /**

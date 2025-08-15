@@ -25,7 +25,7 @@ class QuotesController extends AdminController
     public function index()
     {
         // Display all quotes by default
-        redirect('quotes/status/all');
+        redirect()->route('quotes/status/all');
     }
 
     /**
@@ -124,7 +124,7 @@ class QuotesController extends AdminController
         // Delete the quote
         $this->mdl_quotes->delete($quote_id);
         // Redirect to quote index
-        redirect('quotes/index');
+        redirect()->route('quotes/index');
     }
 
     /**

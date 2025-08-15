@@ -39,7 +39,7 @@ class UnitsController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('units');
+            redirect()->route('units');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -47,12 +47,12 @@ class UnitsController extends AdminController
             $check = $this->db->get_where('ip_units', ['unit_name' => $this->input->post('unit_name')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('unit_already_exists'));
-                redirect('units/form');
+                redirect()->route('units/form');
             }
         }
         if ($this->mdl_units->runValidation()) {
             $this->mdl_units->save($id);
-            redirect('units');
+            redirect()->route('units');
         }
         if ($id && ! $this->input->post('btn_submit')) {
             if ( ! $this->mdl_units->prepForm($id)) {
@@ -72,6 +72,6 @@ class UnitsController extends AdminController
     public function delete($id)
     {
         $this->mdl_units->delete($id);
-        redirect('units');
+        redirect()->route('units');
     }
 }

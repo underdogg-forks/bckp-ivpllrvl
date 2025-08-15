@@ -39,7 +39,7 @@ class PaymentsController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('payments');
+            redirect()->route('payments');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -47,7 +47,7 @@ class PaymentsController extends AdminController
         if ($this->mdl_payments->runValidation()) {
             $id = $this->mdl_payments->save($id);
             $this->mdl_payment_custom->saveCustom($id, $this->input->post('custom'));
-            redirect('payments');
+            redirect()->route('payments');
         }
         if ( ! $this->input->post('btn_submit')) {
             $prep_form = $this->mdl_payments->prepForm($id);
@@ -126,6 +126,6 @@ class PaymentsController extends AdminController
     public function delete($id)
     {
         $this->mdl_payments->delete($id);
-        redirect('payments');
+        redirect()->route('payments');
     }
 }

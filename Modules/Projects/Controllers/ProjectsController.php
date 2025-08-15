@@ -39,13 +39,13 @@ class ProjectsController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('projects');
+            redirect()->route('projects');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ($this->mdl_projects->runValidation()) {
             $this->mdl_projects->save($id);
-            redirect('projects');
+            redirect()->route('projects');
         }
         if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_projects->prepForm($id)) {
             show_404();
@@ -64,7 +64,7 @@ class ProjectsController extends AdminController
     public function view($project_id)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('projects');
+            redirect()->route('projects');
         }
         $this->load->model('projects/mdl_projects');
         $project = $this->mdl_projects->getById($project_id);
@@ -87,6 +87,6 @@ class ProjectsController extends AdminController
         $this->load->model('tasks/mdl_tasks');
         $this->mdl_tasks->updateOnProjectDelete($id);
         $this->mdl_projects->delete($id);
-        redirect('projects');
+        redirect()->route('projects');
     }
 }

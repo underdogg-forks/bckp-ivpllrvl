@@ -15,7 +15,7 @@ class SessionsController extends BaseController
      */
     public function index()
     {
-        redirect('sessions/login');
+        redirect()->route('sessions/login');
     }
 
     /**
@@ -33,20 +33,20 @@ class SessionsController extends BaseController
             // Check if the user exists
             if (empty($user)) {
                 $this->session->set_flashdata('alert_error', trans('loginalert_user_not_found'));
-                redirect('sessions/login');
+                redirect()->route('sessions/login');
             } elseif ($user->user_active == 0) {
                 // Check if the user is marked as active (not implemented: Todo?)
                 $this->session->set_flashdata('alert_error', trans('loginalert_user_inactive'));
-                redirect('sessions/login');
+                redirect()->route('sessions/login');
             } elseif ($this->authenticate($this->input->post('email'), $this->input->post('password'))) {
                 if ($this->session->userdata('user_type') == 1) {
-                    redirect('dashboard');
+                    redirect()->route('dashboard');
                 } elseif ($this->session->userdata('user_type') == 2) {
-                    redirect('guest');
+                    redirect()->route('guest');
                 }
             } else {
                 $this->session->set_flashdata('alert_error', trans('loginalert_credentials_incorrect'));
-                redirect('sessions/login');
+                redirect()->route('sessions/login');
             }
         }
         $this->load->view('session_login', $view_data);
@@ -83,7 +83,7 @@ class SessionsController extends BaseController
     public function logout()
     {
         $this->session->sess_destroy();
-        redirect('sessions/login');
+        redirect()->route('sessions/login');
     }
 
     /**
@@ -97,7 +97,7 @@ class SessionsController extends BaseController
         if ($token) {
             if (preg_match('/[^[:alnum:]\-_]/', $token)) {
                 log_message('error', 'Incoming token is not alphanumeric ' . $token);
-                redirect('/');
+                redirect()->route('/');
             }
             //prevent brute force attacks by counting times a token is used
             $login_log_check = $this->loginLogCheck($token);
@@ -113,7 +113,7 @@ class SessionsController extends BaseController
             if (empty($user)) {
                 // Redirect back to the login screen with an alert
                 $this->session->set_flashdata('alert_error', trans('wrong_passwordreset_token'));
-                redirect('sessions/passwordreset');
+                redirect()->route('sessions/passwordreset');
             } else {
                 //if token is valid, delete the failure attempt from
                 //the login_log table
@@ -152,14 +152,14 @@ class SessionsController extends BaseController
             $this->db->where('user_id', $user_id);
             $this->db->update('ip_users', $db_array);
             // Redirect back to the login form
-            redirect('sessions/login');
+            redirect()->route('sessions/login');
         }
         // Check if the password reset form was used
         if ($this->input->post('btn_reset', true)) {
             $email = $this->input->post('email', true);
             if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 log_message('error', 'Incoming email is not a valid email address in passwordreset ' . $email);
-                redirect('/');
+                redirect()->route('/');
             }
             if (empty($email)) {
                 $this->session->set_flashdata('alert_error', trans('loginalert_user_not_found'));
@@ -179,7 +179,7 @@ class SessionsController extends BaseController
                 $email = $this->input->post('email', true);
                 if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     log_message('error', 'Incoming email is not a valid email address in passwordreset ' . $email);
-                    redirect('/');
+                    redirect()->route('/');
                 }
                 //use salt to prevent predictability of the reset token (CVE-2021-29023)
                 $this->load->library('crypt');
@@ -225,7 +225,7 @@ class SessionsController extends BaseController
                 } else {
                     $this->session->set_flashdata('alert_success', trans('email_successfully_sent'));
                 }
-                redirect('sessions/login');
+                redirect()->route('sessions/login');
             }
         }
 

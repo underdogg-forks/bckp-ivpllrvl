@@ -25,7 +25,7 @@ class QuotesController extends BaseGuestController
     public function index()
     {
         // Display open quotes by default
-        redirect('guest/quotes/status/open');
+        redirect()->route('guest/quotes/status/open');
     }
 
     /**

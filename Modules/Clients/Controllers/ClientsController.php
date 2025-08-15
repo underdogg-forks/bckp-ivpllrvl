@@ -27,7 +27,7 @@ class ClientsController extends AdminController
     public function index(): void
     {
         // Display active clients by default
-        redirect('clients/status/active');
+        redirect()->route('clients/status/active');
     }
 
     /**
@@ -67,7 +67,7 @@ class ClientsController extends AdminController
     public function form($id = null): void
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('clients');
+            redirect()->route('clients');
         }
         $new_client = false;
         $this->filterInput();
@@ -77,7 +77,7 @@ class ClientsController extends AdminController
             $check = $this->db->get_where('ip_clients', ['client_name' => $this->input->post('client_name'), 'client_surname' => $this->input->post('client_surname')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('client_already_exists'));
-                redirect('clients/form');
+                redirect()->route('clients/form');
             } else {
                 $new_client = true;
             }
@@ -235,7 +235,7 @@ class ClientsController extends AdminController
     public function delete($client_id): void
     {
         $this->mdl_clients->delete($client_id);
-        redirect('clients');
+        redirect()->route('clients');
     }
 
     /**

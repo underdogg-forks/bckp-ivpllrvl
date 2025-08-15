@@ -26,7 +26,7 @@ class UserClientsController extends AdminController
      */
     public function index()
     {
-        redirect('users');
+        redirect()->route('users');
     }
 
     /**
@@ -37,11 +37,11 @@ class UserClientsController extends AdminController
     public function user($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('users');
+            redirect()->route('users');
         }
         $user = $this->mdl_users->getById($id);
         if (empty($user)) {
-            redirect('users');
+            redirect()->route('users');
         }
         $user_clients = $this->mdl_user_clients->assignedTo($id)->get()->result();
         $this->layout->set(['user' => $user, 'user_clients' => $user_clients]);
@@ -58,7 +58,7 @@ class UserClientsController extends AdminController
     public function create($user_id = null)
     {
         if ( ! $user_id) {
-            redirect('custom_values');
+            redirect()->route('custom_values');
         } elseif ($this->input->post('btn_cancel')) {
             redirect('user_clients/field/' . $user_id);
         }

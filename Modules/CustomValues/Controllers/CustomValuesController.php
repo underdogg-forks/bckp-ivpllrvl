@@ -44,7 +44,7 @@ class CustomValuesController extends AdminController
     public function field($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('custom_values');
+            redirect()->route('custom_values');
         }
         $this->load->model('custom_fields/mdl_custom_fields');
         $field  = $this->mdl_custom_fields->getById($id);
@@ -92,7 +92,7 @@ class CustomValuesController extends AdminController
     public function create($id = null)
     {
         if ( ! $id) {
-            redirect('custom_values');
+            redirect()->route('custom_values');
         }
         $fid = $id;
         if ($this->input->post('btn_cancel')) {

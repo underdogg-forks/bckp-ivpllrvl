@@ -78,7 +78,7 @@ class SettingsController extends AdminController
                 $this->load->library('upload', $upload_config);
                 if ( ! $this->upload->do_upload('invoice_logo')) {
                     $this->session->set_flashdata('alert_error', $this->upload->display_errors());
-                    redirect('settings');
+                    redirect()->route('settings');
                 }
                 $upload_data = $this->upload->data();
                 $this->mdl_settings->save('invoice_logo', $upload_data['file_name']);
@@ -88,13 +88,13 @@ class SettingsController extends AdminController
                 $this->load->library('upload', $upload_config);
                 if ( ! $this->upload->do_upload('login_logo')) {
                     $this->session->set_flashdata('alert_error', $this->upload->display_errors());
-                    redirect('settings');
+                    redirect()->route('settings');
                 }
                 $upload_data = $this->upload->data();
                 $this->mdl_settings->save('login_logo', $upload_data['file_name']);
             }
             $this->session->set_flashdata('alert_success', trans('settings_successfully_saved'));
-            redirect('settings');
+            redirect()->route('settings');
         }
         // Load required resources
         $this->load->model(['invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'email_templates/mdl_email_templates', 'payment_methods/mdl_payment_methods', 'invoices/mdl_templates', 'custom_fields/mdl_invoice_custom', 'custom_fields/mdl_custom_fields']);
@@ -121,6 +121,6 @@ class SettingsController extends AdminController
         unlink('./uploads/' . get_setting($type . '_logo'));
         $this->mdl_settings->save($type . '_logo', '');
         $this->session->set_flashdata('alert_success', lang($type . '_logo_removed'));
-        redirect('settings');
+        redirect()->route('settings');
     }
 }

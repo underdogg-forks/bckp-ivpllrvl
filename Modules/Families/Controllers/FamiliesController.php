@@ -39,7 +39,7 @@ class FamiliesController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('families');
+            redirect()->route('families');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -47,12 +47,12 @@ class FamiliesController extends AdminController
             $check = $this->db->get_where('ip_families', ['family_name' => $this->input->post('family_name')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('family_already_exists'));
-                redirect('families/form');
+                redirect()->route('families/form');
             }
         }
         if ($this->mdl_families->runValidation()) {
             $this->mdl_families->save($id);
-            redirect('families');
+            redirect()->route('families');
         }
         if ($id && ! $this->input->post('btn_submit')) {
             if ( ! $this->mdl_families->prepForm($id)) {
@@ -72,6 +72,6 @@ class FamiliesController extends AdminController
     public function delete($id)
     {
         $this->mdl_families->delete($id);
-        redirect('families');
+        redirect()->route('families');
     }
 }

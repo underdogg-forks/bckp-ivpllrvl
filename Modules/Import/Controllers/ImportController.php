@@ -85,7 +85,7 @@ class ImportController extends AdminController
                     }
                 }
             }
-            redirect('import');
+            redirect()->route('import');
         }
     }
 
@@ -97,6 +97,6 @@ class ImportController extends AdminController
     public function delete($id)
     {
         $this->mdl_import->delete($id);
-        redirect('import');
+        redirect()->route('import');
     }
 }

@@ -27,14 +27,14 @@ class PaymentInformation extends BaseController
         $invoice = $this->mdl_invoices->where('ip_invoices.invoice_url_key', $invoice_url_key)->get()->row();
         if ( ! $invoice) {
             $this->session->set_flashdata('alert_error', lang('invoice_not_found'));
-            redirect('guest');
+            redirect()->route('guest');
             // /invoices
         }
         // Check if the invoice is payable
         if ($invoice->invoice_balance == 0) {
             if ($this->session->user_id) {
                 $this->session->set_flashdata('alert_info', lang('invoice_already_paid'));
-                redirect('guest');
+                redirect()->route('guest');
                 // /invoices
             }
             $disable_form = true;

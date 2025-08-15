@@ -39,7 +39,7 @@ class ProductsController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('products');
+            redirect()->route('products');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -47,7 +47,7 @@ class ProductsController extends AdminController
             // GetController the db array
             $db_array = $this->mdl_products->dbArray();
             $this->mdl_products->save($id, $db_array);
-            redirect('products');
+            redirect()->route('products');
         }
         if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_products->prepForm($id)) {
             show_404();
@@ -68,6 +68,6 @@ class ProductsController extends AdminController
     public function delete($id)
     {
         $this->mdl_products->delete($id);
-        redirect('products');
+        redirect()->route('products');
     }
 }

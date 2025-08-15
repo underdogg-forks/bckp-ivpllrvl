@@ -32,7 +32,7 @@ class BaseController extends MXController
         $this->load->helper('redirect');
         // Check if database has been configured
         if ( ! env_bool('SETUP_COMPLETED')) {
-            redirect('/welcome');
+            redirect()->route('/welcome');
         } else {
             $this->load->library(['encryption', 'form_validation', 'session', 'Modules\Core\Libraries\ClientTitleEnum']);
             $this->load->database();

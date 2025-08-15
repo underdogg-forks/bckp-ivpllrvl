@@ -25,7 +25,7 @@ class CustomFieldsController extends AdminController
     public function index(): void
     {
         // Display all custom_fields tables by default
-        redirect('custom_fields/table/all');
+        redirect()->route('custom_fields/table/all');
     }
 
     /**
@@ -57,13 +57,13 @@ class CustomFieldsController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('custom_fields');
+            redirect()->route('custom_fields');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ($this->mdl_custom_fields->runValidation()) {
             $this->mdl_custom_fields->save($id);
-            redirect('custom_fields');
+            redirect()->route('custom_fields');
         }
         if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_custom_fields->prepForm($id)) {
             show_404();

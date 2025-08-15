@@ -39,7 +39,7 @@ class EmailTemplatesController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('email_templates');
+            redirect()->route('email_templates');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -47,12 +47,12 @@ class EmailTemplatesController extends AdminController
             $check = $this->db->get_where('ip_email_templates', ['email_template_title' => $this->input->post('email_template_title')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('email_template_already_exists'));
-                redirect('email_templates/form');
+                redirect()->route('email_templates/form');
             }
         }
         if ($this->mdl_email_templates->runValidation()) {
             $this->mdl_email_templates->save($id);
-            redirect('email_templates');
+            redirect()->route('email_templates');
         }
         if ($id && ! $this->input->post('btn_submit')) {
             if ( ! $this->mdl_email_templates->prepForm($id)) {
@@ -77,6 +77,6 @@ class EmailTemplatesController extends AdminController
     public function delete($id)
     {
         $this->mdl_email_templates->delete($id);
-        redirect('email_templates');
+        redirect()->route('email_templates');
     }
 }

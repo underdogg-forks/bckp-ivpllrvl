@@ -39,7 +39,7 @@ class RecurringController extends AdminController
     public function stop($invoice_recurring_id)
     {
         $this->mdl_invoices_recurring->stop($invoice_recurring_id);
-        redirect('invoices/recurring/index');
+        redirect()->route('invoices/recurring/index');
     }
 
     /**
@@ -50,6 +50,6 @@ class RecurringController extends AdminController
     public function delete($invoice_recurring_id)
     {
         $this->mdl_invoices_recurring->delete($invoice_recurring_id);
-        redirect('invoices/recurring/index');
+        redirect()->route('invoices/recurring/index');
     }
 }

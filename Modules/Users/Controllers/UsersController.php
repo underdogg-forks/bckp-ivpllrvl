@@ -39,7 +39,7 @@ class UsersController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('users');
+            redirect()->route('users');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -54,7 +54,7 @@ class UsersController extends AdminController
                 $this->session->set_userdata($session_data);
             }
             $this->session->unset_userdata('user_clients');
-            redirect('users');
+            redirect()->route('users');
         }
         if ($id && ! $this->input->post('btn_submit')) {
             if ( ! $this->mdl_users->prepForm($id)) {
@@ -111,7 +111,7 @@ class UsersController extends AdminController
     public function changePassword(string $user_id)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('users');
+            redirect()->route('users');
         }
         if ($this->mdl_users->runValidation('validation_rules_change_password')) {
             $this->mdl_users->saveChangePassword($user_id, $this->input->post('user_password'));
@@ -131,7 +131,7 @@ class UsersController extends AdminController
         if ($id != 1) {
             $this->mdl_users->delete($id);
         }
-        redirect('users');
+        redirect()->route('users');
     }
 
     /**

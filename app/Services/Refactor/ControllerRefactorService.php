@@ -16,30 +16,32 @@ class ControllerRefactorService
         $count = 0;
         $moduleDirectories = File::directories($modulesPath);
 
-        $command->line('Found ' . count($moduleDirectories) . ' module directories.');
-
         foreach ($moduleDirectories as $moduleDir) {
             $controllerDir = $moduleDir . DIRECTORY_SEPARATOR . 'Controllers';
 
             if (File::isDirectory($controllerDir)) {
-                $files = File::files($controllerDir);
-                $command->comment('Processing ' . basename($moduleDir) . ' module: ' . count($files) . ' controllers found.');
-
-                foreach ($files as $file) {
+                foreach (File::files($controllerDir) as $file) {
                     $contents = File::get($file->getRealPath());
                     $originalContents = $contents;
 
                     $command->info("  - Refactoring controller: {$file->getRelativePathname()}");
 
-                    // Refactor 1: Convert CI redirect() to Laravel's route() helper
-                    $contents = preg_replace("/redirect\('(.+?)'\);/", "redirect()->route('$1');", $contents);
+                    // Refactor 1: Convert layout pattern to return view()
+                    $contents = $this->convertLayouts($contents);
 
-                    // Refactor 2: Convert CI Query Builder to Eloquent using callbacks
-                    $contents = $this->convertQueries($contents);
+                    // Refactor 2a: Convert realpath to storage_path
+                    $contents = preg_replace("/realpath\('UPLOADS_ARCHIVE_FOLDER'\)/", "storage_path('app/uploads/archives')", $contents);
+
+                    // Refactor 2b: Convert CI logging to Laravel's Log facade
+                    $contents = preg_replace("/log_message\('error', (.+?)\);/", "Log::error($1);", $contents);
+
+                    // Refactor 3: Convert $this->mdl_ calls to new Service() calls
+                    $contents = $this->convertServices($contents);
 
                     if ($contents !== $originalContents) {
                         if (!$dry) {
                             File::put($file->getRealPath(), $contents);
+                            $this->addLogFacade($file->getRealPath());
                         }
                         $this->writeLog($log, "Refactored controller: {$file->getRelativePathname()}");
                         $count++;
@@ -50,41 +52,40 @@ class ControllerRefactorService
         return $count;
     }
 
-    private function convertQueries(string $contents): string
+    private function convertLayouts(string $contents): string
     {
-        // Example: $this->db->get('invoices') -> Invoice::all()
-        $contents = preg_replace_callback(
-            "/\$this->db->get\('(.+?)'\)/",
-            function ($matches) {
-                $model = Str::studly(Str::singular($matches[1]));
-                return "{$model}::all()";
-            },
-            $contents
-        );
+        // Find the full layout block and replace with return view()
+        $pattern = "/\\\$this->layout->set\(\[(.+?)\]\);\s*\\\$this->layout->buffer\('content',\s*'(.+?)'\);\s*\\\$this->layout->render\(\);/s";
 
-        // Example: $this->db->get_where('invoices', array('id' => $id)) -> Invoice::where('id', $id)->first()
-        $contents = preg_replace_callback(
-            "/\$this->db->get_where\('(.+?)', array\('(.+?)'\s*=>\s*([^)]+)\)\)/",
-            function ($matches) {
-                $model = Str::studly(Str::singular($matches[1]));
-                $column = trim($matches[2], "'");
-                $value = trim($matches[3]);
-                return "{$model}::where('{$column}', {$value})->first()";
-            },
-            $contents
-        );
-
-        // Example: $this->db->insert('invoices', $data) -> Invoice::create($data)
-        $contents = preg_replace_callback(
-            "/\$this->db->insert\('(.+?)',\s*([^)]+)\)/",
-            function ($matches) {
-                $model = Str::studly(Str::singular($matches[1]));
-                $data = $matches[2];
-                return "{$model}::create({$data})";
-            },
-            $contents
-        );
+        $contents = preg_replace_callback($pattern, function($matches) {
+            $variables = trim($matches[1]);
+            $viewPath = Str::replace('/', '.', $matches[2]);
+            return "return view('{$viewPath}', [{$variables}]);";
+        }, $contents);
 
         return $contents;
+    }
+
+    private function convertServices(string $contents): string
+    {
+        // Convert all $this->mdl_ calls
+        $contents = preg_replace_callback(
+            "/\\\$this->mdl_([a-z0-9_]+)->/i",
+            function($matches) {
+                $serviceName = Str::studly($matches[1]);
+                return "(new {$serviceName}Service())->";
+            },
+            $contents
+        );
+        return $contents;
+    }
+
+    private function addLogFacade(string $filePath): void
+    {
+        $contents = File::get($filePath);
+        if (!Str::contains($contents, 'use Illuminate\Support\Facades\Log;')) {
+            $contents = preg_replace('/(namespace\s+.*?;)/s', "$1\n\nuse Illuminate\Support\Facades\Log;", $contents, 1);
+            File::put($filePath, $contents);
+        }
     }
 }

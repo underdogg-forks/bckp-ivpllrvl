@@ -39,7 +39,7 @@ class TaxRatesController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('tax_rates');
+            redirect()->route('tax_rates');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -49,7 +49,7 @@ class TaxRatesController extends AdminController
             $db_array                     = $this->mdl_tax_rates->dbArray();
             $db_array['tax_rate_percent'] = standardize_amount($this->input->post('tax_rate_percent'));
             $this->mdl_tax_rates->save($id, $db_array);
-            redirect('tax_rates');
+            redirect()->route('tax_rates');
         }
         if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_tax_rates->prepForm($id)) {
             show_404();
@@ -66,7 +66,7 @@ class TaxRatesController extends AdminController
     public function formStore()
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('tax_rates');
+            redirect()->route('tax_rates');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -76,7 +76,7 @@ class TaxRatesController extends AdminController
             $db_array                     = $this->mdl_tax_rates->dbArray();
             $db_array['tax_rate_percent'] = standardize_amount($this->input->post('tax_rate_percent'));
             $this->mdl_tax_rates->save($id, $db_array);
-            redirect('tax_rates');
+            redirect()->route('tax_rates');
         }
         if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_tax_rates->prepForm($id)) {
             show_404();
@@ -91,6 +91,6 @@ class TaxRatesController extends AdminController
     public function delete($id)
     {
         $this->mdl_tax_rates->delete($id);
-        redirect('tax_rates');
+        redirect()->route('tax_rates');
     }
 }

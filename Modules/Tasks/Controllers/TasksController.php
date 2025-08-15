@@ -39,13 +39,13 @@ class TasksController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('tasks');
+            redirect()->route('tasks');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ($this->mdl_tasks->runValidation()) {
             $this->mdl_tasks->save($id);
-            redirect('tasks');
+            redirect()->route('tasks');
         }
         if ( ! $this->input->post('btn_submit')) {
             $prep_form = $this->mdl_tasks->prepForm($id);
@@ -68,6 +68,6 @@ class TasksController extends AdminController
     public function delete($id)
     {
         $this->mdl_tasks->delete($id);
-        redirect('tasks');
+        redirect()->route('tasks');
     }
 }

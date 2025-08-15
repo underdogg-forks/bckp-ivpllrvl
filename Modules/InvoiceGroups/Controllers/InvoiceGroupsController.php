@@ -39,13 +39,13 @@ class InvoiceGroupsController extends AdminController
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
-            redirect('invoice_groups');
+            redirect()->route('invoice_groups');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ($this->mdl_invoice_groups->runValidation()) {
             $this->mdl_invoice_groups->save($id);
-            redirect('invoice_groups');
+            redirect()->route('invoice_groups');
         }
         if ($id && ! $this->input->post('btn_submit')) {
             if ( ! $this->mdl_invoice_groups->prepForm($id)) {
@@ -67,6 +67,6 @@ class InvoiceGroupsController extends AdminController
     public function delete($id)
     {
         $this->mdl_invoice_groups->delete($id);
-        redirect('invoice_groups');
+        redirect()->route('invoice_groups');
     }
 }
