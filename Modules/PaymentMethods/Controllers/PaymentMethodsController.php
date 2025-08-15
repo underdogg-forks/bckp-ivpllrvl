@@ -2,6 +2,8 @@
 
 namespace Modules\PaymentMethods\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,8 +26,8 @@ class PaymentMethodsController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_payment_methods->paginate(site_url('payment_methods/index'), $page);
-        $payment_methods = $this->mdl_payment_methods->result();
+        (new PaymentMethodsService())->paginate(site_url('payment_methods/index'), $page);
+        $payment_methods = (new PaymentMethodsService())->result();
         $this->layout->set('payment_methods', $payment_methods);
         $this->layout->buffer('content', 'payment_methods/index');
         $this->layout->render();
@@ -50,15 +52,15 @@ class PaymentMethodsController extends AdminController
                 redirect()->route('payment_methods/form');
             }
         }
-        if ($this->mdl_payment_methods->runValidation()) {
-            $this->mdl_payment_methods->save($id);
+        if ((new PaymentMethodsService())->runValidation()) {
+            (new PaymentMethodsService())->save($id);
             redirect()->route('payment_methods');
         }
         if ($id && ! $this->input->post('btn_submit')) {
-            if ( ! $this->mdl_payment_methods->prepForm($id)) {
+            if ( ! (new PaymentMethodsService())->prepForm($id)) {
                 show_404();
             }
-            $this->mdl_payment_methods->setFormValue('is_update', true);
+            (new PaymentMethodsService())->setFormValue('is_update', true);
         }
         $this->layout->buffer('content', 'payment_methods/form');
         $this->layout->render();
@@ -71,7 +73,7 @@ class PaymentMethodsController extends AdminController
      */
     public function delete($id)
     {
-        $this->mdl_payment_methods->delete($id);
+        (new PaymentMethodsService())->delete($id);
         redirect()->route('payment_methods');
     }
 }

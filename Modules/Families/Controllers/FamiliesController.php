@@ -2,6 +2,8 @@
 
 namespace Modules\Families\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,11 +26,9 @@ class FamiliesController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_families->paginate(site_url('families/index'), $page);
-        $families = $this->mdl_families->result();
-        $this->layout->set(['filter_display' => true, 'filter_placeholder' => trans('filter_families'), 'filter_method' => 'filter_families', 'families' => $families]);
-        $this->layout->buffer('content', 'families/index');
-        $this->layout->render();
+        (new FamiliesService())->paginate(site_url('families/index'), $page);
+        $families = (new FamiliesService())->result();
+        return view('families.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_families'), 'filter_method' => 'filter_families', 'families' => $families]);
     }
 
     /**
@@ -50,15 +50,15 @@ class FamiliesController extends AdminController
                 redirect()->route('families/form');
             }
         }
-        if ($this->mdl_families->runValidation()) {
-            $this->mdl_families->save($id);
+        if ((new FamiliesService())->runValidation()) {
+            (new FamiliesService())->save($id);
             redirect()->route('families');
         }
         if ($id && ! $this->input->post('btn_submit')) {
-            if ( ! $this->mdl_families->prepForm($id)) {
+            if ( ! (new FamiliesService())->prepForm($id)) {
                 show_404();
             }
-            $this->mdl_families->setFormValue('is_update', true);
+            (new FamiliesService())->setFormValue('is_update', true);
         }
         $this->layout->buffer('content', 'families/form');
         $this->layout->render();
@@ -71,7 +71,7 @@ class FamiliesController extends AdminController
      */
     public function delete($id)
     {
-        $this->mdl_families->delete($id);
+        (new FamiliesService())->delete($id);
         redirect()->route('families');
     }
 }

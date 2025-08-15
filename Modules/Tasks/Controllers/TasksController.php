@@ -2,6 +2,8 @@
 
 namespace Modules\Tasks\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,11 +26,9 @@ class TasksController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_tasks->paginate(site_url('tasks/index'), $page);
-        $tasks = $this->mdl_tasks->result();
-        $this->layout->set(['filter_display' => true, 'filter_placeholder' => trans('filter_tasks'), 'filter_method' => 'filter_tasks', 'tasks' => $tasks, 'task_statuses' => $this->mdl_tasks->statuses()]);
-        $this->layout->buffer('content', 'tasks/index');
-        $this->layout->render();
+        (new TasksService())->paginate(site_url('tasks/index'), $page);
+        $tasks = (new TasksService())->result();
+        return view('tasks.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_tasks'), 'filter_method' => 'filter_tasks', 'tasks' => $tasks, 'task_statuses' => (new TasksService())->statuses()]);
     }
 
     /**
@@ -43,21 +43,19 @@ class TasksController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->mdl_tasks->runValidation()) {
-            $this->mdl_tasks->save($id);
+        if ((new TasksService())->runValidation()) {
+            (new TasksService())->save($id);
             redirect()->route('tasks');
         }
         if ( ! $this->input->post('btn_submit')) {
-            $prep_form = $this->mdl_tasks->prepForm($id);
+            $prep_form = (new TasksService())->prepForm($id);
             if ($id && ! $prep_form) {
                 show_404();
             }
         }
         $this->load->model('projects/mdl_projects');
         $this->load->model('tax_rates/mdl_tax_rates');
-        $this->layout->set(['projects' => $this->mdl_projects->get()->result(), 'task_statuses' => $this->mdl_tasks->statuses(), 'tax_rates' => $this->mdl_tax_rates->get()->result()]);
-        $this->layout->buffer('content', 'tasks/form');
-        $this->layout->render();
+        return view('tasks.form', ['projects' => (new ProjectsService())->get()->result(), 'task_statuses' => (new TasksService())->statuses(), 'tax_rates' => (new TaxRatesService())->get()->result()]);
     }
 
     /**
@@ -67,7 +65,7 @@ class TasksController extends AdminController
      */
     public function delete($id)
     {
-        $this->mdl_tasks->delete($id);
+        (new TasksService())->delete($id);
         redirect()->route('tasks');
     }
 }

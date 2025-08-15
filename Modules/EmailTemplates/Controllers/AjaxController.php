@@ -2,6 +2,8 @@
 
 namespace Modules\EmailTemplates\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -19,6 +21,6 @@ class AjaxController extends AdminController
     {
         $this->load->model('email_templates/mdl_email_templates');
         $id = $this->input->post('email_template_id');
-        echo json_encode($this->mdl_email_templates->getById($id));
+        echo json_encode((new EmailTemplatesService())->getById($id));
     }
 }

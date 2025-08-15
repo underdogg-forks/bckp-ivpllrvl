@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,11 +26,9 @@ class RecurringController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_invoices_recurring->paginate(site_url('invoices/recurring'), $page);
-        $recurring_invoices = $this->mdl_invoices_recurring->result();
-        $this->layout->set(['filter_display' => true, 'filter_placeholder' => trans('filter_invoices_recuring'), 'filter_method' => 'filter_invoices_recuring', 'recur_frequencies' => $this->mdl_invoices_recurring->recur_frequencies, 'recurring_invoices' => $recurring_invoices]);
-        $this->layout->buffer('content', 'invoices/index_recurring');
-        $this->layout->render();
+        (new InvoicesRecurringService())->paginate(site_url('invoices/recurring'), $page);
+        $recurring_invoices = (new InvoicesRecurringService())->result();
+        return view('invoices.index_recurring', ['filter_display' => true, 'filter_placeholder' => trans('filter_invoices_recuring'), 'filter_method' => 'filter_invoices_recuring', 'recur_frequencies' => (new InvoicesRecurringService())->recur_frequencies, 'recurring_invoices' => $recurring_invoices]);
     }
 
     /**
@@ -38,7 +38,7 @@ class RecurringController extends AdminController
      */
     public function stop($invoice_recurring_id)
     {
-        $this->mdl_invoices_recurring->stop($invoice_recurring_id);
+        (new InvoicesRecurringService())->stop($invoice_recurring_id);
         redirect()->route('invoices/recurring/index');
     }
 
@@ -49,7 +49,7 @@ class RecurringController extends AdminController
      */
     public function delete($invoice_recurring_id)
     {
-        $this->mdl_invoices_recurring->delete($invoice_recurring_id);
+        (new InvoicesRecurringService())->delete($invoice_recurring_id);
         redirect()->route('invoices/recurring/index');
     }
 }

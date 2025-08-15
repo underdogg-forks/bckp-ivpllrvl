@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller as MXController;
 
@@ -40,7 +42,7 @@ class BaseController extends MXController
             // Load setting model and load settings
             $this->load->model('settings/mdl_settings');
             if ($this->mdl_settings != null) {
-                $this->mdl_settings->loadSettings();
+                (new SettingsService())->loadSettings();
             }
             $this->load->helper('settings');
             // Load the lang based on user config, fall back to system if needed

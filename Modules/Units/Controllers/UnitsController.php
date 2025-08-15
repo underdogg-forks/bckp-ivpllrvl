@@ -2,6 +2,8 @@
 
 namespace Modules\Units\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,8 +26,8 @@ class UnitsController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_units->paginate(site_url('units/index'), $page);
-        $units = $this->mdl_units->result();
+        (new UnitsService())->paginate(site_url('units/index'), $page);
+        $units = (new UnitsService())->result();
         $this->layout->set('units', $units);
         $this->layout->buffer('content', 'units/index');
         $this->layout->render();
@@ -50,15 +52,15 @@ class UnitsController extends AdminController
                 redirect()->route('units/form');
             }
         }
-        if ($this->mdl_units->runValidation()) {
-            $this->mdl_units->save($id);
+        if ((new UnitsService())->runValidation()) {
+            (new UnitsService())->save($id);
             redirect()->route('units');
         }
         if ($id && ! $this->input->post('btn_submit')) {
-            if ( ! $this->mdl_units->prepForm($id)) {
+            if ( ! (new UnitsService())->prepForm($id)) {
                 show_404();
             }
-            $this->mdl_units->setFormValue('is_update', true);
+            (new UnitsService())->setFormValue('is_update', true);
         }
         $this->layout->buffer('content', 'units/form');
         $this->layout->render();
@@ -71,7 +73,7 @@ class UnitsController extends AdminController
      */
     public function delete($id)
     {
-        $this->mdl_units->delete($id);
+        (new UnitsService())->delete($id);
         redirect()->route('units');
     }
 }

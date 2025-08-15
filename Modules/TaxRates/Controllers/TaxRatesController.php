@@ -2,6 +2,8 @@
 
 namespace Modules\TaxRates\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,8 +26,8 @@ class TaxRatesController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_tax_rates->paginate(site_url('tax_rates/index'), $page);
-        $tax_rates = $this->mdl_tax_rates->result();
+        (new TaxRatesService())->paginate(site_url('tax_rates/index'), $page);
+        $tax_rates = (new TaxRatesService())->result();
         $this->layout->set('tax_rates', $tax_rates);
         $this->layout->buffer('content', 'tax_rates/index');
         $this->layout->render();
@@ -43,15 +45,15 @@ class TaxRatesController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->mdl_tax_rates->runValidation()) {
-            $this->mdl_tax_rates->form_values['tax_rate_percent'] = standardize_amount($this->mdl_tax_rates->form_values['tax_rate_percent']);
+        if ((new TaxRatesService())->runValidation()) {
+            (new TaxRatesService())->form_values['tax_rate_percent'] = standardize_amount((new TaxRatesService())->form_values['tax_rate_percent']);
             // We need to use the correct decimal point for sql IPT-310
-            $db_array                     = $this->mdl_tax_rates->dbArray();
+            $db_array                     = (new TaxRatesService())->dbArray();
             $db_array['tax_rate_percent'] = standardize_amount($this->input->post('tax_rate_percent'));
-            $this->mdl_tax_rates->save($id, $db_array);
+            (new TaxRatesService())->save($id, $db_array);
             redirect()->route('tax_rates');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_tax_rates->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! (new TaxRatesService())->prepForm($id)) {
             show_404();
         }
         $this->layout->buffer('content', 'tax_rates/form');
@@ -70,15 +72,15 @@ class TaxRatesController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->mdl_tax_rates->runValidation()) {
-            $this->mdl_tax_rates->form_values['tax_rate_percent'] = standardize_amount($this->mdl_tax_rates->form_values['tax_rate_percent']);
+        if ((new TaxRatesService())->runValidation()) {
+            (new TaxRatesService())->form_values['tax_rate_percent'] = standardize_amount((new TaxRatesService())->form_values['tax_rate_percent']);
             // We need to use the correct decimal point for sql IPT-310
-            $db_array                     = $this->mdl_tax_rates->dbArray();
+            $db_array                     = (new TaxRatesService())->dbArray();
             $db_array['tax_rate_percent'] = standardize_amount($this->input->post('tax_rate_percent'));
-            $this->mdl_tax_rates->save($id, $db_array);
+            (new TaxRatesService())->save($id, $db_array);
             redirect()->route('tax_rates');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_tax_rates->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! (new TaxRatesService())->prepForm($id)) {
             show_404();
         }
     }
@@ -90,7 +92,7 @@ class TaxRatesController extends AdminController
      */
     public function delete($id)
     {
-        $this->mdl_tax_rates->delete($id);
+        (new TaxRatesService())->delete($id);
         redirect()->route('tax_rates');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Products\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -23,15 +25,15 @@ class AjaxController extends AdminController
         $this->load->model('mdl_products');
         $this->load->model('families/mdl_families');
         if ( ! empty($filter_family)) {
-            $this->mdl_products->byFamily($filter_family);
+            (new ProductsService())->byFamily($filter_family);
             $filter_family = $this->security->xss_clean($filter_family);
         }
         if ( ! empty($filter_product)) {
-            $this->mdl_products->byProduct($filter_product);
+            (new ProductsService())->byProduct($filter_product);
             $filter_product = $this->security->xss_clean($filter_product);
         }
-        $products              = $this->mdl_products->get()->result();
-        $families              = $this->mdl_families->get()->result();
+        $products              = (new ProductsService())->get()->result();
+        $families              = (new FamiliesService())->get()->result();
         $default_item_tax_rate = get_setting('default_item_tax_rate');
         $default_item_tax_rate = $default_item_tax_rate !== '' ?: 0;
         $data                  = ['products' => $products, 'families' => $families, 'filter_product' => $filter_product, 'filter_family' => $filter_family, 'default_item_tax_rate' => $default_item_tax_rate];
@@ -50,7 +52,7 @@ class AjaxController extends AdminController
     public function processProductSelections()
     {
         $this->load->model('mdl_products');
-        $products = $this->mdl_products->where_in('product_id', $this->input->post('product_ids'))->get()->result();
+        $products = (new ProductsService())->where_in('product_id', $this->input->post('product_ids'))->get()->result();
         foreach ($products as $product) {
             $product->product_price = format_amount($product->product_price);
         }

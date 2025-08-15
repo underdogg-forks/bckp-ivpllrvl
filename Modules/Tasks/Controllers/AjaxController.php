@@ -2,6 +2,8 @@
 
 namespace Modules\Tasks\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -19,7 +21,7 @@ class AjaxController extends AdminController
         $data                  = ['default_item_tax_rate' => $default_item_tax_rate !== '' ?: 0, 'tasks' => []];
         if ( ! empty($invoice_id)) {
             $this->load->model('mdl_tasks');
-            $data['tasks'] = $this->mdl_tasks->getTasksToInvoice($invoice_id);
+            $data['tasks'] = (new TasksService())->getTasksToInvoice($invoice_id);
         }
         $this->layout->loadView('tasks/modal_task_lookups', $data);
     }
@@ -32,7 +34,7 @@ class AjaxController extends AdminController
     public function processTaskSelections()
     {
         $this->load->model('mdl_tasks');
-        $tasks = $this->mdl_tasks->where_in('task_id', $this->input->post('task_ids'))->get()->result();
+        $tasks = (new TasksService())->where_in('task_id', $this->input->post('task_ids'))->get()->result();
         foreach ($tasks as $task) {
             $task->task_price = format_amount($task->task_price);
         }

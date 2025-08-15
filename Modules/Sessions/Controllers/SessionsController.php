@@ -2,6 +2,8 @@
 
 namespace Modules\Sessions\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
 
@@ -63,7 +65,7 @@ class SessionsController extends BaseController
         //check if user is banned
         $login_log = $this->loginLogCheck($email_address);
         if (empty($login_log) || $login_log->log_count < 10) {
-            if ($this->mdl_sessions->auth($email_address, $password)) {
+            if ((new SessionsService())->auth($email_address, $password)) {
                 $this->loginLogReset($email_address);
 
                 return true;
@@ -96,7 +98,7 @@ class SessionsController extends BaseController
         // Check if a token was provided
         if ($token) {
             if (preg_match('/[^[:alnum:]\-_]/', $token)) {
-                log_message('error', 'Incoming token is not alphanumeric ' . $token);
+                Log::error('Incoming token is not alphanumeric ' . $token);
                 redirect()->route('/');
             }
             //prevent brute force attacks by counting times a token is used
@@ -133,7 +135,7 @@ class SessionsController extends BaseController
             }
             $this->load->model('users/mdl_users');
             // Check for the reset token
-            $user = $this->mdl_users->getById($user_id);
+            $user = (new UsersService())->getById($user_id);
             if (empty($user)) {
                 $this->session->set_flashdata('alert_error', trans('loginalert_user_not_found'));
                 redirect($_SERVER['HTTP_REFERER']);
@@ -143,7 +145,7 @@ class SessionsController extends BaseController
                 redirect($_SERVER['HTTP_REFERER']);
             }
             // Call the save_change_password() function from users model
-            $this->mdl_users->saveChangePassword($user_id, $new_password);
+            (new UsersService())->saveChangePassword($user_id, $new_password);
             // Update the user and set him active again
             $db_array = ['user_passwordreset_token' => ''];
             //delete failed attempts from login_log table
@@ -158,7 +160,7 @@ class SessionsController extends BaseController
         if ($this->input->post('btn_reset', true)) {
             $email = $this->input->post('email', true);
             if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                log_message('error', 'Incoming email is not a valid email address in passwordreset ' . $email);
+                Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
                 redirect()->route('/');
             }
             if (empty($email)) {
@@ -178,7 +180,7 @@ class SessionsController extends BaseController
                 // Create a passwordreset token.
                 $email = $this->input->post('email', true);
                 if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    log_message('error', 'Incoming email is not a valid email address in passwordreset ' . $email);
+                    Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
                     redirect()->route('/');
                 }
                 //use salt to prevent predictability of the reset token (CVE-2021-29023)
@@ -216,7 +218,7 @@ class SessionsController extends BaseController
                     // Send the reset email
                     if ( ! $this->email->send()) {
                         $email_failed = true;
-                        log_message('error', $this->email->print_debugger());
+                        Log::error($this->email->print_debugger());
                     }
                 }
                 // Redirect back to the login screen with an alert

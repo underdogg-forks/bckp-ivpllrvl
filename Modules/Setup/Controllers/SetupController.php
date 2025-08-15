@@ -2,6 +2,8 @@
 
 namespace Modules\Setup\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller as MXController;
 
@@ -141,7 +143,7 @@ class SetupController extends MXController
             redirect()->route('setup/upgrade_tables');
         }
         $this->loadCiDatabase();
-        $this->layout->set(['success' => $this->mdl_setup->installTables(), 'errors' => $this->mdl_setup->errors]);
+        $this->layout->set(['success' => (new SetupService())->installTables(), 'errors' => (new SetupService())->errors]);
         $this->layout->buffer('content', 'setup/install_tables');
         $this->layout->render('setup');
     }
@@ -170,7 +172,7 @@ class SetupController extends MXController
         if (env('ENCRYPTION_KEY') === null || env('ENCRYPTION_KEY') === '') {
             $this->setEncryptionKey();
         }
-        $this->layout->set(['success' => $this->mdl_setup->upgradeTables(), 'errors' => $this->mdl_setup->errors]);
+        $this->layout->set(['success' => (new SetupService())->upgradeTables(), 'errors' => (new SetupService())->errors]);
         $this->layout->buffer('content', 'setup/upgrade_tables');
         $this->layout->render('setup');
     }
@@ -188,10 +190,10 @@ class SetupController extends MXController
         $this->loadCiDatabase();
         $this->load->model('users/mdl_users');
         $this->load->helper('country');
-        if ($this->mdl_users->runValidation()) {
-            $db_array              = $this->mdl_users->dbArray();
+        if ((new UsersService())->runValidation()) {
+            $db_array              = (new UsersService())->dbArray();
             $db_array['user_type'] = 1;
-            $this->mdl_users->save(null, $db_array);
+            (new UsersService())->save(null, $db_array);
             $this->session->set_userdata('install_step', 'calculation_info');
             redirect()->route('setup/calculation_info');
         }
@@ -241,7 +243,7 @@ class SetupController extends MXController
         $this->loadCiDatabase();
         $users = $this->db->query('SELECT * FROM ip_users');
         if ($users->numRows() === 0) {
-            log_message('error', 'there was already one or more users in the database');
+            Log::error('there was already one or more users in the database');
             $this->session->set_flashdata('alert_error', 'Something went wrong, check the log file for errors');
             $this->session->set_userdata('install_step', 'create_user');
             redirect()->route('setup/create_user');
@@ -415,7 +417,7 @@ class SetupController extends MXController
     {
         $this->loadCiDatabase();
         $this->load->model('settings/mdl_versions');
-        $current_version = $this->mdl_versions->getCurrentVersion();
+        $current_version = (new VersionsService())->getCurrentVersion();
         if (version_compare($current_version, '1.6.3', '>=')) {
             // Reload the ipconfig.php
             global $dotenv;

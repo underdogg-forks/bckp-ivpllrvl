@@ -2,6 +2,8 @@
 
 namespace Modules\Guest\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
 
@@ -38,21 +40,21 @@ class InvoicesController extends BaseGuestController
         // Determine which group of invoices to load
         switch ($status) {
             case 'all':
-                $this->mdl_invoices->guestVisible();
+                (new InvoicesService())->guestVisible();
                 break;
             case 'paid':
-                $this->mdl_invoices->isPaid();
+                (new InvoicesService())->isPaid();
                 break;
             case 'overdue':
-                $this->mdl_invoices->isOverdue();
+                (new InvoicesService())->isOverdue();
                 break;
             default:
-                $this->mdl_invoices->isOpen();
+                (new InvoicesService())->isOpen();
                 break;
         }
-        $this->mdl_invoices->where_in('ip_invoices.client_id', $this->user_clients);
-        $this->mdl_invoices->paginate(site_url('guest/invoices/status/' . $status), $page);
-        $invoices = $this->mdl_invoices->result();
+        (new InvoicesService())->where_in('ip_invoices.client_id', $this->user_clients);
+        (new InvoicesService())->paginate(site_url('guest/invoices/status/' . $status), $page);
+        $invoices = (new InvoicesService())->result();
         $this->layout->set(['invoices' => $invoices, 'status' => $status, 'enable_online_payments' => get_setting('enable_online_payments')]);
         $this->layout->buffer('content', 'guest/invoices_index');
         $this->layout->render('layout_guest');
@@ -65,14 +67,14 @@ class InvoicesController extends BaseGuestController
      */
     public function view($invoice_id): void
     {
-        $invoice = $this->mdl_invoices->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
+        $invoice = (new InvoicesService())->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
         if ( ! $invoice) {
             show_404();
         }
-        $this->mdl_invoices->markViewed($invoice->invoice_id);
+        (new InvoicesService())->markViewed($invoice->invoice_id);
         $this->load->model(['invoices/mdl_items', 'invoices/mdl_invoice_tax_rates', 'upload/mdl_uploads']);
         $this->load->helper('dropzone');
-        $this->layout->set(['invoice_id' => $invoice_id, 'invoice' => $invoice, 'items' => $this->mdl_items->where('invoice_id', $invoice_id)->get()->result(), 'invoice_tax_rates' => $this->mdl_invoice_tax_rates->where('invoice_id', $invoice_id)->get()->result(), 'enable_online_payments' => get_setting('enable_online_payments'), 'legacy_calculation' => config_item('legacy_calculation')]);
+        $this->layout->set(['invoice_id' => $invoice_id, 'invoice' => $invoice, 'items' => (new ItemsService())->where('invoice_id', $invoice_id)->get()->result(), 'invoice_tax_rates' => (new InvoiceTaxRatesService())->where('invoice_id', $invoice_id)->get()->result(), 'enable_online_payments' => get_setting('enable_online_payments'), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/invoices_view');
         $this->layout->render('layout_guest');
     }
@@ -84,11 +86,11 @@ class InvoicesController extends BaseGuestController
      */
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
     {
-        $invoice = $this->mdl_invoices->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
+        $invoice = (new InvoicesService())->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
         if ( ! $invoice) {
             show_404();
         }
-        $this->mdl_invoices->markViewed($invoice_id);
+        (new InvoicesService())->markViewed($invoice_id);
         $this->load->helper('pdf');
         generate_invoice_pdf($invoice_id, $stream, $invoice_template, true);
     }
@@ -100,11 +102,11 @@ class InvoicesController extends BaseGuestController
      */
     public function generateSumexPdf($invoice_id, $stream = true, $invoice_template = null): void
     {
-        $invoice = $this->mdl_invoices->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
+        $invoice = (new InvoicesService())->guestVisible()->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
         if ( ! $invoice) {
             show_404();
         }
-        $this->mdl_invoices->markViewed($invoice_id);
+        (new InvoicesService())->markViewed($invoice_id);
         $this->load->helper('pdf');
         generate_invoice_sumex($invoice_id, $stream, $invoice_template, true);
     }

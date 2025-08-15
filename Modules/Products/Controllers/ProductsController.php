@@ -2,6 +2,8 @@
 
 namespace Modules\Products\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,11 +26,9 @@ class ProductsController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_products->paginate(site_url('products/index'), $page);
-        $products = $this->mdl_products->result();
-        $this->layout->set(['filter_display' => true, 'filter_placeholder' => trans('filter_products'), 'filter_method' => 'filter_products', 'products' => $products]);
-        $this->layout->buffer('content', 'products/index');
-        $this->layout->render();
+        (new ProductsService())->paginate(site_url('products/index'), $page);
+        $products = (new ProductsService())->result();
+        return view('products.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_products'), 'filter_method' => 'filter_products', 'products' => $products]);
     }
 
     /**
@@ -43,21 +43,19 @@ class ProductsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->mdl_products->runValidation()) {
+        if ((new ProductsService())->runValidation()) {
             // GetController the db array
-            $db_array = $this->mdl_products->dbArray();
-            $this->mdl_products->save($id, $db_array);
+            $db_array = (new ProductsService())->dbArray();
+            (new ProductsService())->save($id, $db_array);
             redirect()->route('products');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_products->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! (new ProductsService())->prepForm($id)) {
             show_404();
         }
         $this->load->model('families/mdl_families');
         $this->load->model('units/mdl_units');
         $this->load->model('tax_rates/mdl_tax_rates');
-        $this->layout->set(['families' => $this->mdl_families->get()->result(), 'units' => $this->mdl_units->get()->result(), 'tax_rates' => $this->mdl_tax_rates->get()->result()]);
-        $this->layout->buffer('content', 'products/form');
-        $this->layout->render();
+        return view('products.form', ['families' => (new FamiliesService())->get()->result(), 'units' => (new UnitsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result()]);
     }
 
     /**
@@ -67,7 +65,7 @@ class ProductsController extends AdminController
      */
     public function delete($id)
     {
-        $this->mdl_products->delete($id);
+        (new ProductsService())->delete($id);
         redirect()->route('products');
     }
 }

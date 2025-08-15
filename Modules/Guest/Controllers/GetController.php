@@ -2,6 +2,8 @@
 
 namespace Modules\Guest\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use Modules\Core\Controllers\BaseController;
 
 /*
@@ -28,7 +30,7 @@ class GetController extends BaseController
     {
         parent::__construct();
         $this->load->model('upload/mdl_uploads');
-        $this->content_types = $this->mdl_uploads->content_types;
+        $this->content_types = (new UploadsService())->content_types;
     }
 
     /**
@@ -39,7 +41,7 @@ class GetController extends BaseController
     public function showFiles($url_key = null): void
     {
         header('Content-Type: application/json; charset=utf-8');
-        if ($url_key && ! $result = $this->mdl_uploads->getFiles($url_key)) {
+        if ($url_key && ! $result = (new UploadsService())->getFiles($url_key)) {
             exit('{}');
         }
         echo json_encode($result);

@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 
 #[AllowDynamicProperties]
@@ -17,7 +19,7 @@ class GuestController extends UserController
     {
         parent::__construct('user_type', 2);
         $this->load->model('user_clients/mdl_user_clients');
-        $user_clients = $this->mdl_user_clients->assignedTo($this->session->userdata('user_id'))->get()->result();
+        $user_clients = (new UserClientsService())->assignedTo($this->session->userdata('user_id'))->get()->result();
         if ( ! $user_clients) {
             show_error(trans('guest_account_denied'), 403);
             exit;

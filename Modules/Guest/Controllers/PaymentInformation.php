@@ -2,6 +2,8 @@
 
 namespace Modules\Guest\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
 
@@ -24,7 +26,7 @@ class PaymentInformation extends BaseController
         $this->load->model('payment_methods/mdl_payment_methods');
         $disable_form = false;
         // Check if the invoice exists and is billable
-        $invoice = $this->mdl_invoices->where('ip_invoices.invoice_url_key', $invoice_url_key)->get()->row();
+        $invoice = (new InvoicesService())->where('ip_invoices.invoice_url_key', $invoice_url_key)->get()->row();
         if ( ! $invoice) {
             $this->session->set_flashdata('alert_error', lang('invoice_not_found'));
             redirect()->route('guest');
@@ -61,7 +63,7 @@ class PaymentInformation extends BaseController
             $payment_provider = $available_drivers[0];
         }
         // GetController additional invoice information
-        $payment_method = $this->mdl_payment_methods->where('payment_method_id', $invoice->payment_method)->get()->row();
+        $payment_method = (new PaymentMethodsService())->where('payment_method_id', $invoice->payment_method)->get()->row();
         if ($invoice->payment_method == 0) {
             $payment_method = null;
         }
@@ -90,7 +92,7 @@ class PaymentInformation extends BaseController
      */
     public function paypal($invoice_url_key)
     {
-        $data = ['paypal_client_id' => get_setting('gateway_paypal_clientId'), 'invoice_url_key' => $invoice_url_key, 'currency' => $this->mdl_settings->setting('gateway_paypal_currency')];
+        $data = ['paypal_client_id' => get_setting('gateway_paypal_clientId'), 'invoice_url_key' => $invoice_url_key, 'currency' => (new SettingsService())->setting('gateway_paypal_currency')];
         $this->load->view('guest/Gateways/paypal', $data);
     }
 }

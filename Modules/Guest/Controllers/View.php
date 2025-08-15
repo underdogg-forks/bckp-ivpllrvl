@@ -2,6 +2,8 @@
 
 namespace Modules\Guest\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
 
@@ -19,7 +21,7 @@ class View extends BaseGuestController
             show_404();
         }
         $this->load->model('invoices/mdl_invoices');
-        $invoice = $this->mdl_invoices->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
+        $invoice = (new InvoicesService())->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
         if ($invoice->numRows() != 1) {
             show_404();
         }
@@ -27,18 +29,18 @@ class View extends BaseGuestController
         $this->load->helper('template');
         $invoice = $invoice->row();
         if ($this->session->userdata('user_type') != 1 && $invoice->invoice_status_id == 2) {
-            $this->mdl_invoices->markViewed($invoice->invoice_id);
+            (new InvoicesService())->markViewed($invoice->invoice_id);
         }
-        $payment_method = $this->mdl_payment_methods->where('payment_method_id', $invoice->payment_method)->get()->row();
+        $payment_method = (new PaymentMethodsService())->where('payment_method_id', $invoice->payment_method)->get()->row();
         if ($invoice->payment_method == 0) {
             $payment_method = null;
         }
         // GetController all custom fields
-        $custom_fields = ['invoice' => $this->mdl_custom_fields->getValuesForFields('mdl_invoice_custom', $invoice->invoice_id), 'client' => $this->mdl_custom_fields->getValuesForFields('mdl_client_custom', $invoice->client_id), 'user' => $this->mdl_custom_fields->getValuesForFields('mdl_user_custom', $invoice->user_id)];
+        $custom_fields = ['invoice' => (new CustomFieldsService())->getValuesForFields('mdl_invoice_custom', $invoice->invoice_id), 'client' => (new CustomFieldsService())->getValuesForFields('mdl_client_custom', $invoice->client_id), 'user' => (new CustomFieldsService())->getValuesForFields('mdl_user_custom', $invoice->user_id)];
         // Attachments
         $attachments = $this->getAttachments($invoice_url_key);
         $is_overdue  = $invoice->invoice_balance > 0 && strtotime($invoice->invoice_date_due) < time();
-        $data        = ['invoice' => $invoice, 'items' => $this->mdl_items->where('invoice_id', $invoice->invoice_id)->get()->result(), 'invoice_tax_rates' => $this->mdl_invoice_tax_rates->where('invoice_id', $invoice->invoice_id)->get()->result(), 'invoice_url_key' => $invoice_url_key, 'flash_message' => $this->session->flashdata('flash_message'), 'payment_method' => $payment_method, 'is_overdue' => $is_overdue, 'attachments' => $attachments, 'custom_fields' => $custom_fields, 'legacy_calculation' => config_item('legacy_calculation')];
+        $data        = ['invoice' => $invoice, 'items' => (new ItemsService())->where('invoice_id', $invoice->invoice_id)->get()->result(), 'invoice_tax_rates' => (new InvoiceTaxRatesService())->where('invoice_id', $invoice->invoice_id)->get()->result(), 'invoice_url_key' => $invoice_url_key, 'flash_message' => $this->session->flashdata('flash_message'), 'payment_method' => $payment_method, 'is_overdue' => $is_overdue, 'attachments' => $attachments, 'custom_fields' => $custom_fields, 'legacy_calculation' => config_item('legacy_calculation')];
         $this->load->view('invoice_templates/public/' . get_setting('public_invoice_template') . '.php', $data);
     }
 
@@ -50,7 +52,7 @@ class View extends BaseGuestController
     public function generateInvoicePdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
         $this->load->model('invoices/mdl_invoices');
-        $invoice = $this->mdl_invoices->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
+        $invoice = (new InvoicesService())->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
         if ($invoice->numRows() == 1) {
             $invoice = $invoice->row();
             if ( ! $invoice_template) {
@@ -70,7 +72,7 @@ class View extends BaseGuestController
     public function generateSumexPdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
         $this->load->model('invoices/mdl_invoices');
-        $invoice = $this->mdl_invoices->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
+        $invoice = (new InvoicesService())->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
         if ($invoice->numRows() == 1) {
             $invoice = $invoice->row();
             if ($invoice->sumex_id == null) {
@@ -95,7 +97,7 @@ class View extends BaseGuestController
             show_404();
         }
         $this->load->model('quotes/mdl_quotes');
-        $quote = $this->mdl_quotes->guestVisible()->where('quote_url_key', $quote_url_key)->get();
+        $quote = (new QuotesService())->guestVisible()->where('quote_url_key', $quote_url_key)->get();
         if ($quote->numRows() != 1) {
             show_404();
         }
@@ -104,14 +106,14 @@ class View extends BaseGuestController
         $this->load->model('custom_fields/mdl_custom_fields');
         $quote = $quote->row();
         if ($this->session->userdata('user_type') != 1 && $quote->quote_status_id == 2) {
-            $this->mdl_quotes->markViewed($quote->quote_id);
+            (new QuotesService())->markViewed($quote->quote_id);
         }
         // GetController all custom fields
-        $custom_fields = ['quote' => $this->mdl_custom_fields->getValuesForFields('mdl_quote_custom', $quote->quote_id), 'client' => $this->mdl_custom_fields->getValuesForFields('mdl_client_custom', $quote->client_id), 'user' => $this->mdl_custom_fields->getValuesForFields('mdl_user_custom', $quote->user_id)];
+        $custom_fields = ['quote' => (new CustomFieldsService())->getValuesForFields('mdl_quote_custom', $quote->quote_id), 'client' => (new CustomFieldsService())->getValuesForFields('mdl_client_custom', $quote->client_id), 'user' => (new CustomFieldsService())->getValuesForFields('mdl_user_custom', $quote->user_id)];
         // Attachments
         $attachments = $this->getAttachments($quote_url_key);
         $is_expired  = strtotime($quote->quote_date_expires) < time();
-        $data        = ['quote' => $quote, 'items' => $this->mdl_quote_items->where('quote_id', $quote->quote_id)->get()->result(), 'quote_tax_rates' => $this->mdl_quote_tax_rates->where('quote_id', $quote->quote_id)->get()->result(), 'quote_url_key' => $quote_url_key, 'flash_message' => $this->session->flashdata('flash_message'), 'is_expired' => $is_expired, 'attachments' => $attachments, 'custom_fields' => $custom_fields, 'legacy_calculation' => config_item('legacy_calculation')];
+        $data        = ['quote' => $quote, 'items' => (new QuoteItemsService())->where('quote_id', $quote->quote_id)->get()->result(), 'quote_tax_rates' => (new QuoteTaxRatesService())->where('quote_id', $quote->quote_id)->get()->result(), 'quote_url_key' => $quote_url_key, 'flash_message' => $this->session->flashdata('flash_message'), 'is_expired' => $is_expired, 'attachments' => $attachments, 'custom_fields' => $custom_fields, 'legacy_calculation' => config_item('legacy_calculation')];
         $this->load->view('quote_templates/public/' . get_setting('public_quote_template') . '.php', $data);
     }
 
@@ -123,7 +125,7 @@ class View extends BaseGuestController
     public function generateQuotePdf($quote_url_key, $stream = true, $quote_template = null)
     {
         $this->load->model('quotes/mdl_quotes');
-        $quote = $this->mdl_quotes->guestVisible()->where('quote_url_key', $quote_url_key)->get()->row();
+        $quote = (new QuotesService())->guestVisible()->where('quote_url_key', $quote_url_key)->get()->row();
         if ( ! $quote) {
             show_404();
         }
@@ -143,8 +145,8 @@ class View extends BaseGuestController
     {
         $this->load->model('quotes/mdl_quotes');
         $this->load->helper('mailer');
-        $this->mdl_quotes->approveQuoteByKey($quote_url_key);
-        email_quote_status($this->mdl_quotes->where('ip_quotes.quote_url_key', $quote_url_key)->get()->row()->quote_id, 'approved');
+        (new QuotesService())->approveQuoteByKey($quote_url_key);
+        email_quote_status((new QuotesService())->where('ip_quotes.quote_url_key', $quote_url_key)->get()->row()->quote_id, 'approved');
         redirect('guest/view/quote/' . $quote_url_key);
     }
 
@@ -157,8 +159,8 @@ class View extends BaseGuestController
     {
         $this->load->model('quotes/mdl_quotes');
         $this->load->helper('mailer');
-        $this->mdl_quotes->rejectQuoteByKey($quote_url_key);
-        email_quote_status($this->mdl_quotes->where('ip_quotes.quote_url_key', $quote_url_key)->get()->row()->quote_id, 'rejected');
+        (new QuotesService())->rejectQuoteByKey($quote_url_key);
+        email_quote_status((new QuotesService())->where('ip_quotes.quote_url_key', $quote_url_key)->get()->row()->quote_id, 'rejected');
         redirect('guest/view/quote/' . $quote_url_key);
     }
 

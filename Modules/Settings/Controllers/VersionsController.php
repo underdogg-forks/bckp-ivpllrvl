@@ -2,6 +2,8 @@
 
 namespace Modules\Settings\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,8 +26,8 @@ class VersionsController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_versions->paginate(site_url('versions/index'), $page);
-        $versions = $this->mdl_versions->result();
+        (new VersionsService())->paginate(site_url('versions/index'), $page);
+        $versions = (new VersionsService())->result();
         $this->layout->set('versions', $versions);
         $this->layout->buffer('content', 'settings/versions');
         $this->layout->render();

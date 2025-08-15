@@ -2,6 +2,8 @@
 
 namespace Modules\InvoiceGroups\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,8 +26,8 @@ class InvoiceGroupsController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_invoice_groups->paginate(site_url('invoice_groups/index'), $page);
-        $invoice_groups = $this->mdl_invoice_groups->result();
+        (new InvoiceGroupsService())->paginate(site_url('invoice_groups/index'), $page);
+        $invoice_groups = (new InvoiceGroupsService())->result();
         $this->layout->set('invoice_groups', $invoice_groups);
         $this->layout->buffer('content', 'invoice_groups/index');
         $this->layout->render();
@@ -43,17 +45,17 @@ class InvoiceGroupsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->mdl_invoice_groups->runValidation()) {
-            $this->mdl_invoice_groups->save($id);
+        if ((new InvoiceGroupsService())->runValidation()) {
+            (new InvoiceGroupsService())->save($id);
             redirect()->route('invoice_groups');
         }
         if ($id && ! $this->input->post('btn_submit')) {
-            if ( ! $this->mdl_invoice_groups->prepForm($id)) {
+            if ( ! (new InvoiceGroupsService())->prepForm($id)) {
                 show_404();
             }
         } elseif ( ! $id) {
-            $this->mdl_invoice_groups->setFormValue('invoice_group_left_pad', 0);
-            $this->mdl_invoice_groups->setFormValue('invoice_group_next_id', 1);
+            (new InvoiceGroupsService())->setFormValue('invoice_group_left_pad', 0);
+            (new InvoiceGroupsService())->setFormValue('invoice_group_next_id', 1);
         }
         $this->layout->buffer('content', 'invoice_groups/form');
         $this->layout->render();
@@ -66,7 +68,7 @@ class InvoiceGroupsController extends AdminController
      */
     public function delete($id)
     {
-        $this->mdl_invoice_groups->delete($id);
+        (new InvoiceGroupsService())->delete($id);
         redirect()->route('invoice_groups');
     }
 }

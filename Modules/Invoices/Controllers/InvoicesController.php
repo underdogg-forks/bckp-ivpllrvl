@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -38,26 +40,24 @@ class InvoicesController extends AdminController
         // Determine which group of invoices to load
         switch ($status) {
             case 'draft':
-                $this->mdl_invoices->isDraft();
+                (new InvoicesService())->isDraft();
                 break;
             case 'sent':
-                $this->mdl_invoices->isSent();
+                (new InvoicesService())->isSent();
                 break;
             case 'viewed':
-                $this->mdl_invoices->isViewed();
+                (new InvoicesService())->isViewed();
                 break;
             case 'paid':
-                $this->mdl_invoices->isPaid();
+                (new InvoicesService())->isPaid();
                 break;
             case 'overdue':
-                $this->mdl_invoices->isOverdue();
+                (new InvoicesService())->isOverdue();
                 break;
         }
-        $this->mdl_invoices->paginate(site_url('invoices/status/' . $status), $page);
-        $invoices = $this->mdl_invoices->result();
-        $this->layout->set(['invoices' => $invoices, 'status' => $status, 'filter_display' => true, 'filter_placeholder' => trans('filter_invoices'), 'filter_method' => 'filter_invoices', 'invoice_statuses' => $this->mdl_invoices->statuses()]);
-        $this->layout->buffer('content', 'invoices/index');
-        $this->layout->render();
+        (new InvoicesService())->paginate(site_url('invoices/status/' . $status), $page);
+        $invoices = (new InvoicesService())->result();
+        return view('invoices.index', ['invoices' => $invoices, 'status' => $status, 'filter_display' => true, 'filter_placeholder' => trans('filter_invoices'), 'filter_method' => 'filter_invoices', 'invoice_statuses' => (new InvoicesService())->statuses()]);
     }
 
     /**
@@ -67,10 +67,8 @@ class InvoicesController extends AdminController
      */
     public function archive(): void
     {
-        $invoice_array = $this->mdl_invoices->getArchives(0);
-        $this->layout->set(['filter_display' => true, 'filter_placeholder' => trans('filter_archives'), 'filter_method' => 'filter_archives', 'invoices_archive' => $invoice_array]);
-        $this->layout->buffer('content', 'invoices/archive');
-        $this->layout->render();
+        $invoice_array = (new InvoicesService())->getArchives(0);
+        return view('invoices.archive', ['filter_display' => true, 'filter_placeholder' => trans('filter_archives'), 'filter_method' => 'filter_archives', 'invoices_archive' => $invoice_array]);
     }
 
     /**
@@ -85,13 +83,13 @@ class InvoicesController extends AdminController
         // Strip directory traversal sequences
         $filePath = realpath($safeBaseDir . DIRECTORY_SEPARATOR . $fileName);
         if ($filePath === false || ! str_starts_with($filePath, $safeBaseDir)) {
-            log_message('error', 'Invalid file access attempt: ' . $fileName);
+            Log::error('Invalid file access attempt: ' . $fileName);
             show_404();
 
             return;
         }
         if ( ! file_exists($filePath)) {
-            log_message('error', 'While downloading: File not found: ' . $filePath);
+            Log::error('While downloading: File not found: ' . $filePath);
             show_404();
 
             return;
@@ -114,7 +112,7 @@ class InvoicesController extends AdminController
         $this->load->helper(['custom_values', 'dropzone', 'e-invoice']);
         $this->load->module('payments');
         $this->db->reset_query();
-        /*$invoice_custom = $this->mdl_invoice_custom->where('invoice_id', $invoice_id)->get();
+        /*$invoice_custom = (new InvoiceCustomService())->where('invoice_id', $invoice_id)->get();
 
                                   if ($invoice_custom->num_rows()) {
                                       $invoice_custom = $invoice_custom->row();
@@ -122,19 +120,19 @@ class InvoicesController extends AdminController
                                       unset($invoice_custom->invoice_id, $invoice_custom->invoice_custom_id);
 
                                       foreach ($invoice_custom as $key => $val) {
-                                          $this->mdl_invoices->set_form_value('custom[' . $key . ']', $val);
+                                          (new InvoicesService())->set_form_value('custom[' . $key . ']', $val);
                                       }
                                   }*/
-        $fields  = $this->mdl_invoice_custom->byId($invoice_id)->get()->result();
-        $invoice = $this->mdl_invoices->getById($invoice_id);
+        $fields  = (new InvoiceCustomService())->byId($invoice_id)->get()->result();
+        $invoice = (new InvoicesService())->getById($invoice_id);
         if ( ! $invoice) {
             show_404();
         }
-        $custom_fields = $this->mdl_custom_fields->byTable('ip_invoice_custom')->get()->result();
+        $custom_fields = (new CustomFieldsService())->byTable('ip_invoice_custom')->get()->result();
         $custom_values = [];
         foreach ($custom_fields as $custom_field) {
-            if (in_array($custom_field->custom_field_type, $this->mdl_custom_values->customValueFields())) {
-                $values                                        = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
+            if (in_array($custom_field->custom_field_type, (new CustomValuesService())->customValueFields())) {
+                $values                                        = (new CustomValuesService())->getByFid($custom_field->custom_field_id)->result();
                 $custom_values[$custom_field->custom_field_id] = $values;
             }
         }
@@ -142,22 +140,22 @@ class InvoicesController extends AdminController
             foreach ($fields as $fvalue) {
                 if ($fvalue->invoice_custom_fieldid == $cfield->custom_field_id) {
                     // TODO: Hackish, may need a better optimization
-                    $this->mdl_invoices->setFormValue('custom[' . $cfield->custom_field_id . ']', $fvalue->invoice_custom_fieldvalue);
+                    (new InvoicesService())->setFormValue('custom[' . $cfield->custom_field_id . ']', $fvalue->invoice_custom_fieldvalue);
                     break;
                 }
             }
         }
         // Check whether there are payment custom fields
-        $payment_cf       = $this->mdl_custom_fields->byTable('ip_payment_custom')->get();
+        $payment_cf       = (new CustomFieldsService())->byTable('ip_payment_custom')->get();
         $payment_cf_exist = $payment_cf->numRows() > 0 ? 'yes' : 'no';
         // GetController Item
-        $items = $this->mdl_items->where('invoice_id', $invoice_id)->get()->result();
+        $items = (new ItemsService())->where('invoice_id', $invoice_id)->get()->result();
         // GetController eInvoice library name and user checks
         $einvoice = get_einvoice_usage($invoice, $items);
         // Activate 'Change_user' if admin users > 1  (get the sum of user type = 1 & active)
         $change_user = $this->db->from('ip_users')->where(['user_type' => 1, 'user_active' => 1])->select_sum('user_type')->get()->row();
         $change_user = $change_user->user_type > 1;
-        $this->layout->set(['invoice' => $invoice, 'items' => $items, 'invoice_id' => $invoice_id, 'einvoice' => $einvoice, 'change_user' => $change_user, 'tax_rates' => $this->mdl_tax_rates->get()->result(), 'invoice_tax_rates' => $this->mdl_invoice_tax_rates->where('invoice_id', $invoice_id)->get()->result(), 'units' => $this->mdl_units->get()->result(), 'payment_methods' => $this->mdl_payment_methods->get()->result(), 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'custom_js_vars' => ['currency_symbol' => get_setting('currency_symbol'), 'currency_symbol_placement' => get_setting('currency_symbol_placement'), 'decimal_point' => get_setting('decimal_point')], 'invoice_statuses' => $this->mdl_invoices->statuses(), 'payment_cf_exist' => $payment_cf_exist, 'legacy_calculation' => config_item('legacy_calculation')]);
+        $this->layout->set(['invoice' => $invoice, 'items' => $items, 'invoice_id' => $invoice_id, 'einvoice' => $einvoice, 'change_user' => $change_user, 'tax_rates' => (new TaxRatesService())->get()->result(), 'invoice_tax_rates' => (new InvoiceTaxRatesService())->where('invoice_id', $invoice_id)->get()->result(), 'units' => (new UnitsService())->get()->result(), 'payment_methods' => (new PaymentMethodsService())->get()->result(), 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'custom_js_vars' => ['currency_symbol' => get_setting('currency_symbol'), 'currency_symbol_placement' => get_setting('currency_symbol_placement'), 'decimal_point' => get_setting('decimal_point')], 'invoice_statuses' => (new InvoicesService())->statuses(), 'payment_cf_exist' => $payment_cf_exist, 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer([['modal_delete_invoice', 'invoices/modal_delete_invoice'], ['modal_add_invoice_tax', 'invoices/modal_add_invoice_tax'], ['modal_add_payment', 'payments/modal_add_payment'], ['content', 'invoices/view' . ($invoice->sumex_id ? '_sumex' : '')]]);
         $this->layout->render();
     }
@@ -170,14 +168,14 @@ class InvoicesController extends AdminController
     public function delete($invoice_id): void
     {
         // GetController the status of the invoice
-        $invoice        = $this->mdl_invoices->getById($invoice_id);
+        $invoice        = (new InvoicesService())->getById($invoice_id);
         $invoice_status = $invoice->invoice_status_id;
         if ($invoice_status == 1 || $this->config->item('enable_invoice_deletion') === true) {
             // If invoice refers to tasks, mark those tasks back to 'Complete'
             $this->load->model('tasks/mdl_tasks');
-            $tasks = $this->mdl_tasks->updateOnInvoiceDelete($invoice_id);
+            $tasks = (new TasksService())->updateOnInvoiceDelete($invoice_id);
             // Delete the invoice
-            $this->mdl_invoices->delete($invoice_id);
+            (new InvoicesService())->delete($invoice_id);
         } else {
             // Add alert that invoices can't be deleted
             $this->session->set_flashdata('alert_error', trans('invoice_deletion_forbidden'));
@@ -195,8 +193,8 @@ class InvoicesController extends AdminController
     {
         $this->load->helper('pdf');
         if (get_setting('mark_invoices_sent_pdf') == 1) {
-            $this->mdl_invoices->generateInvoiceNumberIfApplicable($invoice_id);
-            $this->mdl_invoices->markSent($invoice_id);
+            (new InvoicesService())->generateInvoiceNumberIfApplicable($invoice_id);
+            (new InvoicesService())->markSent($invoice_id);
         }
         generate_invoice_pdf($invoice_id, $stream, $invoice_template, null);
     }
@@ -208,12 +206,12 @@ class InvoicesController extends AdminController
      */
     public function generateXml($invoice_id): void
     {
-        $invoice = $this->mdl_invoices->getById($invoice_id);
+        $invoice = (new InvoicesService())->getById($invoice_id);
         if ( ! $invoice) {
             show_404();
         }
         $this->load->model('invoices/mdl_items');
-        $items = $this->mdl_items->where('invoice_id', $invoice_id)->get()->result();
+        $items = (new ItemsService())->where('invoice_id', $invoice_id)->get()->result();
         $this->load->helper('e-invoice');
         // eInvoicing++
         $einvoice = get_einvoice_usage($invoice, $items, false);
@@ -260,7 +258,7 @@ class InvoicesController extends AdminController
     public function generateSumexCopy($invoice_id): void
     {
         $this->load->model('invoices/mdl_items');
-        $this->load->library('Modules\Core\Libraries\Sumex', ['invoice' => $this->mdl_invoices->getById($invoice_id), 'items' => $this->mdl_items->where('invoice_id', $invoice_id)->get()->result(), 'options' => ['copy' => '1', 'storno' => '0']]);
+        $this->load->library('Modules\Core\Libraries\Sumex', ['invoice' => (new InvoicesService())->getById($invoice_id), 'items' => (new ItemsService())->where('invoice_id', $invoice_id)->get()->result(), 'options' => ['copy' => '1', 'storno' => '0']]);
         $this->output->set_content_type('application/pdf');
         $this->output->set_output($this->sumex->pdf());
     }
@@ -273,11 +271,11 @@ class InvoicesController extends AdminController
     public function deleteInvoiceTax(string $invoice_id, $invoice_tax_rate_id): void
     {
         $this->load->model('invoices/mdl_invoice_tax_rates');
-        $this->mdl_invoice_tax_rates->delete($invoice_tax_rate_id);
+        (new InvoiceTaxRatesService())->delete($invoice_tax_rate_id);
         $this->load->model('invoices/mdl_invoice_amounts');
-        $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($invoice_id);
+        $global_discount['item'] = (new InvoiceAmountsService())->getGlobalDiscount($invoice_id);
         // Recalculate invoice amounts
-        $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
+        (new InvoiceAmountsService())->calculate($invoice_id, $global_discount);
         redirect('invoices/view/' . $invoice_id);
     }
 
@@ -292,9 +290,9 @@ class InvoicesController extends AdminController
         $invoice_ids = $this->db->get('ip_invoices')->result();
         $this->load->model('invoices/mdl_invoice_amounts');
         foreach ($invoice_ids as $invoice_id) {
-            $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($invoice_id->invoice_id);
+            $global_discount['item'] = (new InvoiceAmountsService())->getGlobalDiscount($invoice_id->invoice_id);
             // Recalculate invoice amounts
-            $this->mdl_invoice_amounts->calculate($invoice_id->invoice_id, $global_discount);
+            (new InvoiceAmountsService())->calculate($invoice_id->invoice_id, $global_discount);
         }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Projects\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -24,11 +26,9 @@ class ProjectsController extends AdminController
      */
     public function index($page = 0)
     {
-        $this->mdl_projects->paginate(site_url('projects/index'), $page);
-        $projects = $this->mdl_projects->result();
-        $this->layout->set(['filter_display' => true, 'filter_placeholder' => trans('filter_projects'), 'filter_method' => 'filter_projects', 'projects' => $projects]);
-        $this->layout->buffer('content', 'projects/index');
-        $this->layout->render();
+        (new ProjectsService())->paginate(site_url('projects/index'), $page);
+        $projects = (new ProjectsService())->result();
+        return view('projects.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_projects'), 'filter_method' => 'filter_projects', 'projects' => $projects]);
     }
 
     /**
@@ -43,17 +43,15 @@ class ProjectsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->mdl_projects->runValidation()) {
-            $this->mdl_projects->save($id);
+        if ((new ProjectsService())->runValidation()) {
+            (new ProjectsService())->save($id);
             redirect()->route('projects');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! $this->mdl_projects->prepForm($id)) {
+        if ($id && ! $this->input->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
             show_404();
         }
         $this->load->model('clients/mdl_clients');
-        $this->layout->set(['project' => $this->mdl_projects->getById($id), 'clients' => $this->mdl_clients->where('client_active', 1)->get()->result()]);
-        $this->layout->buffer('content', 'projects/form');
-        $this->layout->render();
+        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => (new ClientsService())->where('client_active', 1)->get()->result()]);
     }
 
     /**
@@ -67,14 +65,12 @@ class ProjectsController extends AdminController
             redirect()->route('projects');
         }
         $this->load->model('projects/mdl_projects');
-        $project = $this->mdl_projects->getById($project_id);
+        $project = (new ProjectsService())->getById($project_id);
         if ( ! $project) {
             show_404();
         }
         $this->load->model('tasks/mdl_tasks');
-        $this->layout->set(['project' => $project, 'tasks' => $this->mdl_projects->getTasks($project->project_id), 'task_statuses' => $this->mdl_tasks->statuses()]);
-        $this->layout->buffer('content', 'projects/view');
-        $this->layout->render();
+        return view('projects.view', ['project' => $project, 'tasks' => (new ProjectsService())->getTasks($project->project_id), 'task_statuses' => (new TasksService())->statuses()]);
     }
 
     /**
@@ -85,8 +81,8 @@ class ProjectsController extends AdminController
     public function delete($id)
     {
         $this->load->model('tasks/mdl_tasks');
-        $this->mdl_tasks->updateOnProjectDelete($id);
-        $this->mdl_projects->delete($id);
+        (new TasksService())->updateOnProjectDelete($id);
+        (new ProjectsService())->delete($id);
         redirect()->route('projects');
     }
 }

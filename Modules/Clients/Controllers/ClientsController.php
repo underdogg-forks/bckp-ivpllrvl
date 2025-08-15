@@ -2,6 +2,8 @@
 
 namespace Modules\Clients\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -39,10 +41,10 @@ class ClientsController extends AdminController
     {
         if (is_numeric(array_search($status, ['active', 'inactive'], true))) {
             $function = 'is_' . $status;
-            $this->mdl_clients->{$function}();
+            (new ClientsService())->{$function}();
         }
-        $this->mdl_clients->withTotalBalance()->paginate(site_url('clients/status/' . $status), $page);
-        $clients        = $this->mdl_clients->result();
+        (new ClientsService())->withTotalBalance()->paginate(site_url('clients/status/' . $status), $page);
+        $clients        = (new ClientsService())->result();
         $req_einvoicing = get_setting('einvoicing');
         if ($req_einvoicing) {
             $this->load->helper('e-invoice');
@@ -54,9 +56,7 @@ class ClientsController extends AdminController
             }
             unset($client);
         }
-        $this->layout->set(['records' => $clients, 'filter_display' => true, 'filter_placeholder' => trans('filter_clients'), 'filter_method' => 'filter_clients', 'einvoicing' => get_setting('einvoicing')]);
-        $this->layout->buffer('content', 'clients/index');
-        $this->layout->render();
+        return view('clients.index', ['records' => $clients, 'filter_display' => true, 'filter_placeholder' => trans('filter_clients'), 'filter_method' => 'filter_clients', 'einvoicing' => get_setting('einvoicing')]);
     }
 
     /**
@@ -82,25 +82,25 @@ class ClientsController extends AdminController
                 $new_client = true;
             }
         }
-        if ($this->mdl_clients->runValidation()) {
+        if ((new ClientsService())->runValidation()) {
             $client_title_custom = $this->input->post('client_title_custom');
             // Custom title selected
             if ($_POST[self::CLIENT_TITLE] == ClientTitleEnum::CUSTOM) {
                 $_POST[self::CLIENT_TITLE] = $client_title_custom;
-                $this->mdl_clients->setFormValue(self::CLIENT_TITLE, $client_title_custom);
+                (new ClientsService())->setFormValue(self::CLIENT_TITLE, $client_title_custom);
             }
             // fix e-invoice reset
             if ($this->input->post('client_start_einvoicing') == '0') {
                 $_POST['client_einvoicing_version'] = '';
-                $this->mdl_clients->setFormValue('client_einvoicing_version', '');
+                (new ClientsService())->setFormValue('client_einvoicing_version', '');
             }
-            $id = $this->mdl_clients->save($id);
+            $id = (new ClientsService())->save($id);
             if ($new_client) {
                 $this->load->model('user_clients/mdl_user_clients');
-                $this->mdl_user_clients->getUsersAllClients();
+                (new UserClientsService())->getUsersAllClients();
             }
             $this->load->model('custom_fields/mdl_client_custom');
-            $result = $this->mdl_client_custom->saveCustom($id, $this->input->post('custom'));
+            $result = (new ClientCustomService())->saveCustom($id, $this->input->post('custom'));
             $where  = 'view';
             if ($result !== true) {
                 $this->session->set_flashdata('alert_error', $result);
@@ -117,61 +117,57 @@ class ClientsController extends AdminController
             $req_einvoicing = get_req_fields_einvoice($new_client || ! $id ? null : $this->db->from('ip_clients')->where('client_id', $id)->get()->row());
         }
         if ($id && ! $this->input->post('btn_submit')) {
-            if ( ! $this->mdl_clients->prepForm($id)) {
+            if ( ! (new ClientsService())->prepForm($id)) {
                 show_404();
             }
             $this->load->model('custom_fields/mdl_client_custom');
-            $this->mdl_clients->setFormValue('is_update', true);
-            $client_custom = $this->mdl_client_custom->where('client_id', $id)->get();
+            (new ClientsService())->setFormValue('is_update', true);
+            $client_custom = (new ClientCustomService())->where('client_id', $id)->get();
             if ($client_custom->numRows()) {
                 $client_custom = $client_custom->row();
                 unset($client_custom->client_id, $client_custom->client_custom_id);
                 foreach ($client_custom as $key => $val) {
-                    $this->mdl_clients->setFormValue('custom[' . $key . ']', $val);
+                    (new ClientsService())->setFormValue('custom[' . $key . ']', $val);
                 }
             }
         } elseif ($this->input->post('btn_submit')) {
             if ($this->input->post('custom')) {
                 foreach ($this->input->post('custom') as $key => $val) {
-                    $this->mdl_clients->setFormValue('custom[' . $key . ']', $val);
+                    (new ClientsService())->setFormValue('custom[' . $key . ']', $val);
                 }
             }
         }
         $this->load->model(['custom_fields/mdl_custom_fields', 'custom_values/mdl_custom_values', 'custom_fields/mdl_client_custom']);
-        $custom_fields = $this->mdl_custom_fields->byTable('ip_client_custom')->get()->result();
+        $custom_fields = (new CustomFieldsService())->byTable('ip_client_custom')->get()->result();
         $custom_values = [];
         foreach ($custom_fields as $custom_field) {
-            if (in_array($custom_field->custom_field_type, $this->mdl_custom_values->customValueFields())) {
-                $values                                        = $this->mdl_custom_values->getByFid($custom_field->custom_field_id)->result();
+            if (in_array($custom_field->custom_field_type, (new CustomValuesService())->customValueFields())) {
+                $values                                        = (new CustomValuesService())->getByFid($custom_field->custom_field_id)->result();
                 $custom_values[$custom_field->custom_field_id] = $values;
             }
         }
-        $fields = $this->mdl_client_custom->getByClid($id);
+        $fields = (new ClientCustomService())->getByClid($id);
         foreach ($custom_fields as $cfield) {
             foreach ($fields as $fvalue) {
                 if ($fvalue->client_custom_fieldid == $cfield->custom_field_id) {
                     // TODO: Hackish, may need a better optimization
-                    $this->mdl_clients->setFormValue('custom[' . $cfield->custom_field_id . ']', $fvalue->client_custom_fieldvalue);
+                    (new ClientsService())->setFormValue('custom[' . $cfield->custom_field_id . ']', $fvalue->client_custom_fieldvalue);
                     break;
                 }
             }
         }
         $this->load->helper(['custom_values', 'e-invoice']);
         // e-invoice - since 1.6.3
-        $this->layout->set([
-            'client_id'            => $id,
+        return view('clients.form', ['client_id'            => $id,
             'custom_fields'        => $custom_fields,
             'custom_values'        => $custom_values,
             'countries'            => get_country_list(trans('cldr')),
-            'selected_country'     => $this->mdl_clients->formValue('client_country') ?: get_setting('default_country'),
+            'selected_country'     => (new ClientsService())->formValue('client_country') ?: get_setting('default_country'),
             'languages'            => get_available_languages(),
             'client_title_choices' => $this->getClientTitleChoices(),
             'xml_templates'        => get_xml_template_files(),
             // eInvoicing
-            'req_einvoicing' => $req_einvoicing,
-        ]);
-        $this->layout->buffer('content', 'clients/form');
-        $this->layout->render();
+            'req_einvoicing' => $req_einvoicing,]);
     }
 
     /**
@@ -181,7 +177,7 @@ class ClientsController extends AdminController
      */
     public function view($client_id, $activeTab = 'detail', $page = 0): void
     {
-        $client = $this->mdl_clients->withTotal()->withTotalBalance()->withTotalPaid()->where('ip_clients.client_id', $client_id)->get()->row();
+        $client = (new ClientsService())->withTotal()->withTotalBalance()->withTotalPaid()->where('ip_clients.client_id', $client_id)->get()->row();
         if ( ! $client) {
             show_404();
         }
@@ -217,12 +213,12 @@ class ClientsController extends AdminController
             $this->session->mark_as_temp($key);
         }
         $base_url = site_url('clients/view/' . $client_id);
-        $this->mdl_invoices->byClient($client_id)->paginate($base_url . '/invoices', $p['invoices'], 5);
-        $this->mdl_quotes->byClient($client_id)->paginate($base_url . '/quotes', $p['quotes'], 5);
-        $this->mdl_payments->byClient($client_id)->paginate($base_url . '/payments', $p['payments'], 5);
-        $custom_fields = $this->mdl_client_custom->getByClient($client_id)->result();
-        $this->mdl_client_custom->prepForm($client_id);
-        $this->layout->set(['client' => $client, 'client_notes' => $this->mdl_client_notes->where('client_id', $client_id)->get()->result(), 'invoices' => $this->mdl_invoices->result(), 'quotes' => $this->mdl_quotes->result(), 'payments' => $this->mdl_payments->result(), 'custom_fields' => $custom_fields, 'quote_statuses' => $this->mdl_quotes->statuses(), 'invoice_statuses' => $this->mdl_invoices->statuses(), 'activeTab' => $activeTab, 'req_einvoicing' => $req_einvoicing]);
+        (new InvoicesService())->byClient($client_id)->paginate($base_url . '/invoices', $p['invoices'], 5);
+        (new QuotesService())->byClient($client_id)->paginate($base_url . '/quotes', $p['quotes'], 5);
+        (new PaymentsService())->byClient($client_id)->paginate($base_url . '/payments', $p['payments'], 5);
+        $custom_fields = (new ClientCustomService())->getByClient($client_id)->result();
+        (new ClientCustomService())->prepForm($client_id);
+        $this->layout->set(['client' => $client, 'client_notes' => (new ClientNotesService())->where('client_id', $client_id)->get()->result(), 'invoices' => (new InvoicesService())->result(), 'quotes' => (new QuotesService())->result(), 'payments' => (new PaymentsService())->result(), 'custom_fields' => $custom_fields, 'quote_statuses' => (new QuotesService())->statuses(), 'invoice_statuses' => (new InvoicesService())->statuses(), 'activeTab' => $activeTab, 'req_einvoicing' => $req_einvoicing]);
         $this->layout->buffer([['invoice_table', 'invoices/partial_invoice_table'], ['quote_table', 'quotes/partial_quote_table'], ['payment_table', 'payments/partial_payments_table'], ['partial_notes', 'clients/partial_notes'], ['content', 'clients/view']]);
         $this->layout->render();
     }
@@ -234,7 +230,7 @@ class ClientsController extends AdminController
      */
     public function delete($client_id): void
     {
-        $this->mdl_clients->delete($client_id);
+        (new ClientsService())->delete($client_id);
         redirect()->route('clients');
     }
 

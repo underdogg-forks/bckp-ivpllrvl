@@ -2,6 +2,8 @@
 
 namespace Modules\Dashboard\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -23,8 +25,6 @@ class DashboardController extends AdminController
         $this->load->model('tasks/mdl_tasks');
         $quote_overview_period   = get_setting('quote_overview_period');
         $invoice_overview_period = get_setting('invoice_overview_period');
-        $this->layout->set(['invoice_status_totals' => $this->mdl_invoice_amounts->getStatusTotals($invoice_overview_period), 'quote_status_totals' => $this->mdl_quote_amounts->getStatusTotals($quote_overview_period), 'invoice_status_period' => str_replace('-', '_', $invoice_overview_period), 'quote_status_period' => str_replace('-', '_', $quote_overview_period), 'invoices' => $this->mdl_invoices->limit(10)->get()->result(), 'quotes' => $this->mdl_quotes->limit(10)->get()->result(), 'invoice_statuses' => $this->mdl_invoices->statuses(), 'quote_statuses' => $this->mdl_quotes->statuses(), 'overdue_invoices' => $this->mdl_invoices->isOverdue()->get()->result(), 'projects' => $this->mdl_projects->getLatest()->get()->result(), 'tasks' => $this->mdl_tasks->getLatest()->get()->result(), 'task_statuses' => $this->mdl_tasks->statuses()]);
-        $this->layout->buffer('content', 'dashboard/index');
-        $this->layout->render();
+        return view('dashboard.index', ['invoice_status_totals' => (new InvoiceAmountsService())->getStatusTotals($invoice_overview_period), 'quote_status_totals' => (new QuoteAmountsService())->getStatusTotals($quote_overview_period), 'invoice_status_period' => str_replace('-', '_', $invoice_overview_period), 'quote_status_period' => str_replace('-', '_', $quote_overview_period), 'invoices' => (new InvoicesService())->limit(10)->get()->result(), 'quotes' => (new QuotesService())->limit(10)->get()->result(), 'invoice_statuses' => (new InvoicesService())->statuses(), 'quote_statuses' => (new QuotesService())->statuses(), 'overdue_invoices' => (new InvoicesService())->isOverdue()->get()->result(), 'projects' => (new ProjectsService())->getLatest()->get()->result(), 'tasks' => (new TasksService())->getLatest()->get()->result(), 'task_statuses' => (new TasksService())->statuses()]);
     }
 }

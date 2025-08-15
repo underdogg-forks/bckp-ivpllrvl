@@ -2,6 +2,8 @@
 
 namespace Modules\Users\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -34,7 +36,7 @@ class AjaxController extends AdminController
         $escapedQuery = $this->db->escape_str($query);
         $escapedQuery = str_replace('%', '', $escapedQuery);
         // Not searched: user_address_1 user_address_2 user_city user_state user_zip user_country user_invoicing_contact
-        $users = $this->mdl_users->where('user_active', 1)->where('user_type', $type)->having("user_name LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_company LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_invoicing_contact LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->orderBy('user_name')->get()->result();
+        $users = (new UsersService())->where('user_active', 1)->where('user_type', $type)->having("user_name LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_company LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_invoicing_contact LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->orderBy('user_name')->get()->result();
         foreach ($users as $user) {
             $response[] = ['id' => $user->user_id, 'text' => format_user($user)];
         }
@@ -52,7 +54,7 @@ class AjaxController extends AdminController
         // Load the model & helper
         $this->load->model('users/mdl_users');
         $response = [];
-        $users    = $this->mdl_users->where('user_active', 1)->limit(5)->orderBy('user_date_created')->get()->result();
+        $users    = (new UsersService())->where('user_active', 1)->limit(5)->orderBy('user_date_created')->get()->result();
         foreach ($users as $user) {
             $response[] = ['id' => $user->user_id, 'text' => htmlsc(format_user($user))];
         }
@@ -72,7 +74,7 @@ class AjaxController extends AdminController
         if ( ! preg_match('!^[0-1]{1}$!', $permissiveSearchUsers)) {
             exit;
         }
-        $this->mdl_settings->save('enable_permissive_search_users', $permissiveSearchUsers);
+        (new SettingsService())->save('enable_permissive_search_users', $permissiveSearchUsers);
     }
 
     /**
@@ -86,15 +88,15 @@ class AjaxController extends AdminController
         $client_id = $this->input->post('client_id');
         $this->load->model('clients/mdl_clients');
         $this->load->model('users/mdl_user_clients');
-        $client = $this->mdl_clients->getById($client_id);
+        $client = (new ClientsService())->getById($client_id);
         if ($client) {
             $client_id = $client->client_id;
             // Is this a new user or an existing user?
             if ( ! empty($user_id)) {
                 // Existing user - go ahead and save the entries
-                $user_client = $this->mdl_user_clients->where('ip_user_clients.user_id', $user_id)->where('ip_user_clients.client_id', $client_id)->get();
+                $user_client = (new UserClientsService())->where('ip_user_clients.user_id', $user_id)->where('ip_user_clients.client_id', $client_id)->get();
                 if ( ! $user_client->numRows()) {
-                    $this->mdl_user_clients->save(null, ['user_id' => $user_id, 'client_id' => $client_id]);
+                    (new UserClientsService())->save(null, ['user_id' => $user_id, 'client_id' => $client_id]);
                 }
             } else {
                 // New user - assign the entries to a session variable until user record is saved
@@ -115,10 +117,10 @@ class AjaxController extends AdminController
         $session_user_clients = $this->session->userdata('user_clients');
         if ($session_user_clients) {
             $this->load->model('clients/mdl_clients');
-            $data = ['id' => null, 'user_clients' => $this->mdl_clients->where_in('ip_clients.client_id', $session_user_clients)->get()->result()];
+            $data = ['id' => null, 'user_clients' => (new ClientsService())->where_in('ip_clients.client_id', $session_user_clients)->get()->result()];
         } else {
             $this->load->model('users/mdl_user_clients');
-            $data = ['id' => $this->input->post('user_id'), 'user_clients' => $this->mdl_user_clients->where('ip_user_clients.user_id', $this->input->post('user_id'))->get()->result()];
+            $data = ['id' => $this->input->post('user_id'), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', $this->input->post('user_id'))->get()->result()];
         }
         $this->layout->loadView('users/partial_user_client_table', $data);
     }
@@ -132,19 +134,19 @@ class AjaxController extends AdminController
     {
         $this->load->model('clients/mdl_clients');
         if ($session_user_clients = $this->session->userdata('user_clients')) {
-            $clients          = $this->mdl_clients->where_not_in('ip_clients.client_id', $session_user_clients)->get()->result();
+            $clients          = (new ClientsService())->where_not_in('ip_clients.client_id', $session_user_clients)->get()->result();
             $assigned_clients = [];
         } else {
             $this->load->model('users/mdl_user_clients');
-            $assigned_clients_query = $this->mdl_user_clients->where('ip_user_clients.user_id', $user_id)->get()->result();
+            $assigned_clients_query = (new UserClientsService())->where('ip_user_clients.user_id', $user_id)->get()->result();
             $assigned_clients       = [];
             foreach ($assigned_clients_query as $assigned_client) {
                 $assigned_clients[] = (int) $assigned_client->client_id;
             }
             if ($assigned_clients === []) {
-                $clients = $this->mdl_clients->get()->result();
+                $clients = (new ClientsService())->get()->result();
             } else {
-                $clients = $this->mdl_clients->where_not_in('ip_clients.client_id', $assigned_clients)->get()->result();
+                $clients = (new ClientsService())->where_not_in('ip_clients.client_id', $assigned_clients)->get()->result();
             }
         }
         $data = ['user_id' => $user_id, 'clients' => $clients];

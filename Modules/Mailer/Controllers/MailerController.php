@@ -2,6 +2,8 @@
 
 namespace Modules\Mailer\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -36,20 +38,18 @@ class MailerController extends AdminController
         }
         $this->load->model(['email_templates/mdl_email_templates', 'custom_fields/mdl_custom_fields', 'invoices/mdl_templates', 'invoices/mdl_invoices', 'upload/mdl_uploads']);
         $this->load->helper(['template', 'dropzone']);
-        $invoice           = $this->mdl_invoices->getById($invoice_id);
+        $invoice           = (new InvoicesService())->getById($invoice_id);
         $email_template_id = select_email_invoice_template($invoice);
         $email_template    = '{}';
         if ($email_template_id) {
-            $email_template = json_encode($this->mdl_email_templates->getById($email_template_id));
+            $email_template = json_encode((new EmailTemplatesService())->getById($email_template_id));
         }
         // GetController all custom fields
         $custom_fields = [];
-        foreach (array_keys($this->mdl_custom_fields->customTables()) as $table) {
-            $custom_fields[$table] = $this->mdl_custom_fields->byTable($table)->get()->result();
+        foreach (array_keys((new CustomFieldsService())->customTables()) as $table) {
+            $custom_fields[$table] = (new CustomFieldsService())->byTable($table)->get()->result();
         }
-        $this->layout->set(['selected_email_template' => $email_template_id, 'selected_pdf_template' => select_pdf_invoice_template($invoice), 'email_templates' => $this->mdl_email_templates->where('email_template_type', 'invoice')->get()->result(), 'email_template' => $email_template, 'custom_fields' => $custom_fields, 'pdf_templates' => $this->mdl_templates->getInvoiceTemplates(), 'invoice' => $invoice]);
-        $this->layout->buffer('content', 'mailer/invoice');
-        $this->layout->render();
+        return view('mailer.invoice', ['selected_email_template' => $email_template_id, 'selected_pdf_template' => select_pdf_invoice_template($invoice), 'email_templates' => (new EmailTemplatesService())->where('email_template_type', 'invoice')->get()->result(), 'email_template' => $email_template, 'custom_fields' => $custom_fields, 'pdf_templates' => (new TemplatesService())->getInvoiceTemplates(), 'invoice' => $invoice]);
     }
 
     /**
@@ -67,16 +67,14 @@ class MailerController extends AdminController
         $email_template_id = get_setting('email_quote_template');
         $email_template    = '{}';
         if ($email_template_id) {
-            $email_template = json_encode($this->mdl_email_templates->getById($email_template_id));
+            $email_template = json_encode((new EmailTemplatesService())->getById($email_template_id));
         }
         // GetController all custom fields
         $custom_fields = [];
-        foreach (array_keys($this->mdl_custom_fields->customTables()) as $table) {
-            $custom_fields[$table] = $this->mdl_custom_fields->byTable($table)->get()->result();
+        foreach (array_keys((new CustomFieldsService())->customTables()) as $table) {
+            $custom_fields[$table] = (new CustomFieldsService())->byTable($table)->get()->result();
         }
-        $this->layout->set(['selected_email_template' => $email_template_id, 'selected_pdf_template' => get_setting('pdf_quote_template'), 'email_templates' => $this->mdl_email_templates->where('email_template_type', 'quote')->get()->result(), 'email_template' => $email_template, 'custom_fields' => $custom_fields, 'pdf_templates' => $this->mdl_templates->getQuoteTemplates(), 'quote' => $this->mdl_quotes->getById($quote_id)]);
-        $this->layout->buffer('content', 'mailer/quote');
-        $this->layout->render();
+        return view('mailer.quote', ['selected_email_template' => $email_template_id, 'selected_pdf_template' => get_setting('pdf_quote_template'), 'email_templates' => (new EmailTemplatesService())->where('email_template_type', 'quote')->get()->result(), 'email_template' => $email_template, 'custom_fields' => $custom_fields, 'pdf_templates' => (new TemplatesService())->getQuoteTemplates(), 'quote' => (new QuotesService())->getById($quote_id)]);
     }
 
     /**
@@ -106,10 +104,10 @@ class MailerController extends AdminController
         $cc  = $this->input->post('cc');
         $bcc = $this->input->post('bcc');
         $this->load->model('upload/mdl_uploads');
-        $attachment_files = $this->mdl_uploads->getInvoiceUploads($invoice_id);
-        $this->mdl_invoices->generateInvoiceNumberIfApplicable($invoice_id);
+        $attachment_files = (new UploadsService())->getInvoiceUploads($invoice_id);
+        (new InvoicesService())->generateInvoiceNumberIfApplicable($invoice_id);
         if (email_invoice($invoice_id, $pdf_template, $from, $to, $subject, $body, $cc, $bcc, $attachment_files)) {
-            $this->mdl_invoices->markSent($invoice_id);
+            (new InvoicesService())->markSent($invoice_id);
             $this->session->set_flashdata('alert_success', trans('email_successfully_sent'));
             redirect('invoices/view/' . $invoice_id);
         }
@@ -142,10 +140,10 @@ class MailerController extends AdminController
         $cc  = $this->input->post('cc');
         $bcc = $this->input->post('bcc');
         $this->load->model('upload/mdl_uploads');
-        $attachment_files = $this->mdl_uploads->getQuoteUploads($quote_id);
-        $this->mdl_quotes->generateQuoteNumberIfApplicable($quote_id);
+        $attachment_files = (new UploadsService())->getQuoteUploads($quote_id);
+        (new QuotesService())->generateQuoteNumberIfApplicable($quote_id);
         if (email_quote($quote_id, $pdf_template, $from, $to, $subject, $body, $cc, $bcc, $attachment_files)) {
-            $this->mdl_quotes->markSent($quote_id);
+            (new QuotesService())->markSent($quote_id);
             $this->session->set_flashdata('alert_success', trans('email_successfully_sent'));
             redirect('quotes/view/' . $quote_id);
         }

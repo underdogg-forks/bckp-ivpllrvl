@@ -2,6 +2,8 @@
 
 namespace Modules\Filter\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -23,10 +25,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_invoices->like("CONCAT_WS('^',LOWER(invoice_number),invoice_date_created,invoice_date_due,LOWER(client_title),LOWER(client_name),LOWER(client_surname),invoice_total,invoice_balance)", $keyword);
+                (new InvoicesService())->like("CONCAT_WS('^',LOWER(invoice_number),invoice_date_created,invoice_date_due,LOWER(client_title),LOWER(client_name),LOWER(client_surname),invoice_total,invoice_balance)", $keyword);
             }
         }
-        $data = ['invoices' => $this->mdl_invoices->get()->result(), 'invoice_statuses' => $this->mdl_invoices->statuses()];
+        $data = ['invoices' => (new InvoicesService())->get()->result(), 'invoice_statuses' => (new InvoicesService())->statuses()];
         $this->layout->loadView('invoices/partial_invoice_table', $data);
     }
 
@@ -43,10 +45,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_quotes->like("CONCAT_WS('^',LOWER(quote_number),quote_date_created,quote_date_expires,LOWER(client_title),LOWER(client_name),LOWER(client_surname),quote_total)", $keyword);
+                (new QuotesService())->like("CONCAT_WS('^',LOWER(quote_number),quote_date_created,quote_date_expires,LOWER(client_title),LOWER(client_name),LOWER(client_surname),quote_total)", $keyword);
             }
         }
-        $data = ['quotes' => $this->mdl_quotes->get()->result(), 'quote_statuses' => $this->mdl_quotes->statuses()];
+        $data = ['quotes' => (new QuotesService())->get()->result(), 'quote_statuses' => (new QuotesService())->statuses()];
         $this->layout->loadView('quotes/partial_quote_table', $data);
     }
 
@@ -63,10 +65,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_trim(mb_strtolower($keyword));
-                $this->mdl_clients->like("CONCAT_WS('^',LOWER(client_title),LOWER(client_name),LOWER(client_surname),LOWER(client_email),client_phone,client_active)", $keyword);
+                (new ClientsService())->like("CONCAT_WS('^',LOWER(client_title),LOWER(client_name),LOWER(client_surname),LOWER(client_email),client_phone,client_active)", $keyword);
             }
         }
-        $data = ['records' => $this->mdl_clients->withTotalBalance()->get()->result(), 'einvoicing' => get_setting('einvoicing')];
+        $data = ['records' => (new ClientsService())->withTotalBalance()->get()->result(), 'einvoicing' => get_setting('einvoicing')];
         $this->layout->loadView('clients/partial_client_table', $data);
     }
 
@@ -87,17 +89,17 @@ class AjaxController extends AdminController
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
                 // custom_field_location, custom_field_order
-                $this->mdl_custom_fields->like("CONCAT_WS('^',custom_field_id, LOWER(custom_field_table), LOWER(custom_field_label), LOWER(custom_field_type))", $keyword);
+                (new CustomFieldsService())->like("CONCAT_WS('^',custom_field_id, LOWER(custom_field_table), LOWER(custom_field_label), LOWER(custom_field_type))", $keyword);
             }
         }
         // Determine which name of table custom field to load
-        $custom_tables = $this->mdl_custom_fields->customTables();
+        $custom_tables = (new CustomFieldsService())->customTables();
         if ($name != 'all' && in_array($name, $custom_tables)) {
-            $this->mdl_custom_fields->byTableName($name);
+            (new CustomFieldsService())->byTableName($name);
         }
-        $custom_fields = $this->mdl_custom_fields->get()->result();
+        $custom_fields = (new CustomFieldsService())->get()->result();
         $this->load->model('custom_values/mdl_custom_values');
-        $data = ['custom_fields' => $custom_fields, 'custom_tables' => $custom_tables, 'custom_value_fields' => $this->mdl_custom_values->customValueFields(), 'positions' => $this->mdl_custom_fields->getPositions(true)];
+        $data = ['custom_fields' => $custom_fields, 'custom_tables' => $custom_tables, 'custom_value_fields' => (new CustomValuesService())->customValueFields(), 'positions' => (new CustomFieldsService())->getPositions(true)];
         $this->layout->loadView('custom_fields/partial_custom_fields_table', $data);
     }
 
@@ -117,12 +119,12 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_custom_values->like("CONCAT_WS('^',LOWER(custom_values_value), LOWER(custom_field_table), LOWER(custom_field_label), LOWER(custom_field_type))", $keyword);
+                (new CustomValuesService())->like("CONCAT_WS('^',LOWER(custom_values_value), LOWER(custom_field_table), LOWER(custom_field_label), LOWER(custom_field_type))", $keyword);
             }
         }
-        $this->mdl_custom_values->grouped();
-        $custom_values = $this->mdl_custom_values->get()->result();
-        $data          = ['id' => $id, 'custom_values' => $custom_values, 'custom_tables' => $this->mdl_custom_fields->customTables(), 'positions' => $this->mdl_custom_fields->getPositions(true)];
+        (new CustomValuesService())->grouped();
+        $custom_values = (new CustomValuesService())->get()->result();
+        $data          = ['id' => $id, 'custom_values' => $custom_values, 'custom_tables' => (new CustomFieldsService())->customTables(), 'positions' => (new CustomFieldsService())->getPositions(true)];
         $this->layout->loadView('custom_values/partial_custom_values_table', $data);
     }
 
@@ -142,10 +144,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_custom_values->like("CONCAT_WS('^',custom_values_id,LOWER(custom_values_value))", $keyword);
+                (new CustomValuesService())->like("CONCAT_WS('^',custom_values_id,LOWER(custom_values_value))", $keyword);
             }
         }
-        $elements = $this->mdl_custom_values->getByFid($id)->result();
+        $elements = (new CustomValuesService())->getByFid($id)->result();
         $data     = ['id' => $id, 'elements' => $elements];
         $this->layout->loadView('custom_values/partial_custom_values_field', $data);
     }
@@ -166,10 +168,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_projects->like("CONCAT_WS('^',LOWER(client_title),LOWER(client_name),LOWER(client_surname),LOWER(project_name))", $keyword);
+                (new ProjectsService())->like("CONCAT_WS('^',LOWER(client_title),LOWER(client_name),LOWER(client_surname),LOWER(project_name))", $keyword);
             }
         }
-        $data = ['projects' => $this->mdl_projects->get()->result()];
+        $data = ['projects' => (new ProjectsService())->get()->result()];
         $this->layout->loadView('projects/partial_projects_table', $data);
     }
 
@@ -189,10 +191,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_tasks->like("CONCAT_WS('^',LOWER(task_name),LOWER(project_name),LOWER(task_price),task_finish_date,LOWER(task_status),LOWER(tax_rate_id))", $keyword);
+                (new TasksService())->like("CONCAT_WS('^',LOWER(task_name),LOWER(project_name),LOWER(task_price),task_finish_date,LOWER(task_status),LOWER(tax_rate_id))", $keyword);
             }
         }
-        $data = ['tasks' => $this->mdl_tasks->get()->result(), 'task_statuses' => $this->mdl_tasks->statuses()];
+        $data = ['tasks' => (new TasksService())->get()->result(), 'task_statuses' => (new TasksService())->statuses()];
         $this->layout->loadView('tasks/partial_tasks_table', $data);
     }
 
@@ -212,10 +214,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_products->like("CONCAT_WS('^',product_sku,LOWER(family_name),LOWER(product_name),LOWER(product_description),product_price,product_tariff)", $keyword);
+                (new ProductsService())->like("CONCAT_WS('^',product_sku,LOWER(family_name),LOWER(product_name),LOWER(product_description),product_price,product_tariff)", $keyword);
             }
         }
-        $data = ['products' => $this->mdl_products->get()->result()];
+        $data = ['products' => (new ProductsService())->get()->result()];
         $this->layout->loadView('products/partial_products_table', $data);
     }
 
@@ -237,10 +239,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_users->like("CONCAT_WS('^', LOWER(user_name), LOWER(user_email))", $keyword);
+                (new UsersService())->like("CONCAT_WS('^', LOWER(user_name), LOWER(user_email))", $keyword);
             }
         }
-        $data = ['users' => $this->mdl_users->get()->result(), 'user_types' => $this->mdl_users->userTypes()];
+        $data = ['users' => (new UsersService())->get()->result(), 'user_types' => (new UsersService())->userTypes()];
         $this->layout->loadView('users/partial_users_table', $data);
     }
 
@@ -259,10 +261,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_families->like("CONCAT_WS('^',LOWER(family_name))", $keyword);
+                (new FamiliesService())->like("CONCAT_WS('^',LOWER(family_name))", $keyword);
             }
         }
-        $data = ['families' => $this->mdl_families->get()->result()];
+        $data = ['families' => (new FamiliesService())->get()->result()];
         $this->layout->loadView('families/partial_families_table', $data);
     }
 
@@ -280,10 +282,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_invoices_recurring->like("CONCAT_WS('^',recur_start_date,recur_end_date,recur_next_date,recur_frequency,LOWER(invoice_number),LOWER(client_title),LOWER(client_name),LOWER(client_surname))", $keyword);
+                (new InvoicesRecurringService())->like("CONCAT_WS('^',recur_start_date,recur_end_date,recur_next_date,recur_frequency,LOWER(invoice_number),LOWER(client_title),LOWER(client_name),LOWER(client_surname))", $keyword);
             }
         }
-        $data = ['recur_frequencies' => $this->mdl_invoices_recurring->recur_frequencies, 'recurring_invoices' => $this->mdl_invoices_recurring->get()->result()];
+        $data = ['recur_frequencies' => (new InvoicesRecurringService())->recur_frequencies, 'recurring_invoices' => (new InvoicesRecurringService())->get()->result()];
         $this->layout->loadView('invoices/partial_invoices_recurring_table', $data);
     }
 
@@ -300,10 +302,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_payment_logs->like("CONCAT_WS('^',merchant_response_id,LOWER(invoice_number),merchant_response_successful,merchant_response_date,LOWER(merchant_response_driver),LOWER(merchant_response),LOWER(merchant_response_reference))", $keyword);
+                (new PaymentLogsService())->like("CONCAT_WS('^',merchant_response_id,LOWER(invoice_number),merchant_response_successful,merchant_response_date,LOWER(merchant_response_driver),LOWER(merchant_response),LOWER(merchant_response_reference))", $keyword);
             }
         }
-        $data = ['payment_logs' => $this->mdl_payment_logs->get()->result()];
+        $data = ['payment_logs' => (new PaymentLogsService())->get()->result()];
         $this->layout->loadView('payments/partial_online_logs_table', $data);
     }
 
@@ -315,7 +317,7 @@ class AjaxController extends AdminController
     public function filterArchives()
     {
         $this->load->model('invoices/mdl_invoices');
-        $data = ['invoices_archive' => $this->mdl_invoices->getArchives($this->input->post('filter_query'))];
+        $data = ['invoices_archive' => (new InvoicesService())->getArchives($this->input->post('filter_query'))];
         $this->layout->loadView('invoices/partial_invoice_archive', $data);
     }
 
@@ -332,10 +334,10 @@ class AjaxController extends AdminController
         foreach ($keywords as $keyword) {
             if ($keyword) {
                 $keyword = mb_strtolower($keyword);
-                $this->mdl_payments->like("CONCAT_WS('^',payment_date,LOWER(invoice_number),LOWER(client_title),LOWER(client_name),LOWER(client_surname),payment_amount,LOWER(payment_method_name),LOWER(payment_note))", $keyword);
+                (new PaymentsService())->like("CONCAT_WS('^',payment_date,LOWER(invoice_number),LOWER(client_title),LOWER(client_name),LOWER(client_surname),payment_amount,LOWER(payment_method_name),LOWER(payment_note))", $keyword);
             }
         }
-        $data = ['payments' => $this->mdl_payments->get()->result()];
+        $data = ['payments' => (new PaymentsService())->get()->result()];
         $this->layout->loadView('payments/partial_payments_table', $data);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Reports\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -25,7 +27,7 @@ class ReportsController extends AdminController
     public function salesByClient()
     {
         if ($this->input->post('btn_submit')) {
-            $data = ['results' => $this->mdl_reports->salesByClient($this->input->post('from_date'), $this->input->post('to_date')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
+            $data = ['results' => (new ReportsService())->salesByClient($this->input->post('from_date'), $this->input->post('to_date')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
             $html = $this->load->view('reports/sales_by_client', $data, true);
             $this->load->helper('mpdf');
             pdf_create($html, trans('sales_by_client'), true);
@@ -41,7 +43,7 @@ class ReportsController extends AdminController
     public function invoicesPerClient()
     {
         if ($this->input->post('btn_submit')) {
-            $data = ['results' => $this->mdl_reports->invoicesPerClient($this->input->post('from_date'), $this->input->post('to_date')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
+            $data = ['results' => (new ReportsService())->invoicesPerClient($this->input->post('from_date'), $this->input->post('to_date')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
             $html = $this->load->view('reports/invoices_per_client', $data, true);
             $this->load->helper('mpdf');
             pdf_create($html, trans('invoices_per_client'), true);
@@ -57,7 +59,7 @@ class ReportsController extends AdminController
     public function paymentHistory()
     {
         if ($this->input->post('btn_submit')) {
-            $data = ['results' => $this->mdl_reports->paymentHistory($this->input->post('from_date'), $this->input->post('to_date')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
+            $data = ['results' => (new ReportsService())->paymentHistory($this->input->post('from_date'), $this->input->post('to_date')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
             $html = $this->load->view('reports/payment_history', $data, true);
             $this->load->helper('mpdf');
             pdf_create($html, trans('payment_history'), true);
@@ -73,7 +75,7 @@ class ReportsController extends AdminController
     public function invoiceAging()
     {
         if ($this->input->post('btn_submit')) {
-            $data = ['results' => $this->mdl_reports->invoiceAging()];
+            $data = ['results' => (new ReportsService())->invoiceAging()];
             $html = $this->load->view('reports/invoice_aging', $data, true);
             $this->load->helper('mpdf');
             pdf_create($html, trans('invoice_aging'), true);
@@ -89,7 +91,7 @@ class ReportsController extends AdminController
     public function salesByYear()
     {
         if ($this->input->post('btn_submit')) {
-            $data = ['results' => $this->mdl_reports->salesByYear($this->input->post('from_date'), $this->input->post('to_date'), $this->input->post('minQuantity'), $this->input->post('maxQuantity'), $this->input->post('checkboxTax')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
+            $data = ['results' => (new ReportsService())->salesByYear($this->input->post('from_date'), $this->input->post('to_date'), $this->input->post('minQuantity'), $this->input->post('maxQuantity'), $this->input->post('checkboxTax')), 'from_date' => $this->input->post('from_date'), 'to_date' => $this->input->post('to_date')];
             $html = $this->load->view('reports/sales_by_year', $data, true);
             $this->load->helper('mpdf');
             pdf_create($html, trans('sales_by_date'), true);
