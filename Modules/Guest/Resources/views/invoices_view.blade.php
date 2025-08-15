@@ -15,7 +15,7 @@ if ($invoice_tax_rates) {
         <div class="btn-group btn-group-sm">
             @if($invoice->invoice_balance == 0 || $invoice->invoice_status_id >= 4)
             <button class="btn btn-success disabled">
-                <i class="fa fa-check"></i> {{ trans('paid') }}
+                <i class="fa fa-check"></i> {{ __('paid') }}
             </button>
             @elseif($enable_online_payments)
             <a href="{{ url('guest/payment_information/form/' . $invoice->invoice_url_key) }}"
@@ -90,7 +90,7 @@ if ($invoice_tax_rates) {
                     <thead>
                     <tr>
                         <th></th>
-                        <th>@lang('item') / {{ @lang('description') }}</th>
+                        <th>@lang('item') / @lang('description')</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -187,8 +187,7 @@ if ($invoice_tax_rates) {
                             }
                             if ($legacy_calculation) {
 
-                        <td class="amount">{{ $global_discount }}</td>
-                        @endif
+                        <td class="amount">{{ $global_discount }}</td>@endforeach
                         <td class="amount"><b>{{ format_currency($invoice->invoice_total) }}</b></td>
                         <td class="amount">{{ format_currency($invoice->invoice_paid) }}</td>
                         <td class="amount">{{ format_currency($invoice->invoice_balance) }}</td>
@@ -206,8 +205,7 @@ if ($invoice_tax_rates) {
             <div class="col-xs-12 col-md-6">
                 <strong>@lang('invoice_terms')</strong><br/>
                 {{ nl2br(e($invoice->invoice_terms)) }}
-            </div>
-                @endif
+            </div>@endforeach
         </div>
 
     </form>

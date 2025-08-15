@@ -95,21 +95,21 @@ if ($logo)
                                 <table class="table table-bordered table-condensed no-margin">
                                     <tbody>
                                     <tr>
-                                        <td>{{ trans('invoice_date') }}</td>
+                                        <td>{{ __('invoice_date') }}</td>
                                         <td class="text-right">{{ date_from_mysql($invoice->invoice_date_created) }}</td>
                                     </tr>
                                     <tr class="{{ $is_overdue ? 'overdue' : '' }}">
-                                        <td>{{ trans('due_date') }}</td>
+                                        <td>{{ __('due_date') }}</td>
                                         <td class="text-right">
                                             {{ date_from_mysql($invoice->invoice_date_due) }}
                                         </td>
                                     </tr>
                                     <tr class="{{ $is_overdue ? 'overdue' : '' }}">
-                                        <td>{{ trans('total') }}</td>
+                                        <td>{{ __('total') }}</td>
                                         <td class="text-right">{{ format_currency($invoice->invoice_total) }}</td>
                                     </tr>
                                     <tr class="{{ $is_overdue ? 'overdue' : '' }}">
-                                        <td>{{ trans('balance') }}</td>
+                                        <td>{{ __('balance') }}</td>
                                         <td class="text-right">{{ format_currency($invoice->invoice_balance) }}</td>
                                     </tr>
                                     @if($payment_method)
@@ -135,7 +135,7 @@ if ($logo)
             </div>
             @if($payment_provider == null && !$disable_form)
             <div>
-                <p>{{ trans('select_payment_method') }}</p>
+                <p>{{ __('select_payment_method') }}</p>
             </div>
             <ul class="list-group">
                 @foreach($gateways as $gateway)

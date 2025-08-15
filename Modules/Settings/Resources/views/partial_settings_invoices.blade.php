@@ -612,8 +612,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_canton'), $k)>
                                     {{ $v }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
                     </div>

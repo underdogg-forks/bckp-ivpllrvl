@@ -68,26 +68,26 @@ if ($invoice->client_address_2)
 @endif
 if ($invoice->client_city || $invoice->client_state || $invoice->client_zip)
 {<div>;
-    if ($invoice->client_city) {
-        echo htmlsc($invoice->client_city)   InvoicePlanephp}
+    if ($invoice->client_city)
+{htmlsc($invoice->client_city)   InvoicePlanephp}
 @endif
-    if ($invoice->client_state) {
-        echo htmlsc($invoice->client_state) . ' InvoicePlane.php';
-    }
-    if ($invoice->client_zip) {
-        echo htmlsc($invoice->client_zip);
-    }
-    echo '</div>';
-}
-if ($invoice->client_country) {
-    echo '<div>' . get_country_name(trans('cldr'), htmlsc($invoice->client_country)) . '</div>';
-}
+    if ($invoice->client_state)
+{htmlsc($invoice->client_state)   InvoicePlanephp}
+@endif
+    if ($invoice->client_zip)
+{htmlsc($invoice->client_zip)}
+@endif
+    echo </div>}
+@endif
+if ($invoice->client_country)
+{<div>  get_country_name(trans(cldr), htmlsc($invoice->client_country))  </div>}
+@endif
 
 echo '<br>';
 
-if ($invoice->client_phone) {
-    echo '<div>' . trans('phone_abbr') . ': ' . htmlsc($invoice->client_phone) . '</div>';
-}
+if ($invoice->client_phone)
+{<div>  trans(phone_abbr)  :   htmlsc($invoice->client_phone)  </div>}
+@endif
     </div>
     <div id="company">
         <div><b>{!! $invoice->user_name !!}</b></div>
@@ -105,29 +105,29 @@ if ($invoice->user_address_2)
 @endif
 if ($invoice->user_city || $invoice->user_state || $invoice->user_zip)
 {<div>;
-    if ($invoice->user_city) {
-        echo htmlsc($invoice->user_city)   InvoicePlanephp}
+    if ($invoice->user_city)
+{htmlsc($invoice->user_city)   InvoicePlanephp}
 @endif
-    if ($invoice->user_state) {
-        echo htmlsc($invoice->user_state) . ' InvoicePlane.php';
-    }
-    if ($invoice->user_zip) {
-        echo htmlsc($invoice->user_zip);
-    }
-    echo '</div>';
-}
-if ($invoice->user_country) {
-    echo '<div>' . get_country_name(trans('cldr'), htmlsc($invoice->user_country)) . '</div>';
-}
+    if ($invoice->user_state)
+{htmlsc($invoice->user_state)   InvoicePlanephp}
+@endif
+    if ($invoice->user_zip)
+{htmlsc($invoice->user_zip)}
+@endif
+    echo </div>}
+@endif
+if ($invoice->user_country)
+{<div>  get_country_name(trans(cldr), htmlsc($invoice->user_country))  </div>}
+@endif
 
 echo '<br>';
 
-if ($invoice->user_phone) {
-    echo '<div>' . trans('phone_abbr') . ': ' . htmlsc($invoice->user_phone) . '</div>';
-}
-if ($invoice->user_fax) {
-    echo '<div>' . trans('fax_abbr') . ': ' . htmlsc($invoice->user_fax) . '</div>';
-}
+if ($invoice->user_phone)
+{<div>  trans(phone_abbr)  :   htmlsc($invoice->user_phone)  </div>}
+@endif
+if ($invoice->user_fax)
+{<div>  trans(fax_abbr)  :   htmlsc($invoice->user_fax)  </div>}
+@endif
     </div>
 
 </header>

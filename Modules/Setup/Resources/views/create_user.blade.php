@@ -90,7 +90,7 @@
                 </label>
                 <select name="user_language" id="user_language" class="form-control simple-select">
                     <option value="system">
-                        {{ trans('use_system_language') }}
+                        {{ __('use_system_language') }}
                     </option>
                     @foreach($languages as $language)
                     <option value="{{ $language }}">

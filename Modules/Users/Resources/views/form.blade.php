@@ -110,7 +110,7 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                                 <label for="user_language">@lang('lang')</label>
                                 <select name="user_language" id="user_language" class="form-control simple-select" required>
                                     <option value="system">
-                                        {{ trans('use_system_language') }}
+                                        {{ __('use_system_language') }}
                                     </option>
 @php $usr_lang = $this->mdl_users->form_value('user_language');
 foreach ($languages as $language) {

@@ -92,11 +92,11 @@
             <div class="btn-group">
                 <button id="task-modal-submit" class="select-items-confirm btn btn-success" type="button">
                     <i class="fa fa-check"></i>
-                    {{ @lang('submit') }}
+                    @lang('submit')
                 </button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i>
-                    {{ @lang('cancel') }}
+                    @lang('cancel')
                 </button>
             </div>
         </div>

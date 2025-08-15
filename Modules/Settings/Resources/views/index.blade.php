@@ -60,7 +60,7 @@
         <a data-toggle="tab" href="#settings-email">@lang('email')</a>
     </li>
     <li>
-        <a data-toggle="tab" href="#settings-online-payment">{{ @lang('online_payment') }}</a>
+        <a data-toggle="tab" href="#settings-online-payment">@lang('online_payment')</a>
     </li>
     <li>
         <a data-toggle="tab" href="#settings-projects-tasks">@lang('projects')</a>

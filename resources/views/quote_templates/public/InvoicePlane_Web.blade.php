@@ -73,10 +73,10 @@
 
                     <h4>{!! format_client($quote) !!}</h4>
                     <p>@if($quote->user_vat_id) {
-                                {{ @lang('vat_id_short') . ': ' . $quote->user_vat_id . '<br>' }}
+                                @lang('vat_id_short') . ': ' . $quote->user_vat_id . '<br>' }}
                             }
 if ($quote->user_tax_code) {
-    {{ @lang('tax_code_short') . ': ' . $quote->user_tax_code . '<br>' }}
+    @lang('tax_code_short') . ': ' . $quote->user_tax_code . '<br>' }}
 }
 if ($quote->user_address_1) {
     {!! $quote->user_address_1) . '<br>' }}
@@ -91,7 +91,7 @@ if ($quote->user_state) {
     {!! $quote->user_state) . ' InvoicePlane_Web.php' }}
 }
 if ($quote->user_zip) {
-    {{ htmlsc($quote->user_zip) . '<br>' }}
+    {!! $quote->user_zip) . '<br>' }}
 }
 if ($quote->user_phone) {
     @lang('phone_abbr');
@@ -119,16 +119,16 @@ if ($quote->client_address_1) {
     {!! $quote->client_address_1) . '<br>' }}
 }
 if ($quote->client_address_2) {
-    {{ htmlsc($quote->client_address_2) . '<br>' }}
+    {!! $quote->client_address_2) . '<br>' }}
 }
 if ($quote->client_city) {
-    {{ htmlsc($quote->client_city) . ' InvoicePlane_Web.php' }}
+    {!! $quote->client_city) . ' InvoicePlane_Web.php' }}
 }
 if ($quote->client_state) {
-    {{ htmlsc($quote->client_state) . ' InvoicePlane_Web.php' }}
+    {!! $quote->client_state) . ' InvoicePlane_Web.php' }}
 }
 if ($quote->client_zip) {
-    {{ htmlsc($quote->client_zip) . '<br>' }}
+    {!! $quote->client_zip) . '<br>' }}
 }
 if ($quote->client_phone) {
     @lang('phone_abbr');
@@ -179,16 +179,16 @@ if ($quote->client_phone) {
                         @foreach($items as $item)
                         <tr>
                             <td>{!! $item->item_name !!}</td>
-                            <td>{{ nl2br(e($item->item_description)) }}</td>
+                            <td>{{ nl2br(e($item->item_description))</td>
                             <td class="amount">
-                                {{ format_quantity($item->item_quantity) }}
+                                {{ format_quantity($item->item_quantity !!}
                                 @if($item->item_product_unit)
                                             <br>
                                             <small><?php htmlspecialchars($item->item_product_unit); </small>@endforeach
                             </td>
-                            <td class="amount">{{ format_currency($item->item_price) }}</td>
-                            <td class="amount">{{ format_currency($item->item_discount) }}</td>
-                            <td class="amount">{{ format_currency($item->item_subtotal) }}</td>
+                            <td class="amount">{{ format_currency($item->item_price)</td>
+                            <td class="amount">{{ format_currency($item->item_discount !!}</td>
+                            <td class="amount">{{ format_currency($item->item_subtotal !!}</td>
                         </tr>@endforeach
 
                         @if( ! $legacy_calculation)
@@ -199,14 +199,14 @@ if ($quote->client_phone) {
                             <td class="amount">@if($quote->quote_discount_percent > 0) {
                                                 {{ format_amount($quote->quote_discount_percent) . '&nbsp }}%';
                                             } else {
-                                                {{ format_currency($quote->quote_discount_amount) }}
+                                                {{ format_currency($quote->quote_discount_amount !!}
                                             } </td>
                         </tr>@endforeach
 
                         <tr>
                             <td colspan="4"></td>
                             <td class="amount">@lang('subtotal'):</td>
-                            <td class="amount">{{ format_currency($quote->quote_item_subtotal) }}</td>
+                            <td class="amount">{{ format_currency($quote->quote_item_subtotal !!}</td>
                         </tr>
 
                         @if($quote->quote_item_tax_total > 0)

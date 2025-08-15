@@ -16,7 +16,7 @@
     }
 </style>
 <div>
-    <p>{{ trans('password_reset_email') }}</p>
+    <p>{{ __('password_reset_email') }}</p>
     <p><a href="@php echo $resetlink ">@php echo $resetlink </a></p>
 </div>
 

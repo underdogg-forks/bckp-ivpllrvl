@@ -87,7 +87,7 @@
             </div>
 
             <div class="form-group has-feedback">
-                <label for="recur_end_date">@lang('end_date') ({{ trans('optional') }})</label>
+                <label for="recur_end_date">@lang('end_date') ({{ __('optional') }})</label>
 
                 <div class="input-group">
                     <input name="recur_end_date" id="recur_end_date"

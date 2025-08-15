@@ -19,7 +19,7 @@
 
                 <div class="btn-group">
                     <button type="submit" class="btn btn-danger">
-                        <i class="fa fa-trash-o fa-margin"></i> {{ trans('confirm_deletion') }}
+                        <i class="fa fa-trash-o fa-margin"></i> {{ __('confirm_deletion') }}
                     </button>
                     <a href="#" class="btn btn-default" data-dismiss="modal">
                         <i class="fa fa-times"></i> @lang('cancel')

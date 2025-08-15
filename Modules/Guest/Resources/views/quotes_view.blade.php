@@ -98,7 +98,7 @@ if ($quote_tax_rates) {
                 <thead>
                 <tr>
                     <th></th>
-                    <th>@lang('item') / {{ @lang('description') }}</th>
+                    <th>@lang('item') / @lang('description')</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -192,8 +192,7 @@ if ($quote_tax_rates) {
                         }
                         if ($legacy_calculation) {
 
-                    <td class="amount">{{ $global_discount }}</td>
-                        @endif
+                    <td class="amount">{{ $global_discount }}</td>@endforeach
                     <td class="amount"><b>{{ format_currency($quote->quote_total) }}</b></td>
                 </tr>
                 </tbody>

@@ -239,7 +239,7 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
         <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing') }}: <?php
                                                                                           htmlspecialchars(PHP_EOL . format_user($invoice->user_id)) }
                                                                                           }">
-            {{ trans('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
+            {{ __('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
         </span>
 
 @if($change_user)
@@ -444,7 +444,7 @@ href="{{ url('users/form/' . $invoice->user_id) }}">
                                         @if($einvoice->name)
                                     <label class="pull-right" id="e_invoice_active"
                                            data-toggle="tooltip" data-placement="bottom"
-                                           title="e-{{ trans('invoice') . ' ' . ($einvoice->user ? trans('version') . ' ' . $einvoice->name . ' 🗸' : '🚫 ' . trans('einvoicing_user_fields_error')) }}"
+                                           title="e-{{ __('invoice') . ' ' . ($einvoice->user ? trans('version') . ' ' . $einvoice->name . ' 🗸' : '🚫 ' . trans('einvoicing_user_fields_error')) }}"
                                     >
                                         <i class="fa fa-file-code-o"></i>
                                         {{ $einvoice->name;

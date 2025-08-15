@@ -3,12 +3,12 @@
     <table id="tasks_table" class="table table-hover table-bordered table-striped no-margin">
         <tr>
             <th>&nbsp;</th>
-            <th>{{ @lang('project_name');
+            <th>@lang('project_name');
 ?></th>
-            <th>{{ @lang('task_name') }}</th>
-            <th>{{ @lang('task_finish_date') }}</th>
-            <th>{{ @lang('task_description') }}</th>
-            <th class="amount">{{ @lang('task_price') }}</th>
+            <th>@lang('task_name')</th>
+            <th>@lang('task_finish_date')</th>
+            <th>@lang('task_description')</th>
+            <th class="amount">@lang('task_price')</th>
         </tr>
 
         @foreach($tasks as $task)
@@ -22,7 +22,7 @@
             </td>
             <td>
                 <b>@php
-            htmlspecialchars($task->task_name) }}</b>
+            htmlspecialchars($task->task_name)</b>
                         </td>
                         <td>
                             <b>{{ date_from_mysql($task->task_finish_date) }}</b>

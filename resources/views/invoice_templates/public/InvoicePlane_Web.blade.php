@@ -77,12 +77,12 @@ if ($invoice->user_address_2)
 if ($invoice->user_city)
 {htmlsc($invoice->user_city)   InvoicePlane_Webphp}
 @endif
-if ($invoice->user_state) {
-    echo htmlsc($invoice->user_state) . ' InvoicePlane_Web.php';
-}
-if ($invoice->user_zip) {
-    echo htmlsc($invoice->user_zip) . '<br>';
-}
+if ($invoice->user_state)
+{htmlsc($invoice->user_state)   InvoicePlane_Webphp}
+@endif
+if ($invoice->user_zip)
+{htmlsc($invoice->user_zip)  <br>}
+@endif
 if ($invoice->user_phone) {
     @lang('phone_abbr');
     echo ': ' . htmlsc($invoice->user_phone) . '<br>';
@@ -120,9 +120,9 @@ if ($invoice->client_state)
 if ($invoice->client_zip)
 {htmlsc($invoice->client_zip)  <br>}
 @endif
-if ($invoice->client_phone) {
-    echo trans('phone_abbr') . ': ' . htmlsc($invoice->client_phone) . '<br>';
-} </p>
+if ($invoice->client_phone)
+{trans(phone_abbr)  :   htmlsc($invoice->client_phone)  <br>}
+@endif </p>
 
                     <br>
 
@@ -307,9 +307,7 @@ if ($invoice->client_phone) {
                     <div class="col-xs-12 col-md-6">
                         <h4>@lang('terms')</h4>
                         <p>{{ nl2br(e($invoice->invoice_terms)) }}</p>
-                    </div>
-
-@endif
+                    </div>@endforeach
 
                     @if(count($attachments) > 0)
 

@@ -23,7 +23,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('user') . ': ' . htmlsc($user->user_name) }}
+                    {{ __('user') . ': ' . htmlsc($user->user_name) }}
                 </div>
 
                 <div class="panel-body table-content">

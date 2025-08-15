@@ -48,7 +48,7 @@
             <button type="button" class="navbar-toggle"
                     data-toggle="collapse" data-target="#ip-navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
-                {{ trans('menu') }} &nbsp; <i class="fa fa-bars"></i>
+                {{ __('menu') }} &nbsp; <i class="fa fa-bars"></i>
             </button>
         </div>
 

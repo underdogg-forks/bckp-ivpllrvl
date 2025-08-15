@@ -255,8 +255,7 @@
     <div class="col-xs-12 col-md-6 col-md-offset-2 col-lg-4 col-lg-offset-4">
         <table class="table table-bordered text-right">
             @if (!$legacy_calculation)
-                @include('quotes.partial_itemlist_table_quote_discount')
-            @endif
+                @include('quotes.partial_itemlist_table_quote_discount')@endforeach
             <tr>
                 <td style="width: 40%;">@lang('subtotal')</td>
                 <td style="width: 60%;" class="amount">{{ format_currency($quote->quote_item_subtotal) }}</td>

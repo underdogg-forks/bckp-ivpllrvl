@@ -34,26 +34,26 @@ if ($quote->client_address_2)
 @endif
 if ($quote->client_city || $quote->client_state || $quote->client_zip)
 {<div>;
-    if ($quote->client_city) {
-        echo htmlsc($quote->client_city)   InvoicePlanephp}
+    if ($quote->client_city)
+{htmlsc($quote->client_city)   InvoicePlanephp}
 @endif
-    if ($quote->client_state) {
-        echo htmlsc($quote->client_state) . ' InvoicePlane.php';
-    }
-    if ($quote->client_zip) {
-        echo htmlsc($quote->client_zip);
-    }
-    echo '</div>';
-}
-if ($quote->client_country) {
-    echo '<div>' . get_country_name(trans('cldr'), htmlsc($quote->client_country)) . '</div>';
-}
+    if ($quote->client_state)
+{htmlsc($quote->client_state)   InvoicePlanephp}
+@endif
+    if ($quote->client_zip)
+{htmlsc($quote->client_zip)}
+@endif
+    echo </div>}
+@endif
+if ($quote->client_country)
+{<div>  get_country_name(trans(cldr), htmlsc($quote->client_country))  </div>}
+@endif
 
 echo '<br>';
 
-if ($quote->client_phone) {
-    echo '<div>' . trans('phone_abbr') . ': ' . htmlsc($quote->client_phone) . '</div>';
-}
+if ($quote->client_phone)
+{<div>  trans(phone_abbr)  :   htmlsc($quote->client_phone)  </div>}
+@endif
 
     </div>
     <div id="company">
@@ -72,29 +72,29 @@ if ($quote->user_address_2)
 @endif
 if ($quote->user_city || $quote->user_state || $quote->user_zip)
 {<div>;
-    if ($quote->user_city) {
-        echo htmlsc($quote->user_city)   InvoicePlanephp}
+    if ($quote->user_city)
+{htmlsc($quote->user_city)   InvoicePlanephp}
 @endif
-    if ($quote->user_state) {
-        echo htmlsc($quote->user_state) . ' InvoicePlane.php';
-    }
-    if ($quote->user_zip) {
-        echo htmlsc($quote->user_zip);
-    }
-    echo '</div>';
-}
-if ($quote->user_country) {
-    echo '<div>' . get_country_name(trans('cldr'), htmlsc($quote->user_country)) . '</div>';
-}
+    if ($quote->user_state)
+{htmlsc($quote->user_state)   InvoicePlanephp}
+@endif
+    if ($quote->user_zip)
+{htmlsc($quote->user_zip)}
+@endif
+    echo </div>}
+@endif
+if ($quote->user_country)
+{<div>  get_country_name(trans(cldr), htmlsc($quote->user_country))  </div>}
+@endif
 
 echo '<br/>';
 
-if ($quote->user_phone) {
-    echo '<div>' . trans('phone_abbr') . ': ' . htmlsc($quote->user_phone) . '</div>';
-}
-if ($quote->user_fax) {
-    echo '<div>' . trans('fax_abbr') . ': ' . htmlsc($quote->user_fax) . '</div>';
-}
+if ($quote->user_phone)
+{<div>  trans(phone_abbr)  :   htmlsc($quote->user_phone)  </div>}
+@endif
+if ($quote->user_fax)
+{<div>  trans(fax_abbr)  :   htmlsc($quote->user_fax)  </div>}
+@endif
     </div>
 
 </header>

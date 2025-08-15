@@ -2,7 +2,6 @@
     $disabled = $custom_field_usage ? ' disabled' : '';
     $custom_field_table = $this->mdl_custom_fields->form_value('custom_field_table');
     $custom_field_type = $this->mdl_custom_fields->form_value('custom_field_type');
-@endphp
 
 <form method="post">
     @csrf
@@ -37,9 +36,9 @@
                     @php
                         // New field? Auto select (work if come from custom_fields/table/*)
                         $custom_field_table = $custom_field_table ?: (isset($_SERVER['HTTP_REFERER']) ? 'ip_' . basename($_SERVER['HTTP_REFERER']) . '_custom' : '');
-                    @endphp
+
                     @foreach ($custom_field_tables as $table => $label)
-                        <option value="{{ $table }}" @php check_select($custom_field_table, $table); @endphp>
+                        <option value="{{ $table }}" @php check_select($custom_field_table, $table); >
                             {{ __($label) }}
                         </option>
                     @endforeach
@@ -59,8 +58,8 @@
                     @foreach ($custom_field_types as $type)
                         @php
                             $alpha = str_replace('-', '_', mb_strtolower($type));
-                        @endphp
-                        <option value="{{ $type }}" @php check_select($custom_field_type, $type); @endphp>
+
+                        <option value="{{ $type }}" @php check_select($custom_field_type, $type); >
                             {{ __($alpha) }}
                         </option>
                     @endforeach

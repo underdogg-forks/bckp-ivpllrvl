@@ -56,14 +56,14 @@
     <form class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
-            <h4 class="panel-title">{{ __('change_' . $who) }}</h4>
+            <h4 class="panel-title">@trans("change_$who")</h4>
         </div>
         <div class="modal-body">
             <div class="form-group has-feedback">
-                <label for="change_{{ $who }}_id">{{ __($who) }}</label>
+                <label for="change_{{ $who }}_id">@trans($who)</label>
                 <div class="input-group">
                     <span id="toggle_permissive_search_{{ $who }}s" class="input-group-addon"
-                          title="{{ __('enable_permissive_search_' . $who . 's') }}"
+                          title="@trans('enable_permissive_search_' . $who . 's')"
                           style="cursor:pointer;">
                         <i class="fa fa-toggle-{{ $permissive ? 'on' : 'off' }} fa-fw"></i>
                     </span>
@@ -76,27 +76,25 @@
                                 // func name
                                 $name = $who . '_name';
                                 // user or client property
-                                $name = empty(${$who}->{$name}) ? $format($who_id) : $user->{$name};
+                                $name = empty(${$who}->{$name}) ? $format($who_id) : ${$who}->{$name};
                             }
                         @endphp
                         @if ($who_id)
-                            <option value="{{ $who_id }}">{{ $name }}</option>
+                            <option value="{{ $who_id }}">{!! $name !!}</option>
                         @endif
                     </select>
                 </div>
             </div>
-
             <input class="hidden" id="{{ $type }}_id" value="{{ $type_id }}">
             <input class="hidden" id="input_permissive_search_{{ $who }}s" value="{{ $permissive }}">
         </div>
-
         <div class="modal-footer">
             <div class="btn-group">
                 <button class="btn btn-success ajax_loader" id="{{ $who }}_change_confirm" type="button">
-                    <i class="fa fa-check"></i> {{ __('submit') }}
+                    <i class="fa fa-check"></i> @trans('submit')
                 </button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">
-                    <i class="fa fa-times"></i> {{ __('cancel') }}
+                    <i class="fa fa-times"></i> @trans('cancel')
                 </button>
             </div>
         </div>

@@ -26,7 +26,7 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
     @include('layout.alerts')
 
     @if($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4)
-    <div class="alert alert-warning small">{{ trans('info_task_readonly') }}</div>
+    <div class="alert alert-warning small">{{ __('info_task_readonly') }}</div>
     @endif
 
     <div class="row">
