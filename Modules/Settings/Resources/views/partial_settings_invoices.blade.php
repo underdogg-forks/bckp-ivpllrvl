@@ -576,8 +576,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     @php
                                         _trans('invoice_sumex_role_' . $v);
 
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -596,8 +595,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     @php
                                         _trans('invoice_sumex_place_' . $v);
 
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 

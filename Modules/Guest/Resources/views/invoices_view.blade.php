@@ -169,8 +169,7 @@ if ($invoice_tax_rates) {
                             }
                             if ($legacy_calculation) {
 
-                        <th class="text-right">@lang('global_discount')</th>
-                        @endif
+                        <th class="text-right">@lang('global_discount')</th>@endforeach
                         <th class="text-right">@lang('total')</th>
                         <th class="text-right">@lang('paid')</th>
                         <th class="text-right">@lang('balance')</th>
@@ -179,8 +178,7 @@ if ($invoice_tax_rates) {
                     <tbody>
                     <tr>
                         @if(!$legacy_calculation)
-                        <td class="amount">{{ $global_discount }}</td>
-                        @endif
+                        <td class="amount">{{ $global_discount }}</td>@endforeach
                         <td class="amount">{{ format_currency($invoice->invoice_item_subtotal) }}</td>
                         <td class="amount">{{ format_currency($invoice->invoice_item_tax_total) }}</td>
                         @if($invoice_tax_rates)

@@ -199,8 +199,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                                        class="input-group-addon ig-addon-aligned">@lang('date')</label>
                                 <input type="text" name="item_date" id="item_date_{{ $item->item_id }}"
                                        class="form-control datepicker"
-                                       value="{{ format_date($item->item_date) }}"{{ $invoice_disabled }}>
-                                @endif
+                                       value="{{ format_date($item->item_date) }}"{{ $invoice_disabled }}>@endforeach
                             </div>
                         </div>
                     </div>
@@ -318,8 +317,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <a href="javascript:void(0);"
                class="btn_add_task btn btn-sm btn-default{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' }}">
                 <i class="fa fa-database"></i> @lang('add_task')
-            </a>
-            @endif
+            </a>@endforeach
         </div>
     </div>
 

@@ -248,8 +248,7 @@ if ($sumex) {
                     @lang('case_number')
                 </option>
             </select>
-        </div>
-            @endif
+        </div>@endforeach
     </div>
 </div>
     <?php

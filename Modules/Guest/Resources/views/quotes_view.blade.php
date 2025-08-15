@@ -176,16 +176,14 @@ if ($quote_tax_rates) {
                         }
                         if ($legacy_calculation) {
 
-                    <th class="text-right">@lang('global_discount')</th>
-                    @endif
+                    <th class="text-right">@lang('global_discount')</th>@endforeach
                     <th class="text-right">@lang('total')</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     @if(!$legacy_calculation)
-                    <td class="amount">{{ $global_discount }}</td>
-                    @endif
+                    <td class="amount">{{ $global_discount }}</td>@endforeach
                     <td class="amount">{{ format_currency($quote->quote_item_subtotal) }}</td>
                     <td class="amount">{{ format_currency($quote->quote_item_tax_total) }}</td>
                     @if($quote_tax_rates)

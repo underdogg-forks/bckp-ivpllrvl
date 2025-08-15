@@ -71,12 +71,12 @@ if ($invoice->user_tax_code)
 if ($invoice->user_address_1)
 {htmlsc($invoice->user_address_1)  <br>}
 @endif
-if ($invoice->user_address_2) {
-    echo htmlsc($invoice->user_address_2) . '<br>';
-}
-if ($invoice->user_city) {
-    echo htmlsc($invoice->user_city) . ' InvoicePlane_Web.php';
-}
+if ($invoice->user_address_2)
+{htmlsc($invoice->user_address_2)  <br>}
+@endif
+if ($invoice->user_city)
+{htmlsc($invoice->user_city)   InvoicePlane_Webphp}
+@endif
 if ($invoice->user_state) {
     echo htmlsc($invoice->user_state) . ' InvoicePlane_Web.php';
 }
@@ -114,12 +114,12 @@ if ($invoice->client_address_2)
 if ($invoice->client_city)
 {htmlsc($invoice->client_city)   InvoicePlane_Webphp}
 @endif
-if ($invoice->client_state) {
-    echo htmlsc($invoice->client_state) . ' InvoicePlane_Web.php';
-}
-if ($invoice->client_zip) {
-    echo htmlsc($invoice->client_zip) . '<br>';
-}
+if ($invoice->client_state)
+{htmlsc($invoice->client_state)   InvoicePlane_Webphp}
+@endif
+if ($invoice->client_zip)
+{htmlsc($invoice->client_zip)  <br>}
+@endif
 if ($invoice->client_phone) {
     echo trans('phone_abbr') . ': ' . htmlsc($invoice->client_phone) . '<br>';
 } </p>
@@ -214,9 +214,7 @@ if ($invoice->client_phone) {
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('item_tax')</td>
                             <td class="amount">{{ format_currency($invoice->invoice_item_tax_total) }}</td>
-                        </tr>
-
-@endif
+                        </tr>@endforeach
 
                         @foreach($invoice_tax_rates as $invoice_tax_rate)
                         <tr>
@@ -264,8 +262,7 @@ if ($invoice->client_phone) {
 
 @if($invoice->invoice_balance == 0)
 {<span class="stamp rotate bottom paid">  trans(paid)  </span>}@endforeach elseif ($is_overdue)
-{<span class="stamp rotate bottom overdue">  trans(overdue)  </span>}
-@endif
+{<span class="stamp rotate bottom overdue">  trans(overdue)  </span>}@endforeach
 
                 </div><!-- .invoice-items -->
 
@@ -301,9 +298,7 @@ if ($invoice->client_phone) {
                 </tbody>
                 </table>
 
-                <hr>
-
-@endif
+                <hr>@endforeach
 
                 <div class="row">
 

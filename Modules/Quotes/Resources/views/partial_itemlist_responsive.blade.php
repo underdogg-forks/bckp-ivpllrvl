@@ -87,8 +87,7 @@
                                 </div>
                             </div>
                             @if (!$legacy_calculation)
-                                @include('layout.partial.itemlist_responsive_item_discount_show')
-                            @endif
+                                @include('layout.partial.itemlist_responsive_item_discount_show')@endforeach
                             <div class="row mb-1">
                                 <div class="col-xs-9 col-sm-8">
                                     @lang('tax'):
@@ -98,8 +97,7 @@
                                 </div>
                             </div>
                             @if ($legacy_calculation)
-                                @include('layout.partial.itemlist_responsive_item_discount_show')
-                            @endif
+                                @include('layout.partial.itemlist_responsive_item_discount_show')@endforeach
                             <div class="row mb-1">
                                 <strong>
                                     <div class="col-xs-9 col-sm-8">
@@ -211,8 +209,7 @@
                                     </div>
                                 </div>
                                 @if (!$legacy_calculation)
-                                    @include('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item])
-                                @endif
+                                    @include('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item])@endforeach
                                 <div class="row mb-1">
                                     <div class="col-xs-9 col-sm-8">
                                         @lang('tax'):
@@ -222,8 +219,7 @@
                                     </div>
                                 </div>
                                 @if ($legacy_calculation)
-                                    @include('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item])
-                                @endif
+                                    @include('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item])@endforeach
                                 <div class="row mb-1">
                                     <div class="col-xs-9 col-sm-8">
                                         <b>@lang('total'):</b>
@@ -294,8 +290,7 @@
                             {{ format_currency('0') }}@endforeach
                     </td>
                 </tr>
-                @include('quotes.partial_itemlist_table_quote_discount')
-            @endif
+                @include('quotes.partial_itemlist_table_quote_discount')@endforeach
             <tr>
                 <td><b>@lang('total')</b></td>
                 <td class="amount"><b>{{ format_currency($quote->quote_total) }}</b></td>

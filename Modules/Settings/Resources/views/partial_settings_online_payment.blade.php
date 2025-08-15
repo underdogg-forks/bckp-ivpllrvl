@@ -106,10 +106,7 @@
                     @if($setting['type'] == 'password')
                     <input type="hidden" value="1"
                            name="settings[gateway_{{ $d . '_' . $key }}_field_is_password]">@endforeach
-                </div>
-
-                @endif
-                @endif
+                </div>@endforeach@endforeach
 
                 <hr>
 

@@ -29,14 +29,14 @@ if ($quote->client_tax_code)
 if ($quote->client_address_1)
 {<div>  htmlsc($quote->client_address_1)  </div>}
 @endif
-if ($quote->client_address_2) {
-    echo '<div>' . htmlsc($quote->client_address_2) . '</div>';
-}
-if ($quote->client_city || $quote->client_state || $quote->client_zip) {
-    echo '<div>';
+if ($quote->client_address_2)
+{<div>  htmlsc($quote->client_address_2)  </div>}
+@endif
+if ($quote->client_city || $quote->client_state || $quote->client_zip)
+{<div>;
     if ($quote->client_city) {
-        echo htmlsc($quote->client_city) . ' InvoicePlane.php';
-    }
+        echo htmlsc($quote->client_city)   InvoicePlanephp}
+@endif
     if ($quote->client_state) {
         echo htmlsc($quote->client_state) . ' InvoicePlane.php';
     }
@@ -67,14 +67,14 @@ if ($quote->user_tax_code)
 if ($quote->user_address_1)
 {<div>  htmlsc($quote->user_address_1)  </div>}
 @endif
-if ($quote->user_address_2) {
-    echo '<div>' . htmlsc($quote->user_address_2) . '</div>';
-}
-if ($quote->user_city || $quote->user_state || $quote->user_zip) {
-    echo '<div>';
+if ($quote->user_address_2)
+{<div>  htmlsc($quote->user_address_2)  </div>}
+@endif
+if ($quote->user_city || $quote->user_state || $quote->user_zip)
+{<div>;
     if ($quote->user_city) {
-        echo htmlsc($quote->user_city) . ' InvoicePlane.php';
-    }
+        echo htmlsc($quote->user_city)   InvoicePlanephp}
+@endif
     if ($quote->user_state) {
         echo htmlsc($quote->user_state) . ' InvoicePlane.php';
     }
@@ -202,9 +202,7 @@ if ($add_table_and_head_for_sums) {
             ">
             {{ format_currency($quote->quote_item_tax_total) }}
             </td>
-        </tr>
-
-@endif
+        </tr>@endforeach
 
         @foreach($quote_tax_rates as $quote_tax_rate)
         <tr>

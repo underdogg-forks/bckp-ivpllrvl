@@ -235,8 +235,7 @@
                                     <i class="fa fa-file-pdf-o"></i>
                                 </a>@endforeach
                         </td>
-                    </tr>
-                    @endif
+                    </tr>@endforeach
                     <tr>
                         <td colspan="6" class="text-right small">
                             {{ anchor('invoices/status/all', trans('view_all')) }}

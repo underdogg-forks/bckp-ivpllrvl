@@ -85,7 +85,10 @@ class BladeConverter
 
     private function removeNamespaceDeclaration(string $code): string
     {
-        return preg_replace('/@php\s+namespace\s+.*?\s*@endphp/', '', $code);
+        // The `s` modifier allows the dot to match newlines,
+        // which is important for multi-line cases.
+        // The `?` makes the semicolon optional.
+        return preg_replace('/@php\s+namespace\s+.*?;?\s*@endphp/', '@php', $code);
     }
 
     private function convertEchoUrlHelpers(string $code): string
@@ -247,14 +250,19 @@ class BladeConverter
 
     private function convertI18n(string $code): string
     {
-        $code = preg_replace('/@php\s*_trans\(\s*([\'"][^\'"]+[\'"])\s*\)\s*;?\s*@endphp/', '@lang($1)', $code);
-        $code = preg_replace('/\b_trans\(\s*([\'"][^\'"]+[\'"])\s*\)/', '@lang($1)', $code);
-        $code = preg_replace('/__\(\s*([\'"][^\'"]+[\'"])\s*\)/', '@lang($1)', $code);
-        $code = preg_replace('/\blang\(\s*([\'"][^\'"]+[\'"])\s*\)/', '@lang($1)', $code);
+        // Replaces CodeIgniter's _trans() helper with Laravel's __() helper
+        $code = preg_replace('/@php\s+_trans\(\s*([\'"][^\'"]+[\'"])\s*\)\s*;?\s*@endphp/', '{{ __($1) }}', $code);
+        $code = preg_replace('/\b_trans\(\s*([\'"][^\'"]+[\'"])\s*\)/', '{{ __($1) }}', $code);
 
+        // Replaces Laravel's trans() helper with the shorter __() helper
+        $code = preg_replace('/\{\{\s*trans\((.*?)\)\s*\}\}/', '{{ __($1) }}', $code);
+
+        // Replaces the custom @trans directive with @lang
         $code = str_replace('@trans', '@lang', $code);
 
+        // Additional cleanup
         $code = preg_replace('/@lang\((.*?)\);\s*@endphp/s', '@lang($1)', $code);
+        $code = preg_replace('/\{\{\s*@lang\((.*?)\)\s*\}\}/s', '@lang($1)', $code);
 
         return $code;
     }

@@ -85,10 +85,10 @@ if ($quote->user_address_2) {
     {!! $quote->user_address_2) . '<br>' }}
 }
 if ($quote->user_city) {
-    {{ htmlsc($quote->user_city) . ' InvoicePlane_Web.php' }}
+    {!! $quote->user_city) . ' InvoicePlane_Web.php' }}
 }
 if ($quote->user_state) {
-    {{ htmlsc($quote->user_state) . ' InvoicePlane_Web.php' }}
+    {!! $quote->user_state) . ' InvoicePlane_Web.php' }}
 }
 if ($quote->user_zip) {
     {{ htmlsc($quote->user_zip) . '<br>' }}
@@ -147,12 +147,12 @@ if ($quote->client_phone) {
                                     <td>@lang('expires' !!}</td>
                                     <td class=" amount
                         ">
-                        {{ date_from_mysql($quote->quote_date_expires) }}
+                        {{ date_from_mysql($quote->quote_date_expires !!}
                         </td>
                         </tr>
                         <tr>
                             <td>@php @lang('total')</td>
-                            <td class="amount">{{ format_currency($quote->quote_total) }}</td>
+                            <td class="amount">{{ format_currency($quote->quote_total !!}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -201,9 +201,7 @@ if ($quote->client_phone) {
                                             } else {
                                                 {{ format_currency($quote->quote_discount_amount) }}
                                             } </td>
-                        </tr>
-
-@endif
+                        </tr>@endforeach
 
                         <tr>
                             <td colspan="4"></td>
@@ -217,9 +215,7 @@ if ($quote->client_phone) {
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('item_tax')</td>
                             <td class="amount">{{ format_currency($quote->quote_item_tax_total) }}</td>
-                        </tr>
-
-@endif
+                        </tr>@endforeach
 
                         @foreach($quote_tax_rates as $quote_tax_rate)
                         <tr>

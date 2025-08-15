@@ -63,14 +63,14 @@ if ($invoice->client_tax_code)
 if ($invoice->client_address_1)
 {<div>  htmlsc($invoice->client_address_1)  </div>}
 @endif
-if ($invoice->client_address_2) {
-    echo '<div>' . htmlsc($invoice->client_address_2) . '</div>';
-}
-if ($invoice->client_city || $invoice->client_state || $invoice->client_zip) {
-    echo '<div>';
+if ($invoice->client_address_2)
+{<div>  htmlsc($invoice->client_address_2)  </div>}
+@endif
+if ($invoice->client_city || $invoice->client_state || $invoice->client_zip)
+{<div>;
     if ($invoice->client_city) {
-        echo htmlsc($invoice->client_city) . ' InvoicePlane.php';
-    }
+        echo htmlsc($invoice->client_city)   InvoicePlanephp}
+@endif
     if ($invoice->client_state) {
         echo htmlsc($invoice->client_state) . ' InvoicePlane.php';
     }
@@ -100,14 +100,14 @@ if ($invoice->user_tax_code)
 if ($invoice->user_address_1)
 {<div>  htmlsc($invoice->user_address_1)  </div>}
 @endif
-if ($invoice->user_address_2) {
-    echo '<div>' . htmlsc($invoice->user_address_2) . '</div>';
-}
-if ($invoice->user_city || $invoice->user_state || $invoice->user_zip) {
-    echo '<div>';
+if ($invoice->user_address_2)
+{<div>  htmlsc($invoice->user_address_2)  </div>}
+@endif
+if ($invoice->user_city || $invoice->user_state || $invoice->user_zip)
+{<div>;
     if ($invoice->user_city) {
-        echo htmlsc($invoice->user_city) . ' InvoicePlane.php';
-    }
+        echo htmlsc($invoice->user_city)   InvoicePlanephp}
+@endif
     if ($invoice->user_state) {
         echo htmlsc($invoice->user_state) . ' InvoicePlane.php';
     }
@@ -258,9 +258,7 @@ if ($add_table_and_head_for_sums) {
             ">
             {{ format_currency($invoice->invoice_item_tax_total) }}
             </td>
-        </tr>
-
-@endif
+        </tr>@endforeach
 
         @foreach($invoice_tax_rates as $invoice_tax_rate)
         <tr>

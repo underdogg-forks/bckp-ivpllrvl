@@ -35,8 +35,7 @@
                value="@lang('try_again')">
         @else
         <input type="submit" class="btn btn-success" name="btn_continue"
-               value="@lang('continue')">
-            @endif
+               value="@lang('continue')">@endforeach
 
         </form>
 

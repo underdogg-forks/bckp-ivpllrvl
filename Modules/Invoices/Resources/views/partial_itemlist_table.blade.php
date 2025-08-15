@@ -229,8 +229,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                     <input type="text" name="item_date" class="form-control datepicker"
                            value="{{ format_date($item->item_date) }}"{{ $invoice_disabled }}>
                 </div>
-            </td>
-            @endif
+            </td>@endforeach
 
             <td class="td-amount">
                 <div class="input-group">

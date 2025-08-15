@@ -1,26 +1,25 @@
-@php namespace Modules\Layout\Views\Ajax;
-
-// Determine for who is (Replace $) (type) & (who) _id system
-$who = empty($user_id) ? 'client' : 'user';
-// Basic test
-$type = empty($quote_id) ? 'invoice' : 'quote';
-// Basic test
-$who_id = $who . '_id';
-// Add *_id user/client
-$type_id = $type . '_id';
-// Add *_id quote/invoice
-$type_id = $this->input->post($type_id) ?: false;
-// Type exist? get id
-if (!$type_id) {
-    return;
-    // No quote/invoice id do nothing
-}
-$permissive = get_setting('enable_permissive_search_' . $who . 's');
+@php
+    // Determine for who is (Replace $) (type) & (who) _id system
+    $who = empty($user_id) ? 'client' : 'user';
+    // Basic test
+    $type = empty($quote_id) ? 'invoice' : 'quote';
+    // Basic test
+    $who_id = $who . '_id';
+    // Add *_id user/client
+    $type_id = $type . '_id';
+    // Add *_id quote/invoice
+    $type_id = $this->input->post($type_id) ?: false;
+    // Type exist? get id
+    if (!$type_id) {
+        return;
+        // No quote/invoice id do nothing
+    }
+    $permissive = get_setting('enable_permissive_search_' . $who . 's');
+@endphp
 <script>
     $(function () {
         // Display user change for quote or invoice modal
-        $('#change-{{ $who;
-?>').modal('show');
+        $('#change-{{ $who }}').modal('show');
 
         @include($who . 's/script_select2_' . $who . '_id.js')
 
@@ -57,28 +56,32 @@ $permissive = get_setting('enable_permissive_search_' . $who . 's');
     <form class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
-            <h4 class="panel-title">@php _trans('change_' . $who); </h4>
+            <h4 class="panel-title">{{ __('change_' . $who) }}</h4>
         </div>
         <div class="modal-body">
             <div class="form-group has-feedback">
-                <label for="change_{{ $who }}_id">@php _trans($who); </label>
+                <label for="change_{{ $who }}_id">{{ __($who) }}</label>
                 <div class="input-group">
                     <span id="toggle_permissive_search_{{ $who }}s" class="input-group-addon"
-                          title="@php _trans('enable_permissive_search_' . $who . 's'); "
+                          title="{{ __('enable_permissive_search_' . $who . 's') }}"
                           style="cursor:pointer;">
                         <i class="fa fa-toggle-{{ $permissive ? 'on' : 'off' }} fa-fw"></i>
                     </span>
                     <select name="{{ $who }}_id" id="change_{{ $who }}_id" class="{{ $who }}-id-select form-control"
                             autofocus="autofocus" required>
-                        @php $who_id = ${$who}->{$who_id} ?? $this->input->post($who_id);
-if ($who_id) {
-    $format = 'format_' . $who;
-    // func name
-    $name = $who . '_name';
-    // user or client property
-    $name = empty(${$who}->{$name}) ? $format($who_id) : $user->{$name} }}
-                        <option value="{{ $who_id }}">{!! $name !!}</option>
-                            @endif
+                        @php
+                            $who_id = ${$who}->{$who_id} ?? $this->input->post($who_id);
+                            if ($who_id) {
+                                $format = 'format_' . $who;
+                                // func name
+                                $name = $who . '_name';
+                                // user or client property
+                                $name = empty(${$who}->{$name}) ? $format($who_id) : $user->{$name};
+                            }
+                        @endphp
+                        @if ($who_id)
+                            <option value="{{ $who_id }}">{{ $name }}</option>
+                        @endif
                     </select>
                 </div>
             </div>
@@ -90,14 +93,12 @@ if ($who_id) {
         <div class="modal-footer">
             <div class="btn-group">
                 <button class="btn btn-success ajax_loader" id="{{ $who }}_change_confirm" type="button">
-                    <i class="fa fa-check"></i> @lang('submit')
+                    <i class="fa fa-check"></i> {{ __('submit') }}
                 </button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">
-                    <i class="fa fa-times"></i> @lang('cancel')
+                    <i class="fa fa-times"></i> {{ __('cancel') }}
                 </button>
             </div>
         </div>
-
     </form>
 </div>
-<?php
