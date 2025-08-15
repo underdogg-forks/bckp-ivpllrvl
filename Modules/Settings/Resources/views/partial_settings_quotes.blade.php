@@ -21,11 +21,9 @@
                                 @foreach($invoice_groups as $invoice_group)
                                 <option value="{{ $invoice_group->invoice_group_id }}"
                                     @php
-                                        check_select(get_setting('default_quote_group'), $invoice_group->invoice_group_id);
-                                    @endphp>
+                                        check_select(get_setting('default_quote_group'), $invoice_group->invoice_group_id)>
                                     {{ $invoice_group->invoice_group_name }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -60,7 +58,7 @@
                                     @lang('no')
                                 </option>
                                 <option
-                                    value="1" @php check_select(get_setting('generate_quote_number_for_draft'), '1'); @endphp>
+                                    value="1" @php check_select(get_setting('generate_quote_number_for_draft'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -89,7 +87,7 @@
                                 <option value="0">
                                     @lang('no')
                                 </option>
-                                <option value="1" @php check_select(get_setting('mark_quotes_sent_pdf'), '1'); @endphp>
+                                <option value="1" @php check_select(get_setting('mark_quotes_sent_pdf'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -130,11 +128,9 @@
                                 @foreach($pdf_quote_templates as $quote_template)
                                 <option value="{{ $quote_template }}"
                                     @php
-                                        check_select(get_setting('pdf_quote_template'), $quote_template);
-                                    @endphp>
+                                        check_select(get_setting('pdf_quote_template'), $quote_template)>
                                     {{ $quote_template }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -148,11 +144,9 @@
                                 @foreach($public_quote_templates as $quote_template)
                                 <option value="{{ $quote_template }}"
                                     @php
-                                        check_select(get_setting('public_quote_template'), $quote_template);
-                                    @endphp>
+                                        check_select(get_setting('public_quote_template'), $quote_template)>
                                     {{ $quote_template }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -169,11 +163,9 @@
                                 @foreach($email_templates_quote as $email_template)
                                 <option value="{{ $email_template->email_template_id }}"
                                     @php
-                                        check_select(get_setting('email_quote_template'), $email_template->email_template_id);
-                                    @endphp>
+                                        check_select(get_setting('email_quote_template'), $email_template->email_template_id)>
                                     {{ $email_template->email_template_title }}
-                                </option>
-                                    @endif
+                                </option>@endforeach
                             </select>
                         </div>
 

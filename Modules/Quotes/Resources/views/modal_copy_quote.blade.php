@@ -89,8 +89,7 @@
                 <option value="{{ $invoice_group->invoice_group_id }}"
                         {{ get_setting('default_quote_group') != $invoice_group->invoice_group_id ? '' : 'selected="selected"' }}>
                 {!! $invoice_group->invoice_group_name !!}
-                </option>
-                    @endif
+                </option>@endforeach
             </select>
         </div>
 

@@ -9,7 +9,7 @@
             }
             if (!isset($hide_cancel_button)) {
                 $attribute_cancel = empty($attribute_cancel) ? 'onclick="window.history.back()"' : $attribute_cancel;
-        @endphp
+
         <button type="button" {{ $attribute_cancel }} id="btn-cancel" name="btn_cancel"
                 class="btn btn-danger ajax-loader" value="1">
             <i class="fa fa-times"></i> @lang('cancel')

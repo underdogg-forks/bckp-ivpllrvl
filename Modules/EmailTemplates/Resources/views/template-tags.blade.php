@@ -61,7 +61,7 @@
                 </optgroup>
                 @php $sumex = get_setting('sumex') == '1';
 if ($sumex) {
-                @endphp
+
                 <optgroup label="@lang('sumex_information')">
                     <option value="{{{client_avs}}}">
                         @lang('sumex_ssn')
@@ -76,13 +76,12 @@ if ($sumex) {
                 @php
                     }
                     if ($custom_fields['ip_client_custom']) {
-                @endphp
+
                 <optgroup label="@lang('custom_fields')">
                     @foreach($custom_fields['ip_client_custom'] as $custom)
                     <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
                         {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-                    </option>
-                    @endif
+                    </option>@endforeach
                 </optgroup>
                 @endif
             </select>
@@ -168,13 +167,12 @@ if ($sumex) {
                 @php
                     }
                     if ($custom_fields['ip_user_custom']) {
-                @endphp
+
                 <optgroup label="@lang('custom_fields')">
                     @foreach($custom_fields['ip_user_custom'] as $custom)
                     <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
                         {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-                    </option>
-                    @endif
+                    </option>@endforeach
                 </optgroup>
                 @endif
             </select>
@@ -222,8 +220,7 @@ if ($sumex) {
                     @foreach($custom_fields['ip_quote_custom'] as $custom)
                     <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
                         {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-                    </option>
-                    @endif
+                    </option>@endforeach
                 </optgroup>
                 @endif
             </select>

@@ -1,6 +1,6 @@
 @php namespace Modules\Invoices\Views;
 
-$invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @endphp
+$invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
 
 <div class="row">
     <div id="item_table" class="items table col-xs-12">
@@ -62,8 +62,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                                     @foreach($units as $unit)
                                     <option value="{{ $unit->unit_id }}">
                                         {{ $unit->unit_name . '/' . $unit->unit_name_plrl }}
-                                    </option>
-                                    @endif
+                                    </option>@endforeach
                                 </select>
                             </div>
                             <div class="input-group">
@@ -74,7 +73,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                             </div>
                             @if(!$legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input');
-} @endphp
+}
                             <div class="input-group">
                                 <label for="item_tax_rate_id"
                                        class="input-group-addon ig-addon-aligned">@lang('tax_rate')</label>
@@ -83,16 +82,14 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                                     @foreach($tax_rates as $tax_rate)
                                     <option value="{{ $tax_rate->tax_rate_id }}"
                                         @php
-                                            check_select(get_setting('default_item_tax_rate'), $tax_rate->tax_rate_id);
-                                        @endphp>
+                                            check_select(get_setting('default_item_tax_rate'), $tax_rate->tax_rate_id)>
                                         {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . $tax_rate->tax_rate_name }}
-                                    </option>
-                                    @endif
+                                    </option>@endforeach
                                 </select>
                             </div>
                             @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input');
-} @endphp
+}
                         </div>
 
                         <input type="hidden" name="invoice_id" value="{{ $invoice_id }}">
@@ -111,7 +108,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                             </div>
                             @if(!$legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show');
-} @endphp
+}
                             <div class="row mb-1">
                                 <div class="col-xs-9 col-sm-8">
                                     @lang('tax'):
@@ -122,7 +119,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                             </div>
                             @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show');
-} @endphp
+}
                             <div class="row mb-1">
                                 <strong>
                                     <div class="col-xs-9 col-sm-8">
@@ -161,7 +158,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                                         $item_recurrence_state = '0';
                                         $item_recurrence_class = 'fa-calendar-o text-muted';
                                     }
-                            @endphp
+
                             <i title="{{ trans('recurring') }}"
                                class="js-item-recurrence-toggler cursor-pointer fa {{ $item_recurrence_class }}">
                             </i>
@@ -172,17 +169,16 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                             <button type="button" class="btn_delete_item btn btn-link" title="@lang('delete')"
                                     data-item-id="{{ $item->item_id }}">
                                 <i class="fa fa-trash-o text-danger"></i>
-                            </button>
-                            @endif
+                            </button>@endforeach
                         </div>
 
                         <div class="col-xs-12 col-sm-11">
                             <input type="hidden" name="invoice_id" value="{{ $invoice_id }}">
                             <input type="hidden" name="item_id" value="{{ $item->item_id }}"{{ $invoice_disabled }}>
-                            <input type="hidden" name="item_task_id" class="item-task-id" value="@if($item->item_task_id) {
-        echo $item->item_task_id;
-    }
-    @endphp">
+                            <input type="hidden" name="item_task_id" class="item-task-id" value="@if($item->item_task_id)
+{$item->item_task_id}
+@endif
+    ">
                             <input type="hidden" name="item_product_id" value="{{ $item->item_product_id }}">
 
                             <div class="input-group">
@@ -230,11 +226,9 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                                     @foreach($units as $unit)
                                     <option value="{{ $unit->unit_id }}"
                                         @php
-                                            check_select($item->item_product_unit_id, $unit->unit_id);
-                                        @endphp>
+                                            check_select($item->item_product_unit_id, $unit->unit_id)>
                                         {!! $unit->unit_name) . '/' . htmlsc($unit->unit_name_plrl !!}
-                                    </option>
-                                    @endif
+                                    </option>@endforeach
                                 </select>
                             </div>
                             <div class="input-group">
@@ -248,7 +242,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                             @if(!$legacy_calculation) {
                                     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input', ['item' => $item]);
                                 }
-                            @endphp
+
                             <div class="input-group">
                                 <label for="item_tax_rate_id_{{ $item->item_id }}"
                                        class="input-group-addon ig-addon-aligned">@lang('tax_rate')</label>
@@ -258,17 +252,15 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                                     @foreach($tax_rates as $tax_rate)
                                     <option value="{{ $tax_rate->tax_rate_id }}"
                                         @php
-                                            check_select($item->item_tax_rate_id, $tax_rate->tax_rate_id);
-                                        @endphp>
+                                            check_select($item->item_tax_rate_id, $tax_rate->tax_rate_id)>
                                         {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . $tax_rate->tax_rate_name }}
-                                    </option>
-                                    @endif
+                                    </option>@endforeach
                                 </select>
                             </div>
                             @if($legacy_calculation) {
                                     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input', ['item' => $item]);
                                 }
-                            @endphp
+
                         </div>
                         <div class="col-xs-12 col-md-6 text-right">
                             <div class="row mb-1">
@@ -282,7 +274,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                             @if(!$legacy_calculation) {
                                     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item]);
                                 }
-                            @endphp
+
                             <div class="row mb-1">
                                 <div class="col-xs-9 col-sm-8">
                                     @lang('tax'):
@@ -294,7 +286,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                             @if($legacy_calculation) {
                                     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item]);
                                 }
-                            @endphp
+
                             <div class="row mb-1">
                                 <div class="col-xs-9 col-sm-8">
                                     <b>@lang('total'):</b>
@@ -339,7 +331,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
         <table class="table table-bordered text-right">
             @if(!$legacy_calculation) {
     $this->layout->loadView('invoices/partial_itemlist_table_invoice_discount');
-} @endphp
+}
             <tr>
                 <td style="width: 40%;">@lang('subtotal')</td>
                 <td style="width: 60%;"
@@ -374,12 +366,12 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @
                     } else {
                         echo format_currency('0');
                     }
-                    @endphp
+
                 </td>
             </tr>
                 <?php
                 $this->layout->loadView('invoices/partial_itemlist_table_invoice_discount');
-            } @endphp
+            }
             <tr>
                 <td>@lang('total')</td>
                 <td class="amount"><b>{{ format_currency($invoice->invoice_total) }}</b></td>

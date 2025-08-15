@@ -94,8 +94,7 @@
                     <option value="{{ $invoice_group->invoice_group_id }}"
                     @php
                         check_select(get_setting('default_invoice_group'), $invoice_group->invoice_group_id) }}>
-                                                {!! $invoice_group->invoice_group_name !!}</option>
-                        @endif
+                                                {!! $invoice_group->invoice_group_name !!}</option>@endforeach
                 </select>
             </div>
 

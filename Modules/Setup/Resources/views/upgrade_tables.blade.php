@@ -22,8 +22,7 @@
                         <i class=" fa fa-close text-danger fa-margin
         "></i>
         {{ $error }}
-        </p>
-        @endif
+        </p>@endforeach
 
         @else
         <p>

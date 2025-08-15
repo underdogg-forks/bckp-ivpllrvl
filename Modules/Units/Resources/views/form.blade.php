@@ -16,11 +16,11 @@
                 @include('layout.alerts')
 
                 <input class="hidden" name="is_update" type="hidden"
-                    @if($this->mdl_units->form_value('is_update')) {
-    echo 'value="1"';
-} else {
+                    @if($this->mdl_units->form_value('is_update'))
+{value="1"}
+@endif else {
     echo 'value="0"';
-} @endphp
+}
                 >
 
                 <div class="form-group">

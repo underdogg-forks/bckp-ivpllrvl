@@ -71,8 +71,7 @@
                     <option value="{{ $key }}">
                     @php
                         _trans($lang) }}
-                                            </option>
-                                        @endif
+                                            </option>@endforeach
                 </select>
             </div>
 

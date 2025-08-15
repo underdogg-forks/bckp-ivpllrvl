@@ -52,7 +52,7 @@
             </td>
             @if(!$legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_table_item_discount_input');
-} @endphp
+}
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('tax_rate')</span>
@@ -61,14 +61,13 @@
                         @foreach($tax_rates as $tax_rate)
                         <option value="{{ $tax_rate->tax_rate_id }}">
                             {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . $tax_rate->tax_rate_name }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
             </td>
             @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_table_item_discount_input');
-} @endphp
+}
             <td class="td-icon text-right td-vert-middle">
                 <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')">
                     <i class="fa fa-trash-o text-danger"></i>
@@ -91,8 +90,7 @@
                         @foreach($units as $unit)
                         <option value="{{ $unit->unit_id }}">
                             {!! $unit->unit_name) . '/' . htmlsc($unit->unit_name_plrl !!}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
             </td>
@@ -102,14 +100,14 @@
             </td>
             @if(!$legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show');
-} @endphp
+}
             <td class="td-amount td-vert-middle">
                 <span>@lang('tax')</span><br/>
                 <span name="item_tax_total" class="amount"></span>
             </td>
             @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show');
-} @endphp
+}
             <td class="td-amount td-vert-middle">
                 <span>@lang('total')</span><br/>
                 <span name="item_total" class="amount"></span>
@@ -150,7 +148,7 @@
             @if(!$legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_input', ['item' => $item]);
                 }
-            @endphp
+
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('tax_rate')</span>
@@ -158,18 +156,17 @@
                         <option value="0">@lang('none')</option>
                         @foreach($tax_rates as $tax_rate) {
                                 $is_selected = $item->item_tax_rate_id == $tax_rate->tax_rate_id ? ' selected="selected"' : '';
-                        @endphp
+
                         <option value="{{ $tax_rate->tax_rate_id }}"{{ $is_selected }}>
                             {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . htmlsc($tax_rate->tax_rate_name) }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
             </td>
             @if($legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_input', ['item' => $item]);
                 }
-            @endphp
+
             <td class="td-icon text-right td-vert-middle">
                 <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')"
                         data-item-id="{{ $item->item_id }}">
@@ -194,11 +191,9 @@
                         @foreach($units as $unit)
                         <option value="{{ $unit->unit_id }}"
                             @php
-                                check_select($item->item_product_unit_id, $unit->unit_id);
-                            @endphp>
+                                check_select($item->item_product_unit_id, $unit->unit_id)>
                             {!! $unit->unit_name) . '/' . htmlsc($unit->unit_name_plrl !!}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
             </td>
@@ -211,7 +206,7 @@
             @if(!$legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show', ['item' => $item]);
                 }
-            @endphp
+
             <td class="td-amount td-vert-middle">
                 <span>@lang('tax')</span><br/>
                 <span name="item_tax_total" class="amount">
@@ -221,7 +216,7 @@
             @if($legacy_calculation) {
                     $this->layout->loadView('layout/partial/itemlist_table_item_discount_show', ['item' => $item]);
                 }
-            @endphp
+
             <td class="td-amount td-vert-middle">
                 <span>@lang('total')</span><br/>
                 <span name="item_total" class="amount">
@@ -232,7 +227,7 @@
         </tbody>
         @php
             }
-            // End foreach items @endphp
+            // End foreach items
 
     </table>
 </div>
@@ -259,7 +254,7 @@
         <table class="table table-bordered text-right">
             @if(!$legacy_calculation) {
     $this->layout->loadView('quotes/partial_itemlist_table_quote_discount');
-} @endphp
+}
             <tr>
                 <td style="width: 40%;">@lang('subtotal')</td>
                 <td style="width: 60%;" class="amount">{{ format_currency($quote->quote_item_subtotal) }}</td>
@@ -293,12 +288,12 @@
                     } else {
                         echo format_currency('0');
                     }
-                    @endphp
+
                 </td>
             </tr>
                 <?php
                 $this->layout->loadView('quotes/partial_itemlist_table_quote_discount');
-            } @endphp
+            }
             <tr>
                 <td><b>@lang('total')</b></td>
                 <td class="amount"><b>{{ format_currency($quote->quote_total) }}</b></td>

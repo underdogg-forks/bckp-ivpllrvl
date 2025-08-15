@@ -57,8 +57,7 @@
             </td>
         </tr>
     <?php
-}
-// End foreach @endphp
+@endforeach
 </tbody >
 
     </table >

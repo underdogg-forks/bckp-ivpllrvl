@@ -23,8 +23,7 @@
                 {{ date('F d Y H:i:s.', filemtime($invoice)) }}
             </td>
 
-        </tr>
-            @endif
+        </tr>@endforeach
         </tbody>
 
     </table>

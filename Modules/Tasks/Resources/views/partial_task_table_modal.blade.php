@@ -28,13 +28,12 @@
                             <b>{{ date_from_mysql($task->task_finish_date) }}</b>
                         </td>
                         <td>
-                            {{ nl2br(htmlsc($task->task_description)) }}
+                            {{ nl2br(e($task->task_description)) }}
                         </td>
                         <td class="amount">
                             {{ format_currency($task->task_price) }}
                         </td>
-                    </tr>
-                @endif
+                    </tr>@endforeach
 
     </table>
 </div><?php

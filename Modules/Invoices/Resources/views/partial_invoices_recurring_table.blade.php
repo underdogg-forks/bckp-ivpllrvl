@@ -21,8 +21,7 @@
             <td>
                             <span class="label label-{{ $invoice->recur_status != 'active' ? 'default' : 'success' }}">
                                 @php
-                                    _trans($invoice->recur_status);
-                                @endphp
+                                    _trans($invoice->recur_status)
                             </span>
             </td>
             <td>
@@ -35,7 +34,7 @@
             <td>{{ date_from_mysql($invoice->recur_end_date) }}</td>
             <td>@php
                     _trans($recur_frequencies[$invoice->recur_frequency]);
-                @endphp</td>
+                </td>
             <td>{{ date_from_mysql($invoice->recur_next_date) }}</td>
             <td>
                 <div class="options btn-group">
@@ -61,8 +60,7 @@
                     </ul>
                 </div>
             </td>
-        </tr>
-            @endif
+        </tr>@endforeach
         </tbody>
 
     </table>

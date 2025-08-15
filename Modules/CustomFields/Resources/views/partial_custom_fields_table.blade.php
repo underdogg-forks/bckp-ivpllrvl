@@ -17,16 +17,15 @@
         @foreach($custom_fields as $custom_field) {
     $alpha = str_replace('-', '_', mb_strtolower($custom_field->custom_field_type));
     $position = $positions[$custom_field->custom_field_table][$custom_field->custom_field_location];
-        @endphp
+
         <tr>
             <td>{!! $custom_field->custom_field_label !!}</td>
             <td>@php
-                    _trans($custom_tables[$custom_field->custom_field_table]);
-                @endphp</td>
+                    _trans($custom_tables[$custom_field->custom_field_table])</td>
             <td>{{ $position }}</td>
             <td>@php
                     _trans($alpha);
-                @endphp</td>
+                </td>
             <td>{{ $custom_field->custom_field_order }}</td>
             <td>
                 <div class="options btn-group btn-group-sm">
@@ -37,8 +36,7 @@
                     <a href="{{ url('custom_values/field/' . $custom_field->custom_field_id) }}"
                        class="btn btn-default">
                         <i class="fa fa-list fa-margin"></i> @lang('values')
-                    </a>
-                    @endif
+                    </a>@endforeach
                     <ul class="dropdown-menu">
                         <li>
                             <a href="{{ url('custom_fields/form/' . $custom_field->custom_field_id) }}">

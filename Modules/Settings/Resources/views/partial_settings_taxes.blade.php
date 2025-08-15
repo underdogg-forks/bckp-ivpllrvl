@@ -21,11 +21,9 @@
                                 @foreach($tax_rates as $tax_rate)
                                 <option value="{{ $tax_rate->tax_rate_id }}"
                                     @php
-                                        check_select(get_setting('default_invoice_tax_rate'), $tax_rate->tax_rate_id);
-                                    @endphp>
+                                        check_select(get_setting('default_invoice_tax_rate'), $tax_rate->tax_rate_id)>
                                     {{ $tax_rate->tax_rate_percent . '% - ' . $tax_rate->tax_rate_name }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -39,11 +37,9 @@
                                 @foreach($tax_rates as $tax_rate)
                                 <option value="{{ $tax_rate->tax_rate_id }}"
                                     @php
-                                        check_select(get_setting('default_item_tax_rate'), $tax_rate->tax_rate_id);
-                                    @endphp>
+                                        check_select(get_setting('default_item_tax_rate'), $tax_rate->tax_rate_id)>
                                     {{ $tax_rate->tax_rate_percent . '% - ' . $tax_rate->tax_rate_name }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -52,7 +48,7 @@
                     @php // LEGACY_CALCULATION false : Taxes Global N, Item Y : Use simple calculation : Apply global discount before item tax
 // For e-invoices : 🗸 EN16931, ? PEPPOL3BIS, ? UBL, ? CII ••• (WIP : todo: checks, modify, create Models).
 if (!$legacy_calculation) {
-                    @endphp
+
                     <input name="settings[default_include_item_tax]" id="settings[default_include_item_tax]"
                            type="hidden" value="">
                     @else
@@ -65,13 +61,11 @@ if (!$legacy_calculation) {
                                     class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                 <option value="">@lang('none')</option>
                                 <option value="0" @php
-                                    check_select(get_setting('default_include_item_tax'), '0');
-                                @endphp>
+                                    check_select(get_setting('default_include_item_tax'), '0')>
                                     @lang('apply_before_item_tax')
                                 </option>
                                 <option value="1" @php
-                                    check_select(get_setting('default_include_item_tax'), '1');
-                                @endphp>
+                                    check_select(get_setting('default_include_item_tax'), '1')>
                                     @lang('apply_after_item_tax')
                                 </option>
                             </select>
@@ -79,7 +73,7 @@ if (!$legacy_calculation) {
                     </div>
     <?php
 }
-// Fi LEGACY_CALCULATION (Show or not Global Taxes) - since v1.6.3 @endphp
+// Fi LEGACY_CALCULATION (Show or not Global Taxes) - since v1.6.3
 </div >
 
             </div >

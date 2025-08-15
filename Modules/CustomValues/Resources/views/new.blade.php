@@ -2,7 +2,7 @@
 
 $href = site_url('custom_fields/form/' . $field->custom_field_id);
 $link = anchor($href, '<i class="fa fa-edit fa-margin"></i> ' . htmlsc($field->custom_field_label), ' class="btn btn-default"');
-$alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']); @endphp
+$alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']);
 <form method="post">
 
     @csrf
@@ -11,9 +11,9 @@ $alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']); @endphp
         <h1 class="headerbar-title">@lang('custom_values_new')</h1>
         @include('layout.header_buttons')
         <div class="visible-sm visible-md visible-lg headerbar-item pull-right">
-            <div class="badge">@lang('table'): @php _trans($table); @endphp</div>
+            <div class="badge">@lang('table'): @php _trans($table)</div>
             <div class="badge">@lang('position'): {{ $position }}</div>
-            <div class="badge">@lang('type'): @php _trans($alpha); @endphp</div>
+            <div class="badge">@lang('type'): @php _trans($alpha)</div>
             @lang('field'): {{ $link }}
         </div>
     </div>
@@ -37,7 +37,7 @@ $alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']); @endphp
                     </div>
 
                     <div class="col-xs-12">
-                        <div class="form-group badge">@lang('table'): @php _trans($table); @endphp</div>
+                        <div class="form-group badge">@lang('table'): @php _trans($table)</div>
                     </div>
 
                     <div class="col-xs-12">
@@ -45,7 +45,7 @@ $alpha = strtr(mb_strtolower($field->custom_field_type), ['-' => '_']); @endphp
                     </div>
 
                     <div class="col-xs-12">
-                        <div class="form-group badge">@lang('type'): @php _trans($alpha); @endphp</div>
+                        <div class="form-group badge">@lang('type'): @php _trans($alpha)</div>
                     </div>
                 </div>
             </div>

@@ -19,11 +19,9 @@
                                 @foreach($invoice_groups as $invoice_group)
                                 <option value="{{ $invoice_group->invoice_group_id }}"
                                     @php
-                                        check_select(get_setting('default_invoice_group'), $invoice_group->invoice_group_id);
-                                    @endphp>
+                                        check_select(get_setting('default_invoice_group'), $invoice_group->invoice_group_id)>
                                     {{ $invoice_group->invoice_group_name }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -50,11 +48,9 @@
                                 @foreach($payment_methods as $payment_method)
                                 <option value="{{ $payment_method->payment_method_id }}"
                                     @php
-                                        check_select($payment_method->payment_method_id, get_setting('invoice_default_payment_method'));
-                                    @endphp>
+                                        check_select($payment_method->payment_method_id, get_setting('invoice_default_payment_method'))>
                                     {{ $payment_method->payment_method_name }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -78,7 +74,7 @@
                                     @lang('no')
                                 </option>
                                 <option
-                                    value="1" @php check_select(get_setting('generate_invoice_number_for_draft'), '1'); @endphp>
+                                    value="1" @php check_select(get_setting('generate_invoice_number_for_draft'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -93,7 +89,7 @@
                                 <option value="0">
                                     @lang('no')
                                 </option>
-                                <option value="1" @php check_select(get_setting('einvoicing'), '1'); @endphp>
+                                <option value="1" @php check_select(get_setting('einvoicing'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -127,7 +123,7 @@
                                     @lang('no')
                                 </option>
                                 <option
-                                    value="1" @php check_select(get_setting('mark_invoices_sent_pdf'), '1'); @endphp>
+                                    value="1" @php check_select(get_setting('mark_invoices_sent_pdf'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -154,7 +150,7 @@
                                 <option value="0">
                                     @lang('no')
                                 </option>
-                                <option value="1" @php check_select(get_setting('pdf_watermark'), '1'); @endphp>
+                                <option value="1" @php check_select(get_setting('pdf_watermark'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -198,11 +194,9 @@
                                 @foreach($pdf_invoice_templates as $invoice_template)
                                 <option value="{{ $invoice_template }}"
                                     @php
-                                        check_select(get_setting('pdf_invoice_template'), $invoice_template);
-                                    @endphp>
+                                        check_select(get_setting('pdf_invoice_template'), $invoice_template)>
                                     {{ $invoice_template }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -216,11 +210,9 @@
                                 @foreach($pdf_invoice_templates as $invoice_template)
                                 <option value="{{ $invoice_template }}"
                                     @php
-                                        check_select(get_setting('pdf_invoice_template_paid'), $invoice_template);
-                                    @endphp>
+                                        check_select(get_setting('pdf_invoice_template_paid'), $invoice_template)>
                                     {{ $invoice_template }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -235,11 +227,9 @@
                                 @foreach($pdf_invoice_templates as $invoice_template)
                                 <option value="{{ $invoice_template }}"
                                     @php
-                                        check_select(get_setting('pdf_invoice_template_overdue'), $invoice_template);
-                                    @endphp>
+                                        check_select(get_setting('pdf_invoice_template_overdue'), $invoice_template)>
                                     {{ $invoice_template }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -253,11 +243,9 @@
                                 @foreach($public_invoice_templates as $invoice_template)
                                 <option value="{{ $invoice_template }}"
                                     @php
-                                        check_select(get_setting('public_invoice_template'), $invoice_template);
-                                    @endphp>
+                                        check_select(get_setting('public_invoice_template'), $invoice_template)>
                                     {{ $invoice_template }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -274,11 +262,9 @@
                                 @foreach($email_templates_invoice as $email_template)
                                 <option value="{{ $email_template->email_template_id }}"
                                     @php
-                                        check_select(get_setting('email_invoice_template'), $email_template->email_template_id);
-                                    @endphp>
+                                        check_select(get_setting('email_invoice_template'), $email_template->email_template_id)>
                                     {{ $email_template->email_template_title }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -293,11 +279,9 @@
                                 @foreach($email_templates_invoice as $email_template)
                                 <option value="{{ $email_template->email_template_id }}"
                                     @php
-                                        check_select(get_setting('email_invoice_template_paid'), $email_template->email_template_id);
-                                    @endphp>
+                                        check_select(get_setting('email_invoice_template_paid'), $email_template->email_template_id)>
                                     {{ $email_template->email_template_title }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -312,11 +296,9 @@
                                 @foreach($email_templates_invoice as $email_template)
                                 <option value="{{ $email_template->email_template_id }}"
                                     @php
-                                        check_select(get_setting('email_invoice_template_overdue'), $email_template->email_template_id);
-                                    @endphp>
+                                        check_select(get_setting('email_invoice_template_overdue'), $email_template->email_template_id)>
                                     {{ $email_template->email_template_title }}
-                                </option>
-                                @endif
+                                </option>@endforeach
                             </select>
                         </div>
 
@@ -346,7 +328,7 @@
             </div>
             <div class="panel-body">
 
-                @php $qr_code = get_setting('qr_code'); @endphp
+                @php $qr_code = get_setting('qr_code')
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
@@ -360,7 +342,7 @@
                                 name="settings[qr_code]"
                                 id="settings[qr_code]"
                                 value="1"
-                                @php check_select($qr_code, 1, '==', true); @endphp
+                                @php check_select($qr_code, 1, '==', true);
                             >
                             @lang('qr_code_settings_enable')
                         </label>
@@ -471,7 +453,7 @@
                                     @lang('no')
                                 </option>
                                 <option
-                                    value="1" @php check_select(get_setting('automatic_email_on_recur'), '1'); @endphp>
+                                    value="1" @php check_select(get_setting('automatic_email_on_recur'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -496,13 +478,13 @@
                             </label>
                             <select name="settings[read_only_toggle]" id="settings[read_only_toggle]"
                                     class="form-control simple-select" data-minimum-results-for-search="Infinity">
-                                <option value="2" @php check_select(get_setting('read_only_toggle'), '2'); @endphp>
+                                <option value="2" @php check_select(get_setting('read_only_toggle'), '2')>
                                     @lang('sent')
                                 </option>
-                                <option value="3" @php check_select(get_setting('read_only_toggle'), '3'); @endphp>
+                                <option value="3" @php check_select(get_setting('read_only_toggle'), '3')>
                                     @lang('viewed')
                                 </option>
-                                <option value="4" @php check_select(get_setting('read_only_toggle'), '4'); @endphp>
+                                <option value="4" @php check_select(get_setting('read_only_toggle'), '4')>
                                     @lang('paid')
                                 </option>
                             </select>
@@ -517,11 +499,11 @@
                                     id="settings[no_update_invoice_due_date_mail]"
                                     data-minimum-results-for-search="Infinity">
                                 <option
-                                    value="1" @php check_select(get_setting('no_update_invoice_due_date_mail'), '1'); @endphp>
+                                    value="1" @php check_select(get_setting('no_update_invoice_due_date_mail'), '1')>
                                     @lang('yes')
                                 </option>
                                 <option
-                                    value="0" @php check_select(get_setting('no_update_invoice_due_date_mail'), '0'); @endphp>
+                                    value="0" @php check_select(get_setting('no_update_invoice_due_date_mail'), '0')>
                                     @lang('no')
                                 </option>
                             </select>
@@ -533,7 +515,6 @@
         @php $sumex = get_setting('sumex');
 // Set in ipconfig OR is 1 (in db)
 if (SUMEX_SETTINGS || $sumex == '1') {
-        @endphp
 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -553,8 +534,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     @lang('no')
                                 </option>
                                 <option value="1" @php
-                                    check_select($sumex, '1');
-                                @endphp>
+                                    check_select($sumex, '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -570,13 +550,12 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                 @php
                                     $slipTypes = ['esr9', 'esrRed'];
                                     foreach ($slipTypes as $k => $v) {
-                                @endphp
+
                                 <option value="{{ $k }}" @php
-                                    check_select(get_setting('sumex_sliptype'), $k);
-                                @endphp>
+                                    check_select(get_setting('sumex_sliptype'), $k)>
                                     @php
                                         _trans('invoice_sumex_sliptype-' . $v);
-                                    @endphp
+
                                 </option>
                                 @endif
                             </select>
@@ -593,13 +572,12 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                 @php
                                     $roles = Modules\Core\Libraries\Sumex::ROLES;
                                     foreach ($roles as $k => $v) {
-                                @endphp
+
                                 <option value="{{ $k }}" @php
-                                    check_select(get_setting('sumex_role'), $k);
-                                @endphp>
+                                    check_select(get_setting('sumex_role'), $k)>
                                     @php
                                         _trans('invoice_sumex_role_' . $v);
-                                    @endphp
+
                                 </option>
                                 @endif
                             </select>
@@ -614,13 +592,12 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                 @php
                                     $places = Modules\Core\Libraries\Sumex::PLACES;
                                     foreach ($places as $k => $v) {
-                                @endphp
+
                                 <option value="{{ $k }}" @php
-                                    check_select(get_setting('sumex_place'), $k);
-                                @endphp>
+                                    check_select(get_setting('sumex_place'), $k)>
                                     @php
                                         _trans('invoice_sumex_place_' . $v);
-                                    @endphp
+
                                 </option>
                                 @endif
                             </select>
@@ -635,10 +612,9 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                 @php
                                     $cantons = Modules\Core\Libraries\Sumex::CANTONS;
                                     foreach ($cantons as $k => $v) {
-                                @endphp
+
                                 <option value="{{ $k }}" @php
-                                    check_select(get_setting('sumex_canton'), $k);
-                                @endphp>
+                                    check_select(get_setting('sumex_canton'), $k)>
                                     {{ $v }}
                                 </option>
                                 @endif
@@ -650,7 +626,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
         </div>
     <?php
 }
-// End If Modules\Core\Libraries\Sumex @endphp
+// End If Modules\Core\Libraries\Sumex
 
 </div >
 </div >

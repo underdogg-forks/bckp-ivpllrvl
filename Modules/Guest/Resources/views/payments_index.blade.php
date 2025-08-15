@@ -38,8 +38,7 @@
                     <td>{{ format_currency($payment->payment_amount) }}</td>
                     <td>{{ $payment->payment_method_name }}</td>
                     <td>{!! $payment->payment_note !!}</td>
-                </tr>
-                    @endif
+                </tr>@endforeach
                 </tbody>
 
             </table>

@@ -5,7 +5,7 @@ $its_mine = $this->session->__get('user_id') == $quote->user_id;
 $my_class = $its_mine ? 'success' : 'warning';
 // visual: work with text-* alert-*
 // In change user toggle & After eInvoice (name) when user required field missing
-$edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing') . '): ' . PHP_EOL . htmlsc(format_user($quote->user_id)); @endphp
+$edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing') . '): ' . PHP_EOL . htmlsc(format_user($quote->user_id));
 
 <script>
     $(function () {
@@ -42,7 +42,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
         });
         @php
             }
-            // End if @endphp
+            // End if
 
         $('#btn_save_quote').click(function () {
             var items = [];
@@ -216,7 +216,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
         }
         // End if draft
     }
-    // End if change_user @endphp
+    // End if change_user
     </h1>
 
     <div class="headerbar-item pull-right btn-group">
@@ -307,7 +307,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                             @php
                                 }
                                 if ($quote->client_phone) {
-                            @endphp
+
                             <div>
                                 @lang('phone'):&nbsp;
                                 {!! $quote->client_phone !!}
@@ -315,12 +315,11 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                             @php
                                 }
                                 if ($quote->client_email) {
-                            @endphp
+
                             <div>
                                 @lang('email'):&nbsp;
                                 @php
-                                    _auto_link($quote->client_email);
-                                @endphp
+                                    _auto_link($quote->client_email)
                             </div>
                         @endif
 
@@ -343,7 +342,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                                 <i class="fa fa-file-code-o"></i>
                                                 {{ $einvoice->name;
             if ($einvoice->user) {
-                @endphp
+
                                                 <i class="fa fa-check-square-o text-success"></i>
         @else
                                                 <a class="fa fa-user-times text-warning"
@@ -403,11 +402,10 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                                 data-minimum-results-for-search="Infinity">
                                             @foreach($quote_statuses as $key => $status) {
     $is_selected = $key == $quote->quote_status_id ? ' selected="selected"' : '';
-                                            @endphp
+
                                             <option value="{{ $key }}"{{ $is_selected }}>
                                                 {{ $status['label'] }}
-                                            </option>
-                                            @endif
+                                            </option>@endforeach
                                         </select>
                                     </div>
                                     <div class="quote-properties">
@@ -442,7 +440,7 @@ foreach ($custom_fields as $custom_field) {
     if ($custom_field->custom_field_location == 1) {
         print_field($this->mdl_quotes, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
     }
-} @endphp
+}
                             </div>
                         </div>
                     </div>
@@ -450,7 +448,7 @@ foreach ($custom_fields as $custom_field) {
 
             </div>
 
-            @php $this->layout->loadView('quotes/partial_itemlist_' . (get_setting('show_responsive_itemlist') ? 'responsive' : 'table')); @endphp
+            @php $this->layout->loadView('quotes/partial_itemlist_' . (get_setting('show_responsive_itemlist') ? 'responsive' : 'table'))
 
             <hr/>
 
@@ -470,7 +468,7 @@ foreach ($custom_fields as $custom_field) {
                 </div>
                 <div class="col-xs-12 col-md-6">
 
-                    @php _dropzone_html(false); @endphp
+                    @php _dropzone_html(false)
 
                 </div>
             </div>
@@ -492,7 +490,7 @@ foreach ($custom_fields as $custom_field) {
                                                 print_field($this->mdl_quotes, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
                                             }
                                         }
-                                    @endphp
+
                                 </div>
                             </div>
                         </div>
@@ -501,7 +499,7 @@ foreach ($custom_fields as $custom_field) {
                 </div>
 
                 }
-                // End if custom_fields @endphp
+                // End if custom_fields
         </div>
 
 _dropzone_script($quote->quote_url_key, $quote->client_id);

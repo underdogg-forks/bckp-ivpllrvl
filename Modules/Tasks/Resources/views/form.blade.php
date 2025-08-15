@@ -1,6 +1,6 @@
 @php namespace Modules\Tasks\Views;
 
-if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4) { @endphp
+if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4) {
 <script type="text/javascript">
     $(document).ready(function () {
         $('#task-form').find(':input').prop('disabled', 'disabled');
@@ -37,10 +37,10 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
                     #{{ $this->mdl_tasks->form_value('task_id') }}&nbsp;
                     {{ $this->mdl_tasks->form_value('task_name', true);
 } else {
-@endphp
+
                     @php
 @lang('new_task');
-} @endphp
+}
             </div>
             <div class="panel-body">
 
@@ -76,8 +76,7 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
                         @php
                             check_select($this->mdl_tasks->form_value('tax_rate_id'), $tax_rate->tax_rate_id) }}>
                                                             {{ $tax_rate->tax_rate_name . ' (' . format_amount($tax_rate->tax_rate_percent) . '%)' }}
-                                                        </option>
-                        @endif
+                                                        </option>@endforeach
                     </select>
                 </div>
 
@@ -100,13 +99,11 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
     if ($this->mdl_tasks->form_value('task_status') != 4 && $key == 4) {
         continue;
     }
-                        @endphp
+
                         <option value="{{ $key }}" @php
-                            check_select($key, $this->mdl_tasks->form_value('task_status'));
-                        @endphp>
+                            check_select($key, $this->mdl_tasks->form_value('task_status'))>
                             {{ $status['label'] }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
 
@@ -128,11 +125,9 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
                         @foreach($projects as $project)
                         <option value="{{ $project->project_id }}"
                             @php
-                                check_select($this->mdl_tasks->form_value('project_id'), $project->project_id);
-                            @endphp>
+                                check_select($this->mdl_tasks->form_value('project_id'), $project->project_id)>
                             {{ htmlspecialchars($project->project_name, ENT_COMPAT) }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
 

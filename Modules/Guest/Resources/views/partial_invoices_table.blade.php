@@ -17,7 +17,7 @@
         <tbody>
         @foreach($invoices as $invoice) {
     $css_class = $invoice->invoice_status_id != 4 && $invoice->invoice_date_due < date('Y-m-d') ? 'font-overdue' : '';
-        @endphp
+
         <tr>
             <td>
                 <a href="{{ url('guest/invoices/view/' . $invoice->invoice_id) }}">
@@ -48,8 +48,7 @@
                     @elseif($invoice->invoice_balance == 0)
                     <button class="btn btn-success disabled">
                         <i class="fa fa-check"></i> @lang('paid')
-                    </button>
-                    @endif
+                    </button>@endforeach
 
                 </div>
             </td>

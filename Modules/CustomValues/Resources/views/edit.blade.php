@@ -3,7 +3,7 @@
 $href = site_url('custom_fields/form/' . $value->custom_field_id);
 $link = anchor($href, '<i class="fa fa-edit fa-margin"></i> ' . htmlsc($value->custom_field_label), ' class="btn btn-sm btn-default"');
 $alpha = strtr(mb_strtolower($value->custom_field_type), ['-' => '_']);
-$table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @endphp
+$table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']);
 <form method="post">
 
     @csrf
@@ -16,9 +16,9 @@ $table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @end
                 <i class="fa fa-eye fa-margin"></i> @lang('values')</a>
         </div>
         <div class="visible-sm visible-md visible-lg headerbar-item pull-right">
-            <div class="badge">@lang('table'): @php _trans($table); @endphp</div>
+            <div class="badge">@lang('table'): @php _trans($table)</div>
             <div class="badge">@lang('position'): {{ $position }}</div>
-            <div class="badge">@lang('type'): @php _trans($alpha); @endphp</div>
+            <div class="badge">@lang('type'): @php _trans($alpha)</div>
             @lang('field'): {{ $link }}
         </div>
     </div>
@@ -43,7 +43,7 @@ $table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @end
                     </div>
 
                     <div class="col-xs-12">
-                        <div class="form-group badge">@lang('table'): @php _trans($table); @endphp</div>
+                        <div class="form-group badge">@lang('table'): @php _trans($table)</div>
                     </div>
 
                     <div class="col-xs-12">
@@ -51,7 +51,7 @@ $table = strtr($value->custom_field_table, ['ip_' => '', '_custom' => '']); @end
                     </div>
 
                     <div class="col-xs-12">
-                        <div class="form-group badge">@lang('type'): @php _trans($alpha); @endphp</div>
+                        <div class="form-group badge">@lang('type'): @php _trans($alpha)</div>
                     </div>
                 </div>
 

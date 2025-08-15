@@ -35,8 +35,7 @@
             <td>{{ $log->merchant_response_reference }}</td>
         </tr>
             <?php
-        } // End foreach
-        @endphp
+        @endforeach
         </tbody>
 
     </table>

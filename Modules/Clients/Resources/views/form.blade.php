@@ -18,7 +18,7 @@ $einvoicingTip = $req_einvoicing ? ' data-toggle="tooltip" data-placement="botto
 // tootip base
 $einvoicingReq = $req_einvoicing ? $einvoicingTip . trans('required_field') . ')"' : '';
 $einvoicingB2B = $req_einvoicing ? $einvoicingTip . 'B2B ' . trans('required_field') . ')"' : '';
-$einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : ''; @endphp
+$einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
 <script type="text/javascript">
     // eInvoicing button panel helper user(s) icon toggle
     const switch_fa_toggle = function (id) {
@@ -79,7 +79,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                                    value="{{ $this->mdl_clients->form_value('client_surname', true) }}">
                         </div>
                         <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
-                            <label for="client_company">@lang('client_company') (@php _trans($itsCompany ? 'required_field' : 'optional'); @endphp)</label>
+                            <label for="client_company">@lang('client_company') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>
 
                             <div class="controls">
                                 <input id="client_company" name="client_company" type="text" class="form-control"
@@ -95,15 +95,13 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                                     @lang('use_system_language')
                                 </option>
 @foreach($languages as $language) {
-    $client_lang = $this->mdl_clients->form_value('client_language');
-    @endphp
+    $client_lang = $this->mdl_clients->form_value('client_language')
                                 <option value="{{ $language }}"
                                     @php
     check_select($client_lang, $language);
-    @endphp>
+    >
                                     {{ ucfirst($language) }}
-                                </option>
-@endif
+                                </option>@endforeach
                             </select>
                         </div>
                     </div>
@@ -132,7 +130,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
         if ($client_id) {
             $this->layout->loadView('clients/partial_client_einvoicing');
         } else {
-            @endphp
+
                         <div class="alert alert-warning small" style="font-size:medium;">
                             <i class="fa fa-exclamation-triangle fa-2x"></i>&nbsp;
                             @lang('einvoicing_no_enabled_hint')
@@ -141,7 +139,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
         }
         // End if client_id
     } else {
-        @endphp
+
                         <div class="alert alert-info small" style="font-size:medium;">
                             <i class="fa fa-info"></i>&nbsp;
                             @lang('einvoicing_how_enable_hint')
@@ -150,14 +148,14 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 @php
     }
     // End if xml_templates
-    @endphp
+
                     </div>
                 </div>
 
             </div>
 @php
 }
-// End if einvoicing @endphp
+// End if einvoicing
 
             <div class="col-xs-12 col-sm-6"><!-- Address -->
                 <div class="panel panel-default">
@@ -220,10 +218,8 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                                     @foreach($countries as $cldr => $country)
                                         <option value="{{ $cldr }}"
                                             @php
-    check_select($selected_country, $cldr);
-    @endphp
-                                        >{{ $country }}</option>
-                                    @endif
+    check_select($selected_country, $cldr)
+                                        >{{ $country }}</option>@endforeach
                                 </select>
                             </div>
                         </div>
@@ -231,7 +227,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
     if ($custom_field->custom_field_location == 1) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
-} @endphp
+}
                     </div>
 
                 </div>
@@ -305,7 +301,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
     if ($custom_field->custom_field_location == 2) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
-} @endphp
+}
                     </div>
 
                 </div>
@@ -321,7 +317,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                     <div class="panel-body">
                         <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
-                            <label for="client_vat_id">@lang('vat_id') (@php _trans($itsCompany ? 'required_field' : 'optional'); @endphp)</label>
+                            <label for="client_vat_id">@lang('vat_id') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>
 
                             <div class="controls">
                                 <input type="text" name="client_vat_id" id="client_vat_id" class="form-control"
@@ -342,7 +338,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
     if ($custom_field->custom_field_location == 4) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
-} @endphp
+}
                     </div>
                 </div>
             </div>
@@ -364,17 +360,15 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 $client_gender = $this->mdl_clients->form_value('client_gender');
 foreach ($genders as $key => $val)
                                     <option value=" {{ $key }}" @php
-    check_select($key, $client_gender);
-    @endphp>
+    check_select($key, $client_gender)>
                                         {{ $val }}
-                                    </option>
-@endif
+                                    </option>@endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
 @php $client_title = $this->mdl_clients->form_value('client_title');
-$is_custom_title = null === Modules\Core\Libraries\ClientTitleEnum::tryFrom($client_title); @endphp
+$is_custom_title = null === Modules\Core\Libraries\ClientTitleEnum::tryFrom($client_title);
                             <label for="client_title">@lang('client_title')</label>
                             <select name="client_title" id="client_title" class="form-control simple-select">
 @foreach($client_title_choices as $client_title_choice)
@@ -384,8 +378,7 @@ $is_custom_title = null === Modules\Core\Libraries\ClientTitleEnum::tryFrom($cli
                                     {{ $is_custom_title && $client_title_choice === Modules\Core\Libraries\ClientTitleEnum::CUSTOM ? 'selected' : '' }}
                                 >
                                     {{ ucfirst(trans($client_title_choice)) }}
-                                </option>
-@endif
+                                </option>@endforeach
                             </select>
                         </div>
                         <div class="form-group">
@@ -401,7 +394,7 @@ $is_custom_title = null === Modules\Core\Libraries\ClientTitleEnum::tryFrom($cli
                         <div class="form-group has-feedback">
                             <label for="client_birthdate">@lang('birthdate')</label>
 @php $bdate = $this->mdl_clients->form_value('client_birthdate');
-$bdate = $bdate && $bdate != '0000-00-00' ? date_from_mysql($bdate) : ''; @endphp
+$bdate = $bdate && $bdate != '0000-00-00' ? date_from_mysql($bdate) : '';
                             <div class="input-group">
                                 <input type="text" name="client_birthdate" id="client_birthdate"
                                     class="form-control datepicker"
@@ -415,8 +408,7 @@ $bdate = $bdate && $bdate != '0000-00-00' ? date_from_mysql($bdate) : ''; @endph
 @if($this->mdl_settings->setting('sumex') == '1') {
     $avs = format_avs($this->mdl_clients->form_value('client_avs'));
     $insuredNumber = $this->mdl_clients->form_value('client_insurednumber');
-    $veka = $this->mdl_clients->form_value('client_veka');
-    @endphp
+    $veka = $this->mdl_clients->form_value('client_veka')
 
                         <div class="form-group">
                             <label for="client_avs">@lang('sumex_ssn')</label>
@@ -431,8 +423,7 @@ $bdate = $bdate && $bdate != '0000-00-00' ? date_from_mysql($bdate) : ''; @endph
                             <div class="controls">
                                 <input type="text" name="client_insurednumber" id="client_insurednumber" class="form-control"
                                        value="@php
-    _htmle($insuredNumber);
-    @endphp">
+    _htmle($insuredNumber)">
                             </div>
                         </div>
 
@@ -441,14 +432,13 @@ $bdate = $bdate && $bdate != '0000-00-00' ? date_from_mysql($bdate) : ''; @endph
                             <div class="controls">
                                 <input type="text" name="client_veka" id="client_veka" class="form-control"
                                        value="@php
-    _htmle($veka);
-    @endphp">
+    _htmle($veka)">
                             </div>
                         </div>
 
 @php
 }
-// End if sumex @endphp
+// End if sumex
 
 @php $default_custom = false;
 foreach ($custom_fields as $custom_field) {
@@ -458,7 +448,7 @@ foreach ($custom_fields as $custom_field) {
     if ($custom_field->custom_field_location == 3) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
-} @endphp
+}
                     </div>
 
                 </div>
@@ -484,7 +474,7 @@ foreach ($custom_fields as $custom_field) {
             print_field($this->mdl_clients, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
         }
     }
-    @endphp
+
                         </div>
                     </div>
                 </div>
@@ -493,7 +483,7 @@ foreach ($custom_fields as $custom_field) {
         </div>
 <?php
 }
-// End if custom_fields @endphp
+// End if custom_fields
     </div>
 </form>
 <?php

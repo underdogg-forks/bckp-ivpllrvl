@@ -1,6 +1,6 @@
 @php
 
-    $active = $this->uri->segment(3); @endphp
+    $active = $this->uri->segment(3);
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('custom_fields')</h1>
 
@@ -24,10 +24,8 @@
             <a href="{{ url('custom_fields/table/' . $table) }}"
                class="btn {{ $active == $table ? 'btn-primary' : 'btn-default' }}">
                 @php
-                    _trans($table);
-                @endphp
-            </a>
-                @endif
+                    _trans($table)
+            </a>@endforeach
         </div>
     </div>
 </div>

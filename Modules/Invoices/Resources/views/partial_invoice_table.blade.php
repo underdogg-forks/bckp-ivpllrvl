@@ -26,20 +26,20 @@ foreach ($invoices as $invoice) {
     }
     // Convert the dropdown menu to a dropup if invoice is after the invoice split
     $dropup = $invoice_idx > $invoice_list_split;
-        @endphp
+
         <tr>
             <td>
                     <span class="label {{ $invoice_statuses[$invoice->invoice_status_id]['class'] }}">
                         {{ $invoice_statuses[$invoice->invoice_status_id]['label'];
     if ($invoice->invoice_sign == '-1') {
-        @endphp&nbsp;<i class="fa fa-credit-invoice" title="@php
+        &nbsp;<i class="fa fa-credit-invoice" title="@php
         @lang('credit_invoice') }}"></i>@php
                             }
                             if ($invoice->is_read_only) {
-                        @endphp&nbsp;<i class="fa fa-read-only" title="@lang('read_only')"></i>@php
+                        &nbsp;<i class="fa fa-read-only" title="@lang('read_only')"></i>@php
                             }
                             if ($invoice->invoice_is_recurring) {
-                        @endphp&nbsp;<i class="fa fa-refresh" title="@lang('recurring')"></i>@endif
+                        &nbsp;<i class="fa fa-refresh" title="@lang('recurring')"></i>@endif
                     </span>
             </td>
 
@@ -127,7 +127,7 @@ foreach ($invoices as $invoice) {
 <?php
     $invoice_idx++;
 }
-// End foreach invoices @endphp
+// End foreach invoices
         </tbody>
 
     </table>

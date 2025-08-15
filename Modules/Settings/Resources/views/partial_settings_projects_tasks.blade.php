@@ -20,7 +20,7 @@
                                 <option value="0">
                                     @lang('no')
                                 </option>
-                                <option value="1" @php check_select(get_setting('projects_enabled'), '1'); @endphp>
+                                <option value="1" @php check_select(get_setting('projects_enabled'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>

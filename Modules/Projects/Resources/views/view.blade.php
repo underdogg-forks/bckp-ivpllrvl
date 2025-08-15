@@ -75,8 +75,7 @@
                                         </span>
                         </td>
                         <td>{{ anchor('projects/form/' . $project->project_id, htmlsc($project->project_name)) }}</td>
-                    </tr>
-                    @endif
+                    </tr>@endforeach
                     </tbody>
                 </table>
             </div>

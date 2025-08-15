@@ -13,7 +13,7 @@
             <th>@lang('tax_rate')</th>
             @php $sumex_active = get_setting('sumex') == '1';
 if ($sumex_active) {
-            @endphp
+
             <th>@lang('product_tariff')</th>
             @endif
             <th>@lang('options')</th>
@@ -32,8 +32,7 @@ if ($sumex_active) {
             <td>{{ $product->tax_rate_id ? htmlsc($product->tax_rate_name) : trans('none') }}</td>
             @if($sumex_active)
             <td>{!! $product->product_tariff !!}</td>
-            @php
-                @endif
+            @php@endforeach
             <td>
                 <div class="options btn-group">
                     <a class="btn btn-default btn-sm dropdown-toggle"

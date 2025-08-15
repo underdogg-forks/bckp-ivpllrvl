@@ -20,18 +20,17 @@
     $href = site_url('custom_fields/form/' . $custom_values->custom_field_id);
     $alpha = str_replace('-', '_', mb_strtolower($custom_values->custom_field_type));
     $position = $positions[$custom_values->custom_field_table][$custom_values->custom_field_location];
-        @endphp
+
         <tr>
             <td>{{ anchor($href, $custom_values->custom_field_id, ' title="' . trans('edit') . '"') }}</td>
             <td>{{ anchor($href, '<i class="fa fa-edit fa-margin"></i> ' . htmlsc($custom_values->custom_field_label), ' class="btn btn-sm btn-default"') }}</td>
             <td>{{ $custom_values->count }}</td>
             <td>@php
-                    _trans($custom_tables[$custom_values->custom_field_table]);
-                @endphp</td>
+                    _trans($custom_tables[$custom_values->custom_field_table])</td>
             <td>{{ $position }}</td>
             <td>@php
                     _trans($alpha);
-                @endphp</td>
+                </td>
             <td>
                 <div class="options btn-group">
                     <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
@@ -56,8 +55,7 @@
                     </ul>
                 </div>
             </td>
-        </tr>
-            @endif
+        </tr>@endforeach
         </tbody>
     </table>
 </div>

@@ -60,7 +60,7 @@
                                     autofocus="autofocus" required>
                                 @foreach($clients as $client) {
     echo '<option value="' . $client->client_id . '">' . htmlsc(format_client($client)) . '</option>';
-} @endphp
+}
                             </select>
                         </div>
 

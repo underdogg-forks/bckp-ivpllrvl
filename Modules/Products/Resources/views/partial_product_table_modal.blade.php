@@ -30,8 +30,7 @@
             <td class="amount">
                 {{ format_currency($product->product_price) }}
             </td>
-        </tr>
-            @endif
+        </tr>@endforeach
 
     </table>
 </div>

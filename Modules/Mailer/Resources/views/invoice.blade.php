@@ -89,8 +89,7 @@
                         @php
                             check_select($selected_email_template, $email_template->email_template_id) }}>
                                                     {!! $email_template->email_template_title !!}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
 
@@ -129,11 +128,9 @@
                         @foreach($pdf_templates as $pdf_template)
                         <option value="{{ $pdf_template }}"
                             @php
-                                check_select($selected_pdf_template, $pdf_template);
-                            @endphp>
+                                check_select($selected_pdf_template, $pdf_template)>
                             {{ $pdf_template }}
-                        </option>
-                            @endif
+                        </option>@endforeach
                     </select>
                 </div>
 
@@ -214,7 +211,7 @@
             <div class="col-xs-12 col-md-8 col-md-offset-2">
 
                 <div class="form-group">
-                    @php _dropzone_html($invoice->is_read_only); @endphp
+                    @php _dropzone_html($invoice->is_read_only)
                 </div>
 
                 <div class="form-group"><label for="invoice-guest-url">@lang('guest_url')</label>

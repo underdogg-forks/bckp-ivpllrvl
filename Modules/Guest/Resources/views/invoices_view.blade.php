@@ -7,7 +7,7 @@ if ($invoice_tax_rates) {
         $global_taxes[] = $invoice_tax_rate->invoice_tax_rate_name . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%): ' . format_currency($invoice_tax_rate->invoice_tax_rate_amount);
     }
     $global_taxes = implode('<br>', $global_taxes);
-} @endphp
+}
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('invoice') #{{ $invoice->invoice_number }}</h1>
 
@@ -57,7 +57,7 @@ if ($invoice_tax_rates) {
                         @php
                             }
                             if ($invoice->client_email) {
-                        @endphp
+
                         <br><span><strong>@lang('email'):</strong> {!! $invoice->client_email !!}</span>
                         @endif
                     </div>
@@ -116,7 +116,7 @@ if ($invoice_tax_rates) {
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-muted">{{ nl2br(htmlsc($item->item_description)) }}</td>
+                        <td class="text-muted">{{ nl2br(e($item->item_description)) }}</td>
                         <td>
                             <span class="pull-left">@lang('discount')</span>
                             <span class="pull-right amount">
@@ -127,7 +127,7 @@ if ($invoice_tax_rates) {
     // New Discount calculation - since v1.6.3
     $item_global_discount = $legacy_calculation ? 0 : $item->item_subtotal - ($item->item_total - $item->item_tax_total + $item->item_discount);
     if ($item_global_discount) {
-@endphp
+
                                     <span data-toggle="tooltip" data-placement="bottom"
                                           title="@lang('global_discount')">
                                         + {{ format_currency($item_global_discount) }}
@@ -135,8 +135,7 @@ if ($invoice_tax_rates) {
                                     <span data-toggle="tooltip" data-placement="bottom"
                                           title="@lang('discount') (@lang('subtotal'))">
                                         = {{ format_currency($item_global_discount + $item->item_discount) }}
-                                    </span>
-@endif
+                                    </span>@endforeach
                                 </span>
                         </td>
                         <td>
@@ -152,7 +151,7 @@ if ($invoice_tax_rates) {
                     </tbody>
                     @php
                         }
-                        // End foreach items @endphp
+                        // End foreach items
                 </table>
             </div>
 
@@ -170,7 +169,7 @@ if ($invoice_tax_rates) {
                         @php
                             }
                             if ($legacy_calculation) {
-                        @endphp
+
                         <th class="text-right">@lang('global_discount')</th>
                         @endif
                         <th class="text-right">@lang('total')</th>
@@ -190,7 +189,7 @@ if ($invoice_tax_rates) {
                         @php
                             }
                             if ($legacy_calculation) {
-                        @endphp
+
                         <td class="amount">{{ $global_discount }}</td>
                         @endif
                         <td class="amount"><b>{{ format_currency($invoice->invoice_total) }}</b></td>
@@ -203,13 +202,13 @@ if ($invoice_tax_rates) {
 
             <div class="col-xs-12 col-md-6">
 
-                @php _dropzone_html(); @endphp
+                @php _dropzone_html()
 
             </div>
             @if($invoice->invoice_terms)
             <div class="col-xs-12 col-md-6">
                 <strong>@lang('invoice_terms')</strong><br/>
-                {{ nl2br(htmlsc($invoice->invoice_terms)) }}
+                {{ nl2br(e($invoice->invoice_terms)) }}
             </div>
                 @endif
         </div>

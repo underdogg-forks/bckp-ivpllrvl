@@ -1,12 +1,12 @@
 @php namespace Modules\Families\Views;
 
-$is_update = $this->mdl_families->form_value('is_update'); @endphp
+$is_update = $this->mdl_families->form_value('is_update');
 <form method="post">
 
     @csrf
 
     <div id="headerbar">
-        <h1 class="headerbar-title">@php _trans($is_update ? 'family' : 'add_family'); @endphp</h1>
+        <h1 class="headerbar-title">@php _trans($is_update ? 'family' : 'add_family'); </h1>
         @include('layout.header_buttons')
     </div>
 

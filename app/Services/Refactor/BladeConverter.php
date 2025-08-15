@@ -136,8 +136,11 @@ class BladeConverter
         }, $code);
         $code = preg_replace('/<\?php\s*echo\s*form_close\(\)\s*;\s*\?>/i', '</form>', $code);
         $code = preg_replace('/<\?=\s*form_close\(\)\s*\?>/i', '</form>', $code);
+
+        // New: Convert `_csrf_field` to `@csrf`
         $code = preg_replace('/@php\s*_csrf_field\(\)\s*;?\s*@endphp/i', '@csrf', $code);
         $code = preg_replace('/<\?php\s*_csrf_field\(\)\s*;\s*\?>/i', '@csrf', $code);
+
         return $code;
     }
 
@@ -148,7 +151,6 @@ class BladeConverter
         $code = preg_replace('/<\?php\s+print\s+(.*?);\s*\?>/s', '{{ $1 }}', $code);
         $code = preg_replace('/@php\s+echo\s+(.*?);\s+@endphp/s', '{{ $1 }}', $code);
 
-        // New: Convert nl2br(htmlsc(...))
         $code = preg_replace('/\{\{\s*nl2br\s*\(\s*htmlsc\s*\((.*?)\)\s*\)\s*\}\}/s', '{{ nl2br(e($1)) }}', $code);
 
         return $code;
@@ -156,7 +158,6 @@ class BladeConverter
 
     private function convertHtmlscFirst(string $code): string
     {
-        // htmlsc() to e()
         $code = preg_replace('/@php\s*_htmlsc\((.*?)\)\s*;?\s*@endphp/s', '{!! $1 !!}', $code);
         $code = preg_replace('/\{\{\s*htmlsc\((.*?)\)\s*\}\}/s', '{!! $1 !!}', $code);
         $code = preg_replace('/_htmlsc\((.*?)\)/s', 'e($1)', $code);
@@ -166,28 +167,23 @@ class BladeConverter
 
     private function convertControlBlocks(string $code): string
     {
-        // New: Convert fragmented @if blocks with echo
         $code = preg_replace_callback(
             '/@if\s*\((.*?)\)\s*\{\s*@endphp(.*?)(@php\s*\}\s*@endphp)/s',
             function ($matches) {
                 $condition = $matches[1];
                 $content = $matches[2];
-                // Replace echo with Blade syntax
                 $content = preg_replace('/echo\s+(.*?);/s', '{{ $1 }}', $content);
                 return "@if($condition)\n$content\n@endif";
             },
             $code
         );
 
-        // Convert fragmented @foreach blocks
         $code = preg_replace('/@foreach\s*\((.*?)\)\s*\{\s*@endphp/', '@foreach($1)', $code);
         $code = preg_replace('/@php\s*\}\s*@endforeach/', '@endforeach', $code);
 
-        // Convert if/foreach blocks with newlines and comments
         $code = preg_replace('/@php\s*foreach\s*\((.*?)\)\s*\{\s*@endphp/s', '@foreach($1)', $code);
-        $code = preg_replace('/@php\s*\}\s*@endforeach/s', '@endforeach', $code);
+        $code = preg_replace('/@php\s*if\s*\((.*?)\)\s*\{\s*@endphp/s', '@if($1)', $code);
 
-        // Convert other control blocks
         $code = preg_replace('/<\?php\s+if\s*\((.*?)\)\s*:\s*\?>/s', '@if($1)', $code);
         $code = preg_replace('/<\?php\s+elseif\s*\((.*?)\)\s*:\s*\?>/s', '@elseif($1)', $code);
         $code = preg_replace('/<\?php\s+else\s*:\s*\?>/s', '@else', $code);
@@ -195,19 +191,20 @@ class BladeConverter
         $code = preg_replace('/<\?php\s+foreach\s*\((.*?)\)\s*:\s*\?>/s', '@foreach($1)', $code);
         $code = preg_replace('/<\?php\s+endforeach\s*;\s*\?>/s', '@endforeach', $code);
 
-        // New: Handle complex inline conditions with echo
         $code = preg_replace_callback(
             '/@if\s*\((.*?)\)\s*\{\s*echo\s*(.*?);\s*\}/s',
             function ($matches) {
                 $condition = $matches[1];
                 $echoContent = $matches[2];
-                // Handle complex echo content like format_amount(...) . '&nbsp;%'
                 $echoContent = str_replace(['.'], '', $echoContent);
                 $echoContent = str_replace('\'', '', $echoContent);
                 return "@if($condition)\n{{$echoContent}}\n@endif";
             },
             $code
         );
+
+        // New: Handle mismatched `@foreach` and `@endif`
+        $code = preg_replace('/@foreach\s*\((.*?)\)(.*?)\s*@endif/s', '@foreach($1)$2@endforeach', $code);
 
         return $code;
     }
@@ -232,9 +229,8 @@ class BladeConverter
     {
         $code = preg_replace('/<\?php\s*\$this->layout->loadView\(\s*([^)]+)\s*\)\s*;\s*\?>/s', '@include($1)', $code);
         $code = preg_replace('/<\?php\s*\$this->load->view\(\s*([^)]+)\s*\)\s*;\s*\?>/s', '@include($1)', $code);
-
-        // New: Handle the `$this->layout->loadView(...) !!}` typo
         $code = preg_replace('/@php\s*\$this->layout->loadView\(\s*([^)]+)\)\s*!!}/s', '@include($1)', $code);
+
         $code = preg_replace_callback(
             "/@include\('([^']*)'\)/",
             function ($matches) {
@@ -244,7 +240,6 @@ class BladeConverter
             $code
         );
 
-        // New: Handle `load_view` typo
         $code = preg_replace('/\{\{\s*\$this->layout->load_view\(\s*([^)]+)\s*\)\s*\}\}/s', '@include($1)', $code);
 
         return $code;
@@ -259,7 +254,6 @@ class BladeConverter
 
         $code = str_replace('@trans', '@lang', $code);
 
-        // New: Fix incorrectly terminated @lang directives
         $code = preg_replace('/@lang\((.*?)\);\s*@endphp/s', '@lang($1)', $code);
 
         return $code;
@@ -286,7 +280,6 @@ class BladeConverter
 
     private function fixDanglingPhpTags(string $code): string
     {
-        // New: Handle "}" followed by comment and @endphp
         $code = preg_replace('/\}\s*\/\/\s*endif\s*@endphp/', '@endif', $code);
         $code = preg_replace('/\}\s*\/\/\s*End\s*foreach\s*@endphp/', '@endforeach', $code);
 
@@ -295,7 +288,6 @@ class BladeConverter
         $code = preg_replace('/<\?php\s*endif\s*;\s*\?>/s', '@endif', $code);
         $code = preg_replace('/<\?php\s*endfor\s*;\s*\?>/s', '@endfor', $code);
 
-        // New: Fix @endforeach with a dangling `@php`
         $code = str_replace('@php @endforeach', '@endforeach', $code);
 
         return $code;

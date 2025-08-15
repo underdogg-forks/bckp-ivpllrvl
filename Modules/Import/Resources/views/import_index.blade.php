@@ -20,7 +20,7 @@
 
                         @php _csrf_field();
 foreach ($files as $file) {
-                        @endphp
+
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="files[]" value="{{ $file }}">

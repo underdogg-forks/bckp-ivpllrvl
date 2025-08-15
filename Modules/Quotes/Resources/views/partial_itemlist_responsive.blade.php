@@ -59,7 +59,7 @@
                             </div>
                             @if(!$legacy_calculation) {
                             $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input');
-                            } @endphp
+                            }
                             <div class="input-group">
                                 <label for="item_tax_rate_id"
                                        class="input-group-addon ig-addon-aligned">@lang('tax_rate')</label>
@@ -68,8 +68,7 @@
                                     @foreach($tax_rates as $tax_rate)
                                         <option value="{{ $tax_rate->tax_rate_id }}"
                                             @php
-                                                check_select(get_setting('default_item_tax_rate'), $tax_rate->tax_rate_id);
-                                            @endphp>
+                                                check_select(get_setting('default_item_tax_rate'), $tax_rate->tax_rate_id)>
                                             {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . $tax_rate->tax_rate_name }}
                                         </option>
                                     @endforeach
@@ -77,7 +76,7 @@
                             </div>
                             @if($legacy_calculation) {
                             $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input');
-                            } @endphp
+                            }
                         </div>
 
                         <input type="hidden" name="quote_id" value="{{ $quote_id }}">
@@ -94,7 +93,7 @@
                             </div>
                             @if(!$legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show');
-} @endphp
+}
                             <div class="row mb-1">
                                 <div class="col-xs-9 col-sm-8">
                                     @lang('tax'):
@@ -105,7 +104,7 @@
                             </div>
                             @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show');
-} @endphp
+}
                             <div class="row mb-1">
                                 <strong>
                                     <div class="col-xs-9 col-sm-8">
@@ -177,11 +176,9 @@
                                     @foreach($units as $unit)
                                     <option value="{{ $unit->unit_id }}"
                                         @php
-                                            check_select($item->item_product_unit_id, $unit->unit_id);
-        @endphp>
+                                            check_select($item->item_product_unit_id, $unit->unit_id)>
         {!! $unit->unit_name) . '/' . htmlsc($unit->unit_name_plrl !!}
-        </option>
-        @endif
+        </option>@endforeach
         </select>
     </div>
     <div class="input-group">
@@ -195,7 +192,7 @@
     @if(!$legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input', ['item' => $item]);
     }
-    @endphp
+
     <div class="input-group">
         <label for="item_tax_rate_id_{{ $item->item_id }}"
                class="input-group-addon ig-addon-aligned">@lang('tax_rate')</label>
@@ -205,17 +202,15 @@
             @foreach($tax_rates as $tax_rate)
             <option value="{{ $tax_rate->tax_rate_id }}"
                 @php
-                    check_select($item->item_tax_rate_id, $tax_rate->tax_rate_id);
-            @endphp>
+                    check_select($item->item_tax_rate_id, $tax_rate->tax_rate_id)>
             {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . $tax_rate->tax_rate_name }}
-            </option>
-            @endif
+            </option>@endforeach
         </select>
     </div>
     @if($legacy_calculation) {
     $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_input', ['item' => $item]);
     }
-    @endphp
+
 </div>
 
 <div class="col-xs-12 col-md-6 text-right">
@@ -230,7 +225,7 @@
     @if(!$legacy_calculation) {
             $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item]);
         }
-    @endphp
+
     <div class="row mb-1">
         <div class="col-xs-9 col-sm-8">
             @lang('tax'):
@@ -242,7 +237,7 @@
     @if($legacy_calculation) {
             $this->layout->loadView('layout/partial/itemlist_responsive_item_discount_show', ['item' => $item]);
         }
-    @endphp
+
     <div class="row mb-1">
         <div class="col-xs-9 col-sm-8">
             <b>@lang('total'):</b>
@@ -281,7 +276,7 @@
         <table class="table table-bordered text-right">
             @if(!$legacy_calculation) {
     $this->layout->loadView('quotes/partial_itemlist_table_quote_discount');
-} @endphp
+}
             <tr>
                 <td style="width: 40%;">@lang('subtotal')</td>
                 <td style="width: 60%;"
@@ -316,12 +311,12 @@
                     } else {
                         echo format_currency('0');
                     }
-            @endphp
+
             </td>
             </tr>
                 <?php
                 $this->layout->loadView('quotes/partial_itemlist_table_quote_discount');
-            } @endphp
+            }
             <tr>
                 <td><b>@lang('total')</b></td>
                 <td class="amount"><b>{{ format_currency($quote->quote_total) }}</b></td>

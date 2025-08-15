@@ -22,7 +22,7 @@
     });
 </script>
 
-<script src="@php _core_asset('js/zxcvbn.js'); @endphp"></script>
+<script src="@php _core_asset('js/zxcvbn.js')"></script>
 
 <div class="container">
     <div class="install-panel">
@@ -95,8 +95,7 @@
                     @foreach($languages as $language)
                     <option value="{{ $language }}">
                         {{ ucfirst($language) }}
-                    </option>
-                    @endif
+                    </option>@endforeach
                 </select>
             </div>
 
@@ -156,11 +155,9 @@
                     @foreach($countries as $cldr => $country)
                     <option value="{{ $cldr }}"
                         @php
-                            check_select($this->mdl_users->form_value('user_country'), $cldr);
-                        @endphp>
+                            check_select($this->mdl_users->form_value('user_country'), $cldr)>
                         {{ $country }}
-                    </option>
-                        @endif
+                    </option>@endforeach
                 </select>
             </div>
 

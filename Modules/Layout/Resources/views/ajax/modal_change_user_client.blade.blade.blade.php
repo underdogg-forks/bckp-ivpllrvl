@@ -15,7 +15,7 @@ if (!$type_id) {
     return;
     // No quote/invoice id do nothing
 }
-$permissive = get_setting('enable_permissive_search_' . $who . 's'); @endphp
+$permissive = get_setting('enable_permissive_search_' . $who . 's');
 <script>
     $(function () {
         // Display user change for quote or invoice modal
@@ -57,14 +57,14 @@ $permissive = get_setting('enable_permissive_search_' . $who . 's'); @endphp
     <form class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
-            <h4 class="panel-title">@php _trans('change_' . $who); @endphp</h4>
+            <h4 class="panel-title">@php _trans('change_' . $who); </h4>
         </div>
         <div class="modal-body">
             <div class="form-group has-feedback">
-                <label for="change_{{ $who }}_id">@php _trans($who); @endphp</label>
+                <label for="change_{{ $who }}_id">@php _trans($who); </label>
                 <div class="input-group">
                     <span id="toggle_permissive_search_{{ $who }}s" class="input-group-addon"
-                          title="@php _trans('enable_permissive_search_' . $who . 's'); @endphp"
+                          title="@php _trans('enable_permissive_search_' . $who . 's'); "
                           style="cursor:pointer;">
                         <i class="fa fa-toggle-{{ $permissive ? 'on' : 'off' }} fa-fw"></i>
                     </span>

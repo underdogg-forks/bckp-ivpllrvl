@@ -159,14 +159,14 @@
                         <a href="{{ url('users/form/' . $this->session->userdata('user_id')) }}"
                            class="tip icon" data-placement="bottom"
                            title="@php htmlspecialchars($this->session->userdata('user_name'));
-if ($this->session->userdata('user_company')) {
-    echo ' (' . htmlsc($this->session->userdata('user_company')) . ')';
-} @endphp">
+if ($this->session->userdata('user_company'))
+{ (  htmlsc($this->session->userdata(user_company))  )}
+@endif ">
                             <i class="fa fa-user"></i>
                             <span class="visible-xs">&nbsp;@php htmlspecialchars($this->session->userdata('user_name'));
-if ($this->session->userdata('user_company')) {
-    echo ' (' . htmlsc($this->session->userdata('user_company')) . ')';
-} @endphp</span>
+if ($this->session->userdata('user_company'))
+{ (  htmlsc($this->session->userdata(user_company))  )}
+@endif </span>
                         </a>
                     </li>
                     <li>

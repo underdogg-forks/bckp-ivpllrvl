@@ -24,10 +24,10 @@
                         #{{ $this->mdl_products->form_value('product_id') }}&nbsp;
                         {{ $this->mdl_products->form_value('product_name', true);
 } else {
-    @endphp
+
                         @php
     @lang('new_product');
-} @endphp
+}
 
                     </div>
                     <div class="panel-body">
@@ -43,8 +43,7 @@
                                 <option value="{{ $family->family_id }}"
                         @php
                             check_select($this->mdl_products->form_value('family_id'), $family->family_id) }}
-                                                        >{{ $family->family_name }}</option>
-                        @endif
+                                                        >{{ $family->family_name }}</option>@endforeach
                         </select>
                     </div>
 
@@ -98,10 +97,8 @@
                             @foreach($units as $unit)
                             <option value="{{ $unit->unit_id }}"
                                 @php
-                                    check_select($this->mdl_products->form_value('unit_id'), $unit->unit_id);
-                                @endphp
-                            >{{ $unit->unit_name . '/' . $unit->unit_name_plrl }}</option>
-                            @endif
+                                    check_select($this->mdl_products->form_value('unit_id'), $unit->unit_id)
+                            >{{ $unit->unit_name . '/' . $unit->unit_name_plrl }}</option>@endforeach
                         </select>
                     </div>
 
@@ -115,10 +112,8 @@
                             @foreach($tax_rates as $tax_rate)
                             <option value="{{ $tax_rate->tax_rate_id }}"
                                 @php
-                                    check_select($this->mdl_products->form_value('tax_rate_id'), $tax_rate->tax_rate_id);
-                                @endphp
-                            >{{ $tax_rate->tax_rate_name . ' (' . format_amount($tax_rate->tax_rate_percent) . '%)' }}</option>
-                            @endif
+                                    check_select($this->mdl_products->form_value('tax_rate_id'), $tax_rate->tax_rate_id)
+                            >{{ $tax_rate->tax_rate_name . ' (' . format_amount($tax_rate->tax_rate_percent) . '%)' }}</option>@endforeach
                         </select>
                     </div>
 

@@ -27,7 +27,7 @@
                     @php
                         }
                         // Endif
-                    @endphp
+
                     <a class="btn btn-default dropdown-toggle"
                        data-toggle="dropdown" href="#">
                         <i class="fa fa-cog"></i> @lang('options')
@@ -48,8 +48,7 @@
                                     <i class="fa fa-trash-o fa-margin"></i> @lang('delete')
                                 </button>
                             </form>
-                        </li>
-                        @endif
+                        </li>@endforeach
                     </ul>
                 </div>
             </td>

@@ -97,11 +97,9 @@
                 @foreach($invoice_groups as $invoice_group)
                 <option value="{{ $invoice_group->invoice_group_id }}"
                     @php
-                        check_select(get_setting('default_quote_group'), $invoice_group->invoice_group_id);
-                    @endphp>
+                        check_select(get_setting('default_quote_group'), $invoice_group->invoice_group_id)>
                 {!! $invoice_group->invoice_group_name !!}
-                </option>
-                    @endif
+                </option>@endforeach
             </select>
         </div>
 

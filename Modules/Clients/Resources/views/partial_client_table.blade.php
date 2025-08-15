@@ -19,7 +19,7 @@
         @php $class_checks = ['fa fa-lg fa-check-square-o text-success', 'fa fa-lg fa-edit text-warning'];
 // e-invoice
 foreach ($records as $client) {
-        @endphp
+
         <tr>
             <td>
                 {{ $client->client_active ? '<span class="label active">' . trans('yes') . '</span>' : '<span class="label inactive">' . trans('no') . '</span>' }}
@@ -81,8 +81,7 @@ foreach ($records as $client) {
             </td>
         </tr>
     <?php
-}
-// End foreach @endphp
+@endforeach
 </tbody >
     </table >
 </div >

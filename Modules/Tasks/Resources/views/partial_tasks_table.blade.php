@@ -16,7 +16,7 @@
         <tbody>
         @foreach($tasks as $task) {
     $label_class = $task_statuses[$task->task_status]['class'] ?? '';
-        @endphp
+
         <tr>
             <td>
                         <span class="label {{ $label_class }}">
@@ -62,13 +62,12 @@
                         @php
                             }
                             // end if
-                        @endphp
+
                     </ul>
                 </div>
 
             </td>
-        </tr>
-            @endif
+        </tr>@endforeach
         </tbody>
 
     </table>

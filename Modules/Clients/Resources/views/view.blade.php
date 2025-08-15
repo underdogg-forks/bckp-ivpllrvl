@@ -73,7 +73,7 @@ foreach ($custom_fields as $custom_field) {
     } else {
         $locations[$custom_field->custom_field_location] = 1;
     }
-} @endphp
+}
 
 <div id="headerbar">
     <h1 class="headerbar-title">{!! format_client($client) !!}</h1>
@@ -150,7 +150,7 @@ foreach ($custom_fields as $custom_field) {
             </div>
 
             <hr>
-@php $colClass = 'col-xs-12 col-sm-6' . ($req_einvoicing ? ' col-lg-4' : ''); @endphp
+@php $colClass = 'col-xs-12 col-sm-6' . ($req_einvoicing ? ' col-lg-4' : '')
             <div class="row">
                 <div class="{{ $colClass }}">
 
@@ -167,17 +167,16 @@ foreach ($custom_fields as $custom_field) {
 @php
 }
 if ($client->client_email) {
-    @endphp
+
                                 <tr>
                                     <th>@lang('email')</th>
                                     <td>@php
-    _auto_link($client->client_email, 'email');
-    @endphp</td>
+    _auto_link($client->client_email, 'email')</td>
                                 </tr>
 @php
 }
 if ($client->client_phone) {
-    @endphp
+
                                 <tr>
                                     <th>@lang('phone')</th>
                                     <td>{!! $client->client_phone !!}</td>
@@ -185,7 +184,7 @@ if ($client->client_phone) {
 @php
 }
 if ($client->client_mobile) {
-    @endphp
+
                                 <tr>
                                     <th>@lang('mobile')</th>
                                     <td>{!! $client->client_mobile !!}</td>
@@ -193,7 +192,7 @@ if ($client->client_mobile) {
 @php
 }
 if ($client->client_fax) {
-    @endphp
+
                                 <tr>
                                     <th>@lang('fax')</th>
                                     <td>{!! $client->client_fax !!}</td>
@@ -201,12 +200,11 @@ if ($client->client_fax) {
 @php
 }
 if ($client->client_web) {
-    @endphp
+
                                 <tr>
                                     <th>@lang('web')</th>
                                     <td>@php
-    _auto_link($client->client_web, 'url', true);
-    @endphp</td>
+    _auto_link($client->client_web, 'url', true)</td>
                                 </tr>
 @endif
 
@@ -214,14 +212,14 @@ if ($client->client_web) {
     if ($custom_field->custom_field_location == 2) {
         $column = $custom_field->custom_field_label;
         $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id);
-        @endphp
+
                                 <tr>
                                     <th>{!! $column !!}</th>
                                     <td>{!! $value !!}</td>
                                 </tr>
 @php
     }
-} @endphp
+}
                             </table>
                         </div>
                     </div>
@@ -248,8 +246,7 @@ if ($client->client_tax_code)
                                 <tr>
                                     <th>@lang('tax_code')</th>
                                     <td>{!! $client->client_tax_code !!}</td>
-                                </tr>
-@endif
+                                </tr>@endforeach
 
 @php $default_custom = false;
 foreach ($custom_fields as $custom_field) {
@@ -258,15 +255,14 @@ foreach ($custom_fields as $custom_field) {
     }
     if ($custom_field->custom_field_location == 4) {
         $column = $custom_field->custom_field_label;
-        $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id);
-        @endphp
+        $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id)
                                 <tr>
                                     <th>{!! $column !!}</th>
                                     <td>{!! $value !!}</td>
                                 </tr>
 @php
     }
-} @endphp
+}
                             </table>
                         </div>
 
@@ -300,7 +296,7 @@ foreach ($custom_fields as $custom_field) {
     $user_fields_nook = $req_einvoicing->clients[$client->client_id]->einvoicing_empty_fields > 0 && $client->client_einvoicing_version != '';
     // eInvoicing button toggle users table checking
     if ($client->client_einvoicing_active && !$user_fields_nook) {
-        @endphp
+
                             <span class="pull-right cursor-pointer btn btn-xs btn-default alert-{{ $user_toggle }}"
                                   data-toggle="collapse" data-target=".einvoice-users-check"
                                   onclick="switch_fa_toggle('einvoice_users_check_fa_toggle')"
@@ -314,7 +310,7 @@ foreach ($custom_fields as $custom_field) {
 @php
     }
     // End if eInvoicing button toggle users table checking
-    @endphp
+
                         </div>
                         <div class="panel-body table-content">
 
@@ -353,7 +349,7 @@ foreach ($custom_fields as $custom_field) {
             }
         }
         // Show fields in Errors
-        @endphp
+
                                         <span>{{ implode(', ', $reqs) }}</span>
 
                                     </td></tr>
@@ -362,13 +358,12 @@ foreach ($custom_fields as $custom_field) {
 @php
     } else {
         // Client ok! Show check fields user(s)
-        @endphp
+
                             <table class="einvoice-users-check table no-margin collapse{{ $req_einvoicing->users[$_SESSION['user_id']]->einvoicing_empty_fields ? ' in" aria-expanded="true' : '" aria-expanded="false' }}"
                             >
                                 <thead class="einvoice-users-check-lists">
                                     <tr><th colspan="3">@lang('required_fields') (@php
-        _trans('user' . ($nb_users > 1 ? 's' : ''));
-        @endphp)</th></tr>
+        _trans('user' . ($nb_users > 1 ? 's' : '')))</th></tr>
                                     <tr><th>@lang('user')</th><th class="text-nowrap">e-@lang('invoice')</th><th>@lang('errors')</th></tr>
                                 </thead>
 @php
@@ -376,8 +371,7 @@ foreach ($custom_fields as $custom_field) {
         foreach ($req_einvoicing->users as $uid => $user) {
             $ok = !$user->einvoicing_empty_fields;
             // or ->show_table (inverse)
-            $tx = $ok ? 'success' : ($_SESSION['user_id'] == $uid ? 'danger' : 'warning');
-            @endphp
+            $tx = $ok ? 'success' : ($_SESSION['user_id'] == $uid ? 'danger' : 'warning')
                                 <tbody class="einvoice-user-check-lists">
                                     <tr class="text-{{ $tx }}">
                                         <td class="te te-1">
@@ -386,7 +380,7 @@ foreach ($custom_fields as $custom_field) {
                                         </td>
                                         <td><i class="{{ $class_checks[$ok ? 0 : 2] }}"></i>@php
             _trans($ok ? 'yes' : 'no');
-            @endphp</td>
+            </td>
                                         <td>
 @php
             $reqs = [];
@@ -407,7 +401,7 @@ foreach ($custom_fields as $custom_field) {
             }
             // Show Ok or Errors
             $reqs = $reqs === [] ? trans('no') : implode(', ', $reqs);
-            @endphp
+
                                             <span>{{ $reqs }}</span>
                                         </td>
                                     </tr>
@@ -415,12 +409,11 @@ foreach ($custom_fields as $custom_field) {
 @php
         }
         // End foreach users
-        @endphp
+
                             </table>
 @php
     }
     // End if client ok
-    @endphp
 
                         </div>
                     </div>
@@ -431,7 +424,7 @@ foreach ($custom_fields as $custom_field) {
 
 @if($client->client_surname != '') {
     // Client is not a company
-    @endphp
+
             <hr>
 
             <div class="row">
@@ -471,8 +464,7 @@ foreach ($custom_fields as $custom_field) {
     foreach ($custom_fields as $custom_field) {
         if ($custom_field->custom_field_location == 3) {
             $column = $custom_field->custom_field_label;
-            $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id);
-            @endphp
+            $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id)
                                 <tr>
                                     <th>{!! $column !!}</th>
                                     <td>{!! $value !!}</td>
@@ -480,7 +472,7 @@ foreach ($custom_fields as $custom_field) {
 @php
         }
     }
-    @endphp
+
                             </table>
                         </div>
                     </div>
@@ -504,8 +496,7 @@ if ($default_custom)
         if (!$custom_field->custom_field_location) {
             // == 0
             $column = $custom_field->custom_field_label;
-            $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id);
-            @endphp
+            $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id)
                                 <tr>
                                     <th>{!! $column !!}</th>
                                     <td>{!! $value !!}</td>
@@ -513,7 +504,7 @@ if ($default_custom)
 @php
         }
     }
-    @endphp
+
                             </table>
                         </div>
 
@@ -522,7 +513,7 @@ if ($default_custom)
             </div>
 @php
 }
-// fi custom_fields @endphp
+// fi custom_fields
 
             <hr>
 
@@ -553,7 +544,7 @@ if ($default_custom)
 @foreach(explode(' ', 'quote invoice payment') as $what) {
     $table = $what . '_table';
     // dynamic var name
-    @endphp
+
         <div id="client-{{ $what }}s" class="tab-pane table-content{{ $activeTab == $what . 's' ? ' active' : '' }}">
             <div class="container-fluid">
                 <div class="pull-right" style="margin:.5rem 0 -1.5rem 0">
@@ -561,8 +552,7 @@ if ($default_custom)
                 </div>
             </div>
             {{ ${$table} }}
-        </div>
-@endif
+        </div>@endforeach
     </div>
 </div>
 <?php

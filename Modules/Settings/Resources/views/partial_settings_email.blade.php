@@ -38,7 +38,7 @@
                             <select name="settings[email_pdf_attachment]" id="settings[email_pdf_attachment]"
                                     class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                 <option value="0">@lang('no')</option>
-                                <option value="1" @php check_select(get_setting('email_pdf_attachment'), '1'); @endphp>
+                                <option value="1" @php check_select(get_setting('email_pdf_attachment'), '1')>
                                     @lang('yes')
                                 </option>
                             </select>
@@ -52,15 +52,15 @@
                                     class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                 <option value="">@lang('none')</option>
                                 <option
-                                    value="phpmail" @php check_select(get_setting('email_send_method'), 'phpmail'); @endphp>
+                                    value="phpmail" @php check_select(get_setting('email_send_method'), 'phpmail')>
                                     @lang('email_send_method_phpmail')
                                 </option>
                                 <option
-                                    value="sendmail" @php check_select(get_setting('email_send_method'), 'sendmail'); @endphp>
+                                    value="sendmail" @php check_select(get_setting('email_send_method'), 'sendmail')>
                                     @lang('email_send_method_sendmail')
                                 </option>
                                 <option
-                                    value="smtp" @php check_select(get_setting('email_send_method'), 'smtp'); @endphp>
+                                    value="smtp" @php check_select(get_setting('email_send_method'), 'smtp')>
                                     @lang('email_send_method_smtp')
                                 </option>
                             </select>
@@ -98,7 +98,7 @@
                                         @lang('no')
                                     </option>
                                     <option
-                                        value="1" @php check_select(get_setting('smtp_authentication'), '1'); @endphp>
+                                        value="1" @php check_select(get_setting('smtp_authentication'), '1')>
                                         @lang('yes')
                                     </option>
                                 </select>
@@ -141,10 +141,10 @@
                                 <select name="settings[smtp_security]" id="settings[smtp_security]"
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                     <option value="">@lang('none')</option>
-                                    <option value="ssl" @php check_select(get_setting('smtp_security'), 'ssl'); @endphp>
+                                    <option value="ssl" @php check_select(get_setting('smtp_security'), 'ssl')>
                                         @lang('smtp_ssl')
                                     </option>
-                                    <option value="tls" @php check_select(get_setting('smtp_security'), 'tls'); @endphp>
+                                    <option value="tls" @php check_select(get_setting('smtp_security'), 'tls')>
                                         @lang('smtp_tls')
                                     </option>
                                 </select>
@@ -157,7 +157,7 @@
                                 <select name="settings[smtp_verify_certs]" id="settings[smtp_verify_certs]"
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                     <option value="1">@lang('yes')</option>
-                                    <option value="0" @php check_select(get_setting('smtp_verify_certs'), '0'); @endphp>
+                                    <option value="0" @php check_select(get_setting('smtp_verify_certs'), '0')>
                                         @lang('no')
                                     </option>
                                 </select>

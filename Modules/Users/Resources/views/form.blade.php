@@ -7,7 +7,7 @@ $einvoicingTip = $einvoicing ? ' data-toggle="tooltip" data-placement="bottom" t
 // tootip base
 $einvoicingReq = $einvoicing ? $einvoicingTip . trans('required_field') . ')"' : '';
 $einvoicingB2B = $einvoicing ? $einvoicingTip . 'B2B ' . trans('required_field') . ')"' : '';
-$einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : ''; @endphp
+$einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
 <script>
     $(function () {
         show_fields();
@@ -35,7 +35,7 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : ''; @
         });
 
         $('#add-user-client-modal').click(function () {
-            @php $user_id = $id ?? ''; @endphp
+            @php $user_id = $id ?? '';
             $('#modal-placeholder').load("{{ url('users/ajax/modal_add_user_client/' . $user_id) }}");
         });
     });
@@ -69,7 +69,7 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : ''; @
                             </div>
 
                             <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
-                                <label for="user_company">@lang('company') (@php _trans($itsCompany ? 'required_field' : 'optional'); @endphp)</label>{{ $qr_code_info }}
+                                <label for="user_company">@lang('company') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>{{ $qr_code_info }}
                                 <input type="text" name="user_company" id="user_company" class="form-control"
                                        value="{{ $this->mdl_users->form_value('user_company', true) }}">
                             </div>
@@ -97,7 +97,7 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : ''; @
 @php
 } else {
     // Edit user
-    @endphp
+
                             <div class="form-group">
                                 <a href="{{ url('users/change_password/' . $id) }}"
                                    class="btn btn-default">
@@ -114,10 +114,9 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : ''; @
                                     </option>
 @php $usr_lang = $this->mdl_users->form_value('user_language');
 foreach ($languages as $language) {
-    @endphp
+
                                     <option value="{{ $language }}" @php
-    check_select($usr_lang, $language);
-    @endphp>
+    check_select($usr_lang, $language)>
                                         {{ ucfirst($language) }}
                                     </option>
 @endif
@@ -129,10 +128,9 @@ foreach ($languages as $language) {
                                 <select name="user_type" id="user_type" class="form-control simple-select" required>
 @php $user_type = $this->mdl_users->form_value('user_type');
 foreach ($user_types as $key => $type) {
-    @endphp
+
                                     <option value="{{ $key }}" @php
-    check_select($user_type, $key);
-    @endphp>
+    check_select($user_type, $key)>
                                         {{ $type }}
                                     </option>
 @endif
@@ -184,18 +182,16 @@ foreach ($user_types as $key => $type) {
 @foreach($countries as $cldr => $country)
                                         <option value="{{ $cldr }}"
                                             @php
-    check_select($selected_country, $cldr);
-    @endphp>
+    check_select($selected_country, $cldr)>
                                             {{ $country }}
-                                        </option>
-@endif
+                                        </option>@endforeach
                                     </select>
                                 </div>
 @foreach($custom_fields['ip_user_custom'] as $custom_field) {
     if ($custom_field->custom_field_location == 2) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
-} @endphp
+}
                             </div>
                         </div>
 
@@ -204,7 +200,7 @@ foreach ($user_types as $key => $type) {
 
                             <div class="panel-body">
                                 <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
-                                    <label for="user_vat_id">@lang('vat_id') (@php _trans($itsCompany ? 'required_field' : 'optional'); @endphp)</label>
+                                    <label for="user_vat_id">@lang('vat_id') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>
                                     <input type="text" name="user_vat_id" id="user_vat_id" class="form-control"
                                            value="{{ $this->mdl_users->form_value('user_vat_id', true) }}">
                                 </div>
@@ -219,7 +215,7 @@ foreach ($user_types as $key => $type) {
     if ($custom_field->custom_field_location == 3) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
-} @endphp
+}
 
                             </div>
                         </div>
@@ -295,7 +291,7 @@ foreach ($user_types as $key => $type) {
 
 @php
 }
-// Endif sumex @endphp
+// Endif sumex
                         <div class="panel panel-default">
 
                             <div class="panel-heading">@lang('contact_information')</div>
@@ -338,7 +334,7 @@ foreach ($custom_fields['ip_user_custom'] as $custom_field) {
     if ($custom_field->custom_field_location == 4) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
-} @endphp
+}
 
                             </div>
 
@@ -362,7 +358,7 @@ foreach ($custom_fields['ip_user_custom'] as $custom_field) {
             print_field($this->mdl_users, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
         }
     }
-    @endphp
+
                                         </div>
                                     </div>
                                 </div>
@@ -371,7 +367,7 @@ foreach ($custom_fields['ip_user_custom'] as $custom_field) {
                         </div>
 <?php
 }
-// End if custom_fields @endphp
+// End if custom_fields
                    </div> <!-- end administrator_fields -->
 
                 </div><!-- userinfo -->

@@ -58,8 +58,7 @@
                                 {{ format_currency($total['sum_total']) }}
                             </span>
                         </td>
-                    </tr>
-                    @endif
+                    </tr>@endforeach
             </table>
         </div>
 
@@ -86,8 +85,7 @@
                                 {{ format_currency($total['sum_total']) }}
                             </span>
                         </td>
-                    </tr>
-                    @endif
+                    </tr>@endforeach
             </table>
         </div>
         @if(empty($overdue_invoices))
@@ -100,7 +98,7 @@
                     foreach ($overdue_invoices as $invoice) {
                         $overdue_invoices_total += $invoice->invoice_balance;
                     }
-            @endphp
+
             <div class="panel panel-danger panel-heading">
                 {{ anchor('invoices/status/overdue', '<i class="fa fa-external-link"></i> ' . trans('overdue_invoices'), 'class="text-danger"') }}
                 <span class="pull-right text-danger">
@@ -159,8 +157,7 @@
                                     <i class="fa fa-file-pdf-o"></i>
                                 </a>
                             </td>
-                        </tr>
-                        @endif
+                        </tr>@endforeach
                         <tr>
                             <td colspan="6" class="text-right small">
                                 {{ anchor('quotes/status/all', trans('view_all')) }}
@@ -198,7 +195,7 @@
                     if ($this->config->item('disable_read_only') == true) {
                     $invoice->is_read_only = 0;
                     }
-                    @endphp
+
                     <tr>
                         <td>
                                     <span class="label {{ $invoice_statuses[$invoice->invoice_status_id]['class'] }}">
@@ -207,10 +204,10 @@
         @lang('credit_invoice') }}"></i>@php
                                             }
                                             if ($invoice->is_read_only) {
-                                        @endphp&nbsp;<i class="fa fa-read-only" title="@lang('read_only')"></i>@php
+                                        &nbsp;<i class="fa fa-read-only" title="@lang('read_only')"></i>@php
                                             }
                                             if ($invoice->invoice_is_recurring) {
-                                        @endphp&nbsp;<i class="fa fa-refresh" title="@lang('recurring')"></i>@endif
+                                        &nbsp;<i class="fa fa-refresh" title="@lang('recurring')"></i>@endforeach
                                     </span>
                         </td>
                         <td>
@@ -284,8 +281,7 @@
                                     @if($project->client_id != null)
                                         {{ anchor('clients/view/' . $project->client_id, htmlsc(format_client($project))) }}
                                     @else
-                                        -
-                                    @endif
+                                        -@endforeach
                                 </td>
                             </tr>
                             @endif
@@ -326,10 +322,9 @@
                             <tr>
                                 <td>
                                     <span class="label {{ $task_statuses[$task->task_status]['class'] ?? '' }}">
-                                        @if(isset($task_statuses[$task->task_status]['label'])) {
-                                                echo $task_statuses[$task->task_status]['label'];
-                                            }
-                                        @endphp
+                                        @if(isset($task_statuses[$task->task_status]['label']))
+{$task_statuses[$task->task_status][label]}@endforeach
+
                                     </span>
                                 </td>
                                 <td>
@@ -361,7 +356,7 @@
     </div>
 
 }
-// End if projects_enabled @endphp
+// End if projects_enabled
 
 </div>
 <?php

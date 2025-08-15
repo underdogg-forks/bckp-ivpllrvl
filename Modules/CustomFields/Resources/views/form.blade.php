@@ -2,7 +2,7 @@
 
 $disabled = $custom_field_usage ? ' disabled' : '';
 $custom_field_table = $this->mdl_custom_fields->form_value('custom_field_table');
-$custom_field_type = $this->mdl_custom_fields->form_value('custom_field_type'); @endphp
+$custom_field_type = $this->mdl_custom_fields->form_value('custom_field_type');
 <form method="post">
 
     @php
@@ -40,12 +40,11 @@ $custom_field_type = $this->mdl_custom_fields->form_value('custom_field_type'); 
                     @php // New field? Auto select (work if come from custom_fields/table/*)
 $custom_field_table = $custom_field_table ?: (isset($_SERVER['HTTP_REFERER']) ? 'ip_' . basename($_SERVER['HTTP_REFERER']) . '_custom' : '');
 foreach ($custom_field_tables as $table => $label) {
-                    @endphp
+
                     <option value="{{ $table }}" @php
-                        check_select($custom_field_table, $table);
-                    @endphp>@php
+                        check_select($custom_field_table, $table)>@php
                             _trans($label);
-                        @endphp</option>
+                        </option>
                     @endif
                 </select>
             </div>
@@ -61,14 +60,12 @@ foreach ($custom_field_tables as $table => $label) {
                 <select name="custom_field_type" id="custom_field_type"
                         class="form-control simple-select"{{ $disabled ?: ' required' }}>
                     @foreach($custom_field_types as $type) {
-    $alpha = str_replace('-', '_', mb_strtolower($type));
-                    @endphp
+    $alpha = str_replace('-', '_', mb_strtolower($type))
                     <option value="{{ $type }}" @php
                         check_select($custom_field_type, $type);
-                    @endphp>@php
+                    >@php
                             _trans($alpha);
-                        @endphp</option>
-                        @endif
+                        </option>@endforeach
                 </select>
             </div>
             <div class="form-group">

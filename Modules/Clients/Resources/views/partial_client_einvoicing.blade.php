@@ -36,11 +36,11 @@
             </label>
             <select name="client_start_einvoicing" class="form-control simple-select"
                 id="client_start_einvoicing" data-minimum-results-for-search="Infinity">
-                @php $active = $this->mdl_clients->form_value('client_einvoicing_version') == '' ? '0' : '1'; @endphp
-                <option value="0" @php check_select($active, '0'); @endphp>
+                @php $active = $this->mdl_clients->form_value('client_einvoicing_version') == '' ? '0' : '1';
+                <option value="0" @php check_select($active, '0')>
                     @lang('no')
                 </option>
-                <option value="1" @php check_select($active, '1'); @endphp>
+                <option value="1" @php check_select($active, '1')>
                     @lang('yes')
                 </option>
             </select>
@@ -67,15 +67,13 @@ if ($req_einvoicing->users[$_SESSION['user_id']]->show_table > 0) {
                 <option value="">@lang('none')</option>
                 @foreach($xml_templates as $xml_key => $xml_template)
                 <option value="{{ $xml_key }}" @php
-                    check_select($xml_key, $client_einvoicing_version);
-                @endphp>
+                    check_select($xml_key, $client_einvoicing_version)>
                     {{ $xml_template }}
-                </option>
-                @endif
+                </option>@endforeach
             </select>
 
             <p class="help-block">
-                @php $disabled ? @lang('einvoicing_ubl_cii_required_help') : @lang('einvoicing_ubl_cii_creation_help'); @endphp
+                @php $disabled ? @lang('einvoicing_ubl_cii_required_help') : @lang('einvoicing_ubl_cii_creation_help')
             </p>
         </div>
     </div>
@@ -96,7 +94,7 @@ foreach ($req_einvoicing->users as $user_id => $user) {
         // ! Need add: . '"'
         $open = $user_id == $_SESSION['user_id'] && $req_einvoicing->users[$_SESSION['user_id']]->show_table;
         $me = $user_id == $_SESSION['user_id'];
-    @endphp
+
         <!-- Check if mandatory eInvoicing fields are empty -->
     <div
         class="col-xs-12 col-md-6 einvoice-user-check-lists collapse{{ $open ? ' in" aria-expanded="true' : '" aria-expanded="false' }}">
@@ -130,11 +128,10 @@ foreach ($req_einvoicing->users as $user_id => $user) {
                                 // Prepare some stuff
                                 $c_icon = '<i class="' . $class_checks[$req_einvoicing->clients[$client_id]->{$key}] . '"></i>';
                                 $u_icon = '<i class="' . $class_checks[$user->{$key}] . '"></i>';
-                    @endphp
+
                     <tr>
                         <td>@php
-                                _trans($lang[$l]);
-                            @endphp</td>
+                                _trans($lang[$l])</td>
                         <td class="text-center">
                             {{ anchor('clients/form/' . $client_id . '#client_' . $key, $c_icon, $title_tip . ' #' . trans($lang[$l]) . ' (' . mb_trim(trans('field')) . ')"') }}
                         </td>
@@ -147,7 +144,7 @@ foreach ($req_einvoicing->users as $user_id => $user) {
                         // tr show
                     }
                     // End Foreach $keys
-                    @endphp
+
                     </tbody>
                 </table>
             </div>
@@ -157,7 +154,7 @@ foreach ($req_einvoicing->users as $user_id => $user) {
     }
     // End if user->show_table
 }
-// End foreach einvoicing->users @endphp
+// End foreach einvoicing->users
     </div>
 </div>
 <?php

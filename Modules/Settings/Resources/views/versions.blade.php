@@ -26,8 +26,7 @@
                 <td>{{ date_from_timestamp($version->version_date_applied) }}</td>
                 <td>{{ $version->version_file }}</td>
                 <td>{{ $version->version_sql_errors }}</td>
-            </tr>
-                @endif
+            </tr>@endforeach
             </tbody>
 
         </table>

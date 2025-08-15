@@ -32,11 +32,9 @@
                 <option value="
             {{ $language }}
             " @php
-                check_select($sys_lang, $language);
-            @endphp>
+                check_select($sys_lang, $language)>
             {{ ucfirst($language) }}
-            < /option>
-            @endif
+            < /option>@endforeach
         </select>
         </div>
         </div>
@@ -50,11 +48,9 @@
                             class="form-control simple-select" data-minimum-results-for-search="Infinity">
                         @foreach($available_themes as $theme_key => $theme_name)
                         <option value="{{ $theme_key }}" @php
-                            check_select(get_setting('system_theme'), $theme_key);
-                        @endphp>
+                            check_select(get_setting('system_theme'), $theme_key)>
                         {{ $theme_name }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
             </div>
@@ -71,11 +67,9 @@
                             @foreach($first_days_of_weeks as $first_day_of_week_id => $first_day_of_week_name)
                             <option value="{{ $first_day_of_week_id }}"
                                 @php
-                                    check_select(get_setting('first_day_of_week'), $first_day_of_week_id);
-                                @endphp>
+                                    check_select(get_setting('first_day_of_week'), $first_day_of_week_id)>
                             {{ $first_day_of_week_name }}
-                            </option>
-                            @endif
+                            </option>@endforeach
                         </select>
                     </div>
                 </div>
@@ -90,12 +84,10 @@
                             @foreach($date_formats as $date_format)
                             <option value="{{ $date_format['setting'] }}"
                                 @php
-                                    check_select(get_setting('date_format'), $date_format['setting']);
-                                @endphp>
+                                    check_select(get_setting('date_format'), $date_format['setting'])>
                             {{ $current_date->format($date_format['setting']) }}
                             ({{ $date_format['setting'] }})
-                            </option>
-                            @endif
+                            </option>@endforeach
                         </select>
                     </div>
                 </div>
@@ -112,11 +104,9 @@
                             <option value="">@lang('none')</option>
                             @foreach($countries as $cldr => $country)
                             <option value="{{ $cldr }}" @php
-                                check_select(get_setting('default_country'), $cldr);
-                            @endphp>
+                                check_select(get_setting('default_country'), $cldr)>
                             {{ $country }}
-                            </option>
-                            @endif
+                            </option>@endforeach
                         </select>
                     </div>
                 </div>
@@ -163,15 +153,15 @@
                                         id="settings[currency_symbol_placement]"
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                     <option
-                                        value="before" @php check_select(get_setting('currency_symbol_placement'), 'before'); @endphp>
+                                        value="before" @php check_select(get_setting('currency_symbol_placement'), 'before')>
                                         @lang('before_amount')
                                     </option>
                                     <option
-                                        value="after" @php check_select(get_setting('currency_symbol_placement'), 'after'); @endphp>
+                                        value="after" @php check_select(get_setting('currency_symbol_placement'), 'after')>
                                         @lang('after_amount')
                                     </option>
                                     <option
-                                        value="afterspace" @php check_select(get_setting('currency_symbol_placement'), 'afterspace'); @endphp>
+                                        value="afterspace" @php check_select(get_setting('currency_symbol_placement'), 'afterspace')>
                                         @lang('after_amount_space')
                                     </option>
                                 </select>
@@ -191,11 +181,9 @@
                                     @foreach($gateway_currency_codes as $val => $key)
                                     <option value="{{ $val }}"
                                         @php
-                                            check_select(get_setting('currency_code', '', true), $val);
-                                        @endphp>
+                                            check_select(get_setting('currency_code', '', true), $val)>
                                     {{ $val }}
-                                    </option>
-                                    @endif
+                                    </option>@endforeach
                                 </select>
                             </div>
                         </div>
@@ -208,11 +196,11 @@
                                 <select name="settings[tax_rate_decimal_places]" class="form-control simple-select"
                                         id="tax_rate_decimal_places" data-minimum-results-for-search="Infinity">
                                     <option
-                                        value="2" @php check_select(get_setting('tax_rate_decimal_places'), '2'); @endphp>
+                                        value="2" @php check_select(get_setting('tax_rate_decimal_places'), '2')>
                                         2
                                     </option>
                                     <option
-                                        value="3" @php check_select(get_setting('tax_rate_decimal_places'), '3'); @endphp>
+                                        value="3" @php check_select(get_setting('tax_rate_decimal_places'), '3'); >
                                         3
                                     </option>
                                 </select>
@@ -234,13 +222,11 @@
                                     @foreach($number_formats as $key => $value)
                                     <option value="{{ $key }}"
                                         @php
-                                            check_select(get_setting('number_format'), $value['label']);
-                                        @endphp>
+                                            check_select(get_setting('number_format'), $value['label'])>
                                     @php
                                         _trans($value['label']);
-                                    @endphp
-                                    </option>
-                                    @endif
+
+                                    </option>@endforeach
                                 </select>
                             </div>
                         </div>
@@ -250,25 +236,25 @@
                                 <label for="settings[default_item_decimals]">
                                     @lang('default_item_decimals')
                                 </label>
-                                @php $current_default_item_decimals = get_setting('default_item_decimals'); @endphp
+                                @php $current_default_item_decimals = get_setting('default_item_decimals')
                                 <select name="settings[default_item_decimals]" id="settings[default_item_decimals]"
                                         class="form-control simple-select"
                                         data-minimum-results-for-search="Infinity">
-                                <option value="1" @php check_select($current_default_item_decimals, '1'); @endphp>1
+                                <option value="1" @php check_select($current_default_item_decimals, '1'); >1
                                 </option>
-                                <option value="2" @php check_select($current_default_item_decimals, '2'); @endphp>2
+                                <option value="2" @php check_select($current_default_item_decimals, '2'); >2
                                 </option>
-                                <option value="3" @php check_select($current_default_item_decimals, '3'); @endphp>3
+                                <option value="3" @php check_select($current_default_item_decimals, '3'); >3
                                 </option>
-                                <option value="4" @php check_select($current_default_item_decimals, '4'); @endphp>4
+                                <option value="4" @php check_select($current_default_item_decimals, '4'); >4
                                 </option>
-                                <option value="5" @php check_select($current_default_item_decimals, '5'); @endphp>5
+                                <option value="5" @php check_select($current_default_item_decimals, '5'); >5
                                 </option>
-                                <option value="6" @php check_select($current_default_item_decimals, '6'); @endphp>6
+                                <option value="6" @php check_select($current_default_item_decimals, '6'); >6
                                 </option>
-                                <option value="7" @php check_select($current_default_item_decimals, '7'); @endphp>7
+                                <option value="7" @php check_select($current_default_item_decimals, '7'); >7
                                 </option>
-                                <option value="8" @php check_select($current_default_item_decimals, '8'); @endphp>8
+                                <option value="8" @php check_select($current_default_item_decimals, '8'); >8
                                 </option>
                                 </select>
                             </div>
@@ -293,27 +279,27 @@
                                 <select name="settings[quote_overview_period]" id="settings[quote_overview_period]"
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                     <option
-                                        value="this-month" @php check_select(get_setting('quote_overview_period'), 'this-month'); @endphp>
+                                        value="this-month" @php check_select(get_setting('quote_overview_period'), 'this-month')>
                                         @lang('this_month')
                                     </option>
                                     <option
-                                        value="last-month" @php check_select(get_setting('quote_overview_period'), 'last-month'); @endphp>
+                                        value="last-month" @php check_select(get_setting('quote_overview_period'), 'last-month')>
                                         @lang('last_month')
                                     </option>
                                     <option
-                                        value="this-quarter" @php check_select(get_setting('quote_overview_period'), 'this-quarter'); @endphp>
+                                        value="this-quarter" @php check_select(get_setting('quote_overview_period'), 'this-quarter')>
                                         @lang('this_quarter')
                                     </option>
                                     <option
-                                        value="last-quarter" @php check_select(get_setting('quote_overview_period'), 'last-quarter'); @endphp>
+                                        value="last-quarter" @php check_select(get_setting('quote_overview_period'), 'last-quarter')>
                                         @lang('last_quarter')
                                     </option>
                                     <option
-                                        value="this-year" @php check_select(get_setting('quote_overview_period'), 'this-year'); @endphp>
+                                        value="this-year" @php check_select(get_setting('quote_overview_period'), 'this-year')>
                                         @lang('this_year')
                                     </option>
                                     <option
-                                        value="last-year" @php check_select(get_setting('quote_overview_period'), 'last-year'); @endphp>
+                                        value="last-year" @php check_select(get_setting('quote_overview_period'), 'last-year')>
                                         @lang('last_year')
                                     </option>
                                 </select>
@@ -328,27 +314,27 @@
                                 <select name="settings[invoice_overview_period]" id="settings[invoice_overview_period]"
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                     <option
-                                        value="this-month" @php check_select(get_setting('invoice_overview_period'), 'this-month'); @endphp>
+                                        value="this-month" @php check_select(get_setting('invoice_overview_period'), 'this-month')>
                                         @lang('this_month')
                                     </option>
                                     <option
-                                        value="last-month" @php check_select(get_setting('invoice_overview_period'), 'last-month'); @endphp>
+                                        value="last-month" @php check_select(get_setting('invoice_overview_period'), 'last-month')>
                                         @lang('last_month')
                                     </option>
                                     <option
-                                        value="this-quarter" @php check_select(get_setting('invoice_overview_period'), 'this-quarter'); @endphp>
+                                        value="this-quarter" @php check_select(get_setting('invoice_overview_period'), 'this-quarter')>
                                         @lang('this_quarter')
                                     </option>
                                     <option
-                                        value="last-quarter" @php check_select(get_setting('invoice_overview_period'), 'last-quarter'); @endphp>
+                                        value="last-quarter" @php check_select(get_setting('invoice_overview_period'), 'last-quarter')>
                                         @lang('last_quarter')
                                     </option>
                                     <option
-                                        value="this-year" @php check_select(get_setting('invoice_overview_period'), 'this-year'); @endphp>
+                                        value="this-year" @php check_select(get_setting('invoice_overview_period'), 'this-year')>
                                         @lang('this_year')
                                     </option>
                                     <option
-                                        value="last-year" @php check_select(get_setting('invoice_overview_period'), 'last-year'); @endphp>
+                                        value="last-year" @php check_select(get_setting('invoice_overview_period'), 'last-year')>
                                         @lang('last_year')
                                     </option>
                                 </select>
@@ -368,7 +354,7 @@
                                         @lang('no')
                                     </option>
                                     <option
-                                        value="1" @php check_select(get_setting('disable_quickactions'), '1'); @endphp>
+                                        value="1" @php check_select(get_setting('disable_quickactions'), '1')>
                                         @lang('yes')
                                     </option>
                                 </select>
@@ -396,7 +382,7 @@
                                     <option value="0">
                                         @lang('no')
                                     </option>
-                                    <option value="1" @php check_select(get_setting('disable_sidebar'), '1'); @endphp>
+                                    <option value="1" @php check_select(get_setting('disable_sidebar'), '1')>
                                         @lang('yes')
                                     </option>
                                 </select>
@@ -424,7 +410,7 @@
                                 <select name="settings[monospace_amounts]" class="form-control simple-select"
                                         id="monospace_amounts" data-minimum-results-for-search="Infinity">
                                     <option value="0">@lang('no')</option>
-                                    <option value="1" @php check_select(get_setting('monospace_amounts'), '1'); @endphp>
+                                    <option value="1" @php check_select(get_setting('monospace_amounts'), '1')>
                                         @lang('yes')
                                     </option>
                                 </select>
@@ -463,7 +449,7 @@
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                     <option value="0">@lang('no')</option>
                                     <option
-                                        value="1" @php check_select(get_setting('reports_in_new_tab'), '1'); @endphp>
+                                        value="1" @php check_select(get_setting('reports_in_new_tab'), '1')>
                                         @lang('yes')
                                     </option>
                                 </select>
@@ -481,7 +467,7 @@
                                         @lang('no')
                                     </option>
                                     <option
-                                        value="1" @php check_select(get_setting('show_responsive_itemlist'), '1'); @endphp>
+                                        value="1" @php check_select(get_setting('show_responsive_itemlist'), '1')>
                                         @lang('yes')
                                     </option>
                                 </select>
@@ -509,7 +495,7 @@
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                     <option value="0">@lang('no')</option>
                                     <option
-                                        value="1" @php check_select(get_setting('bcc_mails_to_admin'), '1'); @endphp>
+                                        value="1" @php check_select(get_setting('bcc_mails_to_admin'), '1')>
                                         @lang('yes')
                                     </option>
                                 </select>

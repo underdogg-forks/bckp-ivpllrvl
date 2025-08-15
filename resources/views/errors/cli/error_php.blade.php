@@ -1,4 +1,4 @@
-@php  @endphp
+@php
 
 A PHP Error was encountered
 
@@ -14,7 +14,7 @@ Line Number: {{ $line }}
             File: {{ $error['file'], "\n" }}
             Line: {{ $error['line'], "\n" }}
             Function: {{ $error['function'], "\n\n" }}
-        @php endif @endphp
-    @php endforeach @endphp
+        @php endif
+    @php endforeach
 
 <?php endif;

@@ -1,7 +1,7 @@
 @php namespace Modules\Invoices\Views;
 
 // Same for responsive & table
-$invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"'; @endphp
+$invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
 <tr>
     <td class="td-vert-middle">@lang('global_discount')</td>
     <td class="clearfix">

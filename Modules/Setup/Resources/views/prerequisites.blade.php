@@ -21,11 +21,11 @@
         @php
             } else {
                 $errors = true;
-        @endphp
+
         <p><i class="fa fa-close text-danger fa-margin"></i> {{ $basic['message'] }}</p>
         @php
             }
-        } @endphp
+        }
 
         <br>
 
@@ -36,7 +36,7 @@
         <p><i class="fa fa-close text-danger fa-margin"></i> {{ $writable['message'] }}</p>
         @php
             }
-        } @endphp
+        }
 
         @if($errors)
         <a href="javascript:history.go(0)" class="btn btn-danger">
@@ -45,8 +45,7 @@
                         </a>
             @else
             <input class="btn btn-success" type="submit" name="btn_continue"
-                   value="@lang('continue')">
-            @endif
+                   value="@lang('continue')">@endforeach
 
             </form>
 

@@ -36,7 +36,7 @@
                     <select name="client_id" id="client_id" class="client-id-select form-control" autofocus="autofocus">
                         @php $permissive = get_setting('enable_permissive_search_users');
 if (!empty($project->client_id)) {
-                        @endphp
+
                         <option value="{{ $project->client_id }}">{!! format_client($project) !!}</option>
                             @endif
                     </select>

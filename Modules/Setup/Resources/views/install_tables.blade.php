@@ -22,8 +22,7 @@
         @lang('failure')
         </span>
         {{ $error }}
-        </p>
-        @endif
+        </p>@endforeach
 
         @else
         <p>

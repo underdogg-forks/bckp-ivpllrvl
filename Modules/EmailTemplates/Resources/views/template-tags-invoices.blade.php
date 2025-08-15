@@ -49,8 +49,7 @@
             @foreach($custom_fields['ip_invoice_custom'] as $custom)
             <option value="{{{{{ 'ip_cf_' . $custom->custom_field_id }}}}}">
                 {{ $custom->custom_field_label . ' (ID ' . $custom->custom_field_id . ')' }}
-            </option>
-            @endif
+            </option>@endforeach
         </optgroup>
             @endif
     </select>

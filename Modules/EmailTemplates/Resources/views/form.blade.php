@@ -98,22 +98,18 @@
                             @foreach($invoice_templates as $template)
                             <option class="hidden-invoice" value="{{ $template }}"
                                 @php
-                                    check_select($selected_pdf_template, $template);
-                                @endphp>
+                                    check_select($selected_pdf_template, $template)>
                                 {{ $template }}
-                            </option>
-                            @endif
+                            </option>@endforeach
                         </optgroup>
 
                         <optgroup label="@lang('quotes')">
                             @foreach($quote_templates as $template)
                             <option class="hidden-quote" value="{{ $template }}"
                                 @php
-                                    check_select($selected_pdf_template, $template);
-                                @endphp>
+                                    check_select($selected_pdf_template, $template)>
                                 {{ $template }}
-                            </option>
-                                @endif
+                            </option>@endforeach
                         </optgroup>
                     </select>
                 </div>

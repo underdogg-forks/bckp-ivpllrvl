@@ -15,8 +15,7 @@
 
             <select name="ip_lang" class="form-control simple-select">
 @foreach($languages as $language)
-                <option value="{{ $language }}"{{ $language == 'en' ? ' selected="selected"' : '' }}>{{ ucfirst(str_replace('/', '', $language)) }}</option>
-@endif
+                <option value="{{ $language }}"{{ $language == 'en' ? ' selected="selected"' : '' }}>{{ ucfirst(str_replace('/', '', $language)) }}</option>@endforeach
             </select>
 
             <br/>

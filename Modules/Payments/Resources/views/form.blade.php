@@ -33,7 +33,7 @@
 
     <div id="headerbar">
         <h1 class="headerbar-title">@lang('payment_form') }}</h1>
-        @php $this->layout->loadView('layout/header_buttons', ['attribute_cancel' => 'onclick="window.location.href = `' . site_url('payments') . '`;"']); @endphp
+        @php $this->layout->loadView('layout/header_buttons', ['attribute_cancel' => 'onclick="window.location.href = `' . site_url('payments') . '`;"'])
     </div>
 
     <div id="content">
@@ -51,15 +51,14 @@
                         foreach ($open_invoices as $invoice)
                         <option value="{{ $invoice->invoice_id }}"
                             @php
-                                check_select($this->mdl_payments->form_value('invoice_id'), $invoice->invoice_id);
-                            @endphp>
+                                check_select($this->mdl_payments->form_value('invoice_id'), $invoice->invoice_id)>
                             {{ $invoice->invoice_number . ' - ' . htmlsc(format_client($invoice)) . ' - ' . format_currency($invoice->invoice_balance) }}
                         </option>
                         @php
                             }
                             // End foreach
                         } else {
-                        @endphp
+
                         <option value="{{ $payment->invoice_id }}">
                             {{ $payment->invoice_number . ' - ' . htmlsc(format_client($payment)) . ' - ' . format_currency($payment->invoice_balance) }}
                         </option>
@@ -114,8 +113,7 @@
                         <option value="{{ $payment_method->payment_method_id }}"
                             {{ $this->mdl_payments->form_value('payment_method_id') == $payment_method->payment_method_id ? 'selected="selected"' : '' }}>
                             {{ $payment_method->payment_method_name }}
-                        </option>
-                            @endif
+                        </option>@endforeach
                 </select>
             </div>
         </div>
@@ -134,7 +132,7 @@
         @php $classes = ['col-xs-12 col-sm-2 text-right text-left-xs', 'col-xs-12 col-sm-6', 'control-label', 'form-group'];
 foreach ($custom_fields as $custom_field) {
     print_field($this->mdl_payments, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
-} @endphp
+}
 
     </div>
 

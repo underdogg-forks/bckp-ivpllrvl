@@ -24,7 +24,7 @@
                         <label>
                             <input type="hidden" name="settings[enable_online_payments]" value="0">
                             <input type="checkbox" name="settings[enable_online_payments]" value="1"
-                                @php check_select(get_setting('enable_online_payments'), 1, '==', true); @endphp>
+                                @php check_select(get_setting('enable_online_payments'), 1, '==', true)>
                             @lang('enable_online_payments')
                         </label>
                     </div>
@@ -37,12 +37,10 @@
                     <select id="online-payment-select" class="form-control">
                         <option value="">@lang('none')</option>
                         @foreach($gateway_drivers as $driver => $fields) {
-    $d = mb_strtolower($driver);
-                        @endphp
+    $d = mb_strtolower($driver)
                         <option value="{{ $d }}">
                             {{ ucwords(str_replace('_', ' ', $driver)) }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
 
@@ -51,7 +49,7 @@
 
         @foreach($gateway_drivers as $driver => $fields) {
     $d = mb_strtolower($driver);
-        @endphp
+
         <div id="gateway-settings-{{ $d }}"
              class="gateway-settings panel panel-default {{ get_setting('gateway_' . $d . '_enabled') ? 'active-gateway' : 'hidden' }}">
 
@@ -65,7 +63,7 @@
                                    id="settings[gateway_{{ $d }}_enabled]"
                                 @php
                                     check_select(get_setting('gateway_' . $d . '_enabled'), 1, '==', true);
-                                @endphp>
+                                >
                             @lang('enabled')
                         </label>
                     </div>
@@ -83,11 +81,10 @@
                         <input type="checkbox" name="settings[gateway_{{ $d }}_{{ $key }}]"
                                value="1"
                             @php
-                                check_select(get_setting('gateway_' . $d . '_' . $key), 1, '==', true);
-                            @endphp>
+                                check_select(get_setting('gateway_' . $d . '_' . $key), 1, '==', true)>
                         @php
                             _trans('online_payment_' . $key, '', $setting['label']);
-                        @endphp
+
                     </label>
                 </div>
 
@@ -96,7 +93,7 @@
                     <label for="settings[gateway_{{ $d }}_{{ $key }}]">
                         @php
                             _trans('online_payment_' . $key, '', $setting['label']);
-                        @endphp
+
                     </label>
                     <input type="{{ $setting['type'] }}" class="form-control"
                            name="settings[gateway_{{ $d }}_{{ $key }}]"
@@ -104,8 +101,7 @@
                            @if($setting['type'] == 'password')
                            value="{{ $this->crypt->decode(get_setting('gateway_' . $d . '_' . $key)) }}"
                            @else
-                           value="{{ get_setting('gateway_' . $d . '_' . $key) }}"
-                        @endif
+                           value="{{ get_setting('gateway_' . $d . '_' . $key) }}"@endforeach
                     >
                     @if($setting['type'] == 'password')
                     <input type="hidden" value="1"
@@ -128,11 +124,9 @@
                         @foreach($gateway_currency_codes as $val => $key)
                         <option value="{{ $val }}"
                             @php
-                                check_select(get_setting('gateway_' . $d . '_currency') ?: get_setting('currency_code'), $val);
-                            @endphp>
+                                check_select(get_setting('gateway_' . $d . '_currency') ?: get_setting('currency_code'), $val)>
                             {{ $val }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
 
@@ -147,11 +141,9 @@
                         @foreach($payment_methods as $payment_method)
                         <option value="{{ $payment_method->payment_method_id }}"
                             @php
-                                check_select(get_setting('gateway_' . $d . '_payment_method'), $payment_method->payment_method_id);
-                            @endphp>
+                                check_select(get_setting('gateway_' . $d . '_payment_method'), $payment_method->payment_method_id)>
                             {{ $payment_method->payment_method_name }}
-                        </option>
-                        @endif
+                        </option>@endforeach
                     </select>
                 </div>
 

@@ -18,14 +18,14 @@
     <meta name="viewport" content="width=device-width">
     <meta name="robots" content="NOINDEX,NOFOLLOW">
 
-    <link rel="icon" href="@php _core_asset('img/favicon.png'); @endphp" type="image/png">
+    <link rel="icon" href="@php _core_asset('img/favicon.png')" type="image/png">
 
-    <link rel="stylesheet" href="@php _theme_asset('css/welcome.css'); @endphp" type="text/css">
+    <link rel="stylesheet" href="@php _theme_asset('css/welcome.css'); " type="text/css">
     <!--[if lt IE 9]>
-    <script src="@php _core_asset('js/legacy.min.js'); @endphp"></script>
+    <script src="@php _core_asset('js/legacy.min.js'); "></script>
     <![endif]-->
 
-    <script src="@php _core_asset('js/dependencies.min.js'); @endphp"></script>
+    <script src="@php _core_asset('js/dependencies.min.js'); "></script>
 
 </head>
 <body>

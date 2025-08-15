@@ -12,7 +12,7 @@
 
 <head>
     @php // GetController the page head content
-$this->layout->loadView('layout/includes/head'); @endphp
+$this->layout->loadView('layout/includes/head')
 </head>
 <body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : '' }}">
 
@@ -21,13 +21,13 @@ $this->layout->loadView('layout/includes/head'); @endphp
 </noscript>
 
 @php // GetController the navigation bar
-$this->layout->loadView('layout/includes/navbar'); @endphp
+$this->layout->loadView('layout/includes/navbar')
 
 <div id="main-area">
     @php // Display the sidebar if enabled
 if (get_setting('disable_sidebar') != 1) {
     $this->layout->loadView('layout/includes/sidebar');
-} @endphp
+}
     <div id="main-content">
         {{ $content }}
     </div>
@@ -38,11 +38,11 @@ if (get_setting('disable_sidebar') != 1) {
 
 {{ $this->layout->loadView('layout/includes/fullpage-loader') }}
 
-<script defer src="@php _core_asset('js/scripts.min.js'); @endphp"></script>
+<script defer src="@php _core_asset('js/scripts.min.js'); "></script>
 @if(trans('cldr') != 'en')
 <script src="@php
     _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js');
-    @endphp"></script>
+    "></script>
     @endif
 
 </body>

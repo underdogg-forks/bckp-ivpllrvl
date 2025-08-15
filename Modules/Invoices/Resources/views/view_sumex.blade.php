@@ -8,7 +8,7 @@ $its_mine = $this->session->__get('user_id') == $invoice->user_id;
 $my_class = $its_mine ? 'success' : 'warning';
 // visual: work with text-* alert-*
 // In change user toggle & After eInvoice (name) when user required field missing
-$edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing') . '): ' . htmlsc(PHP_EOL . format_user($invoice->user_id)); @endphp
+$edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing') . '): ' . htmlsc(PHP_EOL . format_user($invoice->user_id));
 <script>
     $(function () {
         $('.item-task-id').each(function () {
@@ -196,7 +196,7 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
 <div id="headerbar">
     <h1 class="headerbar-title">
         <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing') }}: <?php
-htmlspecialchars(PHP_EOL . format_user($invoice->user_id)); @endphp">
+htmlspecialchars(PHP_EOL . format_user($invoice->user_id))">
 {{ trans('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
 </span>
 
@@ -216,7 +216,7 @@ htmlspecialchars(PHP_EOL . format_user($invoice->user_id)); @endphp">
             }
             // End if draft
         }
-        // End if change_user @endphp
+        // End if change_user
         </h1>
 
         <div
@@ -230,7 +230,7 @@ htmlspecialchars(PHP_EOL . format_user($invoice->user_id)); @endphp">
             <ul class="dropdown-menu">
 @if($legacy_calculation && $invoice->is_read_only != 1) {
     // Legacy calculation have global taxes - since v1.6.3
-@endphp
+
                 <li>
                     <a href="#add-invoice-tax" data-toggle="modal">
                         <i class="fa fa-plus fa-margin"></i> @lang('add_invoice_tax')
@@ -313,7 +313,7 @@ htmlspecialchars(PHP_EOL . format_user($invoice->user_id)); @endphp">
 @php
     }
     if ($invoice->is_read_only == 1) {
-@endphp
+
         <span class="label label-danger">
             <i class="fa fa-read-only"></i> @lang('read_only')
         </span>
@@ -352,28 +352,28 @@ htmlspecialchars(PHP_EOL . format_user($invoice->user_id)); @endphp">
 @php
     }
     if ($invoice->client_phone) {
-@endphp
+
                             <div>@lang('phone'):&nbsp;{!! $invoice->client_phone !!}</div>
 @php
     }
     if ($invoice->client_email) {
-@endphp
+
                             <div>@lang('email'):&nbsp;@php
                                     _auto_link($invoice->client_email !!}</div>
 @php
     }
     if ($invoice->client_birthdate || $invoice->client_gender) {
-@endphp
+
                             <hr>
 @php
     }
     if ($invoice->client_birthdate) {
-@endphp
+
                             <div>@lang('birthdate'):&nbsp;{{ format_date($invoice->client_birthdate) }}</div>
 @php
     }
     if ($invoice->client_gender) {
-@endphp
+
                             <div>@lang('birthdate'):&nbsp;{{ format_gender($invoice->client_gender) }}</div>
         @endif
         </div>
@@ -381,7 +381,7 @@ htmlspecialchars(PHP_EOL . format_user($invoice->user_id)); @endphp">
 @php // Fix New invoice date in db
 $invoice->sumex_treatmentstart = $invoice->sumex_treatmentstart == '0000-00-00' ? date('y-m-d') : $invoice->sumex_treatmentstart;
 $invoice->sumex_treatmentend = $invoice->sumex_treatmentend == '0000-00-00' ? date('y-m-d') : $invoice->sumex_treatmentend;
-$invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-d') : $invoice->sumex_casedate; @endphp
+$invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-d') : $invoice->sumex_casedate;
                         <h3>@lang('treatment')</h3>
                         <br>
                         <div class="col-xs-12 col-md-8">
@@ -417,11 +417,10 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
 @php $reasons = ['accident', 'birthdefect', 'disease', 'maternity', 'prevention', 'unknown'];
 foreach ($reasons as $key => $reason) {
     $selected = $invoice->sumex_reason == $key ? ' selected' : '';
-@endphp
+
                                                 <option value="{{ $key }}"{{ $selected }}>
                                                     @php
-                                                        _trans('reason_' . $reason);
-                                                    @endphp
+                                                        _trans('reason_' . $reason)
                                                 </option>
 @php
     @endforeach
@@ -446,7 +445,7 @@ foreach ($reasons as $key => $reason) {
                                             <span class="input-group-addon">@lang('case_number')</span>
                                             <input id="invoice_sumex_casenumber" name="sumex_casenumber"
                                                    class="form-control"
-                                                   value="@php _htmle($invoice->sumex_casenumber); @endphp"
+                                                   value="@php _htmle($invoice->sumex_casenumber)"
                                                    type="text">
                                         </div>
                                     </td>
@@ -457,7 +456,7 @@ foreach ($reasons as $key => $reason) {
                                             <span class="input-group-addon">@lang('invoice_sumex_diagnosis')</span>
                                             <input id="invoice_sumex_diagnosis" name="invoice_sumex_diagnosis"
                                                    class="form-control"
-                                                   value="@php _htmle($invoice->sumex_diagnosis); @endphp"
+                                                   value="@php _htmle($invoice->sumex_diagnosis)"
                                                    type="text" maxlength="500">
                                         </div>
                                     </td>
@@ -477,7 +476,7 @@ foreach ($reasons as $key => $reason) {
                                 {
                                 $credit_link = anchor('/invoices/view/' . $invoice->creditinvoice_parent_id,
                                 $invoice->creditinvoice_parent_id);
-                                @endphp
+
                                 <div class="col-xs-12">
                                 <span class="label label-warning">
                                     <i class="fa fa-credit-invoice"></i>&nbsp;
@@ -490,9 +489,9 @@ foreach ($reasons as $key => $reason) {
 
                                 <div class="invoice-properties">
                                     <label>@lang('status');
-if ($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4) {
-    echo ' <span class="small">(' . trans('can_be_changed') . ')</span>';
-} @endphp
+if ($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4)
+{ <span class="small">(  trans(can_be_changed)  )</span>}
+@endif
                                     </label>
                                     <select name="invoice_status_id" id="invoice_status_id"
                                             class="form-control simple-select"
@@ -503,8 +502,7 @@ if ($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4) {
                                                 {{ $key == $invoice->invoice_status_id ? 'selected="selected"' : '' }}
                                         >
                                             {{ $status['label'] }}
-                                        </option>
-                                            @endif
+                                        </option>@endforeach
                                     </select>
                                 </div>
 
@@ -561,8 +559,7 @@ if ($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4) {
                                         <option value="0">@lang('select_payment_method')</option>
 @foreach($payment_methods as $payment_method)
                                         <option @php
-                                                    check_select($invoice->payment_method, $payment_method->payment_method_id);
-@endphp
+                                                    check_select($invoice->payment_method, $payment_method->payment_method_id)
                                                 value="{{ $payment_method->payment_method_id }}">
                                         {{ $payment_method->payment_method_name }}
                                         </option>
@@ -587,7 +584,7 @@ foreach ($custom_fields as $custom_field) {
     if ($custom_field->custom_field_location == 1) {
         print_field($this->mdl_invoices, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
     }
-} @endphp
+}
 
                             @if($invoice->invoice_status_id != 1)
                                 <div class="col-xs-12">
@@ -605,7 +602,7 @@ foreach ($custom_fields as $custom_field) {
                             </div>
                                 @php
                                     }
-                                    // End if @endphp
+                                    // End if
 
                         </div>
                     </div>
@@ -613,7 +610,7 @@ foreach ($custom_fields as $custom_field) {
 
         </div>
 
-@php $this->layout->loadView('invoices/partial_itemlist_' . (get_setting('show_responsive_itemlist') ? 'responsive' : 'table')); @endphp
+@php $this->layout->loadView('invoices/partial_itemlist_' . (get_setting('show_responsive_itemlist') ? 'responsive' : 'table'))
 
             <hr/>
 
@@ -651,7 +648,7 @@ foreach ($custom_fields as $custom_field) {
 
                 <div class="col-xs-12 col-md-4">
 
-                    @php _dropzone_html($invoice->is_read_only); @endphp
+                    @php _dropzone_html($invoice->is_read_only)
 
                 </div>
 
@@ -677,7 +674,7 @@ foreach ($custom_fields as $custom_field) {
             print_field($this->mdl_invoices, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
         }
     }
-@endphp
+
                             </div>
                         </div>
                     </div>
@@ -686,7 +683,7 @@ foreach ($custom_fields as $custom_field) {
             </div>
 <?php
 }
-// End if custom_fields @endphp
+// End if custom_fields
 
         </div>
     </div>

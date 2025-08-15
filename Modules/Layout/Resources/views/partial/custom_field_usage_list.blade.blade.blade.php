@@ -8,7 +8,7 @@ if ($custom_field_usage) {
     // $what = explode('_', $custom_field_table)[1]; // Modern php
     $what = strtr($custom_field_table, ['ip_' => '', '_custom' => '']);
     // O•Al•l•d php
-    $href = site_url($url[$what]); @endphp
+    $href = site_url($url[$what]);
 
 <div id="used{{ $what }}" class="col-xs-12 col-md-6 col-md-offset-3">
     <div class="panel-group" id="accordion{{ $what }}" role="tablist" aria-multiselectable="true">
@@ -44,8 +44,7 @@ if ($custom_field_usage) {
                             // $val = $obj->$val; // todo? get values of single/multiple choice (int: 1 or 2,3,4)
                             $links[] = anchor($href . $id, trans($what) . '&nbsp;' . $fid);
                         }
-                        echo implode(', ', $links);
-                    @endphp
+                        echo implode(', ', $links)
                 </div>
             </div>
         </div>

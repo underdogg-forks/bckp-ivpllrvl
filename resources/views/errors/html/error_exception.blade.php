@@ -1,4 +1,4 @@
-@php  @endphp
+@php
 
 <div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
 
@@ -8,10 +8,10 @@
     <p>Message: {{ $message }}</p>
     <p>Filename: {{ $exception->getFile() }}</p>
     <p>Line Number: {{ $exception->getLine() }}</p>
-@if(defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) { @endphp
+@if(defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) {
     <p>Backtrace:</p>
 @foreach($exception->getTrace() as $error) {
-            if (isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH))) { @endphp
+            if (isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH))) {
     <p style="margin-left:10px">
         File: {{ $error['file'] }}<br>
         Line: {{ $error['line'] }}<br>
@@ -19,6 +19,6 @@
     </p>
 @php }
         }
-} @endphp
+}
 
 </div>

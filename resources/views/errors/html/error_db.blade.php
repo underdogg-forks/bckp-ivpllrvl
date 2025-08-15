@@ -1,4 +1,4 @@
-@php  @endphp
+@php
 <!DOCTYPE html>
 <html style="display:table;width:100%;">
 <head>

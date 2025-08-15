@@ -53,7 +53,7 @@
 
             <input type="hidden" name="invoice_date_created" id="invoice_date_created"
                    value="@php $credit_date = date_from_mysql(date('Y-m-d', time()), true);
-echo $credit_date; @endphp">
+echo $credit_date; ">
 
             <div class="form-group">
                 <label for="invoice_password">@lang('invoice_password')</label>
@@ -66,11 +66,10 @@ echo $credit_date; @endphp">
                 <select name="invoice_group_id" id="invoice_group_id" class="hidden">
                     @foreach($invoice_groups as $invoice_group)
                         <option value="{{ $invoice_group->invoice_group_id }}"
-                            @if(get_setting('default_invoice_group') == $invoice_group->invoice_group_id) {
-        echo 'selected="selected"';
-        $credit_invoice_group = htmlsc($invoice_group->invoice_group_name);
-    }
-    @endphp>
+                            @if(get_setting('default_invoice_group') == $invoice_group->invoice_group_id)
+{selected="selected";
+        $credit_invoice_group = htmlsc($invoice_group->invoice_group_name)}@endforeach
+    >
                             {{ $credit_invoice_group }}
                         </option>
                     @endif
