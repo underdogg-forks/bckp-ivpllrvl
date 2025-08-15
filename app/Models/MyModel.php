@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use AllowDynamicProperties;
-use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Model;
 
 /**

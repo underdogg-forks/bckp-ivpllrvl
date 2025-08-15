@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 #[AllowDynamicProperties]
 class FormValidationModel extends BaseModel
 {

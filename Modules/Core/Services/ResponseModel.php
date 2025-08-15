@@ -3,7 +3,6 @@
 namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
-use App\Services\BaseService;
 
 #[AllowDynamicProperties]
 class ResponseModel

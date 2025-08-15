@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use AllowDynamicProperties;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 #[AllowDynamicProperties]
 class ResponseModel
