@@ -1,0 +1,22 @@
+{
+    "models/MdlImport.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "start_import": "startImport",
+        "import_data": "importData",
+        "import_invoices": "importInvoices",
+        "import_invoice_items": "importInvoiceItems",
+        "import_payments": "importPayments",
+        "record_import_details": "recordImportDetails"
+    },
+    "models/Mdl_import.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "start_import": "startImport",
+        "import_data": "importData",
+        "import_invoices": "importInvoices",
+        "import_invoice_items": "importInvoiceItems",
+        "import_payments": "importPayments",
+        "record_import_details": "recordImportDetails"
+    }
+}

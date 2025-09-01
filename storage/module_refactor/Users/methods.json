@@ -1,0 +1,36 @@
+{
+    "controllers/Ajax.php": {
+        "name_query": "nameQuery",
+        "get_latest": "getLatest",
+        "save_preference_permissive_search_users": "savePreferencePermissiveSearchUsers",
+        "save_user_client": "saveUserClient",
+        "load_user_client_table": "loadUserClientTable",
+        "modal_add_user_client": "modalAddUserClient"
+    },
+    "controllers/Users.php": {
+        "change_password": "changePassword",
+        "delete_user_client": "deleteUserClient"
+    },
+    "models/MdlUsers.php": {
+        "user_types": "userTypes",
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "get_latest": "getLatest",
+        "validation_rules_existing": "validationRulesExisting",
+        "validation_rules_change_password": "validationRulesChangePassword",
+        "db_array": "dbArray",
+        "save_change_password": "saveChangePassword"
+    },
+    "models/Mdl_users.php": {
+        "user_types": "userTypes",
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "get_latest": "getLatest",
+        "validation_rules_existing": "validationRulesExisting",
+        "validation_rules_change_password": "validationRulesChangePassword",
+        "db_array": "dbArray",
+        "save_change_password": "saveChangePassword"
+    }
+}

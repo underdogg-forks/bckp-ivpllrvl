@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Helpers;
+
+class JsonErrorHelper
+{
+    /**
+     * @originalName json_errors
+     *
+     * @originalFile json_error_helper.php
+     */
+    public static function jsonErrors(): array
+    {
+        // Think of a better name for this function. It doesn't return
+        // json itself but is called from something which will.
+        $return = [];
+        foreach (array_keys($_POST) as $key) {
+            if (form_error($key)) {
+                $return[$key] = form_error($key);
+            }
+        }
+
+        return $return;
+    }
+}

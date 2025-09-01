@@ -1,0 +1,120 @@
+{
+    "models/MdlClientCustom.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "save_custom": "saveCustom",
+        "prep_form": "prepForm",
+        "get_by_client": "getByClient",
+        "by_id": "byId",
+        "get_by_clid": "getByClid",
+        "db_array": "dbArray"
+    },
+    "models/MdlCustomFields.php": {
+        "get_nicename": "getNicename",
+        "custom_types": "customTypes",
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "get_by_table": "getByTable",
+        "get_positions": "getPositions",
+        "get_by_id": "getById",
+        "db_array": "dbArray",
+        "custom_tables": "customTables",
+        "by_table_name": "byTableName",
+        "by_table": "byTable",
+        "get_value_for_field": "getValueForField",
+        "get_values_for_fields": "getValuesForFields",
+        "rename_column": "renameColumn",
+        "add_column": "addColumn"
+    },
+    "models/MdlInvoiceCustom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId"
+    },
+    "models/MdlPaymentCustom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId",
+        "get_by_payid": "getByPayid"
+    },
+    "models/MdlQuoteCustom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId"
+    },
+    "models/MdlUserCustom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId",
+        "get_by_useid": "getByUseid"
+    },
+    "models/Mdl_client_custom.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "save_custom": "saveCustom",
+        "prep_form": "prepForm",
+        "get_by_client": "getByClient",
+        "by_id": "byId",
+        "get_by_clid": "getByClid",
+        "db_array": "dbArray"
+    },
+    "models/Mdl_custom_fields.php": {
+        "get_nicename": "getNicename",
+        "custom_types": "customTypes",
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "get_by_table": "getByTable",
+        "get_positions": "getPositions",
+        "get_by_id": "getById",
+        "db_array": "dbArray",
+        "custom_tables": "customTables",
+        "by_table_name": "byTableName",
+        "by_table": "byTable",
+        "get_value_for_field": "getValueForField",
+        "get_values_for_fields": "getValuesForFields",
+        "rename_column": "renameColumn",
+        "add_column": "addColumn"
+    },
+    "models/Mdl_invoice_custom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId"
+    },
+    "models/Mdl_payment_custom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId",
+        "get_by_payid": "getByPayid"
+    },
+    "models/Mdl_quote_custom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId"
+    },
+    "models/Mdl_user_custom.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "save_custom": "saveCustom",
+        "by_id": "byId",
+        "get_by_useid": "getByUseid"
+    }
+}

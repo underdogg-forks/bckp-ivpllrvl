@@ -1,0 +1,443 @@
+<?php
+
+namespace Modules\Invoices\Controllers;
+
+use AllowDynamicProperties;
+use Illuminate\Support\Facades\Log;
+use Modules\Core\Controllers\AdminController;
+use Modules\Invoices\Services\InvoicesService;
+use Modules\Invoices\Services\InvoiceSumexService;
+use Modules\Invoices\Services\InvoiceTaxRatesService;
+
+#[AllowDynamicProperties]
+class AjaxController extends AdminController
+{
+    public $ajax_controller = true;
+
+    /**
+     * @originalName save
+     *
+     * @originalFile AjaxController.php
+     */
+    public function save()
+    {
+        $this->load->model(['invoices/mdl_items', 'invoices/mdl_invoices', 'units/mdl_units', 'invoices/mdl_invoice_sumex']);
+        $invoice_id = $this->security->xss_clean($this->input->post('invoice_id', true));
+        (new InvoicesService())->setId($invoice_id);
+        if ((new InvoicesService())->runValidation('validation_rules_save_invoice')) {
+            $items                    = json_decode($this->input->post('items'));
+            $invoice_discount_percent = (float) $this->input->post('invoice_discount_percent');
+            $invoice_discount_amount  = (float) $this->input->post('invoice_discount_amount');
+            // Percent by default. Only one allowed. Prevent set 2 global discounts by geeky client - since v1.6.3
+            if ($invoice_discount_percent && $invoice_discount_amount) {
+                $invoice_discount_amount = 0.0;
+            }
+            // New discounts (for legacy_calculation false) - since v1.6.3 Need if taxes applied after discounts
+            $items_subtotal = 0.0;
+            if ($invoice_discount_amount) {
+                foreach ($items as $item) {
+                    if ( ! empty($item->item_name)) {
+                        $items_subtotal += standardize_amount($item->item_quantity) * standardize_amount($item->item_price);
+                    }
+                }
+            }
+            // New discounts (for legacy_calculation false) - since v1.6.3 Need if taxes applied after discounts
+            $global_discount = [
+                'amount'  => $invoice_discount_amount ? standardize_amount($invoice_discount_amount) : 0.0,
+                'percent' => $invoice_discount_percent ? standardize_amount($invoice_discount_percent) : 0.0,
+                'item'    => 0.0,
+                // Updated by ref (Need for invoice_item_subtotal calculation in Mdl_invoice_amounts)
+                'items_subtotal' => $items_subtotal,
+            ];
+            // Automatic calculation mode
+            if (get_setting('einvoicing')) {
+                // Shift to false (by default). Need true? See Dev Note on ipconfig example
+                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+            }
+            foreach ($items as $item) {
+                // Check if an item has either a quantity + price or name or description
+                if ( ! empty($item->item_name)) {
+                    // Standardize item data
+                    $item->item_quantity        = $item->item_quantity ? standardize_amount($item->item_quantity) : 0.0;
+                    $item->item_price           = $item->item_price ? standardize_amount($item->item_price) : 0.0;
+                    $item->item_discount_amount = $item->item_discount_amount ? standardize_amount($item->item_discount_amount) : null;
+                    $item->item_product_id      = $item->item_product_id ? $item->item_product_id : null;
+                    $item->item_product_unit_id = $item->item_product_unit_id ? $item->item_product_unit_id : null;
+                    $item->item_product_unit    = (new UnitsService())->getName($item->item_product_unit_id, $item->item_quantity);
+                    if (property_exists($item, 'item_date')) {
+                        $item->item_date = $item->item_date ? date_to_mysql($item->item_date) : null;
+                    }
+                    $item_id = $item->item_id ?: null;
+                    unset($item->item_id);
+                    if ( ! $item->item_task_id) {
+                        unset($item->item_task_id);
+                    } else {
+                        if (empty($this->mdl_tasks)) {
+                            $this->load->model('tasks/mdl_tasks');
+                        }
+                        (new TasksService())->updateStatus(4, $item->item_task_id);
+                    }
+                    (new ItemsService())->save($item_id, $item, $global_discount);
+                } elseif (empty($item->item_name) && ( ! empty($item->item_quantity) || ! empty($item->item_price))) {
+                    // Throw an error message and use the form validation for that (todo: where the translations of: The .* field is required.)
+                    $this->load->library('form_validation');
+                    $this->form_validation->set_rules('item_name', trans('item'), 'required');
+                    $this->form_validation->run();
+                    $response = ['success' => 0, 'validation_errors' => ['item_name' => form_error('item_name', '', '')]];
+                    exit(json_encode($response));
+                }
+            }
+            $invoice_status_id = $this->input->post('invoice_status_id');
+            // Generate new invoice number if needed
+            $invoice_number = $this->input->post('invoice_number');
+            if (empty($invoice_number) && $invoice_status_id != 1) {
+                $invoice_group_id = (new InvoicesService())->getInvoiceGroupId($invoice_id);
+                $invoice_number   = (new InvoicesService())->getInvoiceNumber($invoice_group_id);
+            }
+            // Sometime global discount total value (round) need little adjust to be valid in ZugFerd2.3 standard
+            if ( ! config_item('legacy_calculation') && $invoice_discount_amount && $invoice_discount_amount != $global_discount['item']) {
+                // Adjust amount to reflect real calculation (cents)
+                $invoice_discount_amount = $global_discount['item'];
+            }
+            $db_array = ['invoice_number' => $invoice_number, 'invoice_status_id' => $invoice_status_id, 'invoice_date_created' => date_to_mysql($this->input->post('invoice_date_created')), 'invoice_date_due' => date_to_mysql($this->input->post('invoice_date_due')), 'invoice_password' => $this->security->xss_clean($this->input->post('invoice_password')), 'invoice_terms' => $this->security->xss_clean($this->input->post('invoice_terms')), 'payment_method' => $this->security->xss_clean($this->input->post('payment_method')), 'invoice_discount_amount' => standardize_amount($invoice_discount_amount), 'invoice_discount_percent' => standardize_amount($invoice_discount_percent)];
+            // check if status changed to sent, the feature is enabled and settings is set to sent
+            if ($this->config->item('disable_read_only') === false && $invoice_status_id == get_setting('read_only_toggle')) {
+                $db_array['is_read_only'] = 1;
+            }
+            (new InvoicesService())->save($invoice_id, $db_array);
+            $sumexInvoice = (new InvoicesService())->where('sumex_invoice', $invoice_id)->get()->numRows();
+            if ($sumexInvoice >= 1) {
+                $sumex_array = ['sumex_invoice' => $invoice_id, 'sumex_reason' => $this->input->post('invoice_sumex_reason'), 'sumex_diagnosis' => $this->input->post('invoice_sumex_diagnosis'), 'sumex_treatmentstart' => date_to_mysql($this->input->post('invoice_sumex_treatmentstart')), 'sumex_treatmentend' => date_to_mysql($this->input->post('invoice_sumex_treatmentend')), 'sumex_casedate' => date_to_mysql($this->input->post('invoice_sumex_casedate')), 'sumex_casenumber' => $this->input->post('invoice_sumex_casenumber'), 'sumex_observations' => $this->input->post('invoice_sumex_observations')];
+                (new InvoiceSumexService())->save($invoice_id, $sumex_array);
+            }
+            if (config_item('legacy_calculation')) {
+                // Recalculate for discounts
+                $this->load->model('invoices/mdl_invoice_amounts');
+                (new InvoiceAmountsService())->calculate($invoice_id, $global_discount);
+            }
+            $response = ['success' => 1];
+        } else {
+            Log::error('980: I wasnt able to run the validation validation_rules_save_invoice');
+            $this->load->helper('json_error');
+            $response = ['success' => 0, 'validation_errors' => json_errors()];
+        }
+        // Save all custom fields
+        if ($this->input->post('custom')) {
+            $db_array = [];
+            $values   = [];
+            foreach ($this->input->post('custom') as $custom) {
+                if (preg_match('/^(.*)\[\]$/i', $custom['name'], $matches)) {
+                    $values[$matches[1]][] = $custom['value'];
+                } else {
+                    $values[$custom['name']] = $custom['value'];
+                }
+            }
+            foreach ($values as $key => $value) {
+                preg_match('/^custom\[(.*?)\](?:\[\]|)$/', $key, $matches);
+                if ($matches) {
+                    $db_array[$matches[1]] = $value;
+                }
+            }
+            $this->load->model('custom_fields/mdl_invoice_custom');
+            $result = (new InvoiceCustomService())->saveCustom($invoice_id, $db_array);
+            if ($result !== true) {
+                $response = ['success' => 0, 'validation_errors' => $result];
+                exit(json_encode($response));
+            }
+        }
+        exit(json_encode($response));
+    }
+
+    /**
+     * @originalName saveInvoiceTaxRate
+     *
+     * @originalFile AjaxController.php
+     */
+    public function saveInvoiceTaxRate()
+    {
+        $this->load->model('invoices/mdl_invoice_tax_rates');
+        if ((new InvoiceTaxRatesService())->runValidation()) {
+            // Only Legacy calculation have global taxes - since v1.6.3
+            config_item('legacy_calculation') && (new InvoiceTaxRatesService())->save();
+            $response = ['success' => 1];
+        } else {
+            $response = ['success' => 0, 'validation_errors' => (new InvoiceTaxRatesService())->validation_errors];
+        }
+        exit(json_encode($response));
+    }
+
+    /**
+     * @originalName deleteItem
+     *
+     * @originalFile AjaxController.php
+     */
+    public function deleteItem($invoice_id)
+    {
+        $success = 0;
+        $item_id = $this->security->xss_clean($this->input->post('item_id'));
+        $this->load->model('mdl_invoices');
+        // Only continue if the invoice exists or no item id was provided
+        if ((new InvoicesService())->getById($invoice_id) || empty($item_id)) {
+            // Delete invoice item
+            $this->load->model('mdl_items');
+            $item = (new ItemsService())->delete($item_id);
+            // Check if deletion was successful
+            if ($item) {
+                $success = 1;
+                // Mark task as complete from invoiced
+                if (isset($item->item_task_id) && $item->item_task_id) {
+                    $this->load->model('tasks/mdl_tasks');
+                    (new TasksService())->updateStatus(3, $item->item_task_id);
+                }
+            }
+        }
+        // Return the response
+        exit(json_encode(['success' => $success]));
+    }
+
+    /**
+     * @originalName getItem
+     *
+     * @originalFile AjaxController.php
+     */
+    public function getItem()
+    {
+        $this->load->model('invoices/mdl_items');
+        $item = (new ItemsService())->getById($this->security->xss_clean($this->input->post('item_id', true)));
+        echo json_encode($item);
+    }
+
+    /**
+     * @originalName modalCopyInvoice
+     *
+     * @originalFile AjaxController.php
+     */
+    public function modalCopyInvoice()
+    {
+        $this->load->module('layout');
+        $this->load->model(['invoices/mdl_invoices', 'invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'clients/mdl_clients']);
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'invoice_id' => $this->security->xss_clean($this->input->post('invoice_id')), 'invoice' => (new InvoicesService())->where('ip_invoices.invoice_id', $this->security->xss_clean($this->input->post('invoice_id')))->get()->row(), 'client' => (new ClientsService())->getById($this->input->post('client_id'))];
+        $this->layout->loadView('invoices/modal_copy_invoice', $data);
+    }
+
+    /**
+     * @originalName copyInvoice
+     *
+     * @originalFile AjaxController.php
+     */
+    public function copyInvoice()
+    {
+        $this->load->model(['invoices/mdl_invoices', 'invoices/mdl_items', 'invoices/mdl_invoice_tax_rates']);
+        if ((new InvoicesService())->runValidation()) {
+            // Automatic calculation mode
+            if (get_setting('einvoicing')) {
+                // Shift to false (by default). Need true? See Dev Note on ipconfig example
+                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+            }
+            $target_id = (new InvoicesService())->save();
+            $source_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            (new InvoicesService())->copyInvoice($source_id, $target_id);
+            $response = ['success' => 1, 'invoice_id' => $target_id];
+        } else {
+            $this->load->helper('json_error');
+            $response = ['success' => 0, 'validation_errors' => json_errors()];
+        }
+        exit(json_encode($response));
+    }
+
+    /**
+     * @originalName modalChangeUser
+     *
+     * @originalFile AjaxController.php
+     */
+    public function modalChangeUser()
+    {
+        $this->load->module('layout');
+        $this->load->model('users/mdl_users');
+        $data = ['user_id' => $this->security->xss_clean($this->input->post('user_id')), 'invoice_id' => $this->security->xss_clean($this->input->post('invoice_id')), 'users' => (new UsersService())->getLatest()];
+        $this->layout->loadView('layout/ajax/modal_change_user_client', $data);
+    }
+
+    /**
+     * @originalName changeUser
+     *
+     * @originalFile AjaxController.php
+     */
+    public function changeUser()
+    {
+        $this->load->model(['invoices/mdl_invoices', 'users/mdl_users']);
+        // GetController the user ID
+        $user_id = $this->security->xss_clean($this->input->post('user_id'));
+        $user    = (new UsersService())->where('ip_users.user_id', $user_id)->get()->row();
+        if ( ! empty($user)) {
+            $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            $db_array   = ['user_id' => $user_id];
+            $this->db->where('invoice_id', $invoice_id);
+            $this->db->update('ip_invoices', $db_array);
+            $response = ['success' => 1, 'invoice_id' => $this->security->xss_clean($invoice_id)];
+        } else {
+            $this->load->helper('json_error');
+            $response = ['success' => 0, 'validation_errors' => json_errors()];
+        }
+        exit(json_encode($response));
+    }
+
+    /**
+     * @originalName modalChangeClient
+     *
+     * @originalFile AjaxController.php
+     */
+    public function modalChangeClient()
+    {
+        $this->load->module('layout');
+        $this->load->model('clients/mdl_clients');
+        $data = ['client_id' => $this->security->xss_clean($this->input->post('client_id')), 'invoice_id' => $this->security->xss_clean($this->input->post('invoice_id')), 'clients' => (new ClientsService())->getLatest()];
+        $this->layout->loadView('layout/ajax/modal_change_user_client', $data);
+    }
+
+    /**
+     * @originalName changeClient
+     *
+     * @originalFile AjaxController.php
+     */
+    public function changeClient()
+    {
+        $this->load->model(['invoices/mdl_invoices', 'clients/mdl_clients']);
+        // GetController the client ID
+        $client_id = $this->security->xss_clean($this->input->post('client_id'));
+        $client    = (new ClientsService())->where('ip_clients.client_id', $client_id)->get()->row();
+        if ( ! empty($client)) {
+            $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            $db_array   = ['client_id' => $client_id];
+            $this->db->where('invoice_id', $invoice_id);
+            $this->db->update('ip_invoices', $db_array);
+            $response = ['success' => 1, 'invoice_id' => $this->security->xss_clean($invoice_id)];
+        } else {
+            $this->load->helper('json_error');
+            $response = ['success' => 0, 'validation_errors' => json_errors()];
+        }
+        exit(json_encode($response));
+    }
+
+    /**
+     * @originalName modalCreateInvoice
+     *
+     * @originalFile AjaxController.php
+     */
+    public function modalCreateInvoice()
+    {
+        $this->load->module('layout');
+        $this->load->model(['invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'clients/mdl_clients']);
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'client' => (new ClientsService())->getById($this->input->post('client_id')), 'clients' => (new ClientsService())->getLatest()];
+        $this->layout->loadView('invoices/modal_create_invoice', $data);
+    }
+
+    /**
+     * @originalName create
+     *
+     * @originalFile AjaxController.php
+     */
+    public function create()
+    {
+        $this->load->model('invoices/mdl_invoices');
+        if ((new InvoicesService())->runValidation()) {
+            $invoice_id = (new InvoicesService())->create();
+            $response   = ['success' => 1, 'invoice_id' => $invoice_id];
+        } else {
+            $this->load->helper('json_error');
+            $response = ['success' => 0, 'validation_errors' => json_errors()];
+        }
+        exit(json_encode($response));
+    }
+
+    /**
+     * @originalName createRecurring
+     *
+     * @originalFile AjaxController.php
+     */
+    public function createRecurring()
+    {
+        $this->load->model('invoices/mdl_invoices_recurring');
+        if ((new InvoicesRecurringService())->runValidation()) {
+            (new InvoicesRecurringService())->save();
+            $response = ['success' => 1];
+        } else {
+            $this->load->helper('json_error');
+            $response = ['success' => 0, 'validation_errors' => json_errors()];
+        }
+        exit(json_encode($response));
+    }
+
+    /**
+     * @originalName modalCreateRecurring
+     *
+     * @originalFile AjaxController.php
+     */
+    public function modalCreateRecurring()
+    {
+        $this->load->module('layout');
+        $this->load->model('mdl_invoices_recurring');
+        $data = ['invoice_id' => $this->security->xss_clean($this->input->post('invoice_id')), 'recur_frequencies' => (new InvoicesRecurringService())->recur_frequencies];
+        $this->layout->loadView('invoices/modal_create_recurring', $data);
+    }
+
+    /**
+     * @originalName getRecurStartDate
+     *
+     * @originalFile AjaxController.php
+     */
+    public function getRecurStartDate()
+    {
+        $invoice_date    = $this->input->post('invoice_date');
+        $recur_frequency = $this->input->post('recur_frequency');
+        echo increment_user_date($invoice_date, $recur_frequency);
+    }
+
+    /**
+     * @originalName modalCreateCredit
+     *
+     * @originalFile AjaxController.php
+     */
+    public function modalCreateCredit()
+    {
+        $this->load->module('layout');
+        $this->load->model(['invoices/mdl_invoices', 'invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates']);
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'invoice_id' => $this->security->xss_clean($this->input->post('invoice_id')), 'invoice' => (new InvoicesService())->where('ip_invoices.invoice_id', $this->security->xss_clean($this->input->post('invoice_id')))->get()->row()];
+        $this->layout->loadView('invoices/modal_create_credit', $data);
+    }
+
+    /**
+     * @originalName createCredit
+     *
+     * @originalFile AjaxController.php
+     */
+    public function createCredit()
+    {
+        $this->load->model(['invoices/mdl_invoices', 'invoices/mdl_items', 'invoices/mdl_invoice_tax_rates']);
+        if ((new InvoicesService())->runValidation()) {
+            // Automatic calculation mode
+            if (get_setting('einvoicing')) {
+                // Shift to false (by default). Need true? See Dev Note on ipconfig example
+                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+            }
+            $target_id = (new InvoicesService())->save();
+            $source_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            (new InvoicesService())->copyCreditInvoice($source_id, $target_id);
+            // Set source invoice to read-only
+            if ($this->config->item('disable_read_only') == false) {
+                (new InvoicesService())->where('invoice_id', $source_id);
+                (new InvoicesService())->update('ip_invoices', ['is_read_only' => '1']);
+            }
+            // Set target invoice to credit invoice
+            (new InvoicesService())->where('invoice_id', $target_id);
+            (new InvoicesService())->update('ip_invoices', ['creditinvoice_parent_id' => $source_id]);
+            (new InvoicesService())->where('invoice_id', $target_id);
+            (new InvoicesService())->update('ip_invoice_amounts', ['invoice_sign' => '-1']);
+            $response = ['success' => 1, 'invoice_id' => $target_id];
+        } else {
+            $this->load->helper('json_error');
+            $response = ['success' => 0, 'validation_errors' => json_errors()];
+        }
+        exit(json_encode($response));
+    }
+}

@@ -1,0 +1,23 @@
+[
+    {
+        "controller": "Modules\\InvoiceGroups\\Controllers\\InvoiceGroupsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "invoice-groups",
+        "route": "invoice-groups.index"
+    },
+    {
+        "controller": "Modules\\InvoiceGroups\\Controllers\\InvoiceGroupsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "invoice-groups/form",
+        "route": "invoice-groups.form"
+    },
+    {
+        "controller": "Modules\\InvoiceGroups\\Controllers\\InvoiceGroupsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "invoice-groups/delete",
+        "route": "invoice-groups.delete"
+    }
+]

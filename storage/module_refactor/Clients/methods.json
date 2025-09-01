@@ -1,0 +1,56 @@
+{
+    "controllers/Ajax.php": {
+        "name_query": "nameQuery",
+        "get_latest": "getLatest",
+        "save_preference_permissive_search_clients": "savePreferencePermissiveSearchClients",
+        "delete_client_note": "deleteClientNote",
+        "save_client_note": "saveClientNote",
+        "load_client_notes": "loadClientNotes"
+    },
+    "controllers/Clients.php": {
+        "get_client_title_choices": "getClientTitleChoices",
+        "check_client_einvoice_active": "checkClientEinvoiceActive"
+    },
+    "models/MdlClientNotes.php": {
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray"
+    },
+    "models/MdlClients.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "get_latest": "getLatest",
+        "fix_avs": "fixAvs",
+        "convert_date": "convertDate",
+        "db_array": "dbArray",
+        "client_lookup": "clientLookup",
+        "with_total": "withTotal",
+        "with_total_paid": "withTotalPaid",
+        "with_total_balance": "withTotalBalance",
+        "is_inactive": "isInactive",
+        "get_not_assigned_to_user": "getNotAssignedToUser",
+        "is_active": "isActive"
+    },
+    "models/Mdl_client_notes.php": {
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "db_array": "dbArray"
+    },
+    "models/Mdl_clients.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "get_latest": "getLatest",
+        "fix_avs": "fixAvs",
+        "convert_date": "convertDate",
+        "db_array": "dbArray",
+        "client_lookup": "clientLookup",
+        "with_total": "withTotal",
+        "with_total_paid": "withTotalPaid",
+        "with_total_balance": "withTotalBalance",
+        "is_inactive": "isInactive",
+        "get_not_assigned_to_user": "getNotAssignedToUser",
+        "is_active": "isActive"
+    }
+}

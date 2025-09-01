@@ -1,0 +1,31 @@
+{
+    "controllers/Upload.php": {
+        "upload_file": "uploadFile",
+        "create_dir": "createDir",
+        "show_files": "showFiles",
+        "delete_file": "deleteFile",
+        "get_file": "getFile",
+        "sanitize_file_name": "sanitizeFileName",
+        "get_target_file_path": "getTargetFilePath",
+        "validate_mime_type": "validateMimeType",
+        "save_file_metadata": "saveFileMetadata",
+        "move_uploaded_file": "moveUploadedFile",
+        "respond_message": "respondMessage"
+    },
+    "models/MdlUploads.php": {
+        "default_order_by": "defaultOrderBy",
+        "get_quote_uploads": "getQuoteUploads",
+        "get_invoice_uploads": "getInvoiceUploads",
+        "get_files": "getFiles",
+        "delete_file": "deleteFile",
+        "by_client": "byClient"
+    },
+    "models/Mdl_uploads.php": {
+        "default_order_by": "defaultOrderBy",
+        "get_quote_uploads": "getQuoteUploads",
+        "get_invoice_uploads": "getInvoiceUploads",
+        "get_files": "getFiles",
+        "delete_file": "deleteFile",
+        "by_client": "byClient"
+    }
+}

@@ -1,0 +1,37 @@
+[
+    {
+        "controller": "Modules\\CustomValues\\Controllers\\CustomValuesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "custom-values",
+        "route": "custom-values.index"
+    },
+    {
+        "controller": "Modules\\CustomValues\\Controllers\\CustomValuesController",
+        "method": "field",
+        "http": "GET",
+        "uri": "custom-values/field",
+        "route": "custom-values.field"
+    },
+    {
+        "controller": "Modules\\CustomValues\\Controllers\\CustomValuesController",
+        "method": "edit",
+        "http": "GET",
+        "uri": "custom-values/edit",
+        "route": "custom-values.edit"
+    },
+    {
+        "controller": "Modules\\CustomValues\\Controllers\\CustomValuesController",
+        "method": "create",
+        "http": "POST",
+        "uri": "custom-values/create",
+        "route": "custom-values.create"
+    },
+    {
+        "controller": "Modules\\CustomValues\\Controllers\\CustomValuesController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "custom-values/delete",
+        "route": "custom-values.delete"
+    }
+]

@@ -1,0 +1,41 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Services\SpotifyPlaylistsService;
+use App\Helpers\ClientObjectHelper;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\{Job, SerializesModels};
+
+class {{ class }} implements ShouldQueue
+{
+    use Queueable, SerializesModels;
+
+    public function __construct()
+    {
+        //
+    }
+
+    public function handle(SpotifyPlaylistsService $spotifyService, ClientObjectHelper $helper)
+    {
+        try {
+            // Retrieve data from the Spotify API
+            $response = $spotifyService->getPlaylists(); // Adjust for your topic
+
+            $items = $response->body('items');
+            $clientObjects = $helper->mapToClientObjects($items); // Process data into DTOs or ClientObjects
+
+            // Dispatch sync jobs for each item
+            foreach ($clientObjects as $clientObject) {
+                Sync{Topic}Job::dispatchNow($clientObject);
+            }
+        } catch (\Exception $e) {
+            // Log the failure with the relevant FailedReason
+            logger()->error("Populate failed for {Topic}", [
+                'reason' => FailedReason::POPULATE_FAILED,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+}

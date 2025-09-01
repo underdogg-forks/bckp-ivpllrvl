@@ -1,0 +1,7 @@
+{
+    "controllers/Sessions.php": {
+        "_login_log_check": "loginLogCheck",
+        "_login_log_addfailure": "loginLogAddfailure",
+        "_login_log_reset": "loginLogReset"
+    }
+}

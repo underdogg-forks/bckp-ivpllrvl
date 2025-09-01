@@ -1,0 +1,28 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
+class {{ class }} implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function handle(SpotifyPlaylistsService $spotifyService, Syncronizer $syncronizer)
+    {
+        try {
+            // Process the playlist synchronization
+            $syncronizer->sync($this->playlistDTO);
+        } catch (\Exception $e) {
+            // Log the failure with the relevant FailedReason
+            logger()->error("Sync failed for playlist: {$this->playlistDTO->id}", [
+                'reason' => FailedReason::SYNC_FAILED,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+}

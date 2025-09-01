@@ -1,0 +1,19 @@
+{
+    "controllers/Ajax.php": {
+        "filter_invoices": "filterInvoices",
+        "filter_quotes": "filterQuotes",
+        "filter_clients": "filterClients",
+        "filter_custom_fields": "filterCustomFields",
+        "filter_custom_values": "filterCustomValues",
+        "filter_custom_values_field": "filterCustomValuesField",
+        "filter_projects": "filterProjects",
+        "filter_tasks": "filterTasks",
+        "filter_products": "filterProducts",
+        "filter_users": "filterUsers",
+        "filter_families": "filterFamilies",
+        "filter_invoices_recuring": "filterInvoicesRecuring",
+        "filter_online_logs": "filterOnlineLogs",
+        "filter_archives": "filterArchives",
+        "filter_payments": "filterPayments"
+    }
+}

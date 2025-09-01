@@ -1,0 +1,30 @@
+[
+    {
+        "controller": "Modules\\Mailer\\Controllers\\MailerController",
+        "method": "invoice",
+        "http": "GET",
+        "uri": "mailer/invoice",
+        "route": "mailer.invoice"
+    },
+    {
+        "controller": "Modules\\Mailer\\Controllers\\MailerController",
+        "method": "quote",
+        "http": "GET",
+        "uri": "mailer/quote",
+        "route": "mailer.quote"
+    },
+    {
+        "controller": "Modules\\Mailer\\Controllers\\MailerController",
+        "method": "sendInvoice",
+        "http": "GET",
+        "uri": "mailer/send-invoice",
+        "route": "mailer.send-invoice"
+    },
+    {
+        "controller": "Modules\\Mailer\\Controllers\\MailerController",
+        "method": "sendQuote",
+        "http": "GET",
+        "uri": "mailer/send-quote",
+        "route": "mailer.send-quote"
+    }
+]

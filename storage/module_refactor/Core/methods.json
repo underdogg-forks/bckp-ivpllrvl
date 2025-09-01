@@ -1,0 +1,31 @@
+{
+    "Controllers/AdminController.php": {
+        "filter_input": "filterInput"
+    },
+    "Models/MyModel.php": {
+        "__call": "call",
+        "db_array": "dbArray",
+        "result_array": "resultArray",
+        "row_array": "rowArray",
+        "num_rows": "numRows",
+        "prep_form": "prepForm",
+        "get_by_id": "getById",
+        "run_validation": "runValidation",
+        "form_value": "formValue",
+        "set_form_value": "setFormValue",
+        "set_id": "setId",
+        "set_defaults": "setDefaults",
+        "run_filters": "runFilters"
+    },
+    "Validators/Validator.php": {
+        "validate_text": "validateText",
+        "validate_date": "validateDate",
+        "validate_boolean": "validateBoolean",
+        "validate_singlechoice": "validateSinglechoice",
+        "validate_multiplechoice": "validateMultiplechoice",
+        "validation_rules": "validationRules",
+        "get_field_type": "getFieldType",
+        "validate_type": "validateType",
+        "create_error_text": "createErrorText"
+    }
+}

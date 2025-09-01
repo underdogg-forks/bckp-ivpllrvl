@@ -1,0 +1,30 @@
+[
+    {
+        "controller": "Modules\\CustomFields\\Controllers\\CustomFieldsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "custom-fields",
+        "route": "custom-fields.index"
+    },
+    {
+        "controller": "Modules\\CustomFields\\Controllers\\CustomFieldsController",
+        "method": "table",
+        "http": "GET",
+        "uri": "custom-fields/table",
+        "route": "custom-fields.table"
+    },
+    {
+        "controller": "Modules\\CustomFields\\Controllers\\CustomFieldsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "custom-fields/form",
+        "route": "custom-fields.form"
+    },
+    {
+        "controller": "Modules\\CustomFields\\Controllers\\CustomFieldsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "custom-fields/delete",
+        "route": "custom-fields.delete"
+    }
+]

@@ -1,0 +1,5 @@
+{
+    "controllers/Layout.php": {
+        "load_view": "loadView"
+    }
+}

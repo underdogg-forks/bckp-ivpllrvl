@@ -1,0 +1,40 @@
+<?php
+
+namespace Tests\Feature\Modules\{{ module }};
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Livewire\Livewire;
+use Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource;
+use Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource\Pages\Create{{ model }};
+use Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource\Pages\Edit{{ model }};
+use Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource\Pages\List{{ modelPlural }};
+use Modules\{{ module }}\Models\{{ model }};
+use Tests\TestCase;
+use Modules\Core\Models\User;
+
+class {{ class }} extends TestCase
+{
+    use RefreshDatabase;
+    use WithFaker;
+    use WithoutMiddleware;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutExceptionHandling();
+    }
+
+    // region smoke
+{{ smokeTests }}
+    // endregion
+
+    // region crud
+{{ crudTests }}
+    // endregion
+
+    // region usp
+{{ uspTests }}
+    // endregion
+}

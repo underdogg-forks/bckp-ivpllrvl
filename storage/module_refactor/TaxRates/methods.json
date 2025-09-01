@@ -1,0 +1,12 @@
+{
+    "models/MdlTaxRates.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_tax_rates.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules"
+    }
+}

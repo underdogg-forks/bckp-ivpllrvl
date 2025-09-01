@@ -1,0 +1,37 @@
+[
+    {
+        "controller": "Modules\\Tasks\\Controllers\\AjaxController",
+        "method": "modalTaskLookups",
+        "http": "GET",
+        "uri": "tasks/modal-task-lookups",
+        "route": "tasks.modal-task-lookups"
+    },
+    {
+        "controller": "Modules\\Tasks\\Controllers\\AjaxController",
+        "method": "processTaskSelections",
+        "http": "GET",
+        "uri": "tasks/process-task-selections",
+        "route": "tasks.process-task-selections"
+    },
+    {
+        "controller": "Modules\\Tasks\\Controllers\\TasksController",
+        "method": "index",
+        "http": "GET",
+        "uri": "tasks",
+        "route": "tasks.index"
+    },
+    {
+        "controller": "Modules\\Tasks\\Controllers\\TasksController",
+        "method": "form",
+        "http": "GET",
+        "uri": "tasks/form",
+        "route": "tasks.form"
+    },
+    {
+        "controller": "Modules\\Tasks\\Controllers\\TasksController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "tasks/delete",
+        "route": "tasks.delete"
+    }
+]

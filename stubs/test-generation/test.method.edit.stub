@@ -1,0 +1,27 @@
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('crud')]
+    /**
+     * @test
+     * @group crud
+     * @covers \Modules\{{ module }}\Filament\{{ panel_namespace }}\Resources\{{ model }}Resource
+     *
+     * @payload
+     * {{ payload_json }}
+     */
+    public function it_updates_a_{{ model_lower }}(): void
+    {
+        $this->markTestIncomplete('Needs full payload and assertions.');
+
+        //$this->actingAs(User::factory()->create());
+
+        $record = {{ model }}::factory()->create();
+
+        $payload = [
+            {{ payload_array }}
+        ];
+
+        Livewire::test(Edit{{ model }}::class, ['record' => $record->getKey()])
+            ->fillForm($payload)
+            ->call('save')
+            ->assertHasNoFormErrors();
+    }

@@ -1,0 +1,23 @@
+[
+    {
+        "controller": "Modules\\Families\\Controllers\\FamiliesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "families",
+        "route": "families.index"
+    },
+    {
+        "controller": "Modules\\Families\\Controllers\\FamiliesController",
+        "method": "form",
+        "http": "GET",
+        "uri": "families/form",
+        "route": "families.form"
+    },
+    {
+        "controller": "Modules\\Families\\Controllers\\FamiliesController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "families/delete",
+        "route": "families.delete"
+    }
+]

@@ -1,0 +1,149 @@
+[
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "save",
+        "http": "POST",
+        "uri": "quotes/save",
+        "route": "quotes.save"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "saveQuoteTaxRate",
+        "http": "POST",
+        "uri": "quotes/save-quote-tax-rate",
+        "route": "quotes.save-quote-tax-rate"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "deleteItem",
+        "http": "GET",
+        "uri": "quotes/delete-item",
+        "route": "quotes.delete-item"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "getItem",
+        "http": "GET",
+        "uri": "quotes/get-item",
+        "route": "quotes.get-item"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "modalCopyQuote",
+        "http": "GET",
+        "uri": "quotes/modal-copy-quote",
+        "route": "quotes.modal-copy-quote"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "copyQuote",
+        "http": "GET",
+        "uri": "quotes/copy-quote",
+        "route": "quotes.copy-quote"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "modalChangeUser",
+        "http": "GET",
+        "uri": "quotes/modal-change-user",
+        "route": "quotes.modal-change-user"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "changeUser",
+        "http": "GET",
+        "uri": "quotes/change-user",
+        "route": "quotes.change-user"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "modalChangeClient",
+        "http": "GET",
+        "uri": "quotes/modal-change-client",
+        "route": "quotes.modal-change-client"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "changeClient",
+        "http": "GET",
+        "uri": "quotes/change-client",
+        "route": "quotes.change-client"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "modalCreateQuote",
+        "http": "GET",
+        "uri": "quotes/modal-create-quote",
+        "route": "quotes.modal-create-quote"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "create",
+        "http": "POST",
+        "uri": "quotes/create",
+        "route": "quotes.create"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "modalQuoteToInvoice",
+        "http": "GET",
+        "uri": "quotes/modal-quote-to-invoice",
+        "route": "quotes.modal-quote-to-invoice"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\AjaxController",
+        "method": "quoteToInvoice",
+        "http": "GET",
+        "uri": "quotes/quote-to-invoice",
+        "route": "quotes.quote-to-invoice"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\QuotesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "quotes",
+        "route": "quotes.index"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\QuotesController",
+        "method": "status",
+        "http": "GET",
+        "uri": "quotes/status",
+        "route": "quotes.status"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\QuotesController",
+        "method": "view",
+        "http": "GET",
+        "uri": "quotes/view",
+        "route": "quotes.view"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\QuotesController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "quotes/delete",
+        "route": "quotes.delete"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\QuotesController",
+        "method": "generatePdf",
+        "http": "GET",
+        "uri": "quotes/generate-pdf",
+        "route": "quotes.generate-pdf"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\QuotesController",
+        "method": "deleteQuoteTax",
+        "http": "GET",
+        "uri": "quotes/delete-quote-tax",
+        "route": "quotes.delete-quote-tax"
+    },
+    {
+        "controller": "Modules\\Quotes\\Controllers\\QuotesController",
+        "method": "recalculateAllQuotes",
+        "http": "GET",
+        "uri": "quotes/recalculate-all-quotes",
+        "route": "quotes.recalculate-all-quotes"
+    }
+]

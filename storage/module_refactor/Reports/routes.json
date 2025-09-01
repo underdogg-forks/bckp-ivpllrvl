@@ -1,0 +1,37 @@
+[
+    {
+        "controller": "Modules\\Reports\\Controllers\\ReportsController",
+        "method": "salesByClient",
+        "http": "GET",
+        "uri": "reports/sales-by-client",
+        "route": "reports.sales-by-client"
+    },
+    {
+        "controller": "Modules\\Reports\\Controllers\\ReportsController",
+        "method": "invoicesPerClient",
+        "http": "GET",
+        "uri": "reports/invoices-per-client",
+        "route": "reports.invoices-per-client"
+    },
+    {
+        "controller": "Modules\\Reports\\Controllers\\ReportsController",
+        "method": "paymentHistory",
+        "http": "GET",
+        "uri": "reports/payment-history",
+        "route": "reports.payment-history"
+    },
+    {
+        "controller": "Modules\\Reports\\Controllers\\ReportsController",
+        "method": "invoiceAging",
+        "http": "GET",
+        "uri": "reports/invoice-aging",
+        "route": "reports.invoice-aging"
+    },
+    {
+        "controller": "Modules\\Reports\\Controllers\\ReportsController",
+        "method": "salesByYear",
+        "http": "GET",
+        "uri": "reports/sales-by-year",
+        "route": "reports.sales-by-year"
+    }
+]

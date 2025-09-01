@@ -1,0 +1,64 @@
+<?php
+
+namespace Modules\Products\Controllers;
+
+use AllowDynamicProperties;
+use Illuminate\Http\Request;
+use Modules\Core\Controllers\AdminController;
+use Modules\Families\Services\FamiliesService;
+use Modules\Products\Services\ProductsService;
+use Modules\TaxRates\Services\TaxRatesService;
+use Modules\Units\Services\UnitsService;
+
+#[AllowDynamicProperties]
+class ProductsController extends AdminController
+{
+    public function index(Request $request, int $page = 0): \Illuminate\Contracts\View\View
+    {
+        $service = new ProductsService();
+        $service->paginate(route('products.index'), $page);
+        $products = $service->result();
+
+        return view('products.index', [
+            'filter_display'     => true,
+            'filter_placeholder' => trans('filter_products'),
+            'filter_method'      => 'filter_products',
+            'products'           => $products,
+        ]);
+    }
+
+    public function form(Request $request, $id = null): \Illuminate\Contracts\View\View
+    {
+        if ($request->has('btn_cancel')) {
+            return redirect()->route('products.index');
+        }
+        // Filter input if needed
+        // Validation
+        $service = new ProductsService();
+        if ($service->runValidation()) {
+            $db_array = $service->dbArray();
+            $service->save($id, $db_array);
+
+            return redirect()->route('products.index');
+        }
+        if ($id && ! $request->has('btn_submit') && ! $service->prepForm($id)) {
+            abort(404);
+        }
+        $families  = (new FamiliesService())->get()->result();
+        $units     = (new UnitsService())->get()->result();
+        $tax_rates = (new TaxRatesService())->get()->result();
+
+        return view('products.form', [
+            'families'  => $families,
+            'units'     => $units,
+            'tax_rates' => $tax_rates,
+        ]);
+    }
+
+    public function delete($id)
+    {
+        (new ProductsService())->delete($id);
+
+        return redirect()->route('products.index');
+    }
+}

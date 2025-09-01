@@ -1,0 +1,30 @@
+[
+    {
+        "controller": "Modules\\Layout\\Controllers\\LayoutController",
+        "method": "buffer",
+        "http": "GET",
+        "uri": "layout/buffer",
+        "route": "layout.buffer"
+    },
+    {
+        "controller": "Modules\\Layout\\Controllers\\LayoutController",
+        "method": "set",
+        "http": "GET",
+        "uri": "layout/set",
+        "route": "layout.set"
+    },
+    {
+        "controller": "Modules\\Layout\\Controllers\\LayoutController",
+        "method": "render",
+        "http": "GET",
+        "uri": "layout/render",
+        "route": "layout.render"
+    },
+    {
+        "controller": "Modules\\Layout\\Controllers\\LayoutController",
+        "method": "loadView",
+        "http": "GET",
+        "uri": "layout/load-view",
+        "route": "layout.load-view"
+    }
+]

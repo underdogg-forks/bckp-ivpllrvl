@@ -1,0 +1,30 @@
+[
+    {
+        "controller": "Modules\\Projects\\Controllers\\ProjectsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "projects",
+        "route": "projects.index"
+    },
+    {
+        "controller": "Modules\\Projects\\Controllers\\ProjectsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "projects/form",
+        "route": "projects.form"
+    },
+    {
+        "controller": "Modules\\Projects\\Controllers\\ProjectsController",
+        "method": "view",
+        "http": "GET",
+        "uri": "projects/view",
+        "route": "projects.view"
+    },
+    {
+        "controller": "Modules\\Projects\\Controllers\\ProjectsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "projects/delete",
+        "route": "projects.delete"
+    }
+]

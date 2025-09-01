@@ -1,0 +1,28 @@
+<?php
+
+namespace {{ factoryNamespace }};
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Database\Factories\AbstractSeeder;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\{{ namespacedModel }}>
+ */
+class {{ factory }}Factory extends AbstractFactory
+{
+    public function definition(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Franchise $franchise) {
+            // Create related models here
+            // Example:
+            // RelatedModel::factory()->count(3)->create(['company_id' => $franchise->id]);
+        });
+    }
+}

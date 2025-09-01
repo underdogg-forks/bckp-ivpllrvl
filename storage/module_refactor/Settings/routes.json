@@ -1,0 +1,30 @@
+[
+    {
+        "controller": "Modules\\Settings\\Controllers\\SettingsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "settings",
+        "route": "settings.index"
+    },
+    {
+        "controller": "Modules\\Settings\\Controllers\\SettingsController",
+        "method": "removeLogo",
+        "http": "GET",
+        "uri": "settings/remove-logo",
+        "route": "settings.remove-logo"
+    },
+    {
+        "controller": "Modules\\Settings\\Controllers\\AjaxController",
+        "method": "getCronKey",
+        "http": "GET",
+        "uri": "settings/get-cron-key",
+        "route": "settings.get-cron-key"
+    },
+    {
+        "controller": "Modules\\Settings\\Controllers\\VersionsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "settings",
+        "route": "settings.index"
+    }
+]

@@ -1,0 +1,6 @@
+{
+    "controllers/Mailer.php": {
+        "send_invoice": "sendInvoice",
+        "send_quote": "sendQuote"
+    }
+}

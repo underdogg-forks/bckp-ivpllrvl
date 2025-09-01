@@ -1,0 +1,46 @@
+{
+    "controllers/Setup.php": {
+        "configure_database": "configureDatabase",
+        "install_tables": "installTables",
+        "upgrade_tables": "upgradeTables",
+        "create_user": "createUser",
+        "calculation_info": "calculationInfo",
+        "check_basics": "checkBasics",
+        "check_writables": "checkWritables",
+        "load_ci_database": "loadCiDatabase",
+        "write_database_config": "writeDatabaseConfig",
+        "check_database": "checkDatabase",
+        "set_encryption_key": "setEncryptionKey",
+        "post_setup_tasks": "postSetupTasks",
+        "check_calculation_config": "checkCalculationConfig",
+        "write_calculation_config": "writeCalculationConfig"
+    },
+    "models/MdlSetup.php": {
+        "install_tables": "installTables",
+        "install_default_data": "installDefaultData",
+        "upgrade_tables": "upgradeTables",
+        "upgrade_006_1_2_0": "upgrade006120",
+        "upgrade_019_1_4_7": "upgrade019147",
+        "upgrade_023_1_5_0": "upgrade023150",
+        "upgrade_029_1_5_6": "upgrade029156",
+        "upgrade_036_1_6": "upgrade03616",
+        "upgrade_039_1_6_3": "upgrade039163",
+        "execute_contents": "executeContents",
+        "save_version": "saveVersion",
+        "install_default_settings": "installDefaultSettings"
+    },
+    "models/Mdl_setup.php": {
+        "install_tables": "installTables",
+        "install_default_data": "installDefaultData",
+        "upgrade_tables": "upgradeTables",
+        "upgrade_006_1_2_0": "upgrade006120",
+        "upgrade_019_1_4_7": "upgrade019147",
+        "upgrade_023_1_5_0": "upgrade023150",
+        "upgrade_029_1_5_6": "upgrade029156",
+        "upgrade_036_1_6": "upgrade03616",
+        "upgrade_039_1_6_3": "upgrade039163",
+        "execute_contents": "executeContents",
+        "save_version": "saveVersion",
+        "install_default_settings": "installDefaultSettings"
+    }
+}

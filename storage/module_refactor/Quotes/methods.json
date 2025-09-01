@@ -1,0 +1,117 @@
+{
+    "controllers/Ajax.php": {
+        "save_quote_tax_rate": "saveQuoteTaxRate",
+        "delete_item": "deleteItem",
+        "get_item": "getItem",
+        "modal_copy_quote": "modalCopyQuote",
+        "copy_quote": "copyQuote",
+        "modal_change_user": "modalChangeUser",
+        "change_user": "changeUser",
+        "modal_change_client": "modalChangeClient",
+        "change_client": "changeClient",
+        "modal_create_quote": "modalCreateQuote",
+        "modal_quote_to_invoice": "modalQuoteToInvoice",
+        "quote_to_invoice": "quoteToInvoice"
+    },
+    "controllers/Quotes.php": {
+        "generate_pdf": "generatePdf",
+        "delete_quote_tax": "deleteQuoteTax",
+        "recalculate_all_quotes": "recalculateAllQuotes"
+    },
+    "models/MdlQuoteAmounts.php": {
+        "calculate_discount": "calculateDiscount",
+        "get_global_discount": "getGlobalDiscount",
+        "calculate_quote_taxes": "calculateQuoteTaxes",
+        "get_total_quoted": "getTotalQuoted",
+        "get_status_totals": "getStatusTotals"
+    },
+    "models/MdlQuoteItems.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "get_items_subtotal": "getItemsSubtotal"
+    },
+    "models/MdlQuoteTaxRates.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules"
+    },
+    "models/MdlQuotes.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "validation_rules_save_quote": "validationRulesSaveQuote",
+        "copy_quote": "copyQuote",
+        "db_array": "dbArray",
+        "get_date_due": "getDateDue",
+        "get_quote_number": "getQuoteNumber",
+        "get_url_key": "getUrlKey",
+        "get_invoice_group_id": "getInvoiceGroupId",
+        "is_draft": "isDraft",
+        "is_sent": "isSent",
+        "is_viewed": "isViewed",
+        "is_approved": "isApproved",
+        "is_rejected": "isRejected",
+        "is_canceled": "isCanceled",
+        "is_open": "isOpen",
+        "guest_visible": "guestVisible",
+        "by_client": "byClient",
+        "approve_quote_by_key": "approveQuoteByKey",
+        "reject_quote_by_key": "rejectQuoteByKey",
+        "approve_quote_by_id": "approveQuoteById",
+        "reject_quote_by_id": "rejectQuoteById",
+        "mark_viewed": "markViewed",
+        "mark_sent": "markSent",
+        "generate_quote_number_if_applicable": "generateQuoteNumberIfApplicable"
+    },
+    "models/Mdl_quote_amounts.php": {
+        "calculate_discount": "calculateDiscount",
+        "get_global_discount": "getGlobalDiscount",
+        "calculate_quote_taxes": "calculateQuoteTaxes",
+        "get_total_quoted": "getTotalQuoted",
+        "get_status_totals": "getStatusTotals"
+    },
+    "models/Mdl_quote_items.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "get_items_subtotal": "getItemsSubtotal"
+    },
+    "models/Mdl_quote_tax_rates.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_quotes.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "default_join": "defaultJoin",
+        "validation_rules": "validationRules",
+        "validation_rules_save_quote": "validationRulesSaveQuote",
+        "copy_quote": "copyQuote",
+        "db_array": "dbArray",
+        "get_date_due": "getDateDue",
+        "get_quote_number": "getQuoteNumber",
+        "get_url_key": "getUrlKey",
+        "get_invoice_group_id": "getInvoiceGroupId",
+        "is_draft": "isDraft",
+        "is_sent": "isSent",
+        "is_viewed": "isViewed",
+        "is_approved": "isApproved",
+        "is_rejected": "isRejected",
+        "is_canceled": "isCanceled",
+        "is_open": "isOpen",
+        "guest_visible": "guestVisible",
+        "by_client": "byClient",
+        "approve_quote_by_key": "approveQuoteByKey",
+        "reject_quote_by_key": "rejectQuoteByKey",
+        "approve_quote_by_id": "approveQuoteById",
+        "reject_quote_by_id": "rejectQuoteById",
+        "mark_viewed": "markViewed",
+        "mark_sent": "markSent",
+        "generate_quote_number_if_applicable": "generateQuoteNumberIfApplicable"
+    }
+}

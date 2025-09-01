@@ -1,0 +1,37 @@
+[
+    {
+        "controller": "Modules\\Products\\Controllers\\ProductsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "products",
+        "route": "products.index"
+    },
+    {
+        "controller": "Modules\\Products\\Controllers\\ProductsController",
+        "method": "form",
+        "http": "GET",
+        "uri": "products/form",
+        "route": "products.form"
+    },
+    {
+        "controller": "Modules\\Products\\Controllers\\ProductsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "products/delete",
+        "route": "products.delete"
+    },
+    {
+        "controller": "Modules\\Products\\Controllers\\AjaxController",
+        "method": "modalProductLookups",
+        "http": "GET",
+        "uri": "products/modal-product-lookups",
+        "route": "products.modal-product-lookups"
+    },
+    {
+        "controller": "Modules\\Products\\Controllers\\AjaxController",
+        "method": "processProductSelections",
+        "http": "GET",
+        "uri": "products/process-product-selections",
+        "route": "products.process-product-selections"
+    }
+]

@@ -1,0 +1,9 @@
+[
+    {
+        "controller": "Modules\\Dashboard\\Controllers\\DashboardController",
+        "method": "index",
+        "http": "GET",
+        "uri": "dashboard",
+        "route": "dashboard.index"
+    }
+]

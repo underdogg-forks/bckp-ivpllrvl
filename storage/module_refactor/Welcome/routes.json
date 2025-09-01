@@ -1,0 +1,9 @@
+[
+    {
+        "controller": "Modules\\Welcome\\Controllers\\WelcomeController",
+        "method": "index",
+        "http": "GET",
+        "uri": "welcome",
+        "route": "welcome.index"
+    }
+]

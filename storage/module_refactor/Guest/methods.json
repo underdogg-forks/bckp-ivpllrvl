@@ -1,0 +1,30 @@
+{
+    "controllers/Get.php": {
+        "show_files": "showFiles",
+        "get_file": "getFile",
+        "respond_message": "respondMessage"
+    },
+    "controllers/Invoices.php": {
+        "generate_pdf": "generatePdf",
+        "generate_sumex_pdf": "generateSumexPdf"
+    },
+    "controllers/Quotes.php": {
+        "generate_pdf": "generatePdf"
+    },
+    "controllers/View.php": {
+        "generate_invoice_pdf": "generateInvoicePdf",
+        "generate_sumex_pdf": "generateSumexPdf",
+        "generate_quote_pdf": "generateQuotePdf",
+        "approve_quote": "approveQuote",
+        "reject_quote": "rejectQuote",
+        "get_attachments": "getAttachments"
+    },
+    "controllers/gateways/Paypal.php": {
+        "paypal_create_order": "paypalCreateOrder",
+        "paypal_capture_payment": "paypalCapturePayment",
+        "_create_client": "createClient"
+    },
+    "controllers/gateways/Stripe.php": {
+        "create_checkout_session": "createCheckoutSession"
+    }
+}

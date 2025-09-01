@@ -1,0 +1,30 @@
+[
+    {
+        "controller": "Modules\\EmailTemplates\\Controllers\\EmailTemplatesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "email-templates",
+        "route": "email-templates.index"
+    },
+    {
+        "controller": "Modules\\EmailTemplates\\Controllers\\EmailTemplatesController",
+        "method": "form",
+        "http": "GET",
+        "uri": "email-templates/form",
+        "route": "email-templates.form"
+    },
+    {
+        "controller": "Modules\\EmailTemplates\\Controllers\\EmailTemplatesController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "email-templates/delete",
+        "route": "email-templates.delete"
+    },
+    {
+        "controller": "Modules\\EmailTemplates\\Controllers\\AjaxController",
+        "method": "getContent",
+        "http": "GET",
+        "uri": "email-templates/get-content",
+        "route": "email-templates.get-content"
+    }
+]

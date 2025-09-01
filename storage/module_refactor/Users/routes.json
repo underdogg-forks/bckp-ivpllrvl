@@ -1,0 +1,79 @@
+[
+    {
+        "controller": "Modules\\Users\\Controllers\\AjaxController",
+        "method": "nameQuery",
+        "http": "GET",
+        "uri": "users/name-query",
+        "route": "users.name-query"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\AjaxController",
+        "method": "getLatest",
+        "http": "GET",
+        "uri": "users/get-latest",
+        "route": "users.get-latest"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\AjaxController",
+        "method": "savePreferencePermissiveSearchUsers",
+        "http": "POST",
+        "uri": "users/save-preference-permissive-search-users",
+        "route": "users.save-preference-permissive-search-users"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\AjaxController",
+        "method": "saveUserClient",
+        "http": "POST",
+        "uri": "users/save-user-client",
+        "route": "users.save-user-client"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\AjaxController",
+        "method": "loadUserClientTable",
+        "http": "GET",
+        "uri": "users/load-user-client-table",
+        "route": "users.load-user-client-table"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\AjaxController",
+        "method": "modalAddUserClient",
+        "http": "GET",
+        "uri": "users/modal-add-user-client",
+        "route": "users.modal-add-user-client"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\UsersController",
+        "method": "index",
+        "http": "GET",
+        "uri": "users",
+        "route": "users.index"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\UsersController",
+        "method": "form",
+        "http": "GET",
+        "uri": "users/form",
+        "route": "users.form"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\UsersController",
+        "method": "changePassword",
+        "http": "GET",
+        "uri": "users/change-password",
+        "route": "users.change-password"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\UsersController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "users/delete",
+        "route": "users.delete"
+    },
+    {
+        "controller": "Modules\\Users\\Controllers\\UsersController",
+        "method": "deleteUserClient",
+        "http": "GET",
+        "uri": "users/delete-user-client",
+        "route": "users.delete-user-client"
+    }
+]

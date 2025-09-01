@@ -1,0 +1,20 @@
+{
+    "models/MdlUserClients.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "assigned_to": "assignedTo",
+        "set_all_clients_user": "setAllClientsUser",
+        "get_users_all_clients": "getUsersAllClients"
+    },
+    "models/Mdl_user_clients.php": {
+        "default_select": "defaultSelect",
+        "default_join": "defaultJoin",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "assigned_to": "assignedTo",
+        "set_all_clients_user": "setAllClientsUser",
+        "get_users_all_clients": "getUsersAllClients"
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "models/MdlInvoiceGroups.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "generate_invoice_number": "generateInvoiceNumber",
+        "set_next_invoice_number": "setNextInvoiceNumber",
+        "parse_identifier_format": "parseIdentifierFormat"
+    },
+    "models/Mdl_invoice_groups.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules",
+        "generate_invoice_number": "generateInvoiceNumber",
+        "set_next_invoice_number": "setNextInvoiceNumber",
+        "parse_identifier_format": "parseIdentifierFormat"
+    }
+}

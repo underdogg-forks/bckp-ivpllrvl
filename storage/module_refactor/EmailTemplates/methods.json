@@ -1,0 +1,15 @@
+{
+    "controllers/Ajax.php": {
+        "get_content": "getContent"
+    },
+    "models/MdlEmailTemplates.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules"
+    },
+    "models/Mdl_email_templates.php": {
+        "default_select": "defaultSelect",
+        "default_order_by": "defaultOrderBy",
+        "validation_rules": "validationRules"
+    }
+}

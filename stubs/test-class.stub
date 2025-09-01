@@ -1,0 +1,32 @@
+<?php
+
+namespace Modules\{{ module }}\Tests\Feature;
+
+use Tests\TestCase;
+use Livewire\Livewire;
+use Modules\{{ module }}\Filament\Resources\{{ model }}Resource;
+use Modules\{{ module }}\Filament\Resources\{{ model }}Resource\Pages\Create{{ model }};
+use Modules\{{ module }}\Filament\Resources\{{ model }}Resource\Pages\Edit{{ model }};
+use Modules\{{ module }}\Filament\Resources\{{ model }}Resource\Pages\List{{ modelPlural }};
+use Modules\{{ module }}\Models\{{ model }};
+
+class {{ class }} extends TestCase
+{
+    // region smoke
+
+{{ smokeTests }}
+
+    // endregion
+
+    // region crud
+
+{{ crudTests }}
+
+    // endregion
+
+    // region usp
+
+{{ uspTests }}
+
+    // endregion
+}

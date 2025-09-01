@@ -1,0 +1,30 @@
+[
+    {
+        "controller": "Modules\\UserClients\\Controllers\\UserClientsController",
+        "method": "index",
+        "http": "GET",
+        "uri": "user-clients",
+        "route": "user-clients.index"
+    },
+    {
+        "controller": "Modules\\UserClients\\Controllers\\UserClientsController",
+        "method": "user",
+        "http": "GET",
+        "uri": "user-clients/user",
+        "route": "user-clients.user"
+    },
+    {
+        "controller": "Modules\\UserClients\\Controllers\\UserClientsController",
+        "method": "create",
+        "http": "POST",
+        "uri": "user-clients/create",
+        "route": "user-clients.create"
+    },
+    {
+        "controller": "Modules\\UserClients\\Controllers\\UserClientsController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "user-clients/delete",
+        "route": "user-clients.delete"
+    }
+]

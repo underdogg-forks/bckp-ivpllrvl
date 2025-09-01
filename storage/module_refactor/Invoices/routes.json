@@ -1,0 +1,233 @@
+[
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "index",
+        "http": "GET",
+        "uri": "invoices",
+        "route": "invoices.index"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "status",
+        "http": "GET",
+        "uri": "invoices/status",
+        "route": "invoices.status"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "archive",
+        "http": "GET",
+        "uri": "invoices/archive",
+        "route": "invoices.archive"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "download",
+        "http": "GET",
+        "uri": "invoices/download",
+        "route": "invoices.download"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "view",
+        "http": "GET",
+        "uri": "invoices/view",
+        "route": "invoices.view"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "invoices/delete",
+        "route": "invoices.delete"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "generatePdf",
+        "http": "GET",
+        "uri": "invoices/generate-pdf",
+        "route": "invoices.generate-pdf"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "generateXml",
+        "http": "GET",
+        "uri": "invoices/generate-xml",
+        "route": "invoices.generate-xml"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "generateSumexPdf",
+        "http": "GET",
+        "uri": "invoices/generate-sumex-pdf",
+        "route": "invoices.generate-sumex-pdf"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "generateSumexCopy",
+        "http": "GET",
+        "uri": "invoices/generate-sumex-copy",
+        "route": "invoices.generate-sumex-copy"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "deleteInvoiceTax",
+        "http": "GET",
+        "uri": "invoices/delete-invoice-tax",
+        "route": "invoices.delete-invoice-tax"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\InvoicesController",
+        "method": "recalculateAllInvoices",
+        "http": "GET",
+        "uri": "invoices/recalculate-all-invoices",
+        "route": "invoices.recalculate-all-invoices"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\RecurringController",
+        "method": "index",
+        "http": "GET",
+        "uri": "invoices",
+        "route": "invoices.index"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\RecurringController",
+        "method": "stop",
+        "http": "GET",
+        "uri": "invoices/stop",
+        "route": "invoices.stop"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\RecurringController",
+        "method": "delete",
+        "http": "GET",
+        "uri": "invoices/delete",
+        "route": "invoices.delete"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "save",
+        "http": "POST",
+        "uri": "invoices/save",
+        "route": "invoices.save"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "saveInvoiceTaxRate",
+        "http": "POST",
+        "uri": "invoices/save-invoice-tax-rate",
+        "route": "invoices.save-invoice-tax-rate"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "deleteItem",
+        "http": "GET",
+        "uri": "invoices/delete-item",
+        "route": "invoices.delete-item"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "getItem",
+        "http": "GET",
+        "uri": "invoices/get-item",
+        "route": "invoices.get-item"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "modalCopyInvoice",
+        "http": "GET",
+        "uri": "invoices/modal-copy-invoice",
+        "route": "invoices.modal-copy-invoice"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "copyInvoice",
+        "http": "GET",
+        "uri": "invoices/copy-invoice",
+        "route": "invoices.copy-invoice"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "modalChangeUser",
+        "http": "GET",
+        "uri": "invoices/modal-change-user",
+        "route": "invoices.modal-change-user"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "changeUser",
+        "http": "GET",
+        "uri": "invoices/change-user",
+        "route": "invoices.change-user"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "modalChangeClient",
+        "http": "GET",
+        "uri": "invoices/modal-change-client",
+        "route": "invoices.modal-change-client"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "changeClient",
+        "http": "GET",
+        "uri": "invoices/change-client",
+        "route": "invoices.change-client"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "modalCreateInvoice",
+        "http": "GET",
+        "uri": "invoices/modal-create-invoice",
+        "route": "invoices.modal-create-invoice"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "create",
+        "http": "POST",
+        "uri": "invoices/create",
+        "route": "invoices.create"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "createRecurring",
+        "http": "GET",
+        "uri": "invoices/create-recurring",
+        "route": "invoices.create-recurring"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "modalCreateRecurring",
+        "http": "GET",
+        "uri": "invoices/modal-create-recurring",
+        "route": "invoices.modal-create-recurring"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "getRecurStartDate",
+        "http": "GET",
+        "uri": "invoices/get-recur-start-date",
+        "route": "invoices.get-recur-start-date"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "modalCreateCredit",
+        "http": "GET",
+        "uri": "invoices/modal-create-credit",
+        "route": "invoices.modal-create-credit"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\AjaxController",
+        "method": "createCredit",
+        "http": "GET",
+        "uri": "invoices/create-credit",
+        "route": "invoices.create-credit"
+    },
+    {
+        "controller": "Modules\\Invoices\\Controllers\\CronController",
+        "method": "recur",
+        "http": "GET",
+        "uri": "invoices/recur",
+        "route": "invoices.recur"
+    }
+]
