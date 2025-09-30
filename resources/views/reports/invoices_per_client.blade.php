@@ -14,7 +14,7 @@
         @if($client_id != $result->client_id)
             @php $client_id = $result->client_id; @endphp
             <tr>
-                <th>{{ format_client($result) }}</th>
+                <th>{!! format_client($result) !!}</th>
                 <th></th>
                 <th></th>
             </tr>
