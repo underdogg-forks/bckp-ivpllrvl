@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ date_from_mysql($payment->payment_date) }}</td>
                 <td>{{ date_from_mysql($payment->invoice_date_created) }}</td>
-                <td>{{ anchor('invoices/view/' . $payment->invoice_id, $payment->invoice_number) }}</td>
+                <td>{!! anchor('invoices/view/' . $payment->invoice_id, $payment->invoice_number) !!}</td>
                 <td>
                     <a href="{{ url('clients/view/' . $payment->client_id) }}"
                        title="@lang('view_client')">
