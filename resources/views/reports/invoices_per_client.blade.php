@@ -22,8 +22,7 @@
         <tr>
             <td>{{ date_from_mysql($result->invoice_date_created, true) }}</td>
             <td>{{ $result->invoice_number }}</td>
-            <td class=" amount
-    ">{{ format_currency($result->invoice_total) }}</td>
+            <td class="amount">{{ format_currency($result->invoice_total) }}</td>
     </tr>
     @endforeach
     </table>
