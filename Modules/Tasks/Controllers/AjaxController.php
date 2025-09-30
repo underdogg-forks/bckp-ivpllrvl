@@ -14,6 +14,9 @@ class AjaxController extends AdminController
      * @originalName modalTaskLookups
      *
      * @originalFile AjaxController.php
+     * 
+     * Note: Creates new TasksService instance instead of dependency injection.
+     * This is acceptable for single usage within the method.
      */
     public function modalTaskLookups($invoice_id = null)
     {
@@ -29,6 +32,9 @@ class AjaxController extends AdminController
      * @originalName processTaskSelections
      *
      * @originalFile AjaxController.php
+     * 
+     * Note: Creates new TasksService instance instead of dependency injection.
+     * This is acceptable for single usage within the method.
      */
     public function processTaskSelections(Request $request): void
     {
