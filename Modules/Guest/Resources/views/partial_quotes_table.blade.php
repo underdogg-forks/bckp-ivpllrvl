@@ -23,7 +23,8 @@
                     @if($quote->quote_status_id == 4)
                         <span class="text-success">@lang('approved')</span>
                     @elseif($quote->quote_status_id == 5)
-                        <span class="text-danger">@lang('rejected')</span>@endforeach
+                        <span class="text-danger">@lang('rejected')</span>
+                    @endif
                 </td>
                 <td>{{ date_from_mysql($quote->quote_date_created) }}</td>
                 <td>{{ date_from_mysql($quote->quote_date_expires) }}</td>
