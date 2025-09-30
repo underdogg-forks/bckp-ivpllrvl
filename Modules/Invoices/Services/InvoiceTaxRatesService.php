@@ -12,6 +12,11 @@ class InvoiceTaxRatesService extends BaseService
 
     public $primary_key = 'ip_invoice_tax_rates.invoice_tax_rate_id';
 
+    public function __construct(public InvoiceAmountsService $invoiceAmountsService)
+    {
+        parent::__construct();
+    }
+
     /**
      * @originalName defaultSelect
      *

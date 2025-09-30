@@ -14,6 +14,13 @@ class ItemsService extends BaseService
 
     public $date_created_field = 'item_date_added';
 
+    public function __construct(
+        public ItemAmountsService $itemAmountsService,
+        public InvoiceAmountsService $invoiceAmountsService
+    ) {
+        parent::__construct();
+    }
+
     /**
      * @originalName defaultSelect
      *

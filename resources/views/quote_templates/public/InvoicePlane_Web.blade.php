@@ -25,12 +25,12 @@
             <h2>@lang('quote')&nbsp;{{ $quote->quote_number }}</h2>
 
             <div class="btn-group">
-                @if(isset($_SESSION['user_id'], $_SESSION['user_type'])) { ?>
+                @if(isset($_SESSION['user_id'], $_SESSION['user_type']))
                 <a href="{{ url($_SESSION['user_type'] > 1 ? 'guest' : '') }}"
                    class="btn btn-default" title="@lang('dashboard')">
                     <i class="fa fa-dashboard"></i> @lang('dashboard')
                 </a>
-                @php }
+                @endif
                 @if(in_array($quote->quote_status_id, [2, 3]))
 
                 <a href="{{ url('guest/view/approve_quote/' . $quote_url_key) }}"
@@ -196,17 +196,20 @@ if ($quote->client_phone) {
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">{{ trans('discount') }}</td>
-                            <td class="amount">@if($quote->quote_discount_percent > 0) {
-                                                {{ format_amount($quote->quote_discount_percent) . '&nbsp }}%';
-                                            } else {
-                                                {{ format_currency($quote->quote_discount_amount !!}
-                                            } </td>
-                        </tr>@endforeach
+                            <td class="amount">
+@if($quote->quote_discount_percent > 0)
+{{ format_amount($quote->quote_discount_percent) }}&nbsp;%
+@else
+{{ format_currency($quote->quote_discount_amount) }}
+@endif
+</td>
+                        </tr>
+@endif
 
                         <tr>
                             <td colspan="4"></td>
                             <td class="amount">@lang('subtotal'):</td>
-                            <td class="amount">{{ format_currency($quote->quote_item_subtotal !!}</td>
+                            <td class="amount">{{ format_currency($quote->quote_item_subtotal) }}</td>
                         </tr>
 
                         @if($quote->quote_item_tax_total > 0)
@@ -215,34 +218,38 @@ if ($quote->client_phone) {
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('item_tax')</td>
                             <td class="amount">{{ format_currency($quote->quote_item_tax_total) }}</td>
-                        </tr>@endforeach
+                        </tr>
+@endif
 
                         @foreach($quote_tax_rates as $quote_tax_rate)
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">
-                                {!! $quote_tax_rate->quote_tax_rate_name) . ' InvoicePlane_Web.php' . format_amount($quote_tax_rate->quote_tax_rate_percent) . '&nbsp;%' }}
+                                {{ $quote_tax_rate->quote_tax_rate_name }} ({{ format_amount($quote_tax_rate->quote_tax_rate_percent) }}&nbsp;%)
                             </td>
-                            <td class="amount">{{ format_currency($quote_tax_rate->quote_tax_rate_amount !!}</td>
+                            <td class="amount">{{ format_currency($quote_tax_rate->quote_tax_rate_amount) }}</td>
                         </tr>
-                        @php }
+@endforeach
 
                         @if($legacy_calculation)
 
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('discount')</td>
-                            <td class="amount">@if($quote->quote_discount_percent > 0) {
-                                                {{ format_amount($quote->quote_discount_percent) . '&nbsp }}%';
-                                            } else {
-                                                {{ format_currency($quote->quote_discount_amount) }}
-                                            } </td>
-                        </tr>@endforeach
+                            <td class="amount">
+@if($quote->quote_discount_percent > 0)
+{{ format_amount($quote->quote_discount_percent) }}&nbsp;%
+@else
+{{ format_currency($quote->quote_discount_amount) }}
+@endif
+</td>
+                        </tr>
+@endif
 
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('total')</td>
-                            <td class="amount">{{ format_currency($quote->quote_total) </td>
+                            <td class="amount">{{ format_currency($quote->quote_total) }}</td>
                                 </tr>
                             </tbody>
                         </table>
