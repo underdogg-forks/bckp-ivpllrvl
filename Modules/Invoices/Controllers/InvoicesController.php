@@ -152,7 +152,7 @@ class InvoicesController extends AdminController
         $payment_cf_exist = $payment_cf->numRows() > 0 ? 'yes' : 'no';
         $items = $this->itemsService->where('invoice_id', $invoice_id)->get()->result();
         $einvoice = get_einvoice_usage($invoice, $items);
-        $change_user = $this->invoicesService->getChangeUser();
+        $change_user = null;
         return view('invoices.view' . ($invoice->sumex_id ? '_sumex' : ''), [
             'invoice' => $invoice,
             'items' => $items,
