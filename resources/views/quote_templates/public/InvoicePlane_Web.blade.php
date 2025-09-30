@@ -179,23 +179,23 @@ if ($quote->client_phone) {
                         @foreach($items as $item)
                         <tr>
                             <td>{!! $item->item_name !!}</td>
-                            <td>{{ nl2br(e($item->item_description))</td>
+                            <td>{{ nl2br(e($item->item_description)) }}</td>
                             <td class="amount">
-                                {{ format_quantity($item->item_quantity !!}
+                                {{ format_quantity($item->item_quantity) }}
                                 @if($item->item_product_unit)
-                                            <br>
-                                            <small><?php htmlspecialchars($item->item_product_unit); </small>@endforeach
+                                    <br>
+                                    <small>{{ $item->item_product_unit }}</small>
+                                @endif
                             </td>
-                            <td class="amount">{{ format_currency($item->item_price)</td>
-                            <td class="amount">{{ format_currency($item->item_discount !!}</td>
-                            <td class="amount">{{ format_currency($item->item_subtotal !!}</td>
-                        </tr>@endforeach
-
-                        @if( ! $legacy_calculation)
-
+                            <td class="amount">{{ format_currency($item->item_price) }}</td>
+                            <td class="amount">{{ format_currency($item->item_discount) }}</td>
+                            <td class="amount">{{ format_currency($item->item_subtotal) }}</td>
+                        </tr>
+                        @endforeach
+                        @if(! $legacy_calculation)
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
-                            <td class="amount">@lang('discount')</td>
+                            <td class="amount">{{ trans('discount') }}</td>
                             <td class="amount">@if($quote->quote_discount_percent > 0) {
                                                 {{ format_amount($quote->quote_discount_percent) . '&nbsp }}%';
                                             } else {

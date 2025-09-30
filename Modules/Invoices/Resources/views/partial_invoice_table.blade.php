@@ -1,4 +1,3 @@
-
 <div class="table-responsive">
     <table class="table table-hover table-striped">
 
@@ -124,12 +123,7 @@ foreach ($invoices as $invoice) {
                 </div>
             </td>
         </tr>
-<?php
-    $invoice_idx++;
-}
-// End foreach invoices
+        @endforeach
         </tbody>
-
     </table>
 </div>
-<?php

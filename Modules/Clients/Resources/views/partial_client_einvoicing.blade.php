@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
     $(function () {
         // Cache jQuery selectors
@@ -150,11 +149,6 @@ foreach ($req_einvoicing->users as $user_id => $user) {
             </div>
         </div>
     </div>
-<?php
-    }
-    // End if user->show_table
-}
-// End foreach einvoicing->users
+@endforeach
     </div>
 </div>
-<?php

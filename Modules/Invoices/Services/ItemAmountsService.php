@@ -8,6 +8,11 @@ use Modules\Core\Services\BaseService;
 #[AllowDynamicProperties]
 class ItemAmountsService extends BaseService
 {
+    public function __construct(public ItemsService $itemsService)
+    {
+        parent::__construct();
+    }
+
     /**
      * @originalName calculate
      *
@@ -15,8 +20,7 @@ class ItemAmountsService extends BaseService
      */
     public function calculate($item_id, &$global_discount)
     {
-        $this->load->model('invoices/mdl_items');
-        $item          = $this->mdl_items->getById($item_id);
+        $item          = $this->itemsService->getById($item_id);
         $item_subtotal = $item->item_quantity * $item->item_price;
         // Legacy calculation - discounts - since v1.6.3
         if (config_item('legacy_calculation')) {

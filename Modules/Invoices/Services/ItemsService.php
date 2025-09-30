@@ -66,12 +66,11 @@ class ItemsService extends BaseService
     public function save($id = null, $db_array = null, &$global_discount = [])
     {
         $id = parent::save($id, $db_array);
-        $this->load->model(['invoices/mdl_item_amounts', 'invoices/mdl_invoice_amounts']);
-        $this->mdl_item_amounts->calculate($id, $global_discount);
+        $this->itemAmountsService->calculate($id, $global_discount);
         if (is_object($db_array) && isset($db_array->invoice_id)) {
-            $this->mdl_invoice_amounts->calculate($db_array->invoice_id, $global_discount);
+            $this->invoiceAmountsService->calculate($db_array->invoice_id, $global_discount);
         } elseif (is_array($db_array) && isset($db_array['invoice_id'])) {
-            $this->mdl_invoice_amounts->calculate($db_array['invoice_id'], $global_discount);
+            $this->invoiceAmountsService->calculate($db_array['invoice_id'], $global_discount);
         }
 
         return $id;
@@ -98,10 +97,9 @@ class ItemsService extends BaseService
         // Delete the item amounts
         $this->db->where('item_id', $item_id);
         $this->db->delete('ip_invoice_item_amounts');
-        $this->load->model('invoices/mdl_invoice_amounts');
-        $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($invoice_id);
+        $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
         // Recalculate invoice amounts
-        $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
+        $this->invoiceAmountsService->calculate($invoice_id, $global_discount);
 
         return true;
     }

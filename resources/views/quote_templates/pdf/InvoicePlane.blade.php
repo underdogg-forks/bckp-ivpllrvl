@@ -234,18 +234,17 @@ if ($add_table_and_head_for_sums) {
 </main>
 
 <div class="invoice-terms">
-    <?php
-if ($quote->notes)
-
-    <div class="notes">
-        <b>@lang('notes') }}</b><br/>
-        {{ nl2br(e($quote->notes)) }}
-    </div>@endforeach
+    @if($quote->notes)
+        <div class="notes">
+            <b>{{ trans('notes') }}</b><br/>
+            {{ nl2br(e($quote->notes)) }}
+        </div>
+    @endif
 </div>
 
 <htmlpagefooter name="footer">
     <footer>
-        @lang('quote') {{ $quote->quote_number }} - @lang('page') {PAGENO} / {nbpg}
+        {{ trans('quote') }} {{ $quote->quote_number }} - {{ trans('page') }} {PAGENO} / {nbpg}
     </footer>
 </htmlpagefooter>
 

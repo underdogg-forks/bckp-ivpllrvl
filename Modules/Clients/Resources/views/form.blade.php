@@ -1,5 +1,3 @@
-
-
 $client_active = $this->mdl_clients->form_value('client_active');
 $active = $client_active == 1 || !is_numeric($client_active) ? ' checked="checked"' : '';
 $itsCompany = $this->mdl_clients->form_value('client_company') || $this->mdl_clients->form_value('client_vat_id');
@@ -486,4 +484,3 @@ foreach ($custom_fields as $custom_field) {
 // End if custom_fields
     </div>
 </form>
-<?php

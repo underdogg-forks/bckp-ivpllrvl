@@ -1,4 +1,3 @@
-
 <div class="table-responsive">
     <table class="table table-hover table-striped">
 
@@ -53,9 +52,7 @@
                 </div>
             </td>
         </tr>
-    <?php
 @endforeach
-</tbody >
-        </table >
-    </div >
-<?php
+</tbody>
+        </table>
+    </div>

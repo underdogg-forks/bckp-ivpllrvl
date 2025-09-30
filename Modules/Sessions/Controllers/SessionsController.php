@@ -3,6 +3,7 @@
 namespace Modules\Sessions\Controllers;
 
 use AllowDynamicProperties;
+use App\Helpers\MailerHelper;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\BaseController;
 
@@ -50,7 +51,7 @@ class SessionsController extends BaseController
                 redirect()->route('sessions/login');
             }
         }
-        $this->load->view('session_login', $view_data);
+        return view('session_login', $view_data);
     }
 
     /**
@@ -122,7 +123,7 @@ class SessionsController extends BaseController
             }
             $formdata = ['token' => $token, 'user_id' => $user->user_id];
 
-            return $this->load->view('session_new_password', $formdata);
+            return view('session_new_password', $formdata);
         }
         // Check if the form for a new password was used
         if ($this->input->post('btn_new_password')) {
@@ -190,7 +191,6 @@ class SessionsController extends BaseController
                 $this->db->where('user_email', $email);
                 $this->db->update('ip_users', $db_array);
                 // Send the email with reset link
-                $this->load->helper('mailer');
                 // Prepare some variables for the email
                 $email_resetlink = site_url('sessions/passwordreset/' . $token);
                 $email_message   = $this->load->view('emails/passwordreset', ['resetlink' => $email_resetlink], true);
@@ -199,7 +199,7 @@ class SessionsController extends BaseController
                     $email_from = 'system@' . preg_replace('/^[\w]{2,6}:\/\/([\w\d\.\-]+).*$/', '$1', base_url());
                 }
                 // Mail the invoice with the pre-configured mailer if possible
-                if (mailer_configured()) {
+                if (MailerHelper::mailerConfigured()) {
                     $this->load->helper('mailer/phpmailer');
                     if ( ! phpmail_send($email_from, $email, trans('password_reset'), $email_message)) {
                         $email_failed = true;
@@ -230,7 +230,7 @@ class SessionsController extends BaseController
             }
         }
 
-        return $this->load->view('session_passwordreset');
+        return view('session_passwordreset');
     }
 
     /**

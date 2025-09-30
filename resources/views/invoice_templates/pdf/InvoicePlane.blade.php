@@ -306,35 +306,22 @@ if ($add_table_and_head_for_sums) {
         </tbody>
     </table>
 
-    <?php
-if ($show_qrcode)
-
-    <table class="invoice-qr-code-table">
-        <tr>
-            <td>
-                <div>
-                    <strong>@lang('qr_code_settings_recipient') }}:</strong>
-                    {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
-                </div>
-                <div>
-                    <strong>@lang('qr_code_settings_iban') }}:</strong>
-                    {{ $invoice->user_iban ?: get_setting('qr_code_iban') }}
-                </div>
-                <div>
-                    <strong>@lang('qr_code_settings_bic'):</strong>
-                    {{ $invoice->user_bic ?: get_setting('qr_code_bic') }}
-                </div>
-                <div>
-                    <strong>@lang('qr_code_settings_remittance_text'):</strong>
-                    {{ parse_template($invoice, $invoice->user_remittance_text ?: get_setting('qr_code_remittance_text')) }}
-                </div>
-            </td>
-            <td class="text-right">
-                {{ invoice_qrcode(htmlsc($invoice->invoice_id)) }}
-            </td>
-        </tr>
-    </table>@endforeach
-
+    @if($show_qrcode)
+        <table class="invoice-qr-code-table">
+            <tr>
+                <td>
+                    <div>
+                        <strong>{{ trans('qr_code_settings_recipient') }}:</strong>
+                        {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
+                    </div>
+                    <div>
+                        <strong>{{ trans('qr_code_settings_iban') }}:</strong>
+                        {{ $invoice->user_iban ?: get_setting('qr_code_iban') }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    @endif
 </main>
 
 <div class="invoice-terms">

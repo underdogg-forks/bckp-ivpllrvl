@@ -6,24 +6,21 @@
 </head>
 
 <body>
-<h3 class="report_title">@lang('sales_by_date')<br><small>{{ $from_date . ' - ' . $to_date ?></small></h3>
+<h3 class="report_title">{{ trans('sales_by_date') }}<br><small>{{ $from_date . ' - ' . $to_date }}</small></h3>
 
-    <table>
-
-        <tr>
-            <th style="width:15%;text-align:center;border-bottom: none;"> @lang('vat_id') }} </th>
-        <th style="width:50%;text-align:center;border-bottom: none;"> <?php @lang('name') </th>
-        <th style="width:15%;text-align:center;border-bottom: none;"> @lang('period') </th>
-        <th style="width:20%;text-align:center;border-bottom: none;"> @lang('quantity') </th>
-        </tr>
-
-        <tr>
-            <td colspan="4" style="border-bottom: none;">
-                <hr>
-            </td>
-        </tr>
-
-        @php $initial_year = 0;
+<table>
+    <tr>
+        <th style="width:15%;text-align:center;border-bottom: none;">{{ trans('vat_id') }}</th>
+        <th style="width:50%;text-align:center;border-bottom: none;">{{ trans('name') }}</th>
+        <th style="width:15%;text-align:center;border-bottom: none;">{{ trans('period') }}</th>
+        <th style="width:20%;text-align:center;border-bottom: none;">{{ trans('quantity') }}</th>
+    </tr>
+    <tr>
+        <td colspan="4" style="border-bottom: none;">
+            <hr>
+        </td>
+    </tr>
+    @php $initial_year = 0;
 $final_year   = 0;
 $numYears     = 1;
 $numRows      = 1;

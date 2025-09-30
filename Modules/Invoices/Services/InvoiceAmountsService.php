@@ -13,9 +13,12 @@ class InvoiceAmountsService extends BaseService
      */
     public $decimal_places = 2;
 
-    public function __construct()
-    {
+    public function __construct(
+        public InvoicesService $invoicesService,
+        public InvoiceTaxRatesService $invoiceTaxRatesService
+    ) {
         $this->decimal_places = (int) get_setting('tax_rate_decimal_places');
+        parent::__construct();
     }
 
     /**
@@ -66,8 +69,7 @@ class InvoiceAmountsService extends BaseService
         // Calculate the invoice taxes
         $this->calculateInvoiceTaxes($invoice_id);
         // GetController invoice status
-        $this->load->model('invoices/mdl_invoices');
-        $invoice           = $this->mdl_invoices->getById($invoice_id);
+        $invoice           = $this->invoicesService->getById($invoice_id);
         $invoice_is_credit = $invoice->creditinvoice_parent_id > 0;
         // Set to paid if balance is zero
         // Check if the invoice total is not zero or negative
@@ -131,9 +133,7 @@ class InvoiceAmountsService extends BaseService
     public function calculateInvoiceTaxes($invoice_id)
     {
         // First check to see if there are any invoice taxes applied
-        $this->load->model('invoices/mdl_invoice_tax_rates');
-        // Only appliable in legacy calculation - since 1.6.3
-        $invoice_tax_rates = config_item('legacy_calculation') ? $this->mdl_invoice_tax_rates->where('invoice_id', $invoice_id)->get()->result() : null;
+        $invoice_tax_rates = config_item('legacy_calculation') ? $this->invoiceTaxRatesService->where('invoice_id', $invoice_id)->get()->result() : null;
         if ($invoice_tax_rates) {
             // There are invoice taxes applied
             // GetController the current invoice amount record

@@ -43,12 +43,11 @@ class InvoiceTaxRatesService extends BaseService
     {
         // Only appliable in legacy calculation - since 1.6.3
         config_item('legacy_calculation') && parent::save($id, $db_array);
-        $this->load->model('invoices/mdl_invoice_amounts');
         $invoice_id = $db_array['invoice_id'] ?? $this->input->post('invoice_id');
         if ($invoice_id) {
-            $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($invoice_id);
+            $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
             // Recalculate invoice amounts
-            $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
+            $this->invoiceAmountsService->calculate($invoice_id, $global_discount);
         }
     }
 

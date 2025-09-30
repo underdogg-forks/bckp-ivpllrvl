@@ -1,4 +1,3 @@
-
 <div class="table-responsive">
     <table class="table table-hover table-striped">
         <thead>
@@ -80,9 +79,7 @@ foreach ($records as $client) {
                 </div>
             </td>
         </tr>
-    <?php
-@endforeach
-</tbody >
-    </table >
-</div >
-<?php
+    @endforeach
+</tbody>
+    </table>
+</div>

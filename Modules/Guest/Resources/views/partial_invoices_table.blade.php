@@ -1,4 +1,3 @@
-
 <div class="table-responsive">
     <table class="table table-hover table-striped">
 
@@ -47,16 +46,13 @@
                     </a>
                     @elseif($invoice->invoice_balance == 0)
                     <button class="btn btn-success disabled">
-                        <i class="fa fa-check"></i> @lang('paid')
-                    </button>@endforeach
-
+                        <i class="fa fa-check"></i> {{ trans('paid') }}
+                    </button>
+                    @endif
                 </div>
             </td>
         </tr>
-    <?php
 @endforeach
-</tbody >
-
-            </table >
+</tbody>
+            </table>
         </div >
-<?php

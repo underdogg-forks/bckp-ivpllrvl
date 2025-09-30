@@ -15,13 +15,13 @@ class TemplatesService extends BaseService
      */
     public function getInvoiceTemplates($type = 'pdf')
     {
-        $this->load->helper('directory');
         if ($type == 'pdf') {
-            $templates = directory_map(APPPATH . '/views/invoice_templates/pdf', true);
+            $templates = array_map('basename', glob(resource_path('views/invoice_templates/pdf/*')));
         } elseif ($type == 'public') {
-            $templates = directory_map(APPPATH . '/views/invoice_templates/public', true);
+            $templates = array_map('basename', glob(resource_path('views/invoice_templates/public/*')));
+        } else {
+            $templates = [];
         }
-
         return $this->removeExtension($templates);
     }
 
@@ -32,13 +32,13 @@ class TemplatesService extends BaseService
      */
     public function getQuoteTemplates($type = 'pdf')
     {
-        $this->load->helper('directory');
         if ($type == 'pdf') {
-            $templates = directory_map(APPPATH . '/views/quote_templates/pdf', true);
+            $templates = array_map('basename', glob(resource_path('views/quote_templates/pdf/*')));
         } elseif ($type == 'public') {
-            $templates = directory_map(APPPATH . '/views/quote_templates/public', true);
+            $templates = array_map('basename', glob(resource_path('views/quote_templates/public/*')));
+        } else {
+            $templates = [];
         }
-
         return $this->removeExtension($templates);
     }
 

@@ -3,6 +3,7 @@
 namespace Modules\Invoices\Controllers;
 
 use AllowDynamicProperties;
+use App\Helpers\MailerHelper;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\BaseController;
 
@@ -23,7 +24,6 @@ class CronController extends BaseController
             exit('Wrong cron key!');
         }
         $this->load->model(['invoices/mdl_invoices_recurring', 'invoices/mdl_invoices', 'invoices/mdl_invoice_amounts']);
-        $this->load->helper('mailer');
         // Gather a list of recurring invoices to generate
         $invoices_recurring = (new InvoicesRecurringService())->active()->get()->result();
         $recurInfo          = [];
@@ -60,7 +60,7 @@ class CronController extends BaseController
                 log_message('debug', '[CronController RecurringController InvoicesController] Next RecurringController date was set');
             }
             // Email the new invoice if applicable
-            if (get_setting('automatic_email_on_recur') && mailer_configured()) {
+            if (get_setting('automatic_email_on_recur') && MailerHelper::mailerConfigured()) {
                 $new_invoice = (new InvoicesService())->getById($target_id);
                 // Set the email body, use default email template if available
                 $this->load->model('email_templates/mdl_email_templates');

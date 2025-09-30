@@ -195,10 +195,9 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
 
 <div id="headerbar">
     <h1 class="headerbar-title">
-        <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing') }}: <?php
-htmlspecialchars(PHP_EOL . format_user($invoice->user_id))">
-{{ __('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
-</span>
+        <span data-toggle="tooltip" data-placement="bottom" title="{{ trans('invoicing') }}: {{ htmlspecialchars(PHP_EOL . format_user($invoice->user_id)) }}">
+            {{ trans('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
+        </span>
 
 @if($change_user)
 <a data-toggle="tooltip" data-placement="bottom"

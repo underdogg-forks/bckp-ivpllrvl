@@ -376,4 +376,3 @@ foreach ($custom_fields['ip_user_custom'] as $custom_field) {
         </div><!-- row -->
     </div><!-- content -->
 </form>
-<?php

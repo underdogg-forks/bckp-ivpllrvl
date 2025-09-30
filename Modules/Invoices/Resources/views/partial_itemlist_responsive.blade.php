@@ -1,6 +1,7 @@
 @php namespace Modules\Invoices\Views;
 
 $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
+@endphp
 
 <div class="row">
     <div id="item_table" class="items table col-xs-12">
@@ -369,15 +370,15 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                 $this->layout->loadView('invoices/partial_itemlist_table_invoice_discount');
             }
             <tr>
-                <td>@lang('total')</td>
+                <td>{{ trans('total') }}</td>
                 <td class="amount"><b>{{ format_currency($invoice->invoice_total) }}</b></td>
             </tr>
             <tr>
-                <td>@lang('paid')</td>
+                <td>{{ trans('paid') }}</td>
                 <td class="amount"><b>{{ format_currency($invoice->invoice_paid) }}</b></td>
             </tr>
             <tr>
-                <td><b>@lang('balance')</b></td>
+                <td><b>{{ trans('balance') }}</b></td>
                 <td class="amount"><b>{{ format_currency($invoice->invoice_balance) }}</b></td>
             </tr>
         </table>

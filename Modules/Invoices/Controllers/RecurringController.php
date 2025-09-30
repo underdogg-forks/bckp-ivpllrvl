@@ -4,17 +4,14 @@ namespace Modules\Invoices\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Invoices\Services\InvoicesRecurringService;
 
 #[AllowDynamicProperties]
 class RecurringController extends AdminController
 {
-    /**
-     * RecurringController constructor.
-     */
-    public function __construct()
+    public function __construct(public InvoicesRecurringService $invoicesRecurringService)
     {
         parent::__construct();
-        $this->load->model('mdl_invoices_recurring');
     }
 
     /**
@@ -24,10 +21,10 @@ class RecurringController extends AdminController
      */
     public function index($page = 0)
     {
-        (new InvoicesRecurringService())->paginate(site_url('invoices/recurring'), $page);
-        $recurring_invoices = (new InvoicesRecurringService())->result();
+        $this->invoicesRecurringService->paginate(site_url('invoices/recurring'), $page);
+        $recurring_invoices = $this->invoicesRecurringService->result();
 
-        return view('invoices.index_recurring', ['filter_display' => true, 'filter_placeholder' => trans('filter_invoices_recuring'), 'filter_method' => 'filter_invoices_recuring', 'recur_frequencies' => (new InvoicesRecurringService())->recur_frequencies, 'recurring_invoices' => $recurring_invoices]);
+        return view('invoices.index_recurring', ['filter_display' => true, 'filter_placeholder' => trans('filter_invoices_recuring'), 'filter_method' => 'filter_invoices_recuring', 'recur_frequencies' => $this->invoicesRecurringService->recur_frequencies, 'recurring_invoices' => $recurring_invoices]);
     }
 
     /**
@@ -37,8 +34,9 @@ class RecurringController extends AdminController
      */
     public function stop($invoice_recurring_id)
     {
-        (new InvoicesRecurringService())->stop($invoice_recurring_id);
-        redirect()->route('invoices/recurring/index');
+        $this->invoicesRecurringService->stop($invoice_recurring_id);
+
+        return redirect()->route('invoices/recurring/index');
     }
 
     /**
@@ -48,7 +46,7 @@ class RecurringController extends AdminController
      */
     public function delete($invoice_recurring_id)
     {
-        (new InvoicesRecurringService())->delete($invoice_recurring_id);
+        $this->invoicesRecurringService->delete($invoice_recurring_id);
         redirect()->route('invoices/recurring/index');
     }
 }
