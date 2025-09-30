@@ -73,7 +73,7 @@ class StripeController extends BaseController
             Log::debug(__CLASS__ . '::' . __FUNCTION__ . ' reached, status: ' . $session->status . ' payment_status: ' . $session->payment_status . ', checkout_session_id: ' . $checkout_session_id);
             $invoice_key = $session->client_reference_id;
             // Retrieve the invoice
-            $invoice = $this->invoicesService->findByUrlKey($invoice_key);
+            $invoice = $this->invoicesService->where('invoice_url_key', $invoice_key)->first();
             $paid = $session->payment_status === $session::PAYMENT_STATUS_PAID;
             if ($paid) {
                 $this->paymentsService->savePayment([
