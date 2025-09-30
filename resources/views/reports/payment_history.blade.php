@@ -22,7 +22,7 @@
     <tr>
         <td>{{ date_from_mysql($result->payment_date, true) }}</td>
         <td>{{ $result->invoice_number }}</td>
-        <td>{{ format_client($result) }}</td>
+        <td>{!! format_client($result) !!}</td>
         <td>{!! $result->payment_method_name !!}</td>
         <td>{{ nl2br(e($result->payment_note)) }}</td>
         <td class="amount">{{ format_currency($result->payment_amount) }}</td>
