@@ -102,9 +102,11 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName approve
+     * Approve the specified quote, notify recipients of the approval, and redirect to the guest quotes list.
      *
-     * @originalFile QuotesController.php
+     * Approves the quote identified by $quote_id, triggers the quote-status email for "approved", and then redirects the user to the guest quotes index.
+     *
+     * @param string $quote_id The identifier of the quote to approve.
      */
     public function approve(string $quote_id)
     {
@@ -115,9 +117,11 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName reject
+     * Rejects the specified quote, sends a rejection notification, and redirects to the guest quotes listing.
      *
-     * @originalFile QuotesController.php
+     * Rejects the quote identified by `$quote_id`, triggers an email notifying relevant parties of the rejection, and redirects the user to the guest quotes index.
+     *
+     * @param string $quote_id The identifier of the quote to reject.
      */
     public function reject(string $quote_id)
     {

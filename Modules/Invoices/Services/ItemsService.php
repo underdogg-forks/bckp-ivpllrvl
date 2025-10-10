@@ -14,6 +14,12 @@ class ItemsService extends BaseService
 
     public $date_created_field = 'item_date_added';
 
+    /**
+     * Construct the ItemsService and register its item and invoice amount services.
+     *
+     * @param ItemAmountsService $itemAmountsService Service responsible for calculating and managing amounts for individual invoice items.
+     * @param InvoiceAmountsService $invoiceAmountsService Service responsible for calculating and managing invoice-level amounts and global discounts.
+     */
     public function __construct(
         public ItemAmountsService $itemAmountsService,
         public InvoiceAmountsService $invoiceAmountsService
@@ -66,9 +72,15 @@ class ItemsService extends BaseService
     }
 
     /**
-     * @originalName save
+     * Persist an invoice item and update related monetary totals.
      *
-     * @originalFile Item.php
+     * Saves the item record and recalculates the item's amounts; if `invoice_id` is present in
+     * `$db_array` (object or array), recalculates the corresponding invoice amounts as well.
+     *
+     * @param int|null $id The item ID to update, or null to create a new item.
+     * @param array|object|null $db_array Data used to save the item; may contain `invoice_id`.
+     * @param array &$global_discount Reference to a global discount array that may be read/updated during recalculation.
+     * @return int The saved item ID.
      */
     public function save($id = null, $db_array = null, &$global_discount = [])
     {
@@ -84,9 +96,12 @@ class ItemsService extends BaseService
     }
 
     /**
-     * @originalName delete
+     * Deletes an invoice item and updates related invoice amounts.
      *
-     * @originalFile Item.php
+     * Deletes the specified invoice item and its associated item-amount records, updates the invoice-level global discount from the invoice amounts service, and recalculates the invoice totals.
+     *
+     * @param int $item_id The ID of the invoice item to delete.
+     * @return bool `true` if the item existed and was deleted, `false` if no matching item was found.
      */
     public function delete($item_id): bool
     {

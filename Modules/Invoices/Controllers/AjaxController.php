@@ -23,6 +23,23 @@ use Modules\Invoices\Services\InvoicesRecurringService;
 class AjaxController extends AdminController
 {
     public $ajax_controller = true;
+    / **
+     * Create the AjaxController with its required service dependencies and initialize the parent controller.
+     *
+     * @param InvoicesService $invoicesService Handles invoice CRUD, validation, and related business logic.
+     * @param InvoiceSumexService $invoiceSumexService Manages Sumex-specific invoice data and persistence.
+     * @param InvoiceTaxRatesService $invoiceTaxRatesService Validates and saves invoice tax rate records.
+     * @param ItemsService $itemsService Handles invoice item creation, updates, deletion, and retrieval.
+     * @param InvoiceAmountsService $invoiceAmountsService Calculates and updates invoice totals and amounts.
+     * @param InvoiceCustomService $invoiceCustomService Persists invoice custom field values.
+     * @param TasksService $tasksService Manages task updates related to invoice items.
+     * @param UnitsService $unitsService Provides unit lookups and normalization for invoice items.
+     * @param ClientsService $clientsService Retrieves and manages client data for invoices.
+     * @param UsersService $usersService Retrieves and manages user data for invoices.
+     * @param InvoiceGroupsService $invoiceGroupsService Provides invoice group lookup and defaults.
+     * @param TaxRatesService $taxRatesService Provides tax rate lookup and utilities.
+     * @param InvoicesRecurringService $invoicesRecurringService Manages recurring invoice creation and schedules.
+     */
     public function __construct(
         public InvoicesService $invoicesService,
         public InvoiceSumexService $invoiceSumexService,
@@ -42,9 +59,15 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName save
+     * Save invoice and its related data and emit a JSON response.
      *
-     * @originalFile AjaxController.php
+     * Validates posted invoice input, persists the invoice record and its items, applies global discounts,
+     * updates task statuses, saves Sumex data when present, recalculates invoice amounts when required,
+     * and saves custom invoice fields. Outputs a JSON response containing either success = 1 or success = 0
+     * with validation errors.
+     *
+     * Side effects: modifies invoices, invoice items, related tasks, Sumex records, invoice amounts, and custom fields;
+     * may adjust the legacy calculation configuration based on input.
      */
     public function save()
     {
@@ -175,9 +198,14 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName saveInvoiceTaxRate
+     * Save invoice tax rates and output a JSON response indicating success or validation errors.
      *
-     * @originalFile AjaxController.php
+     * Validates input via the InvoiceTaxRatesService; if validation passes, saves tax rates only when
+     * the `legacy_calculation` configuration is enabled. Outputs a JSON object and terminates execution.
+     *
+     * Output JSON:
+     * - `{"success":1}` on successful save (or when validation passes and save is skipped due to configuration).
+     * - `{"success":0,"validation_errors": ...}` when validation fails.
      */
     public function saveInvoiceTaxRate()
     {
@@ -192,9 +220,14 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName deleteItem
+     * Delete an item from an invoice and return a JSON success flag.
      *
-     * @originalFile AjaxController.php
+     * Deletes the invoice item identified by the POST parameter `item_id` if the invoice with
+     * the given $invoice_id exists (or when no item_id is provided). When deletion succeeds,
+     * marks the linked task (if any) as completed (status 3). Sends a JSON response
+     * containing `success` (1 on success, 0 on failure) and terminates execution.
+     *
+     * @param int|string $invoice_id Invoice identifier used to verify the invoice exists.
      */
     public function deleteItem($invoice_id)
     {
@@ -221,10 +254,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName getItem
-     *
-     * @originalFile AjaxController.php
-     */
+         * Fetches the invoice item identified by the POSTed `item_id` and outputs it as JSON.
+         *
+         * Reads `item_id` from POST input (sanitized), retrieves the corresponding item via the items service,
+         * and echoes the item encoded as JSON.
+         */
     public function getItem()
     {
         $item = $this->itemsService->getById($this->security->xss_clean($this->input->post('item_id', true)));
@@ -232,9 +266,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCopyInvoice
+     * Prepare data for and render the copy-invoice modal.
      *
-     * @originalFile AjaxController.php
+     * Gathers invoice groups, tax rates, the specified invoice, and client based on POST inputs and returns the rendered modal view.
+     *
+     * @return string Rendered HTML of the copy-invoice modal.
      */
     public function modalCopyInvoice()
     {
@@ -249,9 +285,13 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName copyInvoice
+     * Create a new invoice by copying an existing invoice and output a JSON response.
      *
-     * @originalFile AjaxController.php
+     * Creates a new invoice from posted data, copies line items and related records from the specified source
+     * invoice, and exits with a JSON object: on success {"success": 1, "invoice_id": newId}, on validation failure
+     * {"success": 0, "validation_errors": ... }.
+     *
+     * If the "einvoicing" setting is enabled, may adjust the legacy_calculation configuration based on input.
      */
     public function copyInvoice()
     {
@@ -273,9 +313,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalChangeUser
+     * Render the modal for changing the user associated with an invoice.
      *
-     * @originalFile AjaxController.php
+     * @return string Rendered HTML for the change-user modal.
      */
     public function modalChangeUser()
     {
@@ -288,9 +328,13 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName changeUser
+     * Change the assigned user for an invoice using POSTed input.
      *
-     * @originalFile AjaxController.php
+     * Reads `user_id` and `invoice_id` from POST, verifies the user exists, updates the invoice's `user_id`
+     * in the database, and immediately outputs a JSON response. On success the JSON is:
+     *     {"success":1,"invoice_id":<invoice_id>}
+     * On failure (user not found) the JSON is:
+     *     {"success":0,"validation_errors":<errors>}
      */
     public function changeUser()
     {
@@ -311,9 +355,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalChangeClient
+     * Render the modal used to change the client for an invoice.
      *
-     * @originalFile AjaxController.php
+     * Passes these variables to the view: `client_id`, `invoice_id`, and `clients` (a list of recent clients).
+     *
+     * @return string The rendered modal view HTML.
      */
     public function modalChangeClient()
     {
@@ -326,9 +372,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName changeClient
+     * Change the client associated with an invoice.
      *
-     * @originalFile AjaxController.php
+     * Updates the invoice's client_id using `client_id` and `invoice_id` from POST data if the specified client exists; responds with JSON containing `success` and `invoice_id` on success or `success` and `validation_errors` on failure.
      */
     public function changeClient()
     {
@@ -349,9 +395,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCreateInvoice
+     * Render and return the "create invoice" modal populated with groups, tax rates, and client data.
      *
-     * @originalFile AjaxController.php
+     * @return string The rendered modal HTML containing `invoice_groups`, `tax_rates`, `client`, and `clients` in the view context.
      */
     public function modalCreateInvoice()
     {
@@ -365,9 +411,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName create
+     * Create a new invoice after validating input and send a JSON response.
      *
-     * @originalFile AjaxController.php
+     * If validation succeeds, creates an invoice and outputs {"success": 1, "invoice_id": <id>}.
+     * If validation fails, outputs {"success": 0, "validation_errors": <errors>}.
+     *
+     * This method sends the JSON response and terminates execution.
      */
     public function create()
     {
@@ -400,9 +449,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCreateRecurring
+     * Prepare data and render the create-recurring-invoice modal.
      *
-     * @originalFile AjaxController.php
+     * Loads the requested invoice ID and available recurrence frequencies and returns the rendered modal view.
+     *
+     * @return string Rendered HTML of the create-recurring-invoice modal.
      */
     public function modalCreateRecurring()
     {
@@ -426,9 +477,15 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCreateCredit
+     * Render the "create credit" modal populated with invoice groups, tax rates, and the source invoice.
      *
-     * @originalFile AjaxController.php
+     * Provides the view with:
+     * - `invoice_groups`: list of invoice groups,
+     * - `tax_rates`: list of tax rates,
+     * - `invoice_id`: ID from POST input,
+     * - `invoice`: the source invoice row.
+     *
+     * @return string Rendered HTML for the create-credit modal.
      */
     public function modalCreateCredit()
     {

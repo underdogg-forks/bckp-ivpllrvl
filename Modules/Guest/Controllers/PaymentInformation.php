@@ -13,15 +13,32 @@ use Modules\Settings\Services\SettingsService;
 #[AllowDynamicProperties]
 class PaymentInformation extends BaseController
 {
+    /**
+     * Initialize a new PaymentInformation controller instance.
+     */
     public function __construct()
     {
         parent::__construct();
     }
 
     /**
-     * @originalName form
+     * Prepare and render the guest payment information page for a given invoice.
      *
-     * @originalFile PaymentInformation.php
+     * Finds the invoice by its URL key, determines whether the payment form should be disabled,
+     * collects available payment gateway drivers appropriate for the invoice, resolves the
+     * invoice's payment method (if any), determines overdue status, and returns the view
+     * populated with the prepared data.
+     *
+     * @param string $invoice_url_key The public URL key identifying the invoice.
+     * @param string|null $payment_provider Optional gateway driver name to preselect.
+     * @return \Illuminate\View\View The rendered guest payment information view populated with:
+     *                               - disable_form (bool),
+     *                               - invoice (object),
+     *                               - Gateways (array of available driver names),
+     *                               - payment_method (object|null),
+     *                               - is_overdue (bool),
+     *                               - invoice_url_key (string),
+     *                               - payment_provider (string|null)
      */
     public function form($invoice_url_key, $payment_provider = null)
     {
@@ -73,9 +90,10 @@ class PaymentInformation extends BaseController
     }
 
     /**
-     * @originalName stripe
+     * Prepare data and render the Stripe payment gateway view for the given invoice URL key.
      *
-     * @originalFile PaymentInformation.php
+     * @param string $invoice_url_key Invoice URL key identifying the invoice to pay.
+     * @return \Illuminate\View\View The Stripe gateway view populated with the public API key and the invoice URL key.
      */
     public function stripe($invoice_url_key)
     {
@@ -85,9 +103,10 @@ class PaymentInformation extends BaseController
     }
 
     /**
-     * @originalName paypal
+     * Render the PayPal gateway payment view for the given invoice URL key.
      *
-     * @originalFile PaymentInformation.php
+     * @param string $invoice_url_key The invoice's public URL key.
+     * @return \Illuminate\View\View The rendered PayPal gateway view populated with client ID, invoice URL key, and currency.
      */
     public function paypal($invoice_url_key)
     {

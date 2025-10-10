@@ -29,6 +29,12 @@ class StripeController extends BaseController
     protected InvoicesService $invoicesService;
     protected PaymentsService $paymentsService;
 
+    /**
+     * Construct the controller, assign required services, and initialize the Stripe client using the decoded API key from settings.
+     *
+     * @param InvoicesService $invoicesService Service for retrieving and managing invoices.
+     * @param PaymentsService $paymentsService Service for recording and managing payments.
+     */
     public function __construct(InvoicesService $invoicesService, PaymentsService $paymentsService)
     {
         parent::__construct();
@@ -38,9 +44,11 @@ class StripeController extends BaseController
     }
 
     /**
-     * @originalName createCheckoutSession
+     * Creates a Stripe Checkout Session for the specified invoice and outputs the session client secret as JSON.
      *
-     * @originalFile StripeController.php
+     * If the invoice has a zero or negative balance the user is redirected to the invoice view with an error alert.
+     *
+     * @param string $invoice_url_key The public URL key that identifies the invoice.
      */
     public function createCheckoutSession($invoice_url_key)
     {
@@ -62,9 +70,13 @@ class StripeController extends BaseController
     }
 
     /**
-     * @originalName callback
+     * Handle a Stripe Checkout Session callback and finalize the related invoice payment.
      *
-     * @originalFile StripeController.php
+     * Retrieves the Stripe session by ID, records a payment when the session indicates success,
+     * creates a MerchantResponse record, flashes a user-facing alert, and redirects to the invoice view.
+     *
+     * @param string $checkout_session_id The Stripe Checkout Session ID.
+     * @return \Illuminate\Http\RedirectResponse Redirect to the invoice view page for the related invoice.
      */
     public function callback(string $checkout_session_id)
     {

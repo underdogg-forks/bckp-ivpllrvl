@@ -11,12 +11,13 @@ use Modules\Tasks\Services\TasksService;
 class AjaxController extends AdminController
 {
     /**
-     * @originalName modalTaskLookups
+     * Render the task lookups modal populated with default tax rate and invoice tasks.
      *
-     * @originalFile AjaxController.php
-     * 
-     * Note: Creates new TasksService instance instead of dependency injection.
-     * This is acceptable for single usage within the method.
+     * Prepares view data containing the default item tax rate (0 when not set) and, if an
+     * invoice ID is provided, the tasks associated with that invoice.
+     *
+     * @param int|null $invoice_id The invoice ID to fetch tasks for, or null to omit tasks.
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory The rendered task lookups view.
      */
     public function modalTaskLookups($invoice_id = null)
     {
@@ -29,12 +30,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName processTaskSelections
+     * Outputs the selected tasks as a JSON array with each task's price formatted for display.
      *
-     * @originalFile AjaxController.php
-     * 
-     * Note: Creates new TasksService instance instead of dependency injection.
-     * This is acceptable for single usage within the method.
+     * Reads `task_ids` from the request, retrieves matching tasks, formats each task's `task_price`,
+     * and writes the resulting task collection as JSON to the response.
+     *
+     * @param Request $request Request containing a `task_ids` array of task identifiers to retrieve.
      */
     public function processTaskSelections(Request $request): void
     {

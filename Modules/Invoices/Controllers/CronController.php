@@ -11,9 +11,11 @@ use Modules\Core\Controllers\BaseController;
 class CronController extends BaseController
 {
     /**
-     * @originalName recur
+     * Validate the provided cron key, generate invoices for all active recurring schedules, update their next run dates, and optionally email the generated invoices.
      *
-     * @originalFile CronController.php
+     * If the provided cron key does not match the system setting, an error is logged, an HTTP 500 error is shown, and execution is terminated.
+     *
+     * @param string|null $cron_key The cron key used to authorize this operation; if null, the system setting will be used for comparison.
      */
     public function recur($cron_key = null)
     {

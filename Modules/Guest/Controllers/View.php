@@ -20,9 +20,13 @@ use Modules\Quotes\Services\QuoteTaxRatesService;
 class View extends BaseGuestController
 {
     /**
-     * @originalName invoice
+     * Render the public invoice page identified by a URL key.
      *
-     * @originalFile View.php
+     * Loads a guest-visible invoice by its URL key, marks it viewed for non-staff guests when appropriate, collects related data (payment method, items, tax rates, custom fields, attachments, and overdue status), and returns the configured public invoice view populated with that data.
+     *
+     * @param string $invoice_url_key The invoice URL key to display.
+     * @return \Illuminate\View\View The rendered public invoice view populated with invoice data.
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException If the URL key is empty or no matching guest-visible invoice is found.
      */
     public function invoice($invoice_url_key = '')
     {
@@ -106,9 +110,13 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName quote
+     * Display a public view of a quote identified by its URL key.
      *
-     * @originalFile View.php
+     * Loads the guest-visible quote, marks it as viewed for non-admin users when appropriate, gathers items,
+     * tax rates, custom fields, attachments, and an expiration flag, then renders the configured public quote template.
+     *
+     * @param string $quote_url_key The public URL key identifying the quote.
+     * @return \Illuminate\View\View The rendered view for the public quote template.
      */
     public function quote($quote_url_key = '')
     {
@@ -164,9 +172,9 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName approveQuote
+     * Approve the quote identified by the given public URL key, send an "approved" status notification, and redirect to the public quote view.
      *
-     * @originalFile View.php
+     * @param string $quote_url_key The public URL key that identifies the quote to approve.
      */
     public function approveQuote(string $quote_url_key)
     {
@@ -177,9 +185,9 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName rejectQuote
+     * Rejects the quote identified by the public URL key, sends a rejection notification, and redirects the guest to the quote view.
      *
-     * @originalFile View.php
+     * @param string $quote_url_key The public URL key that identifies the quote to reject.
      */
     public function rejectQuote(string $quote_url_key)
     {
@@ -190,9 +198,15 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName getAttachments
+     * Retrieve stored uploads associated with a given URL key.
      *
-     * @originalFile View.php
+     * Returns an array of attachments found for the provided URL key. Each attachment is an associative array with:
+     * - `name`: original filename,
+     * - `fullname`: stored filename,
+     * - `size`: file size in bytes (0 if the file is missing).
+     *
+     * @param string $url_key The URL key that identifies the uploads.
+     * @return array<int, array{name:string,fullname:string,size:int}> List of attachments matching the URL key.
      */
     private function getAttachments(string $url_key): array
     {
