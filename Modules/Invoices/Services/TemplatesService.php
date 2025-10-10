@@ -9,9 +9,10 @@ use Modules\Core\Services\BaseService;
 class TemplatesService extends BaseService
 {
     /**
-     * @originalName getInvoiceTemplates
+     * Retrieve available invoice template names for the given template type.
      *
-     * @originalFile Template.php
+     * @param string $type Template category to load; supported values are `'pdf'` and `'public'`.
+     * @return string[] Array of template basenames with the `.php` extension removed.
      */
     public function getInvoiceTemplates($type = 'pdf')
     {
@@ -26,9 +27,10 @@ class TemplatesService extends BaseService
     }
 
     /**
-     * @originalName getQuoteTemplates
+     * Retrieve available quote template names for the specified template type.
      *
-     * @originalFile Template.php
+     * @param string $type The template type to list: 'pdf' for PDF templates or 'public' for public templates.
+     * @return string[] An array of template filenames with the '.php' extension removed.
      */
     public function getQuoteTemplates($type = 'pdf')
     {

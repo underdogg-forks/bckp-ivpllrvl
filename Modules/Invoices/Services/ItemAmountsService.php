@@ -8,15 +8,27 @@ use Modules\Core\Services\BaseService;
 #[AllowDynamicProperties]
 class ItemAmountsService extends BaseService
 {
+    /**
+     * Create a new ItemAmountsService with the provided ItemsService dependency.
+     *
+     * @param ItemsService $itemsService Service used to retrieve and manage invoice items.
+     */
     public function __construct(public ItemsService $itemsService)
     {
         parent::__construct();
     }
 
     /**
-     * @originalName calculate
+     * Calculate and persist invoice item amounts for a given item and accumulate its share of any global discount.
      *
-     * @originalFile ItemAmount.php
+     * Computes subtotal, discount, tax, and total for the specified item using either legacy or current calculation rules, updates the database row in ip_invoice_item_amounts for the item, and increments the referenced $global_discount['item'] with the item's proportional discount when applicable.
+     *
+     * @param int $item_id The invoice item identifier.
+     * @param array &$global_discount Reference to the global discount data; the function modifies this array by adding the per-item discount to the `item` key. Expected keys:
+     *                              - 'amount' (float): total global discount amount,
+     *                              - 'items_subtotal' (float): sum of subtotals for proportional distribution,
+     *                              - 'percent' (float): global discount percent (overrides proportional amount when non-zero),
+     *                              - 'item' (float): accumulator for per-item discounts (will be incremented).
      */
     public function calculate($item_id, &$global_discount)
     {

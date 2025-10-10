@@ -20,6 +20,21 @@ use Modules\Units\Services\UnitsService;
 #[AllowDynamicProperties]
 class InvoicesController extends AdminController
 {
+    /**
+     * Construct the InvoicesController with its required service dependencies.
+     *
+     * @param InvoicesService $invoicesService Service for managing invoice records and queries.
+     * @param ItemsService $itemsService Service for managing invoice line items.
+     * @param InvoiceTaxRatesService $invoiceTaxRatesService Service for invoice-specific tax rate operations.
+     * @param InvoiceAmountsService $invoiceAmountsService Service for calculating and updating invoice totals and amounts.
+     * @param InvoiceCustomService $invoiceCustomService Service for invoice custom field definitions and retrieval.
+     * @param CustomFieldsService $customFieldsService Service for global custom field management.
+     * @param CustomValuesService $customValuesService Service for handling custom field values.
+     * @param TasksService $tasksService Service for task operations (e.g., updating tasks when invoices change).
+     * @param PaymentMethodsService $paymentMethodsService Service for available payment method data.
+     * @param UnitsService $unitsService Service for unit (quantity/measurement) data used on items.
+     * @param TaxRatesService $taxRatesService Service for global tax rate data.
+     */
     public function __construct(
         public InvoicesService $invoicesService,
         public ItemsService $itemsService,
@@ -48,9 +63,11 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName status
+     * Display a paginated list of invoices filtered by status.
      *
-     * @originalFile InvoicesController.php
+     * @param string $status The invoice status to filter by (e.g., "all", "draft", "sent", "viewed", "paid", "overdue").
+     * @param int|string $page The pagination page number.
+     * @return \Illuminate\View\View Rendered view showing the invoices, filter controls, and invoice statuses.
      */
     public function status(string $status = 'all', $page = 0)
     {
@@ -79,9 +96,9 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName archive
+     * Display the archived invoices page with filter controls.
      *
-     * @originalFile InvoicesController.php
+     * @return \Illuminate\View\View The view for archived invoices, including filter UI and archive data.
      */
     public function archive()
     {
@@ -121,9 +138,14 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName view
+     * Display invoice details and prepare all data required by the invoice view.
      *
-     * @originalFile InvoicesController.php
+     * Loads invoice, custom fields/values, items, e-invoice usage, tax rates, units,
+     * payment methods, invoice tax rates, and other view variables, then renders
+     * either `invoices.view` or `invoices.view_sumex` depending on the invoice.
+     * Aborts with a 404 response if the invoice cannot be found.
+     *
+     * @param int|string $invoice_id The identifier of the invoice to display.
      */
     public function view($invoice_id): void
     {
@@ -177,9 +199,13 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete an invoice if allowed and redirect to the invoices index.
      *
-     * @originalFile InvoicesController.php
+     * Deletes the invoice and updates related tasks when deletion is permitted.
+     * If deletion is forbidden, sets an error flash message indicating deletion is not allowed.
+     *
+     * @param int|string $invoice_id The ID of the invoice to delete.
+     * @return \Illuminate\Http\RedirectResponse Redirects to the invoices index route.
      */
     public function delete($invoice_id): void
     {
@@ -195,9 +221,13 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName generatePdf
+     * Generate a PDF for the given invoice and output it according to the specified mode.
      *
-     * @originalFile InvoicesController.php
+     * If the "mark_invoices_sent_pdf" setting is enabled, this may assign an invoice number if needed and mark the invoice as sent before generating the PDF.
+     *
+     * @param int|string $invoice_id The ID of the invoice to generate a PDF for.
+     * @param bool $stream When true, output the PDF directly (stream to the client); when false, return or save the generated PDF.
+     * @param string|null $invoice_template Optional template identifier to use for PDF generation.
      */
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
     {
@@ -209,9 +239,14 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName generateXml
+     * Generate and send the electronic invoice XML for a given invoice.
      *
-     * @originalFile InvoicesController.php
+     * Loads the invoice and its items, determines the e-invoice configuration, builds a temporary XML file,
+     * sets the response body to the XML with Content-Type `text/xml`, and deletes the temporary file.
+     *
+     * If the invoice does not exist or the e-invoice configuration lacks a user, the request is aborted with 404.
+     *
+     * @param int|string $invoice_id The identifier of the invoice to generate XML for.
      */
     public function generateXml($invoice_id): void
     {
@@ -241,9 +276,9 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName generateSumexPdf
+     * Generate a SUMEX PDF for the specified invoice.
      *
-     * @originalFile InvoicesController.php
+     * @param int|string $invoice_id The ID of the invoice to generate the SUMEX PDF for.
      */
     public function generateSumexPdf($invoice_id): void
     {
@@ -251,9 +286,12 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName generateSumexCopy
+     * Sends a Sumex PDF copy of the specified invoice as the HTTP response.
      *
-     * @originalFile InvoicesController.php
+     * Generates a Sumex document for the invoice and sets the HTTP response body
+     * to the generated PDF with the appropriate PDF content type header.
+     *
+     * @param int|string $invoice_id Identifier of the invoice to generate a Sumex copy for.
      */
     public function generateSumexCopy($invoice_id): void
     {
@@ -266,10 +304,12 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName deleteInvoiceTax
-     *
-     * @originalFile InvoicesController.php
-     */
+         * Remove a specific tax rate from an invoice, recalculate the invoice totals, and redirect to the invoice view.
+         *
+         * @param string $invoice_id The ID of the invoice.
+         * @param mixed $invoice_tax_rate_id The ID of the invoice tax rate to delete.
+         * @return \Illuminate\Http\RedirectResponse Redirects to the invoice view page for the given invoice.
+         */
     public function deleteInvoiceTax(string $invoice_id, $invoice_tax_rate_id): void
     {
         $this->invoiceTaxRatesService->delete($invoice_tax_rate_id);
@@ -279,9 +319,9 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * @originalName recalculateAllInvoices
+     * Recalculates and persists totals for every invoice in the system.
      *
-     * @originalFile InvoicesController.php
+     * For each invoice, retrieves the invoice's global discount and re-computes its amounts via the InvoiceAmountsService, updating stored invoice totals.
      */
     public function recalculateAllInvoices(): void
     {

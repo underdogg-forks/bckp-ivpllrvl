@@ -13,6 +13,15 @@ class InvoiceAmountsService extends BaseService
      */
     public $decimal_places = 2;
 
+    /**
+     * Instantiate the service and initialize invoice tax decimal precision.
+     *
+     * Initializes the InvoiceAmountsService with its required dependencies and sets
+     * the decimal precision for tax-related calculations from the `tax_rate_decimal_places` setting.
+     *
+     * @param InvoicesService $invoicesService Service for invoice operations.
+     * @param InvoiceTaxRatesService $invoiceTaxRatesService Service for invoice tax rate operations.
+     */
     public function __construct(
         public InvoicesService $invoicesService,
         public InvoiceTaxRatesService $invoiceTaxRatesService
@@ -22,9 +31,13 @@ class InvoiceAmountsService extends BaseService
     }
 
     /**
-     * @originalName calculate
+     * Recalculates and persists core invoice amounts (subtotals, taxes, total, paid, balance) for a given invoice.
      *
-     * @originalFile InvoiceAmount.php
+     * Recomputes item subtotals and taxes, applies legacy or global discounts, updates or inserts the ip_invoice_amounts row,
+     * triggers invoice tax recalculation, and sets invoice status/read-only flags when the invoice becomes fully paid.
+     *
+     * @param int $invoice_id The invoice identifier.
+     * @param array $global_discount Associative array of global discount values; expects an 'item' key for the per-item global discount amount.
      */
     public function calculate($invoice_id, $global_discount)
     {
@@ -126,9 +139,14 @@ class InvoiceAmountsService extends BaseService
     }
 
     /**
-     * @originalName calculateInvoiceTaxes
+     * Recalculate invoice-level taxes and persist updated tax totals, invoice total, and balance for an invoice.
      *
-     * @originalFile InvoiceAmount.php
+     * When invoice-level tax rates exist, computes each tax amount (including item tax when configured),
+     * updates ip_invoice_tax_rates and ip_invoice_amounts with the summed invoice tax total, and recalculates
+     * the invoice total and balance. If legacy calculation mode is enabled, applies the invoice discount as part
+     * of the total recalculation. If no invoice-level taxes are present, sets the invoice tax total to 0.00.
+     *
+     * @param int $invoice_id The ID of the invoice to recalculate taxes for.
      */
     public function calculateInvoiceTaxes($invoice_id)
     {

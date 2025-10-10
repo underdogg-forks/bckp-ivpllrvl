@@ -19,6 +19,16 @@ class InvoicesService extends BaseService
 
     public $date_modified_field = 'invoice_date_modified';
 
+    /**
+     * Construct the InvoicesService with its required service dependencies and initialize the base service.
+     *
+     * @param InvoiceGroupsService $invoiceGroupsService Service for invoice group operations (e.g., generating invoice numbers).
+     * @param ItemsService $itemsService Service for creating, copying, and managing invoice items.
+     * @param InvoiceTaxRatesService $invoiceTaxRatesService Service for managing invoice tax rates.
+     * @param InvoiceCustomService $invoiceCustomService Service for handling invoice custom field values.
+     * @param ClientsService $clientsService Service for client-related operations.
+     * @param PaymentsService $paymentsService Service for retrieving and managing payments.
+     */
     public function __construct(
         public InvoiceGroupsService $invoiceGroupsService,
         public ItemsService $itemsService,
@@ -95,9 +105,15 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName create
+     * Create a new invoice and initialize related records (amounts, optional tax rate, and Sumex entry).
      *
-     * @originalFile Invoice.php
+     * If $include_invoice_tax_rates is true and a default invoice tax rate is configured, the default tax
+     * rate row is created for the new invoice. If the invoice's group name contains "sumex" (case-insensitive),
+     * a Sumex entry is created for the new invoice.
+     *
+     * @param array|null $db_array Associative array of invoice fields to save.
+     * @param bool $include_invoice_tax_rates Whether to insert the configured default invoice tax rate for the new invoice.
+     * @return int The ID of the newly created invoice.
      */
     public function create($db_array = null, $include_invoice_tax_rates = true)
     {
@@ -121,9 +137,13 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName copyInvoice
+     * Copy invoice data from a source invoice to a target invoice, including global discount, items, tax rates, and custom field values.
      *
-     * @originalFile Invoice.php
+     * The target invoice will be updated with the source invoice's global discount and receive copies of the source's items, invoice tax rates, and custom field values.
+     *
+     * @param int  $source_id                 ID of the invoice to copy from.
+     * @param int  $target_id                 ID of the invoice to copy to.
+     * @param bool $copy_recurring_items_only If true, only items marked as recurring will be copied; otherwise all items are copied.
      */
     public function copyInvoice($source_id, $target_id, $copy_recurring_items_only = false): void
     {
@@ -176,9 +196,13 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName copyCreditInvoice
+     * Create a credit copy of an existing invoice into a target invoice.
      *
-     * @originalFile Invoice.php
+     * Copies the source invoice's global discount to the target, duplicates each item with the quantity negated,
+     * duplicates each invoice tax rate with the tax amount negated, and copies custom field values to the target.
+     *
+     * @param int $source_id The invoice ID to copy from.
+     * @param int $target_id The invoice ID to copy into (credit invoice).
      */
     public function copyCreditInvoice($source_id, $target_id)
     {
@@ -229,9 +253,21 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName dbArray
+     * Builds the database-ready array for an invoice.
      *
-     * @originalFile Invoice.php
+     * Prepares and normalizes invoice fields for persistence, including formatting
+     * the creation date, computing the due date, applying default terms and status,
+     * generating an invoice number when applicable, ensuring a payment method value,
+     * and adding a URL key.
+     *
+     * @return array Associative array of invoice fields prepared for database storage. Contains at least:
+     *              - `invoice_date_created` (MySQL-formatted date string)
+     *              - `invoice_date_due` (due date as Y-m-d)
+     *              - `invoice_terms`
+     *              - `invoice_status_id`
+     *              - `invoice_number`
+     *              - `payment_method`
+     *              - `invoice_url_key`
      */
     public function dbArray()
     {
@@ -256,9 +292,10 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName getPayments
+     * Attach payments matching the invoice's ID to the given invoice object.
      *
-     * @originalFile Invoice.php
+     * @param object $invoice Invoice object containing an `invoice_id` property.
+     * @return object The same invoice object with a `payments` property set to an array of payment records when payments exist, or `null` when none are found.
      */
     public function getPayments($invoice)
     {
@@ -282,9 +319,10 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName getInvoiceNumber
+     * Generate the next invoice number for the specified invoice group.
      *
-     * @originalFile Invoice.php
+     * @param int $invoice_group_id The ID of the invoice group to use when generating the number.
+     * @return string The newly generated invoice number.
      */
     public function getInvoiceNumber($invoice_group_id)
     {
@@ -292,9 +330,9 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName getUrlKey
+     * Generate a random 32-character URL key.
      *
-     * @originalFile Invoice.php
+     * @return string A 32-character random string suitable for use as a URL key.
      */
     public function getUrlKey()
     {
@@ -326,10 +364,11 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName getCustomValues
-     *
-     * @originalFile Invoice.php
-     */
+         * Retrieve custom field values for an invoice.
+         *
+         * @param int|string $id Invoice ID.
+         * @return array The invoice's custom field values, keyed by custom field ID.
+         */
     public function getCustomValues($id)
     {
         return $this->invoiceCustomService->get_by_invid($id);
@@ -356,9 +395,9 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName delete
+     * Delete an invoice and remove any orphaned related records.
      *
-     * @originalFile Invoice.php
+     * @param int|string $invoice_id The ID of the invoice to delete.
      */
     public function delete($invoice_id)
     {

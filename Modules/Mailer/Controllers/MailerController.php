@@ -21,7 +21,9 @@ class MailerController extends AdminController
     private bool $mailer_configured;
 
     /**
-     * MailerController constructor.
+     * Initialize the MailerController and ensure the mailer is configured.
+     *
+     * If the mailer is not configured, aborts with HTTP 503 and renders the `mailer.not_configured` view.
      */
     public function __construct()
     {
@@ -33,9 +35,18 @@ class MailerController extends AdminController
     }
 
     /**
-     * @originalName invoice
+     * Display the invoice mail composer view populated with templates, custom fields, PDF templates, and invoice data.
      *
-     * @originalFile MailerController.php
+     * @param Request $request The HTTP request instance.
+     * @param int $invoice_id The ID of the invoice to compose an email for.
+     * @return \Illuminate\Contracts\View\View The rendered mailer.invoice view populated with:
+     *                                         - selected_email_template: ID of the chosen email template
+     *                                         - selected_pdf_template: chosen PDF template for the invoice
+     *                                         - email_templates: list of invoice email templates
+     *                                         - email_template: JSON-encoded selected email template (or '{}')
+     *                                         - custom_fields: custom fields grouped by table
+     *                                         - pdf_templates: available invoice PDF templates
+     *                                         - invoice: the invoice model
      */
     public function invoice(Request $request, int $invoice_id)
     {
@@ -64,9 +75,20 @@ class MailerController extends AdminController
     }
 
     /**
-     * @originalName quote
+     * Display the mailer UI for a specific quote, including templates, custom fields, and PDF options.
      *
-     * @originalFile MailerController.php
+     * If the mailer is not configured, the method exits without rendering the view.
+     *
+     * @param Request $request The current HTTP request.
+     * @param int $quote_id The ID of the quote to prepare for emailing.
+     * @return \Illuminate\View\View The rendered 'mailer.quote' view containing:
+     *                               - selected_email_template: the chosen email template ID
+     *                               - selected_pdf_template: the chosen PDF template ID
+     *                               - email_templates: available email templates of type 'quote'
+     *                               - email_template: JSON-encoded selected email template or '{}' if none
+     *                               - custom_fields: custom fields grouped by table
+     *                               - pdf_templates: available quote PDF templates
+     *                               - quote: the quote model instance
      */
     public function quote(Request $request, int $quote_id)
     {
@@ -94,9 +116,16 @@ class MailerController extends AdminController
     }
 
     /**
-     * @originalName sendInvoice
+     * Send an invoice email with an optional PDF and attachments.
      *
-     * @originalFile MailerController.php
+     * This will read email fields from the request, normalize the body HTML,
+     * attach any invoice uploads, ensure the invoice number exists, and attempt
+     * to send the email. On success the invoice is marked as sent and a success
+     * flash message is set.
+     *
+     * @param Request $request Incoming HTTP request containing email fields (to, from, subject, body, cc, bcc, pdf_template) and an optional cancel button.
+     * @param string  $invoice_id Identifier of the invoice to email.
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response Redirects to the invoice view on success or when cancelled, redirects back to the mailer form on failure, or returns a 503 response if the mailer is not configured.
      */
     public function sendInvoice(Request $request, string $invoice_id)
     {
@@ -129,9 +158,17 @@ class MailerController extends AdminController
     }
 
     /**
-     * @originalName sendQuote
+     * Send a quote email with an optional PDF attachment and additional uploads.
      *
-     * @originalFile MailerController.php
+     * Sends the specified quote to the recipient(s), optionally attaching a selected PDF template
+     * and any uploaded files. If the email is successfully sent the quote is marked as sent.
+     *
+     * @param Request $request The HTTP request containing email fields (`to_email`, `from_email`, `from_name`, `pdf_template`, `subject`, `body`, `cc`, `bcc`) and optional cancel action.
+     * @param string $quote_id The identifier of the quote to send.
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *         Redirects to the quote view when cancelled or after a successful send;
+     *         redirects back to the mailer quote page if sending fails;
+     *         aborts with a 503 response rendering the `mailer.not_configured` view when the mailer is not configured.
      */
     public function sendQuote(Request $request, string $quote_id)
     {

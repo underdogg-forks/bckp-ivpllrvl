@@ -14,9 +14,11 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * @originalName nameQuery
+     * Return a JSON array of matching active clients for client-name autocompletion.
      *
-     * @originalFile AjaxController.php
+     * Uses the GET parameter `query` to search active clients by name, surname, or fullname.
+     * If GET `permissive_search_clients` is truthy, the query may match with a leading wildcard.
+     * Echoes a JSON array of objects with `id` (client_id) and `text` (formatted client name).
      */
     public function nameQuery(): void
     {
@@ -38,9 +40,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName getLatest
+     * Return a JSON array of the five most recently created active clients.
      *
-     * @originalFile AjaxController.php
+     * Each array element is an object with `id` set to the client's ID and
+     * `text` set to the client's formatted name (HTML-escaped). Results are ordered
+     * by client creation date and limited to five active clients.
      */
     public function getLatest(): void
     {
@@ -53,9 +57,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName savePreferencePermissiveSearchClients
+     * Persist the user's preference for permissive client search.
      *
-     * @originalFile AjaxController.php
+     * Validates that the provided value is either "0" or "1"; if valid, saves it under the settings key `enable_permissive_search_clients`. Terminates execution immediately if the input is invalid.
      */
     public function savePreferencePermissiveSearchClients(): void
     {
@@ -67,9 +71,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName deleteClientNote
+     * Delete a client note identified by the POST parameter `client_note_id` and echo JSON indicating the result.
      *
-     * @originalFile AjaxController.php
+     * If a note with the provided `client_note_id` exists, or if the ID is empty, the controller attempts deletion and echoes `{"success": 1}` on successful deletion or `{"success": 0}` otherwise.
      */
     public function deleteClientNote(): void
     {
@@ -85,9 +89,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName saveClientNote
+     * Validate and save a client note, then output a JSON response indicating the result.
      *
-     * @originalFile AjaxController.php
+     * The response is a JSON object with:
+     * - `success`: `1` if the note was saved, `0` otherwise.
+     * - `new_token`: a fresh CSRF token string.
+     * - `validation_errors`: present only when `success` is `0`, containing validation error details.
      */
     public function saveClientNote(): void
     {
@@ -101,8 +108,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName loadClientNotes
+     * Load notes for the client specified by POST `client_id` and render the `clients/partial_notes` partial.
      *
+     * Fetches the client's notes and passes them to the view for rendering.
+     *
+     * @originalName loadClientNotes
      * @originalFile AjaxController.php
      */
     public function loadClientNotes(): void

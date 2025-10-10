@@ -12,6 +12,11 @@ class InvoiceTaxRatesService extends BaseService
 
     public $primary_key = 'ip_invoice_tax_rates.invoice_tax_rate_id';
 
+    /**
+     * Create a new InvoiceTaxRatesService and inject the InvoiceAmountsService dependency.
+     *
+     * @param InvoiceAmountsService $invoiceAmountsService Service used to retrieve and recalculate invoice amounts and discounts.
+     */
     public function __construct(public InvoiceAmountsService $invoiceAmountsService)
     {
         parent::__construct();
@@ -40,9 +45,15 @@ class InvoiceTaxRatesService extends BaseService
     }
 
     /**
-     * @originalName save
+     * Save an invoice tax rate and trigger invoice amount recalculation when applicable.
      *
-     * @originalFile InvoiceTaxRate.php
+     * If the application is in legacy calculation mode, this will also invoke the parent save implementation.
+     * When an invoice identifier is available (from $db_array['invoice_id'] or POST data), the service will
+     * retrieve the invoice's global discount and recalculate invoice amounts via the injected InvoiceAmountsService.
+     *
+     * @param int|null $id The invoice tax rate identifier, or null to create a new record.
+     * @param array|null $db_array Associative array of database fields for the invoice tax rate. If it contains
+     *                             an 'invoice_id' key that ID will be used to trigger recalculation.
      */
     public function save($id = null, $db_array = null)
     {

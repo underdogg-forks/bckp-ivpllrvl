@@ -21,9 +21,13 @@ class SessionsController extends BaseController
     }
 
     /**
-     * @originalName login
+     * Handle display and processing of the login form.
      *
-     * @originalFile SessionsController.php
+     * Processes submitted credentials, sets flash messages for errors, redirects
+     * on successful authentication according to user type, and returns the login
+     * view when rendering the form.
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View A redirect response after form processing or the login view when displaying the form.
      */
     public function login()
     {
@@ -89,9 +93,15 @@ class SessionsController extends BaseController
     }
 
     /**
-     * @originalName passwordreset
+     * Handle password reset flows: token verification, new-password submission, and reset-request submission.
      *
-     * @originalFile SessionsController.php
+     * Processes three distinct actions depending on input:
+     * - If a token is provided: validate the token, throttle abuse, locate the user, clear login failures, and render the new-password view.
+     * - If the new-password form is submitted: validate input and token, update the user's password, clear the reset token and login failures, and redirect to the login page.
+     * - If the password-reset request form is submitted: validate the email, throttle abuse, generate and store a reset token, send the reset email, and redirect to the login page.
+     *
+     * @param string|null $token The password reset token supplied via the URL, or null when not using a token.
+     * @return mixed A view response for rendering the appropriate password reset page or a redirect response after processing.
      */
     public function passwordreset($token = null)
     {
