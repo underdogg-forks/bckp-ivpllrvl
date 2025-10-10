@@ -3,7 +3,10 @@
 namespace Modules\UserClients\Controllers;
 
 use AllowDynamicProperties;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
+use Modules\UserClients\Services\UserClientsService;
+use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
 class UserClientsController extends AdminController
@@ -14,9 +17,6 @@ class UserClientsController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('users/mdl_users');
-        $this->load->model('clients/mdl_clients');
-        $this->load->model('user_clients/mdl_user_clients');
     }
 
     /**

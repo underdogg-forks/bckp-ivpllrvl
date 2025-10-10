@@ -18,7 +18,6 @@ class ClientsController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_clients');
     }
 
     /**

@@ -4,6 +4,12 @@ namespace Modules\Dashboard\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Invoices\Services\InvoiceAmountsService;
+use Modules\Invoices\Services\InvoicesService;
+use Modules\Projects\Services\ProjectsService;
+use Modules\Quotes\Services\QuoteAmountsService;
+use Modules\Quotes\Services\QuotesService;
+use Modules\Tasks\Services\TasksService;
 
 #[AllowDynamicProperties]
 class DashboardController extends AdminController
@@ -15,12 +21,6 @@ class DashboardController extends AdminController
      */
     public function index()
     {
-        $this->load->model('invoices/mdl_invoice_amounts');
-        $this->load->model('quotes/mdl_quote_amounts');
-        $this->load->model('invoices/mdl_invoices');
-        $this->load->model('quotes/mdl_quotes');
-        $this->load->model('projects/mdl_projects');
-        $this->load->model('tasks/mdl_tasks');
         $quote_overview_period   = get_setting('quote_overview_period');
         $invoice_overview_period = get_setting('invoice_overview_period');
 

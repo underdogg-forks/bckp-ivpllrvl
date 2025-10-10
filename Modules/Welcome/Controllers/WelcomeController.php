@@ -15,8 +15,6 @@ class WelcomeController extends AdminController
      */
     public function index()
     {
-        $this->load->model('settings/mdl_settings');
-        $this->load->helper(['settings', 'echo', 'url']);
-        $this->load->view('welcome');
+        return view('welcome');
     }
 }
