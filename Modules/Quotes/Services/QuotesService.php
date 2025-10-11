@@ -104,9 +104,12 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName copyQuote
+     * Copy a quote's line items, tax rates, discounts, and custom fields from one quote to another.
      *
-     * @originalFile Quote.php
+     * Copies the source quote's global discount to the target, duplicates each quote item (preserving name, description, quantity, price, tax rate and product/unit references) while applying the source's global discount, copies the source's quote tax rates to the target, and copies non-primary-key custom fields from the source to the target.
+     *
+     * @param int $source_id The ID of the quote to copy from.
+     * @param int $target_id The ID of the quote to copy to.
      */
     public function copyQuote($source_id, $target_id)
     {

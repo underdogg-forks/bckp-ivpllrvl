@@ -110,12 +110,9 @@ class View extends BaseGuestController
     }
 
     /**
-     * Display a public view of a quote identified by its URL key.
+     * Render the public quote page for the quote identified by its URL key.
      *
-     * Loads the guest-visible quote, marks it as viewed for non-admin users when appropriate, gathers items,
-     * tax rates, custom fields, attachments, and an expiration flag, then renders the configured public quote template.
-     *
-     * @param string $quote_url_key The public URL key identifying the quote.
+     * @param string $quote_url_key The public URL key that identifies the quote.
      * @return \Illuminate\View\View The rendered view for the public quote template.
      */
     public function quote($quote_url_key = '')

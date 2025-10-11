@@ -68,6 +68,15 @@ class QuoteTaxRatesService extends BaseService
         return QuoteTaxRate::with('taxRate')->get();
     }
 
+    /**
+     * Creates or updates a QuoteTaxRate record and triggers quote amounts recalculation when a `quote_id` is provided.
+     *
+     * @param array $data Attributes for the QuoteTaxRate. Recognized keys include:
+     *                    - `quote_tax_rate_id` (optional): ID of an existing record to update.
+     *                    - `quote_id` (optional): when present, causes quote amounts to be recalculated.
+     *                    - other QuoteTaxRate model attributes to be saved.
+     * @return QuoteTaxRate The created or updated QuoteTaxRate instance.
+     */
     public function saveTaxRate(array $data): QuoteTaxRate
     {
         $quoteTaxRate = QuoteTaxRate::updateOrCreate(
@@ -83,10 +92,10 @@ class QuoteTaxRatesService extends BaseService
     }
 
     /**
-     * Get all tax rates for a specific quote
+     * Retrieve all quote tax rate records associated with the specified quote.
      *
-     * @param int $quote_id The quote ID
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param int $quote_id The quote ID to filter tax rates by.
+     * @return \Illuminate\Database\Eloquent\Collection A collection of QuoteTaxRate models for the given quote.
      */
     public function getByQuoteId($quote_id)
     {

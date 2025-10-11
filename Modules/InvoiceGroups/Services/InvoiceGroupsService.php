@@ -75,9 +75,21 @@ class InvoiceGroupsService extends BaseService
     }
 
     /**
-     * @originalName parseIdentifierFormat
+     * Builds an invoice identifier by replacing template tokens in the format string with their current values.
      *
-     * @originalFile InvoiceGroup.php
+     * Supported tokens:
+     * - `{{{year}}}` => four-digit year (e.g., 2025)
+     * - `{{{yy}}}`   => two-digit year (e.g., 25)
+     * - `{{{month}}}`=> two-digit month (e.g., 03)
+     * - `{{{day}}}`  => two-digit day (e.g., 09)
+     * - `{{{id}}}`   => `$next_id` left-padded with zeros to `$left_pad` width
+     *
+     * Any other token is replaced with an empty string.
+     *
+     * @param string $identifier_format Template string containing tokens to replace.
+     * @param string $next_id Value used for the `id` token.
+     * @param int $left_pad Width to left-pad the `id` value with zeros.
+     * @return string The identifier with all supported tokens substituted.
      */
     private function parseIdentifierFormat($identifier_format, string $next_id, int $left_pad)
     {
@@ -110,9 +122,9 @@ class InvoiceGroupsService extends BaseService
     }
 
     /**
-     * Get all invoice groups
+     * Retrieve all invoice group records.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection A collection of InvoiceGroup models.
      */
     public function getAll()
     {

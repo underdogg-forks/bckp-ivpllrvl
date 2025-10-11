@@ -130,9 +130,10 @@ class ItemsService extends BaseService
     }
 
     /**
-     * @originalName getItemsSubtotal
+     * Retrieve the total of item subtotals for a given invoice.
      *
-     * @originalFile Item.php
+     * @param int|string $invoice_id The invoice identifier.
+     * @return float|null The sum of `item_subtotal` for all items on the invoice, or `null` if the invoice has no items.
      */
     public function getItemsSubtotal($invoice_id)
     {
@@ -147,10 +148,10 @@ class ItemsService extends BaseService
     }
 
     /**
-     * Get all items for a specific invoice
+     * Retrieve all item records belonging to the specified invoice.
      *
-     * @param int $invoice_id The invoice ID
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param int $invoice_id ID of the invoice to fetch items for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of Item models for the invoice.
      */
     public function getByInvoiceId($invoice_id)
     {

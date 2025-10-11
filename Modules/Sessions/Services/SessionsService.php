@@ -10,9 +10,13 @@ use Modules\Users\Models\User;
 class SessionsService extends BaseService
 {
     /**
-     * @originalName auth
+     * Authenticate a user by email and password, upgrade legacy MD5 password hashes when needed, and initialize session data on success.
      *
-     * @originalFile Session.php
+     * If the user record contains an old MD5 password, a successful MD5 verification will replace it with the current salted hash format before continuing.
+     *
+     * @param string $email The user's email address used to locate the account.
+     * @param string $password The plaintext password to verify.
+     * @return bool `true` if authentication succeeds and session data is set (session contains `user_type`, `user_id`, `user_name`, `user_email`, `user_company`, and `user_language`), `false` otherwise.
      */
     public function auth($email, $password)
     {

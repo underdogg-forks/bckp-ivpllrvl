@@ -187,9 +187,14 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCopyQuote
+     * Loads data required to copy an existing quote and renders the "copy quote" modal view.
      *
-     * @originalFile AjaxController.php
+     * Prepares invoice groups, tax rates, the source quote, and the specified client, then loads
+     * the view 'quotes/modal_copy_quote' with that data.
+     *
+     * Expects the following POST fields:
+     * - 'quote_id': ID of the quote to copy.
+     * - 'client_id': ID of the client to preselect in the modal.
      */
     public function modalCopyQuote()
     {
@@ -238,9 +243,14 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName changeUser
+     * Change the user associated with a quote and respond with a JSON result.
      *
-     * @originalFile AjaxController.php
+     * Reads `user_id` and `quote_id` from POST input. If the specified user exists,
+     * updates the quote's `user_id` and returns JSON { "success": 1, "quote_id": <id> }.
+     * If the user does not exist, returns JSON { "success": 0, "validation_errors": ... }.
+     *
+     * @param int $user_id POSTed ID of the user to assign to the quote.
+     * @param int $quote_id POSTed ID of the quote to update.
      */
     public function changeUser()
     {
@@ -275,9 +285,15 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName changeClient
+     * Change the client associated with a quote by updating the quote's client_id.
      *
-     * @originalFile AjaxController.php
+     * Updates the stored quote record to reference the provided client and emits a JSON
+     * response indicating success or failure. On success the response contains
+     * `success = 1` and the sanitized `quote_id`. On failure the response contains
+     * `success = 0` and `validation_errors` from the json_error helper.
+     *
+     * @param int $client_id POST client identifier to associate with the quote.
+     * @param int $quote_id  POST quote identifier whose client will be updated.
      */
     public function changeClient()
     {
@@ -299,9 +315,15 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCreateQuote
+     * Render the modal used to create a new quote for a client.
      *
-     * @originalFile AjaxController.php
+     * Prepares view data keys:
+     * - `invoice_groups`: all invoice groups
+     * - `tax_rates`: all tax rates
+     * - `client`: client identified by the POST field `client_id`
+     * - `clients`: recent clients
+     *
+     * Loads the view `quotes/modal_create_quote` with the prepared data.
      */
     public function modalCreateQuote()
     {
@@ -330,9 +352,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalQuoteToInvoice
+     * Render the modal used to convert a specific quote into an invoice.
      *
-     * @originalFile AjaxController.php
+     * Loads available invoice groups and the specified quote, sanitizes the provided quote ID,
+     * and renders the `quotes/modal_quote_to_invoice` view with that data.
+     *
+     * @param int|string $quote_id The quote ID to convert; input will be sanitized before use.
      */
     public function modalQuoteToInvoice($quote_id)
     {
@@ -342,9 +367,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName quoteToInvoice
+     * Convert a quote into a new invoice, copying quote items, quote-level tax rates, and discount values,
+     * link the created invoice to the source quote, and output a JSON response.
      *
-     * @originalFile AjaxController.php
+     * On success the method outputs JSON with `success = 1` and `invoice_id`. On validation failure it
+     * outputs JSON with `success = 0` and `validation_errors`.
      */
     public function quoteToInvoice()
     {

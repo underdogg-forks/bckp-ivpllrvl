@@ -239,14 +239,15 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * Generate and send the electronic invoice XML for a given invoice.
+     * Generate and output the electronic invoice XML for a given invoice.
      *
-     * Loads the invoice and its items, determines the e-invoice configuration, builds a temporary XML file,
-     * sets the response body to the XML with Content-Type `text/xml`, and deletes the temporary file.
+     * Loads the invoice and its items, determines the e-invoice configuration and XML generator,
+     * writes a temporary XML file, sets the HTTP response body to that XML with Content-Type `text/xml`,
+     * and removes the temporary file after sending.
      *
-     * If the invoice does not exist or the e-invoice configuration lacks a user, the request is aborted with 404.
+     * If the invoice does not exist or the e-invoice configuration lacks a user, the request is aborted with a 404 response.
      *
-     * @param int|string $invoice_id The identifier of the invoice to generate XML for.
+     * @param int|string $invoice_id The invoice identifier.
      */
     public function generateXml($invoice_id): void
     {

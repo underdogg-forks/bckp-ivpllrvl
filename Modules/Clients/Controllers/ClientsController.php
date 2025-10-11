@@ -104,9 +104,10 @@ class ClientsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete the specified client and redirect to the clients index.
      *
-     * @originalFile ClientsController.php
+     * @param int $client_id The identifier of the client to delete.
+     * @return \Illuminate\Http\RedirectResponse A redirect response to the clients index route.
      */
     public function delete($client_id): \Illuminate\Http\RedirectResponse
     {

@@ -34,9 +34,14 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display and handle the payments form for creating or editing a payment.
      *
-     * @originalFile PaymentsController.php
+     * Handles form cancellation, validation, persisting the payment and its custom fields,
+     * and prepares data required by the view (open invoices, custom fields/values, amounts,
+     * and invoice payment methods).
+     *
+     * @param int|null $id The payment ID to edit, or null to create a new payment.
+     * @return \Illuminate\View\View The rendered payments.online_logs view populated with form and related data.
      */
     public function form($id = null)
     {

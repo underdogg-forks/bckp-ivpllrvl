@@ -226,10 +226,10 @@ class ClientsService extends BaseService
     }
 
     /**
-     * Gets clients not assigned to a user using Eloquent.
+     * Retrieve active clients that are not assigned to the specified user.
      *
-     * @param int $user_id
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param int $user_id The ID of the user to exclude assigned clients for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of Client models not assigned to the user.
      */
     public function getNotAssignedToUser(int $user_id)
     {
@@ -246,9 +246,9 @@ class ClientsService extends BaseService
     }
 
     /**
-     * Get all active clients
+     * Retrieve all clients marked active (client_active = 1).
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Clients\Models\Client[] Collection of active Client models.
      */
     public function getActive()
     {

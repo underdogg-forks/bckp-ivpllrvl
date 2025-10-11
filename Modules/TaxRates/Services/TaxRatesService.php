@@ -34,9 +34,11 @@ class TaxRatesService extends BaseService
     }
 
     /**
-     * @originalName validationRules
+     * Provide validation rules for tax rate fields.
      *
-     * @originalFile TaxRate.php
+     * Returns an associative array mapping field names to their validation metadata (field, label, and rules).
+     *
+     * @return array<string, array{field:string, label:string, rules:string}> Validation rules for 'tax_rate_name' and 'tax_rate_percent'.
      */
     public function validationRules()
     {
@@ -44,9 +46,9 @@ class TaxRatesService extends BaseService
     }
 
     /**
-     * Get all tax rates
+     * Retrieve all tax rate records.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection<\Modules\TaxRates\Models\TaxRate> Collection of TaxRate models.
      */
     public function getAll()
     {

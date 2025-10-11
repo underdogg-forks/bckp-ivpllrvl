@@ -68,10 +68,15 @@ class InvoiceTaxRatesService extends BaseService
     }
 
     /**
-     * @originalName validationRules
-     *
-     * @originalFile InvoiceTaxRate.php
-     */
+         * Return validation rules for invoice tax rate data.
+         *
+         * Provides the validation configuration for creating or updating invoice tax rate records:
+         * - `invoice_id`: required
+         * - `tax_rate_id`: required
+         * - `include_item_tax`: required
+         *
+         * @return array<string, array<string, string>> Map of field names to validation rule definitions.
+         */
     public function validationRules()
     {
         return [
@@ -79,11 +84,11 @@ class InvoiceTaxRatesService extends BaseService
         ];
     }
 
-    /**
-     * Get all tax rates for a specific invoice
+    / **
+     * Retrieve all tax rate records associated with a specific invoice.
      *
-     * @param int $invoice_id The invoice ID
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param int $invoice_id ID of the invoice to retrieve tax rates for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of InvoiceTaxRate models for the given invoice.
      */
     public function getByInvoiceId($invoice_id)
     {
