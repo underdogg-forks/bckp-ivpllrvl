@@ -3,6 +3,7 @@
  * 
  * This file configures Tailwind CSS v4 with:
  * - Custom CSS variables for theme colors (sidebar, welcome page)
+ * - Multiple theme support (default, nord)
  * - Dark mode support via custom variant
  * - Source paths for automatic class detection
  * - Component layer for reusable utility classes
@@ -10,9 +11,11 @@
  */
 @import "tailwindcss";
 
+/* Source paths for Tailwind class detection */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
+@source '../views/**/*.blade.php';
+@source '../../Modules/**/Resources/views/**/*.blade.php';
 @source '../**/*.js';
 
 @theme {
@@ -31,6 +34,64 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer components {
+    /* Theme color utilities */
+    .bg-brand-primary {
+        background-color: rgb(var(--brand-primary));
+    }
+    
+    .bg-brand-success {
+        background-color: rgb(var(--brand-success));
+    }
+    
+    .bg-brand-info {
+        background-color: rgb(var(--brand-info));
+    }
+    
+    .bg-brand-warning {
+        background-color: rgb(var(--brand-warning));
+    }
+    
+    .bg-brand-danger {
+        background-color: rgb(var(--brand-danger));
+    }
+    
+    .text-brand-primary {
+        color: rgb(var(--brand-primary));
+    }
+    
+    .text-brand-success {
+        color: rgb(var(--brand-success));
+    }
+    
+    .text-brand-info {
+        color: rgb(var(--brand-info));
+    }
+    
+    .text-brand-warning {
+        color: rgb(var(--brand-warning));
+    }
+    
+    .text-brand-danger {
+        color: rgb(var(--brand-danger));
+    }
+    
+    .text-base-color {
+        color: rgb(var(--text-color));
+    }
+    
+    .bg-body {
+        background-color: rgb(var(--body-bg));
+    }
+    
+    .text-link {
+        color: rgb(var(--link-color));
+    }
+    
+    .hover\:text-link-hover:hover {
+        color: rgb(var(--link-hover-color));
+    }
+    
+    /* Sidebar utilities */
     .bg-sidebar {
         background-color: hsl(var(--sidebar-background));
     }
@@ -98,7 +159,45 @@
 }
 
 @layer base {
+    /* Default Theme Variables */
     :root {
+        /* Gray scale */
+        --gray-base: 0 0 0;  /* #000 */
+        --gray-darker: 34 34 34;  /* #222 */
+        --gray-dark: 51 51 51;  /* #333 */
+        --gray: 85 85 85;  /* #555 */
+        --gray-light: 119 119 119;  /* #777 */
+        --gray-lighter: 238 238 238;  /* #eee */
+        --gray-lightest: 245 245 245;  /* #f5f5f5 */
+        
+        /* Brand colors */
+        --brand-primary: 44 142 221;  /* #2C8EDD */
+        --brand-success: 92 184 92;  /* #5cb85c */
+        --brand-info: 91 192 222;  /* #5bc0de */
+        --brand-warning: 240 173 78;  /* #f0ad4e */
+        --brand-danger: 217 83 79;  /* #d9534f */
+        
+        /* Scaffolding */
+        --body-bg: 255 255 255;  /* #fff */
+        --text-color: 51 51 51;  /* #333 */
+        --link-color: 44 142 221;  /* #2C8EDD */
+        --link-hover-color: 23 98 155;  /* darken(#2C8EDD, 15%) */
+        
+        /* Typography */
+        --font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --font-family-serif: Georgia, "Times New Roman", Times, serif;
+        --font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace;
+        --font-size-base: 14px;
+        --font-size-large: 18px;
+        --font-size-small: 12px;
+        --font-size-h1: 36px;
+        --font-size-h2: 30px;
+        --font-size-h3: 24px;
+        --font-size-h4: 18px;
+        --font-size-h5: 14px;
+        --font-size-h6: 12px;
+        
+        /* Sidebar (existing) */
         --sidebar-background: 210 20% 98%;
         --sidebar-foreground: 215 25% 27%;
         --sidebar-accent: 217 33% 17%;
@@ -120,7 +219,31 @@
         --welcome-button-text: 255 255 255;  /* white */
     }
 
+    /* Dark Mode Theme */
     .dark {
+        /* Gray scale for dark mode */
+        --gray-base: 255 255 255;  /* inverted */
+        --gray-darker: 221 221 221;
+        --gray-dark: 204 204 204;
+        --gray: 170 170 170;
+        --gray-light: 136 136 136;
+        --gray-lighter: 51 51 51;
+        --gray-lightest: 34 34 34;
+        
+        /* Brand colors adjusted for dark mode */
+        --brand-primary: 66 165 245;  /* lighter blue for dark bg */
+        --brand-success: 129 199 132;  /* lighter green */
+        --brand-info: 129 212 250;  /* lighter cyan */
+        --brand-warning: 255 213 79;  /* lighter yellow */
+        --brand-danger: 239 83 80;  /* lighter red */
+        
+        /* Scaffolding for dark mode */
+        --body-bg: 18 18 18;  /* dark background */
+        --text-color: 229 229 229;  /* light text */
+        --link-color: 66 165 245;
+        --link-hover-color: 129 212 250;
+        
+        /* Sidebar dark mode */
         --sidebar-background: 217 33% 17%;
         --sidebar-foreground: 210 40% 98%;
         --sidebar-accent: 210 40% 96%;
@@ -140,6 +263,74 @@
         --welcome-dot-bg: 62 62 58;  /* #3E3E3A */
         --welcome-button-bg: 238 238 236;  /* #eeeeec */
         --welcome-button-text: 28 28 26;  /* #1C1C1A */
+    }
+    
+    /* Nord Theme */
+    [data-theme="nord"] {
+        /* Gray scale - Nord palette */
+        --gray-base: 76 86 106;  /* #4C566A */
+        --gray-darker: 46 52 64;  /* #2E3440 */
+        --gray-dark: 59 66 82;  /* #3B4252 */
+        --gray: 76 86 106;  /* #4C566A */
+        --gray-light: 216 222 233;  /* #d8dee9 */
+        --gray-lighter: 236 239 244;  /* #eceff4 */
+        --gray-lightest: 229 233 240;  /* #e5e9f0 */
+        
+        /* Brand colors - Nord palette */
+        --brand-primary: 76 86 106;  /* #4C566A */
+        --brand-success: 143 188 187;  /* #8FBCBB */
+        --dark-success: 5 46 22;  /* #052e16 */
+        --brand-info: 136 192 208;  /* #88C0D0 */
+        --dark-info: 8 47 73;  /* #082f49 */
+        --ivpl-info: 84 160 198;  /* #54a0c6 */
+        --brand-warning: 235 203 139;  /* #EBCB8B */
+        --dark-warning: 138 109 59;  /* #8a6d3b */
+        --brand-danger: 191 97 106;  /* #BF616A */
+        --dark-danger: 69 10 10;  /* #450a0a */
+        
+        /* Scaffolding - Nord theme */
+        --body-bg: 76 86 106;  /* #4C566A */
+        --text-color: 216 222 233;  /* #d8dee9 */
+        --link-color: 216 222 233;  /* #d8dee9 */
+        --link-hover-color: 236 239 244;  /* #eceff4 */
+        
+        /* Sidebar for Nord theme */
+        --sidebar-background: 46 52 64;  /* #2E3440 */
+        --sidebar-foreground: 236 239 244;  /* #eceff4 */
+        --sidebar-accent: 76 86 106;  /* #4C566A */
+        --sidebar-accent-foreground: 236 239 244;  /* #eceff4 */
+        --sidebar-border: 59 66 82;  /* #3B4252 */
+        --sidebar-ring: 136 192 208;  /* #88C0D0 */
+    }
+    
+    /* Nord Dark Theme */
+    [data-theme="nord"].dark {
+        /* Keep Nord color scheme but adjust for dark preference */
+        --gray-base: 76 86 106;
+        --gray-darker: 46 52 64;
+        --gray-dark: 59 66 82;
+        --gray: 76 86 106;
+        --gray-light: 216 222 233;
+        --gray-lighter: 236 239 244;
+        --gray-lightest: 229 233 240;
+        
+        --brand-primary: 76 86 106;
+        --brand-success: 143 188 187;
+        --brand-info: 136 192 208;
+        --brand-warning: 235 203 139;
+        --brand-danger: 191 97 106;
+        
+        --body-bg: 46 52 64;  /* Darker Nord background */
+        --text-color: 236 239 244;
+        --link-color: 136 192 208;
+        --link-hover-color: 143 188 187;
+        
+        --sidebar-background: 46 52 64;
+        --sidebar-foreground: 236 239 244;
+        --sidebar-accent: 59 66 82;
+        --sidebar-accent-foreground: 236 239 244;
+        --sidebar-border: 76 86 106;
+        --sidebar-ring: 136 192 208;
     }
 }
 
