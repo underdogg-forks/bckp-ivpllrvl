@@ -354,4 +354,3 @@
 // End if projects_enabled
 
 </div>
-<?php

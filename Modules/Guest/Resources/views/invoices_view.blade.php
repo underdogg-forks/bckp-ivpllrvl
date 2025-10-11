@@ -1,5 +1,3 @@
-@php namespace Modules\Guest\Views;
-
 $global_discount = $invoice->invoice_discount_percent > 0 ? format_amount($invoice->invoice_discount_percent) . '%' : format_currency($invoice->invoice_discount_amount);
 if ($invoice_tax_rates) {
     $global_taxes = [];

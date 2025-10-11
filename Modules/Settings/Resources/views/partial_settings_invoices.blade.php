@@ -552,10 +552,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
 
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_sliptype'), $k)>
-                                    @php
-                                        _trans('invoice_sumex_sliptype-' . $v);
-
-                                </option>@endforeach
+                                    {{ _trans('invoice_sumex_sliptype-' . $v) }}</option>@endforeach
                             </select>
                             <p class="help-block">@lang('invoice_sumex_sliptype_help')</p>
                         </div>
@@ -573,10 +570,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
 
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_role'), $k)>
-                                    @php
-                                        _trans('invoice_sumex_role_' . $v);
-
-                                </option>@endforeach
+                                    {{ _trans('invoice_sumex_role_' . $v) }}</option>@endforeach
                             </select>
                         </div>
 
@@ -592,10 +586,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
 
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_place'), $k)>
-                                    @php
-                                        _trans('invoice_sumex_place_' . $v);
-
-                                </option>@endforeach
+                                    {{ _trans('invoice_sumex_place_' . $v) }}</option>@endforeach
                             </select>
                         </div>
 
@@ -625,4 +616,3 @@ if (SUMEX_SETTINGS || $sumex == '1') {
 
 </div >
 </div >
-<?php

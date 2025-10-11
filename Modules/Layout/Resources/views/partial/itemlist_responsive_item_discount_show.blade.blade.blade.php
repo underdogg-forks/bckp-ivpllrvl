@@ -1,5 +1,3 @@
-@php namespace Modules\Layout\Views\Partial;
-
 // Called in [quotes|invoices]/partial_itemlist_responsive.php (item & new) line
 $item_value = isset($item) ? format_currency($item->item_discount) : '';
 <hr class="no-margin">
@@ -19,4 +17,4 @@ if (!$legacy_calculation && $item_global_discount) {
     <div class="col-xs-3 col-sm-4">{{ format_currency($item_global_discount + $item->item_discount) }}</div>
 </div>
     @endif
-<hr class="no-margin"><?php
+<hr class="no-margin">

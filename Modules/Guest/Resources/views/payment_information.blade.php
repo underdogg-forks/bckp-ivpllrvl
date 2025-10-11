@@ -24,20 +24,18 @@
 
     <link rel="icon" href="@php _core_asset('img/favicon.png')" type="image/png">
 
-    <link rel="stylesheet" href="@php _theme_asset('css/style.css'); " type="text/css">
-    <link rel="stylesheet" href="@php _core_asset('css/custom.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ _core_asset('css/custom.css') }}" type="text/css">
 
     @if(get_setting('monospace_amounts') == 1)
-    <link rel="stylesheet" href="@php
-    _theme_asset('css/monospace.css');
-    " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/monospace.css') }}" type="text/css">
     @endif
 
         <!--[if lt IE 9]>
-    <script src="@php _core_asset('js/legacy.min.js'); "></script>
+    <script src="{{ _core_asset('js/legacy.min.js') }}"></script>
     <![endif]-->
 
-    <script src="@php _core_asset('js/dependencies.min.js'); "></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') }}"></script>
 
 </head>
 <body>
@@ -154,4 +152,3 @@ if ($logo)
 <script defer src="@php _core_asset('js/scripts.min.js')"></script>
 </body>
 </html>
-<?php

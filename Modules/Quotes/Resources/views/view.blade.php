@@ -1,5 +1,3 @@
-@php namespace Modules\Quotes\Views;
-
 // Little helper
 $its_mine = $this->session->__get('user_id') == $quote->user_id;
 $my_class = $its_mine ? 'success' : 'warning';

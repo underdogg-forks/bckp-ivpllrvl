@@ -1,5 +1,3 @@
-@php namespace Modules\Guest\Views;
-
 $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->quote_discount_percent) . '%' : format_currency($quote->quote_discount_amount);
 if ($quote_tax_rates) {
     $global_taxes = [];

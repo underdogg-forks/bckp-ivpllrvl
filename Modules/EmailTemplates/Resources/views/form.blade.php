@@ -1,9 +1,7 @@
 
 <form method="post">
 
-    @php
-        _csrf_field();
-        ?>
+    {{ _csrf_field() }}?>
 
             <div id="headerbar">
                 <h1 class="headerbar-title">@lang('email_template_form')</h1>
@@ -248,4 +246,3 @@
         });
     });
 </script>
-<?php

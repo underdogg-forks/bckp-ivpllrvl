@@ -1,5 +1,3 @@
-@php namespace Modules\Layout\Views\Partial;
-
 // Called in [quotes|invoices]/partial_itemlist_table.php (item & new) line
 $item_value = isset($item) ? format_currency($item->item_discount) : '';
 <td class="td-amount td-vert-middle">
@@ -14,4 +12,4 @@ if (!$legacy_calculation && $item_global_discount) {
     = <span data-toggle="tooltip" data-placement="bottom" title="@lang('discount') (@lang('subtotal'))"
             class="amount">{{ format_currency($item_global_discount + $item->item_discount) }}</span>
         @endif
-</td><?php
+</td>

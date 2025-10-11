@@ -82,19 +82,13 @@
                                value="1"
                             @php
                                 check_select(get_setting('gateway_' . $d . '_' . $key), 1, '==', true)>
-                        @php
-                            _trans('online_payment_' . $key, '', $setting['label']);
-
-                    </label>
+                        {{ _trans('online_payment_' . $key, '', $setting['label']) }}</label>
                 </div>
 
                 @else
                 <div class="form-group">
                     <label for="settings[gateway_{{ $d }}_{{ $key }}]">
-                        @php
-                            _trans('online_payment_' . $key, '', $setting['label']);
-
-                    </label>
+                        {{ _trans('online_payment_' . $key, '', $setting['label']) }}</label>
                     <input type="{{ $setting['type'] }}" class="form-control"
                            name="settings[gateway_{{ $d }}_{{ $key }}]"
                            id="settings[gateway_{{ $d }}_{{ $key }}]"
@@ -149,4 +143,3 @@
 
     </div>
 </div>
-<?php

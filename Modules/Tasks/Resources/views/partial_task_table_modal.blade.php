@@ -36,4 +36,4 @@
                     </tr>@endforeach
 
     </table>
-</div><?php
+</div>

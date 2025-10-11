@@ -18,8 +18,7 @@
                 <div class="panel-body">
                     <form method="post" action="{{ url($this->uri->uri_string()) }}">
 
-                        @php _csrf_field();
-foreach ($files as $file) {
+                        {{ _csrf_field() }}foreach ($files as $file) {
 
                         <div class="checkbox">
                             <label>
@@ -38,4 +37,3 @@ foreach ($files as $file) {
     </div>
 
 </div>
-<?php

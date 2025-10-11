@@ -1,5 +1,3 @@
-@php namespace Modules\Tasks\Views;
-
 if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4) {
 <script type="text/javascript">
     $(document).ready(function () {
@@ -139,4 +137,3 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
 </div>
 
 </form>
-<?php

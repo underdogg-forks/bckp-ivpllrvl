@@ -1,5 +1,3 @@
-@php namespace Modules\Invoices\Views;
-
 $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
 <div class="table-responsive">
     <table id="item_table" class="items table table-condensed table-bordered no-margin">
@@ -362,4 +360,3 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
         </table>
     </div>
 </div>
-<?php

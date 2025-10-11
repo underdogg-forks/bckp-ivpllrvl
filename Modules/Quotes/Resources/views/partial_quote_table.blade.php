@@ -93,4 +93,3 @@ foreach ($quotes as $quote) {
 
     </table >
 </div >
-<?php

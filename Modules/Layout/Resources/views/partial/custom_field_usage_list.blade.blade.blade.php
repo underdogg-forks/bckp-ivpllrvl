@@ -1,5 +1,3 @@
-@php namespace Modules\Layout\Views\Partial;
-
 // Called in custom_fields/views/form.php & custom_values/views/field.php
 // Where It's used
 if ($custom_field_usage) {

@@ -1,6 +1,4 @@
-
-<title>{{ get_setting('custom_title', 'InvoicePlane', true);
-?></title>
+<title>{{ get_setting('custom_title', 'InvoicePlane', true) }}</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -10,25 +8,22 @@
     <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') }}">
     <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') }}">
 
-    <link rel="icon" href="@php _core_asset('img/favicon.png'); " type="image/png">
+    <link rel="icon" href="{{ _core_asset('img/favicon.png') }}" type="image/png">
 
-    <link rel="stylesheet" href="@php _theme_asset('css/style.css'); " type="text/css">
-    <link rel="stylesheet" href="@php _core_asset('css/custom.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ _core_asset('css/custom.css') }}" type="text/css">
 
     @if(get_setting('monospace_amounts') == 1)
-    <link rel="stylesheet" href="@php
-        _theme_asset('css/monospace.css') }}" type="text/css">
+        <link rel="stylesheet" href="{{ _theme_asset('css/monospace.css') }}" type="text/css">
     @endif
 
     <!--[if lt IE 9]>
-    <script src="@php _core_asset('js/legacy.min.js'); "></script>
+    <script src="{{ _core_asset('js/legacy.min.js') }}"></script>
     <![endif]-->
 
-    <script src="@php _core_asset('js/dependencies.min.js'); "></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') }}"></script>
     @if(trans('cldr') != 'en')
-    <script src="@php
-        _core_asset('js/locales/select2/' . trans('cldr') . '.js');
-    "></script>
+        <script src="{{ _core_asset('js/locales/select2/' . trans('cldr') . '.js') }}"></script>
     @endif
 
     <script>
@@ -114,4 +109,3 @@
 
     });
     </script>
-<?php

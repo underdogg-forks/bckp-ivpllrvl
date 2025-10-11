@@ -1,5 +1,5 @@
 
-<script src="@php _core_asset('js/zxcvbn.js'); "></script>
+<script src="{{ _core_asset('js/zxcvbn.js') }}"></script>
 
 <form method="post">
 

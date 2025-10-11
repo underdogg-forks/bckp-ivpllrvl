@@ -1,5 +1,3 @@
-@php namespace Modules\Invoices\Views;
-
 $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
 @endphp
 
@@ -385,4 +383,3 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
     </div>
 
 </div>
-<?php

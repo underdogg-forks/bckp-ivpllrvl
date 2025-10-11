@@ -32,9 +32,7 @@
             <td>{{ anchor('clients/view/' . $invoice->client_id, htmlsc(format_client($invoice))) }}</td>
             <td>{{ date_from_mysql($invoice->recur_start_date) }}</td>
             <td>{{ date_from_mysql($invoice->recur_end_date) }}</td>
-            <td>@php
-                    _trans($recur_frequencies[$invoice->recur_frequency]);
-                </td>
+            <td>{{ _trans($recur_frequencies[$invoice->recur_frequency]) }}</td>
             <td>{{ date_from_mysql($invoice->recur_next_date) }}</td>
             <td>
                 <div class="options btn-group">
@@ -65,4 +63,3 @@
 
     </table>
 </div>
-<?php

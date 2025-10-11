@@ -20,12 +20,12 @@
 
     <link rel="icon" href="@php _core_asset('img/favicon.png')" type="image/png">
 
-    <link rel="stylesheet" href="@php _theme_asset('css/welcome.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/welcome.css') }}" type="text/css">
     <!--[if lt IE 9]>
-    <script src="@php _core_asset('js/legacy.min.js'); "></script>
+    <script src="{{ _core_asset('js/legacy.min.js') }}"></script>
     <![endif]-->
 
-    <script src="@php _core_asset('js/dependencies.min.js'); "></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') }}"></script>
 
 </head>
 <body>

@@ -378,9 +378,7 @@ foreach ($custom_fields as $custom_field) {
                                             <i class="fa fa-fw fa-user"></i>
                                             <span>{{ anchor('/users/form/' . $uid, $user->user_name) }}</span>
                                         </td>
-                                        <td><i class="{{ $class_checks[$ok ? 0 : 2] }}"></i>@php
-            _trans($ok ? 'yes' : 'no');
-            </td>
+                                        <td><i class="{{ $class_checks[$ok ? 0 : 2] }}"></i>{{ _trans($ok ? 'yes' : 'no') }}</td>
                                         <td>
 @php
             $reqs = [];
@@ -554,4 +552,3 @@ if ($default_custom)
         </div>@endforeach
     </div>
 </div>
-<?php

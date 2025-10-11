@@ -22,7 +22,7 @@
     });
 </script>
 
-<script src="@php _core_asset('js/zxcvbn.js')"></script>
+<script src="{{ _core_asset('js/zxcvbn.js')"></script>
 
 <div class="container">
     <div class="install-panel">
@@ -65,7 +65,7 @@
                 </label>
                 <input type="password" name="user_password" id="user_password"
                        class="form-control passwordmeter-input">
-                <div class="progress" style="height:3px;">
+                <div class="progress" style="height:3px }}">
                     <div class="progress-bar progress-bar-danger passmeter passmeter-1" style="width: 33%"></div>
                     <div class="progress-bar progress-bar-warning passmeter passmeter-2"
                          style="display: none; width: 33%"></div>
@@ -208,4 +208,3 @@
 
     </div>
 </div>
-<?php

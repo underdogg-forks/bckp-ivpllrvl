@@ -223,10 +223,7 @@
                                     <option value="{{ $key }}"
                                         @php
                                             check_select(get_setting('number_format'), $value['label'])>
-                                    @php
-                                        _trans($value['label']);
-
-                                    </option>@endforeach
+                                    {{ _trans($value['label']) }}</option>@endforeach
                                 </select>
                             </div>
                         </div>
@@ -530,4 +527,3 @@
 
         </div>
         </div>
-<?php

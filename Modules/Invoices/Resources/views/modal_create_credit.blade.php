@@ -103,4 +103,3 @@ echo $credit_date; ">
     </form>
 
 </div>
-<?php

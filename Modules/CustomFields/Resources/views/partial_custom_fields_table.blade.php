@@ -23,9 +23,7 @@
             <td>@php
                     _trans($custom_tables[$custom_field->custom_field_table])</td>
             <td>{{ $position }}</td>
-            <td>@php
-                    _trans($alpha);
-                </td>
+            <td>{{ _trans($alpha) }}</td>
             <td>{{ $custom_field->custom_field_order }}</td>
             <td>
                 <div class="options btn-group btn-group-sm">
@@ -62,4 +60,3 @@
     </table>
 
 </div>
-<?php

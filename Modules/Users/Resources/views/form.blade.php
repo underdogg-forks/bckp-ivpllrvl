@@ -1,5 +1,3 @@
-@php namespace Modules\Users\Views;
-
 $itsCompany = $this->mdl_users->form_value('user_company') || $this->mdl_users->form_value('user_vat_id');
 $qr_code_info = get_setting('qr_code') ? '<span class="pull-right"><i class="fa fa-qrcode"  data-toggle="tooltip" data-placement="bottom" title="' . trans('user_qr_code_hint') . '"></i></span>' : '';
 // eInvoicing enabled?

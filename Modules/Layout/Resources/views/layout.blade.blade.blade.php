@@ -38,13 +38,10 @@ if (get_setting('disable_sidebar') != 1) {
 
 {{ $this->layout->loadView('layout/includes/fullpage-loader') }}
 
-<script defer src="@php _core_asset('js/scripts.min.js'); "></script>
+<script defer src="{{ _core_asset('js/scripts.min.js') }}"></script>
 @if(trans('cldr') != 'en')
-<script src="@php
-    _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js');
-    "></script>
+<script src="{{ _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js') }}"></script>
     @endif
 
 </body>
 </html>
-<?php

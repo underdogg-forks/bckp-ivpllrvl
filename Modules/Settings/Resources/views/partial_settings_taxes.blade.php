@@ -81,4 +81,3 @@ if (!$legacy_calculation) {
 
     </div >
 </div >
-<?php

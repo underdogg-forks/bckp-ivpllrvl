@@ -40,8 +40,8 @@ switch ($invoice_mode) {
 <head>
     <meta charset="utf-8">
     <title>{{ get_setting('custom_title', 'InvoicePlane', true) }} - @lang('invoice')</title>
-    <link rel="stylesheet" href="@php _theme_asset('css/templates.css'); " type="text/css">
-    <link rel="stylesheet" href="@php _core_asset('css/custom-pdf.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/templates.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ _core_asset('css/custom-pdf.css') }}" type="text/css">
 </head>
 <body>
 <header class="clearfix">

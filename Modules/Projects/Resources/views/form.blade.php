@@ -48,4 +48,3 @@ if (!empty($project->client_id)) {
         </div>
 
     </form>
-<?php

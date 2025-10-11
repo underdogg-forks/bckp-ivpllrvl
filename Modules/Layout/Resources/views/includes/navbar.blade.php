@@ -181,4 +181,3 @@ if ($this->session->userdata('user_company'))
         </div>
     </div>
 </nav>
-<?php

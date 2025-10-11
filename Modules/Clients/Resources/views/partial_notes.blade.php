@@ -1,5 +1,3 @@
-@php namespace Modules\Clients\Views;
-
 foreach ($client_notes as $client_note) {
 <div class="panel panel-default small">
     <div class="panel-body">

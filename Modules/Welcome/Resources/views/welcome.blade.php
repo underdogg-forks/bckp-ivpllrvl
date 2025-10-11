@@ -1,7 +1,8 @@
-@php namespace Modules\Welcome\Views;
-
+@php
 $completed = env_bool('SETUP_COMPLETED') ? '' : ' hidden';
-$disabled = env_bool('DISABLE_SETUP') ? ' hidden' : ''; <!doctype html>
+$disabled = env_bool('DISABLE_SETUP') ? ' hidden' : '';
+@endphp
+<!doctype html>
 
 <!--[if lt IE 7]>
 <html class="no-js ie6 oldie" lang="en"> <![endif]-->
@@ -23,10 +24,10 @@ $disabled = env_bool('DISABLE_SETUP') ? ' hidden' : ''; <!doctype html>
     <!-- Mobile viewport optimized: j.mp/bplateviewport -->
     <meta name="viewport" content="width=device-width">
 
-    <link rel="icon" href="@php _core_asset('img/favicon.png'); " type="image/png">
+    <link rel="icon" href="{{ _core_asset('img/favicon.png') }}" type="image/png">
 
     <!-- CSS: implied media=all -->
-    <link rel="stylesheet" href="@php _theme_asset('css/welcome.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/welcome.css') }}" type="text/css">
     <!-- end CSS-->
 </head>
 <body>
