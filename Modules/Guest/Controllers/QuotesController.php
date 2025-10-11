@@ -4,6 +4,8 @@ namespace Modules\Guest\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
+use Modules\Quotes\Services\QuoteItemsService;
+use Modules\Quotes\Services\QuoteTaxRatesService;
 
 #[AllowDynamicProperties]
 class QuotesController extends BaseGuestController
@@ -29,9 +31,18 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName status
+     * Display a paginated list of guest-visible quotes filtered by status.
      *
-     * @originalFile QuotesController.php
+     * Applies a guest-visible scope, filters quotes according to the provided
+     * status ('all', 'viewed', 'approved', 'rejected', or 'open' by default),
+     * restricts results to the current guest's associated clients, and paginates
+     * the results. Prepares layout data with the retrieved quotes and active
+     * status, enables the invoice column when status is 'rejected', and renders
+     * the guest quotes index within the guest layout.
+     *
+     * @param string $status The filter to apply: 'all', 'viewed', 'approved', 'rejected', or 'open'.
+     * @param int $page The pagination page number to display.
+     * @return void
      */
     public function status(string $status = 'open', $page = 0)
     {
@@ -65,9 +76,11 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName view
+     * Display the guest-accessible page for a quote identified by the given quote ID.
      *
-     * @originalFile QuotesController.php
+     * Loads the quote if it is visible to guests and belongs to one of the current user's clients; shows a 404 response if the quote is not found or not accessible.
+     *
+     * @param int|string $quote_id The quote identifier to display.
      */
     public function view($quote_id)
     {
@@ -80,7 +93,7 @@ class QuotesController extends BaseGuestController
         (new QuotesService())->markViewed($quote->quote_id);
         $this->load->model(['quotes/mdl_quote_items', 'quotes/mdl_quote_tax_rates']);
         $this->load->helper('dropzone');
-        $this->layout->set(['quote_id' => $quote_id, 'quote' => $quote, 'items' => (new QuoteItemsService())->where('quote_id', $quote_id)->get()->result(), 'quote_tax_rates' => (new QuoteTaxRatesService())->where('quote_id', $quote_id)->get()->result(), 'legacy_calculation' => config_item('legacy_calculation')]);
+        $this->layout->set(['quote_id' => $quote_id, 'quote' => $quote, 'items' => (new QuoteItemsService())->getByQuoteId($quote_id), 'quote_tax_rates' => (new QuoteTaxRatesService())->getByQuoteId($quote_id), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/quotes_view');
         $this->layout->render('layout_guest');
     }

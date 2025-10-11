@@ -4,6 +4,7 @@ namespace Modules\CustomFields\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\CustomFields\Models\ClientCustom;
 
 #[AllowDynamicProperties]
 class ClientCustomsService extends BaseService
@@ -45,9 +46,16 @@ class ClientCustomsService extends BaseService
     }
 
     /**
-     * @originalName saveCustom
+     * Save custom field values for a client.
      *
-     * @originalFile ClientCustom.php
+     * Validates the provided data; if validation passes, writes each value from the service's
+     * form data (`$this->_formdata`) to the client's custom fields. If no form data is present,
+     * the method completes successfully without writing. If validation fails, the validation
+     * result is returned unchanged.
+     *
+     * @param int $client_id The client identifier.
+     * @param array $db_array Data used for validation.
+     * @return mixed `true` on successful save (or when no form data is present), otherwise the validation result.
      */
     public function saveCustom($client_id, $db_array)
     {
@@ -57,15 +65,18 @@ class ClientCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $client_custom_id      = null;
-            $db_array['client_id'] = $client_id;
             foreach ($form_data as $key => $value) {
-                $db_array      = ['client_id' => $client_id, 'client_custom_fieldid' => $key, 'client_custom_fieldvalue' => $value];
-                $client_custom = $this->where('client_id', $client_id)->where('client_custom_fieldid', $key)->get();
-                if ($client_custom->numRows()) {
-                    $client_custom_id = $client_custom->row()->client_custom_id;
-                }
-                parent::save($client_custom_id, $db_array);
+                \Modules\Clients\Models\ClientCustom::query()->updateOrCreate(
+                    [
+                        'client_id' => $client_id,
+                        'client_custom_fieldid' => $key
+                    ],
+                    [
+                        'client_id' => $client_id,
+                        'client_custom_fieldid' => $key,
+                        'client_custom_fieldvalue' => $value
+                    ]
+                );
             }
 
             return true;
@@ -75,14 +86,19 @@ class ClientCustomsService extends BaseService
     }
 
     /**
-     * @originalName prepForm
-     *
-     * @originalFile ClientCustom.php
-     */
+         * Populate the form with a client's custom field values.
+         *
+         * When a client ID is provided, retrieves the client's custom fields, formats each value
+         * according to its custom field type, and sets the corresponding form inputs using keys
+         * in the format `cf_{custom_field_id}`. After populating custom values, delegates to
+         * parent::prepForm($id).
+         *
+         * @param int|null $id The client ID whose custom field values should be loaded; pass null to skip loading.
+         */
     public function prepForm($id = null)
     {
         if ($id) {
-            $values = $this->getByClient($id)->result();
+            $values = $this->getByClient($id);
             $this->load->helper('custom_values_helper');
             $this->load->module('custom_fields/mdl_custom_fields');
             if ($values != null) {
@@ -124,13 +140,21 @@ class ClientCustomsService extends BaseService
     }
 
     /**
-     * @originalName getByClid
+     * Retrieve all custom field values for a client joined with their field definitions.
      *
-     * @originalFile ClientCustom.php
+     * @param int $client_id The ID of the client to retrieve custom values for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of records combining ip_client_custom and ip_custom_fields for the specified client, ordered by custom_field_table, custom_field_order, and custom_field_label.
      */
     public function getByClid($client_id)
     {
-        return $this->where('ip_client_custom.client_id', $client_id)->get()->result();
+        return ClientCustom::query()
+            ->select('ip_client_custom.*', 'ip_custom_fields.*')
+            ->join('ip_custom_fields', 'ip_client_custom.client_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')
+            ->where('ip_client_custom.client_id', $client_id)
+            ->orderBy('custom_field_table')
+            ->orderBy('custom_field_order')
+            ->orderBy('custom_field_label')
+            ->get();
     }
 
     /**

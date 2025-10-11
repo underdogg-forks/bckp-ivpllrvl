@@ -10,6 +10,8 @@ class InvoiceCustom extends BaseModel
     /** @use HasFactory<\Database\Factories\InvoiceCustomFactory> */
     use HasFactory;
 
+    protected $table = 'ip_invoice_custom';
+
     public $timestamps = false;
 
     protected $casts = [];

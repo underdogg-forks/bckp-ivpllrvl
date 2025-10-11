@@ -216,9 +216,9 @@ class ClientsService extends BaseService
     }
 
     /**
-     * @originalName isActive
+     * Get a query builder filtered to active clients.
      *
-     * @originalFile Client.php
+     * @return \Illuminate\Database\Eloquent\Builder A query builder scoped to records where `client_active` equals 1.
      */
     public function isActive(): \Illuminate\Database\Eloquent\Builder
     {
@@ -226,10 +226,10 @@ class ClientsService extends BaseService
     }
 
     /**
-     * Gets clients not assigned to a user using Eloquent.
+     * Retrieve active clients that are not assigned to the specified user.
      *
-     * @param int $user_id
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param int $user_id The ID of the user to exclude assigned clients for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of Client models not assigned to the user.
      */
     public function getNotAssignedToUser(int $user_id)
     {
@@ -243,5 +243,15 @@ class ClientsService extends BaseService
             ->whereNotIn('client_id', $assignedClientIds)
             ->where('client_active', 1)
             ->get();
+    }
+
+    /**
+     * Retrieve all clients marked active (client_active = 1).
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Clients\Models\Client[] Collection of active Client models.
+     */
+    public function getActive()
+    {
+        return \Modules\Clients\Models\Client::query()->where('client_active', 1)->get();
     }
 }

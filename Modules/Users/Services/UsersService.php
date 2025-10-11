@@ -4,6 +4,7 @@ namespace Modules\Users\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Users\Models\User;
 
 #[AllowDynamicProperties]
 class UsersService extends BaseService
@@ -162,9 +163,13 @@ class UsersService extends BaseService
     }
 
     /**
-     * @originalName saveChangePassword
+     * Update the stored password and salt for the given user and set a success flash message.
      *
-     * @originalFile User.php
+     * Updates the user's password hash and salt in persistent storage for the user with the
+     * specified identifier, then sets a session flash message indicating the password change.
+     *
+     * @param int $user_id The identifier of the user to update.
+     * @param string $password The new plaintext password to be salted and hashed before storage.
      */
     public function saveChangePassword($user_id, $password): void
     {
@@ -172,8 +177,8 @@ class UsersService extends BaseService
         $user_psalt    = $this->crypt->salt();
         $user_password = $this->crypt->generate_password($password, $user_psalt);
         $db_array      = ['user_psalt' => $user_psalt, 'user_password' => $user_password];
-        $this->db->where('user_id', $user_id);
-        $this->db->update('ip_users', $db_array);
+        
+        User::query()->where('user_id', $user_id)->update($db_array);
         $this->session->set_flashdata('alert_success', trans('password_changed'));
     }
 

@@ -102,26 +102,44 @@ class QuoteItemsService extends BaseService
 
 
     /**
-     * @originalName getItemsSubtotal
+     * Calculate the total of item subtotals for a given quote.
      *
-     * @originalFile QuoteItem.php
+     * @param int $quote_id The ID of the quote whose item subtotals will be summed.
+     * @return float The sum of `item_subtotal` for all items belonging to the specified quote (0 if none).
      */
     public function getItemsSubtotal($quote_id)
     {
-        $row = $this->db->query('
-            SELECT SUM(item_subtotal) AS items_subtotal
-            FROM ip_quote_item_amounts
-            WHERE item_id
-                IN (SELECT item_id FROM ip_quote_items WHERE quote_id = ' . $this->db->escape($quote_id) . ')
-            ')->row();
+        $result = \Illuminate\Support\Facades\DB::table('ip_quote_item_amounts')
+            ->whereIn('item_id', function($query) use ($quote_id) {
+                $query->select('item_id')
+                      ->from('ip_quote_items')
+                      ->where('quote_id', $quote_id);
+            })
+            ->sum('item_subtotal');
 
-        return $row->items_subtotal;
+        return $result;
     }
 
+    /**
+     * Retrieves all quote items with their amounts, product, and tax rate relations, ordered by item_order.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteItem models with `quoteItemAmount`, `product`, and `taxRate` relations loaded, ordered by `item_order`.
+     */
     public function getQuoteItemsWithRelations(): \Illuminate\Database\Eloquent\Collection
     {
         return QuoteItem::with(['quoteItemAmount', 'product', 'taxRate'])
             ->orderBy('item_order')
             ->get();
+    }
+
+    /**
+     * Retrieves all quote items that belong to the specified quote.
+     *
+     * @param int $quote_id ID of the quote to fetch items for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteItem models that belong to the specified quote.
+     */
+    public function getByQuoteId($quote_id)
+    {
+        return \Modules\Quotes\Models\QuoteItem::query()->where('quote_id', $quote_id)->get();
     }
 }

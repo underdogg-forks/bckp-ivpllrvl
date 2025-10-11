@@ -4,6 +4,7 @@ namespace Modules\Invoices\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Invoices\Models\InvoiceRecurring;
 
 #[AllowDynamicProperties]
 class InvoicesRecurringService extends BaseService
@@ -66,15 +67,14 @@ class InvoicesRecurringService extends BaseService
     }
 
     /**
-     * @originalName stop
+     * Marks a recurring invoice as stopped by setting its end date to today and clearing the next recurrence date.
      *
-     * @originalFile InvoiceRecurring.php
+     * @param int|string $invoice_recurring_id The ID of the recurring invoice to stop.
      */
     public function stop($invoice_recurring_id)
     {
         $db_array = ['recur_end_date' => date('Y-m-d'), 'recur_next_date' => null];
-        $this->db->where('invoice_recurring_id', $invoice_recurring_id);
-        $this->db->update('ip_invoices_recurring', $db_array);
+        InvoiceRecurring::query()->where('invoice_recurring_id', $invoice_recurring_id)->update($db_array);
     }
 
     /**
@@ -90,16 +90,18 @@ class InvoicesRecurringService extends BaseService
     }
 
     /**
-     * @originalName setNextRecurDate
+     * Advance the recurring invoice's next run date by one recurrence interval.
      *
-     * @originalFile InvoiceRecurring.php
+     * Loads the recurring invoice by its ID, computes the next `recur_next_date` from the current
+     * `recur_next_date` and `recur_frequency`, and persists the updated `recur_next_date`.
+     *
+     * @param int|string $invoice_recurring_id The ID of the recurring invoice record to update.
      */
     public function setNextRecurDate($invoice_recurring_id)
     {
         $invoice_recurring = $this->where('invoice_recurring_id', $invoice_recurring_id)->get()->row();
         $recur_next_date   = increment_date($invoice_recurring->recur_next_date, $invoice_recurring->recur_frequency);
         $db_array          = ['recur_next_date' => $recur_next_date];
-        $this->db->where('invoice_recurring_id', $invoice_recurring_id);
-        $this->db->update('ip_invoices_recurring', $db_array);
+        InvoiceRecurring::query()->where('invoice_recurring_id', $invoice_recurring_id)->update($db_array);
     }
 }

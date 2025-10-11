@@ -10,6 +10,8 @@ class ClientCustom extends BaseModel
     /** @use HasFactory<\Database\Factories\ClientCustomFactory> */
     use HasFactory;
 
+    protected $table = 'ip_client_custom';
+
     public $timestamps = false;
 
     protected $casts = [];

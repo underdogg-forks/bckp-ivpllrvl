@@ -10,11 +10,11 @@ class QuoteItem extends BaseModel
     /** @use HasFactory<\Database\Factories\QuoteItemFactory> */
     use HasFactory;
 
+    protected $table = 'ip_quote_items';
+
     public $timestamps = false;
 
     protected $casts = [];
-
-    protected $guarded = [];
 
     #region Static Methods
     /*

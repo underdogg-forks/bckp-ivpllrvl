@@ -13,6 +13,8 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
+    protected $table = 'ip_users';
+
     public $timestamps = false;
 
     protected $casts = [

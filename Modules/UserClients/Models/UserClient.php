@@ -10,6 +10,8 @@ class UserClient extends BaseModel
     /** @use HasFactory<\Database\Factories\UserClientFactory> */
     use HasFactory;
 
+    protected $table = 'ip_user_clients';
+
     public $timestamps = false;
 
     protected $casts = [];

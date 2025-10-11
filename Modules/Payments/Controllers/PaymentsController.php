@@ -4,6 +4,7 @@ namespace Modules\Payments\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\PaymentMethods\Services\PaymentMethodsService;
 use Modules\Payments\Services\PaymentLogsService;
 use Illuminate\Http\Request;
 
@@ -20,10 +21,11 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * @originalName index
-     *
-     * @originalFile PaymentsController.php
-     */
+         * Display a paginated list of payments in the admin payments index view.
+         *
+         * @param int $page Page number for pagination, starting at 0.
+         * @return string The rendered payments index view populated with payments and filter configuration.
+         */
     public function index($page = 0)
     {
         (new PaymentsService())->paginate(site_url('payments/index'), $page);
@@ -33,9 +35,14 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display and handle the payments form for creating or editing a payment.
      *
-     * @originalFile PaymentsController.php
+     * Handles form cancellation, validation, persisting the payment and its custom fields,
+     * and prepares data required by the view (open invoices, custom fields/values, amounts,
+     * and invoice payment methods).
+     *
+     * @param int|null $id The payment ID to edit, or null to create a new payment.
+     * @return \Illuminate\View\View The rendered payments.online_logs view populated with form and related data.
      */
     public function form($id = null)
     {
@@ -97,12 +104,7 @@ class PaymentsController extends AdminController
             $invoice_payment_methods['invoice' . $open_invoice->invoice_id] = $open_invoice->payment_method;
         }
 
-        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => (new PaymentMethodsService())->get()->result(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
-        if ($id) {
-            $this->layout->set('payment', (new PaymentsService())->where('ip_payments.payment_id', $id)->get()->row());
-        }
-        $this->layout->buffer('content', 'payments/form');
-        $this->layout->render();
+        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => (new PaymentMethodsService())->getAll(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
     }
 
     /**
@@ -125,7 +127,10 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * Delete a payment record.
+     * Delete the payment with the given ID.
+     *
+     * @param int $id The ID of the payment to delete.
+     * @return \Illuminate\Http\RedirectResponse Redirect to the payments index route.
      */
     public function delete(int $id): \Illuminate\Http\RedirectResponse
     {

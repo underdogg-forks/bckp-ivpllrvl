@@ -3,6 +3,7 @@
 namespace Modules\Projects\Controllers;
 
 use AllowDynamicProperties;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
 use Modules\Tasks\Services\TasksService;
@@ -20,9 +21,10 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName index
+     * Displays the projects index page with paginated projects and filter settings.
      *
-     * @originalFile ProjectsController.php
+     * @param int $page Page number for pagination (starting at 0).
+     * @return string Rendered view containing the paginated project list and filter configuration.
      */
     public function index($page = 0)
     {
@@ -33,10 +35,11 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName form
-     *
-     * @originalFile ProjectsController.php
-     */
+         * Render the project creation/edit form populated with the specified project and active clients.
+         *
+         * @param int $id The project identifier to edit.
+         * @return string The rendered view content for the projects form.
+         */
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
@@ -53,7 +56,46 @@ class ProjectsController extends AdminController
         }
         $this->load->model('clients/mdl_clients');
 
-        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => (new ClientsService())->where('client_active', 1)->get()->result()]);
+// File: Modules/Projects/Controllers/ProjectsController.php
+
+use Modules\Clients\Services\ClientsService;
+use Modules\Projects\Services\ProjectsService;
+use Modules\Tasks\Services\TasksService;
+
+class ProjectsController extends BaseController
+{
+    /**
+     * Assigns service dependencies to the controller and loads the projects model.
+     *
+     * Loads the `mdl_projects` model into the controller so project-related model methods are available.
+     */
+    public function __construct(
+        private ClientsService $clientsService,
+        private ProjectsService $projectsService,
+        private TasksService $tasksService
+    ) {
+        parent::__construct();
+        $this->load->model('mdl_projects');
+    }
+
+    /**
+     * Renders the project creation/edit form populated with the specified project and active clients.
+     *
+     * @param int $id The project identifier to edit.
+     * @return string The rendered HTML content of the projects form.
+     */
+
+    public function form(int $id)
+    {
+        // …
+        return view('projects.form', [
+            'project' => $this->projectsService->getById($id),
+            'clients' => $this->clientsService->getActive()
+        ]);
+    }
+
+    // …
+}
     }
 
     /**
@@ -77,9 +119,9 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Deletes a project, updates tasks that reference it, and redirects to the projects list.
      *
-     * @originalFile ProjectsController.php
+     * @param int|string $id The identifier of the project to delete.
      */
     public function delete($id)
     {

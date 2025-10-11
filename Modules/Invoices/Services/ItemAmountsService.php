@@ -4,6 +4,7 @@ namespace Modules\Invoices\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Invoices\Models\ItemAmount;
 
 #[AllowDynamicProperties]
 class ItemAmountsService extends BaseService
@@ -19,16 +20,16 @@ class ItemAmountsService extends BaseService
     }
 
     /**
-     * Calculate and persist invoice item amounts for a given item and accumulate its share of any global discount.
+     * Compute and store subtotal, discount, tax, and total for an invoice item and add the item's share of any global discount to the provided accumulator.
      *
-     * Computes subtotal, discount, tax, and total for the specified item using either legacy or current calculation rules, updates the database row in ip_invoice_item_amounts for the item, and increments the referenced $global_discount['item'] with the item's proportional discount when applicable.
+     * The computed values are persisted to the item's amount record and the per-item portion of a global discount is added to `$global_discount['item']`.
      *
      * @param int $item_id The invoice item identifier.
-     * @param array &$global_discount Reference to the global discount data; the function modifies this array by adding the per-item discount to the `item` key. Expected keys:
-     *                              - 'amount' (float): total global discount amount,
-     *                              - 'items_subtotal' (float): sum of subtotals for proportional distribution,
-     *                              - 'percent' (float): global discount percent (overrides proportional amount when non-zero),
-     *                              - 'item' (float): accumulator for per-item discounts (will be incremented).
+     * @param array & $global_discount Reference to the global discount data. The array is modified by this method by incrementing the `item` key. Expected keys:
+     *                                - 'amount' (float): total global discount amount,
+     *                                - 'items_subtotal' (float): sum of item subtotals used for proportional distribution,
+     *                                - 'percent' (float): global discount percent (used when non-zero),
+     *                                - 'item' (float): accumulator for per-item discounts (will be incremented).
      */
     public function calculate($item_id, &$global_discount)
     {
@@ -57,12 +58,10 @@ class ItemAmountsService extends BaseService
             $item_total          = $item_subtotal - $item_discount - $item_discount_total + $item_tax_total;
         }
         $db_array = ['item_id' => $item_id, 'item_subtotal' => $item_subtotal, 'item_tax_total' => $item_tax_total, 'item_discount' => $item_discount_total, 'item_total' => $item_total];
-        $this->db->where('item_id', $item_id);
-        if ($this->db->get('ip_invoice_item_amounts')->numRows()) {
-            $this->db->where('item_id', $item_id);
-            $this->db->update('ip_invoice_item_amounts', $db_array);
-        } else {
-            $this->db->insert('ip_invoice_item_amounts', $db_array);
-        }
+        
+        ItemAmount::query()->updateOrCreate(
+            ['item_id' => $item_id],
+            $db_array
+        );
     }
 }

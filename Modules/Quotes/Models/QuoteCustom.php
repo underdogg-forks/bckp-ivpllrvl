@@ -10,6 +10,8 @@ class QuoteCustom extends BaseModel
     /** @use HasFactory<\Database\Factories\QuoteCustomFactory> */
     use HasFactory;
 
+    protected $table = 'ip_quote_custom';
+
     public $timestamps = false;
 
     protected $casts = [];
