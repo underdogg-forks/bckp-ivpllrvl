@@ -4,6 +4,8 @@ namespace Modules\Invoices\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Invoices\Models\Item;
+use Modules\Invoices\Models\ItemAmount;
 
 #[AllowDynamicProperties]
 class ItemsService extends BaseService
@@ -105,20 +107,21 @@ class ItemsService extends BaseService
      */
     public function delete($item_id): bool
     {
-        // GetController item:
-        // the invoice id is needed to recalculate invoice amounts
-        // and the task id to update status if the item refers a task
-        $query = $this->db->get_where($this->table, ['item_id' => $item_id]);
-        if ($query->numRows() == 0) {
+        // Get item using Eloquent
+        $item = Item::query()->where('item_id', $item_id)->first();
+        
+        if (!$item) {
             return false;
         }
-        $row        = $query->row();
-        $invoice_id = $row->invoice_id;
-        // Delete the item itself
+        
+        $invoice_id = $item->invoice_id;
+        
+        // Delete the item itself using parent delete
         parent::delete($item_id);
-        // Delete the item amounts
-        $this->db->where('item_id', $item_id);
-        $this->db->delete('ip_invoice_item_amounts');
+        
+        // Delete the item amounts using Eloquent
+        ItemAmount::query()->where('item_id', $item_id)->delete();
+        
         $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
         // Recalculate invoice amounts
         $this->invoiceAmountsService->calculate($invoice_id, $global_discount);
