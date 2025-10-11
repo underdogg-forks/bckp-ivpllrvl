@@ -103,6 +103,6 @@ class UserCustomsService extends BaseService
      */
     public function getByUseid($user_id)
     {
-        return $this->where('ip_user_custom.user_id', $user_id)->get()->result();
+        return $this->where('ip_user_custom.user_id', $user_id)->get()->all();
     }
 }
