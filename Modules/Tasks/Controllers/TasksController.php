@@ -6,6 +6,7 @@ use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
 use Modules\Tasks\Services\TasksService;
+use Modules\TaxRates\Services\TaxRatesService;
 
 #[AllowDynamicProperties]
 class TasksController extends AdminController
@@ -16,7 +17,6 @@ class TasksController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_tasks');
     }
 
     /**
@@ -54,8 +54,6 @@ class TasksController extends AdminController
                 show_404();
             }
         }
-        $this->load->model('projects/mdl_projects');
-        $this->load->model('tax_rates/mdl_tax_rates');
 
         return view('tasks.form', ['projects' => (new ProjectsService())->get()->result(), 'task_statuses' => (new TasksService())->statuses(), 'tax_rates' => (new TaxRatesService())->get()->result()]);
     }

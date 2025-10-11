@@ -4,7 +4,17 @@ namespace Modules\Quotes\Controllers;
 
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
+use Modules\CustomFields\Services\QuoteCustomService;
+use Modules\InvoiceGroups\Services\InvoiceGroupsService;
+use Modules\Quotes\Services\QuoteAmountsService;
+use Modules\Quotes\Services\QuoteItemsService;
+use Modules\Quotes\Services\QuotesService;
+use Modules\Quotes\Services\QuoteTaxRatesService;
+use Modules\TaxRates\Services\TaxRatesService;
+use Modules\Units\Services\UnitsService;
+use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
 class AjaxController extends AdminController
@@ -18,7 +28,6 @@ class AjaxController extends AdminController
      */
     public function save()
     {
-        $this->load->model(['quotes/mdl_quote_items', 'quotes/mdl_quotes', 'units/mdl_units']);
         $quote_id = $this->security->xss_clean($this->input->post('quote_id', true));
         (new QuotesService())->setId($quote_id);
         if ((new QuotesService())->runValidation('validation_rules_save_quote')) {
@@ -89,7 +98,6 @@ class AjaxController extends AdminController
             (new QuotesService())->save($quote_id, $db_array, $global_discount);
             if (config_item('legacy_calculation')) {
                 // Recalculate for discounts
-                $this->load->model('quotes/mdl_quote_amounts');
                 (new QuoteAmountsService())->calculate($quote_id, $global_discount);
             }
             $response = ['success' => 1];
@@ -115,7 +123,6 @@ class AjaxController extends AdminController
                     $db_array[$matches[1]] = $value;
                 }
             }
-            $this->load->model('custom_fields/mdl_quote_custom');
             $result = (new QuoteCustomService())->saveCustom($quote_id, $db_array);
             if ($result !== true) {
                 $response = ['success' => 0, 'validation_errors' => $result];
@@ -132,7 +139,6 @@ class AjaxController extends AdminController
      */
     public function saveQuoteTaxRate()
     {
-        $this->load->model('quotes/mdl_quote_tax_rates');
         if ((new QuoteTaxRatesService())->runValidation()) {
             // Only Legacy calculation have global taxes - since v1.6.3
             config_item('legacy_calculation') && (new QuoteTaxRatesService())->save();
@@ -152,11 +158,9 @@ class AjaxController extends AdminController
     {
         $success = 0;
         $item_id = $this->input->post('item_id');
-        $this->load->model('mdl_quotes');
         // Only continue if the quote exists or no item id was provided
         if ((new QuotesService())->getById($quote_id) || empty($item_id)) {
             // Delete quote item
-            $this->load->model('mdl_quote_items');
             $item = (new QuoteItemsService())->delete($item_id);
             // Check if deletion was successful
             if ($item) {
@@ -174,7 +178,6 @@ class AjaxController extends AdminController
      */
     public function getItem()
     {
-        $this->load->model('quotes/mdl_quote_items');
         $item = (new QuoteItemsService())->getById($this->input->post('item_id'));
         exit(json_encode($item));
     }
@@ -187,7 +190,6 @@ class AjaxController extends AdminController
     public function modalCopyQuote()
     {
         $this->load->module('layout');
-        $this->load->model(['quotes/mdl_quotes', 'invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'clients/mdl_clients']);
         $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'quote' => (new QuotesService())->where('ip_quotes.quote_id', $this->input->post('quote_id'))->get()->row(), 'client' => (new ClientsService())->getById($this->input->post('client_id'))];
         $this->layout->loadView('quotes/modal_copy_quote', $data);
     }
@@ -199,7 +201,6 @@ class AjaxController extends AdminController
      */
     public function copyQuote()
     {
-        $this->load->model(['quotes/mdl_quotes', 'quotes/mdl_quote_items', 'quotes/mdl_quote_tax_rates']);
         if ((new QuotesService())->runValidation()) {
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
@@ -225,7 +226,6 @@ class AjaxController extends AdminController
     public function modalChangeUser()
     {
         $this->load->module('layout');
-        $this->load->model('users/mdl_users');
         $data = ['user_id' => $this->security->xss_clean($this->input->post('user_id')), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'users' => (new UsersService())->getLatest()];
         $this->layout->loadView('layout/ajax/modal_change_user_client', $data);
     }
@@ -237,7 +237,6 @@ class AjaxController extends AdminController
      */
     public function changeUser()
     {
-        $this->load->model(['quotes/mdl_quotes', 'users/mdl_users']);
         // GetController the user ID
         $user_id = $this->security->xss_clean($this->input->post('user_id'));
         $user    = (new UsersService())->where('ip_users.user_id', $user_id)->get()->row();
@@ -262,7 +261,6 @@ class AjaxController extends AdminController
     public function modalChangeClient()
     {
         $this->load->module('layout');
-        $this->load->model('clients/mdl_clients');
         $data = ['client_id' => $this->security->xss_clean($this->input->post('client_id')), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'clients' => (new ClientsService())->getLatest()];
         $this->layout->loadView('layout/ajax/modal_change_user_client', $data);
     }
@@ -274,7 +272,6 @@ class AjaxController extends AdminController
      */
     public function changeClient()
     {
-        $this->load->model(['quotes/mdl_quotes', 'clients/mdl_clients']);
         // GetController the client ID
         $client_id = $this->security->xss_clean($this->input->post('client_id'));
         $client    = (new ClientsService())->where('ip_clients.client_id', $client_id)->get()->row();
@@ -299,7 +296,6 @@ class AjaxController extends AdminController
     public function modalCreateQuote()
     {
         $this->load->module('layout');
-        $this->load->model(['invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'clients/mdl_clients']);
         $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'client' => (new ClientsService())->getById($this->input->post('client_id')), 'clients' => (new ClientsService())->getLatest()];
         $this->layout->loadView('quotes/modal_create_quote', $data);
     }
@@ -311,7 +307,6 @@ class AjaxController extends AdminController
      */
     public function create()
     {
-        $this->load->model('quotes/mdl_quotes');
         if ((new QuotesService())->runValidation()) {
             $quote_id = (new QuotesService())->create();
             $response = ['success' => 1, 'quote_id' => $quote_id];
@@ -329,7 +324,6 @@ class AjaxController extends AdminController
      */
     public function modalQuoteToInvoice($quote_id)
     {
-        $this->load->model(['invoice_groups/mdl_invoice_groups', 'quotes/mdl_quotes']);
         $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'quote_id' => $this->security->xss_clean($quote_id), 'quote' => (new QuotesService())->where('ip_quotes.quote_id', $quote_id)->get()->row()];
         $this->load->view('quotes/modal_quote_to_invoice', $data);
     }
@@ -341,7 +335,6 @@ class AjaxController extends AdminController
      */
     public function quoteToInvoice()
     {
-        $this->load->model(['invoices/mdl_invoices', 'invoices/mdl_items', 'invoices/mdl_invoice_tax_rates', 'quotes/mdl_quotes', 'quotes/mdl_quote_items', 'quotes/mdl_quote_tax_rates']);
         if ((new InvoicesService())->runValidation()) {
             // GetController the quote
             $quote_id = $this->input->post('quote_id');
