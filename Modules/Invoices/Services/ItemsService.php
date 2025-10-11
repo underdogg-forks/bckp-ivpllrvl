@@ -147,10 +147,10 @@ class ItemsService extends BaseService
      * Get all items for a specific invoice
      *
      * @param int $invoice_id The invoice ID
-     * @return array Collection of invoice items
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByInvoiceId($invoice_id)
     {
-        return $this->where('invoice_id', $invoice_id)->get()->result();
+        return \Modules\Invoices\Models\Item::query()->where('invoice_id', $invoice_id)->get();
     }
 }

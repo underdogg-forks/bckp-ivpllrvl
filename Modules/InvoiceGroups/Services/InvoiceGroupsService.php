@@ -112,10 +112,10 @@ class InvoiceGroupsService extends BaseService
     /**
      * Get all invoice groups
      *
-     * @return array Collection of invoice groups
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAll()
     {
-        return $this->get()->result();
+        return \Modules\InvoiceGroups\Models\InvoiceGroup::query()->get();
     }
 }

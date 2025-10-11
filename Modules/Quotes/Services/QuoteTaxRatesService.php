@@ -86,10 +86,10 @@ class QuoteTaxRatesService extends BaseService
      * Get all tax rates for a specific quote
      *
      * @param int $quote_id The quote ID
-     * @return array Collection of quote tax rates
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByQuoteId($quote_id)
     {
-        return $this->where('quote_id', $quote_id)->get()->result();
+        return \Modules\Quotes\Models\QuoteTaxRate::query()->where('quote_id', $quote_id)->get();
     }
 }

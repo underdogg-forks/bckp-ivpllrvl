@@ -46,10 +46,10 @@ class FamiliesService extends BaseService
     /**
      * Get all families
      *
-     * @return array Collection of families
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAll()
     {
-        return $this->get()->result();
+        return \Modules\Families\Models\Family::query()->get();
     }
 }

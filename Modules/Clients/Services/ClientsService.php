@@ -248,10 +248,10 @@ class ClientsService extends BaseService
     /**
      * Get all active clients
      *
-     * @return array Collection of active clients
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getActive()
     {
-        return $this->where('client_active', 1)->get()->result();
+        return \Modules\Clients\Models\Client::query()->where('client_active', 1)->get();
     }
 }

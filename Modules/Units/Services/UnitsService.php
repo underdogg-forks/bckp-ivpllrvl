@@ -65,10 +65,10 @@ class UnitsService extends BaseService
     /**
      * Get all units
      *
-     * @return array Collection of units
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAll()
     {
-        return $this->get()->result();
+        return \Modules\Units\Models\Unit::query()->get();
     }
 }

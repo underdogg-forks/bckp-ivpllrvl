@@ -129,10 +129,10 @@ class QuoteItemsService extends BaseService
      * Get all items for a specific quote
      *
      * @param int $quote_id The quote ID
-     * @return array Collection of quote items
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByQuoteId($quote_id)
     {
-        return $this->where('quote_id', $quote_id)->get()->result();
+        return \Modules\Quotes\Models\QuoteItem::query()->where('quote_id', $quote_id)->get();
     }
 }

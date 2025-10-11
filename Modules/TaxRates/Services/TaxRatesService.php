@@ -46,10 +46,10 @@ class TaxRatesService extends BaseService
     /**
      * Get all tax rates
      *
-     * @return array Collection of tax rates
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAll()
     {
-        return $this->get()->result();
+        return \Modules\TaxRates\Models\TaxRate::query()->get();
     }
 }

@@ -45,10 +45,10 @@ class PaymentMethodsService extends BaseService
     /**
      * Get all payment methods
      *
-     * @return array Collection of payment methods
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAll()
     {
-        return $this->get()->result();
+        return \Modules\PaymentMethods\Models\PaymentMethod::query()->get();
     }
 }
