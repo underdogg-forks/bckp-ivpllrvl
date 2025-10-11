@@ -18,9 +18,12 @@ class PaymentsController extends BaseGuestController
     }
 
     /**
-     * @originalName index
+     * Retrieve and display a paginated list of payments for the current user's clients.
      *
-     * @originalFile PaymentsController.php
+     * Sets layout data for payments and filter UI, buffers the guest payments view, and renders
+     * the guest layout for the specified page of results.
+     *
+     * @param int $page The page number to display for pagination.
      */
     public function index($page = 0)
     {

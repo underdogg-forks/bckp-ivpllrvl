@@ -127,9 +127,14 @@ class ClientsController extends AdminController
     }
 
     /**
-     * @originalName checkClientEinvoiceActive
+     * Ensure a client's e-invoicing activation matches the requested e-invoicing setting.
      *
-     * @originalFile ClientsController.php
+     * This is currently a no-op that returns the provided client unchanged; intended to
+     * validate or adjust the client's e-invoicing state when implemented.
+     *
+     * @param mixed $client The client entity to check or update (typically a Client model instance).
+     * @param mixed $req_einvoicing The requested e-invoicing setting (e.g., boolean, null, or config identifier).
+     * @return mixed The (possibly updated) client entity.
      */
     private function checkClientEinvoiceActive($client, $req_einvoicing)
     {

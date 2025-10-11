@@ -10,7 +10,7 @@ use Modules\Families\Services\FamiliesService;
 class FamiliesController extends AdminController
 {
     /**
-     * FamiliesController constructor.
+     * Initialize the FamiliesController and inherit the setup from AdminController.
      */
     public function __construct()
     {

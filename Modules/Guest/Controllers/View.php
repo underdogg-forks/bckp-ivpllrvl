@@ -92,16 +92,16 @@ class View extends BaseGuestController
     }
 
     /**
-     * Generate the SUMEX PDF for the invoice identified by its public URL key.
-     *
-     * Locates a guest-visible invoice by the provided URL key and generates its SUMEX PDF.
-     * If the invoice exists but has no `sumex_id`, a 404 response is displayed; if no invoice
-     * matches the URL key, the method returns without output.
-     *
-     * @param string $invoice_url_key Public URL key of the invoice to locate.
-     * @param bool $stream Unused in this implementation; present for signature compatibility.
-     * @param string|null $invoice_template Optional PDF template name to use; if null the configured `pdf_invoice_template` setting is used.
-     */
+         * Generate the SUMEX PDF for the invoice identified by its public URL key.
+         *
+         * Locates a guest-visible invoice by the provided URL key and generates its SUMEX PDF.
+         * If an invoice is found but its `sumex_id` is null, a 404 response is shown. If no
+         * matching invoice is found, the method returns without producing output.
+         *
+         * @param string $invoice_url_key Public URL key of the invoice to locate.
+         * @param bool $stream Present for signature compatibility; not used by this implementation.
+         * @param string|null $invoice_template Optional PDF template name to use; if null the `pdf_invoice_template` setting is used.
+         */
     public function generateSumexPdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
         $invoice = (new InvoicesService())->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
@@ -119,12 +119,13 @@ class View extends BaseGuestController
     }
 
     /**
-     * Display a public view of a quote identified by its URL key.
+     * Render the public quote page identified by a URL key.
      *
-     * Loads the guest-visible quote, marks it as viewed for non-admin users when appropriate, gathers items,
-     * tax rates, custom fields, attachments, and an expiration flag, then renders the configured public quote template.
+     * Loads the publicly visible quote, marks it as viewed for non-admin users when appropriate,
+     * collects items, tax rates, custom fields, attachments, and an expiration flag, then renders
+     * the configured public quote template.
      *
-     * @param string $quote_url_key The public URL key identifying the quote.
+     * @param string $quote_url_key The public URL key that identifies the quote.
      * @return \Illuminate\View\View The rendered view for the public quote template.
      */
     public function quote($quote_url_key = '')
@@ -162,14 +163,15 @@ class View extends BaseGuestController
     }
 
     /**
-         * Generate and output the PDF for a public quote identified by its URL key.
-         *
-         * If no template is provided, the configured `pdf_quote_template` setting is used.
-         *
-         * @param string $quote_url_key The public URL key of the quote to generate.
-         * @param bool $stream Whether to stream the generated PDF to the client (`true`) or not (`false`).
-         * @param string|null $quote_template Optional PDF template name to use; when `null`, the configured template is applied.
-         */
+     * Render the PDF for a public quote identified by its URL key.
+     *
+     * If the quote cannot be found, a 404 page is shown. When no template is provided,
+     * the configured `pdf_quote_template` setting is used.
+     *
+     * @param string $quote_url_key The public URL key of the quote to generate.
+     * @param bool $stream Whether to stream the generated PDF to the client (`true`) or return it (`false`).
+     * @param string|null $quote_template Optional PDF template name to use; when `null`, the configured template is applied.
+     */
     public function generateQuotePdf($quote_url_key, $stream = true, $quote_template = null)
     {
         $quote = (new QuotesService())->guestVisible()->where('quote_url_key', $quote_url_key)->get()->row();
@@ -184,10 +186,10 @@ class View extends BaseGuestController
     }
 
     /**
-     * Approve the quote identified by the given public URL key, send an "approved" status notification, and redirect to the public quote view.
-     *
-     * @param string $quote_url_key The public URL key that identifies the quote to approve.
-     */
+         * Approves the quote identified by the public URL key, sends an "approved" status notification, and redirects to the public quote view.
+         *
+         * @param string $quote_url_key Public URL key identifying the quote to approve.
+         */
     public function approveQuote(string $quote_url_key)
     {
         (new QuotesService())->approveQuoteByKey($quote_url_key);

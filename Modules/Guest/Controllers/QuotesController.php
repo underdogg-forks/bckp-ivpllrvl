@@ -30,9 +30,14 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName status
+     * Display a paginated list of guest-visible quotes filtered by status.
      *
-     * @originalFile QuotesController.php
+     * Filters quotes to those visible to the current guest and scoped to the guest's clients,
+     * applies the requested status filter, paginates the results, sets layout data and renders
+     * the guest quotes index view. When `status` is `rejected`, the invoice column is enabled.
+     *
+     * @param string $status One of: 'open' (default), 'all', 'viewed', 'approved', 'rejected'.
+     * @param int $page Pagination page index.
      */
     public function status(string $status = 'open', $page = 0)
     {
@@ -89,9 +94,14 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName generatePdf
+     * Generate and send a PDF for a guest-visible quote.
      *
-     * @originalFile QuotesController.php
+     * Marks the quote as viewed. If the quote is not accessible to the current guest, sends a 404 response.
+     * Otherwise generates the quote PDF and either streams it to the client or produces it without streaming.
+     *
+     * @param int|string $quote_id The quote identifier.
+     * @param bool $stream True to stream the PDF to the client, false to generate without streaming.
+     * @param string|null $quote_template Optional template identifier to use when generating the PDF.
      */
     public function generatePdf($quote_id, $stream = true, $quote_template = null)
     {

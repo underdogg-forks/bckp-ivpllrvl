@@ -67,9 +67,12 @@ class PaymentMethodsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a payment method and redirect to the payment methods index.
      *
-     * @originalFile PaymentMethodsController.php
+     * Deletes the payment method identified by the given ID, then redirects to the
+     * payment methods listing route.
+     *
+     * @param int|string $id The identifier of the payment method to delete.
      */
     public function delete($id)
     {

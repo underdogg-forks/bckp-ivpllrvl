@@ -15,17 +15,18 @@ use Modules\Tasks\Services\TasksService;
 class DashboardController extends AdminController
 {
     /**
-     * Prepare data required by the admin dashboard and render the dashboard view.
+     * Prepares data required by the admin dashboard and renders the dashboard view.
      *
      * The view data includes:
-     * - `invoice_status_totals`, `quote_status_totals`
-     * - `invoice_status_period`, `quote_status_period`
-     * - `invoices`, `quotes`
-     * - `invoice_statuses`, `quote_statuses`
-     * - `overdue_invoices`
-     * - `projects`, `tasks`, `task_statuses`
+     * - `invoice_status_totals`, `quote_status_totals` — aggregated amounts by status for the configured overview periods.
+     * - `invoice_status_period`, `quote_status_period` — overview period identifiers with `-` replaced by `_`.
+     * - `invoices`, `quotes` — latest 10 invoices and quotes.
+     * - `invoice_statuses`, `quote_statuses` — available invoice and quote statuses.
+     * - `overdue_invoices` — invoices marked as overdue.
+     * - `projects`, `tasks`, `task_statuses` — latest projects, latest tasks, and task statuses.
      *
-     * @return string The rendered dashboard view content. */
+     * @return string The rendered dashboard view content.
+     */
     public function index()
     {
         $quote_overview_period   = get_setting('quote_overview_period');

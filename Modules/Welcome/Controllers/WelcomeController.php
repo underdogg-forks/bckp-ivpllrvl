@@ -9,7 +9,7 @@ use Modules\Core\Controllers\AdminController;
 class WelcomeController extends AdminController
 {
     /**
-     * Render the admin welcome view.
+     * Renders the admin welcome view.
      *
      * @return string The rendered 'welcome' view content.
      */

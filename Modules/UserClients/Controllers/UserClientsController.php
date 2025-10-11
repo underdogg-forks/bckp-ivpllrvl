@@ -82,9 +82,12 @@ class UserClientsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a user-client relation and redirect to that user's client list.
      *
-     * @originalFile UserClientsController.php
+     * Deletes the user-client mapping identified by the given relation ID and redirects to
+     * the 'user_clients/user/{user_id}' route for the associated user.
+     *
+     * @param int $user_client_id The ID of the user-client relation to remove.
      */
     public function delete($user_client_id)
     {

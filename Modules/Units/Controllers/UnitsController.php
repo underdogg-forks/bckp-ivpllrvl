@@ -72,9 +72,12 @@ class UnitsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a unit by its identifier.
      *
-     * @originalFile UnitsController.php
+     * If a unit with the given id exists, it is removed; otherwise no action is taken.
+     *
+     * @param int|string $id The identifier of the unit to delete.
+     * @return \Illuminate\Http\RedirectResponse Redirects to the units index route.
      */
     public function delete($id): \Illuminate\Http\RedirectResponse
     {
