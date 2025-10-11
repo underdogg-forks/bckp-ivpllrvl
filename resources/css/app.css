@@ -2,14 +2,20 @@
  * Tailwind CSS v4 Application Stylesheet
  * 
  * This file configures Tailwind CSS v4 with:
- * - Custom CSS variables for theme colors (sidebar, welcome page)
- * - Multiple theme support (default, nord)
+ * - Multiple theme support via separate CSS files (see resources/css/themes/)
  * - Dark mode support via custom variant
  * - Source paths for automatic class detection
  * - Component layer for reusable utility classes
- * - Base layer for CSS variables in light/dark modes
+ * 
+ * Themes are loaded separately via vite.config.js:
+ * - resources/css/themes/default.css
+ * - resources/css/themes/nord.css
+ * - resources/css/themes/nord-dark.css
  */
 @import "tailwindcss";
+
+/* Import theme files */
+@import "./themes/default.css";
 
 /* Source paths for Tailwind class detection */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -23,314 +29,173 @@
         "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
-    --sidebar-background: hsl(var(--sidebar-background));
-    --sidebar-foreground: hsl(var(--sidebar-foreground));
-    --sidebar-accent: hsl(var(--sidebar-accent));
-    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
-    --sidebar-border: hsl(var(--sidebar-border));
-    --sidebar-ring: hsl(var(--sidebar-ring));
+    
+    /* Sidebar colors using theme variables */
+    --sidebar-background: var(--color-gray-lightest);
+    --sidebar-foreground: var(--color-gray-dark);
+    --sidebar-accent: var(--color-brand-primary);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: var(--color-gray-lighter);
+    --sidebar-ring: var(--color-brand-info);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer components {
-    /* Theme color utilities */
+    /* Theme color utilities using CSS variables */
     .bg-brand-primary {
-        background-color: rgb(var(--brand-primary));
+        background-color: var(--color-brand-primary);
     }
     
     .bg-brand-success {
-        background-color: rgb(var(--brand-success));
+        background-color: var(--color-brand-success);
     }
     
     .bg-brand-info {
-        background-color: rgb(var(--brand-info));
+        background-color: var(--color-brand-info);
     }
     
     .bg-brand-warning {
-        background-color: rgb(var(--brand-warning));
+        background-color: var(--color-brand-warning);
     }
     
     .bg-brand-danger {
-        background-color: rgb(var(--brand-danger));
+        background-color: var(--color-brand-danger);
     }
     
     .text-brand-primary {
-        color: rgb(var(--brand-primary));
+        color: var(--color-brand-primary);
     }
     
     .text-brand-success {
-        color: rgb(var(--brand-success));
+        color: var(--color-brand-success);
     }
     
     .text-brand-info {
-        color: rgb(var(--brand-info));
+        color: var(--color-brand-info);
     }
     
     .text-brand-warning {
-        color: rgb(var(--brand-warning));
+        color: var(--color-brand-warning);
     }
     
     .text-brand-danger {
-        color: rgb(var(--brand-danger));
+        color: var(--color-brand-danger);
     }
     
     .text-base-color {
-        color: rgb(var(--text-color));
+        color: var(--color-text);
     }
     
     .bg-body {
-        background-color: rgb(var(--body-bg));
+        background-color: var(--color-body-bg);
     }
     
     .text-link {
-        color: rgb(var(--link-color));
+        color: var(--color-link);
     }
     
     .hover\:text-link-hover:hover {
-        color: rgb(var(--link-hover-color));
+        color: var(--color-link-hover);
     }
     
     /* Sidebar utilities */
     .bg-sidebar {
-        background-color: hsl(var(--sidebar-background));
+        background-color: var(--sidebar-background);
     }
     
     .bg-sidebar-accent {
-        background-color: hsl(var(--sidebar-accent));
+        background-color: var(--sidebar-accent);
     }
 
     .text-sidebar-accent-foreground {
-        color: hsl(var(--sidebar-accent-foreground));
+        color: var(--sidebar-accent-foreground);
     }
 
     .hover\:bg-sidebar-accent:hover {
-        background-color: hsl(var(--sidebar-accent));
+        background-color: var(--sidebar-accent);
     }
 
     .hover\:text-sidebar-accent-foreground:hover {
-        color: hsl(var(--sidebar-accent-foreground));
+        color: var(--sidebar-accent-foreground);
     }
     
     /* Welcome page utility classes */
     .bg-welcome {
-        background-color: rgb(var(--welcome-bg));
+        background-color: var(--welcome-bg, #FDFDFC);
     }
     
     .text-welcome {
-        color: rgb(var(--welcome-text));
+        color: var(--welcome-text, #1b1b18);
     }
     
     .text-welcome-muted {
-        color: rgb(var(--welcome-text-muted));
+        color: var(--welcome-text-muted, #706f6c);
     }
     
     .border-welcome {
-        border-color: rgb(var(--welcome-border));
+        border-color: var(--welcome-border, #e3e3e0);
     }
     
     .hover\:border-welcome-hover:hover {
-        border-color: rgb(var(--welcome-border-hover));
+        border-color: var(--welcome-border-hover, #62605b);
     }
     
     .text-welcome-accent {
-        color: rgb(var(--welcome-accent));
+        color: var(--welcome-accent, #f53003);
     }
     
     .bg-welcome-card {
-        background-color: rgb(var(--welcome-card-bg));
+        background-color: var(--welcome-card-bg, #ffffff);
     }
     
     .bg-welcome-hero {
-        background-color: rgb(var(--welcome-hero-bg));
+        background-color: var(--welcome-hero-bg, #fff2f2);
     }
     
     .bg-welcome-dot {
-        background-color: rgb(var(--welcome-dot-bg));
+        background-color: var(--welcome-dot-bg, #dbdbd7);
     }
     
     .bg-welcome-button {
-        background-color: rgb(var(--welcome-button-bg));
+        background-color: var(--welcome-button-bg, #1b1b18);
     }
     
     .text-welcome-button {
-        color: rgb(var(--welcome-button-text));
+        color: var(--welcome-button-text, #ffffff);
     }
 }
 
+/* Welcome page specific colors - can be customized per theme */
 @layer base {
-    /* Default Theme Variables */
     :root {
-        /* Gray scale */
-        --gray-base: 0 0 0;  /* #000 */
-        --gray-darker: 34 34 34;  /* #222 */
-        --gray-dark: 51 51 51;  /* #333 */
-        --gray: 85 85 85;  /* #555 */
-        --gray-light: 119 119 119;  /* #777 */
-        --gray-lighter: 238 238 238;  /* #eee */
-        --gray-lightest: 245 245 245;  /* #f5f5f5 */
-        
-        /* Brand colors */
-        --brand-primary: 44 142 221;  /* #2C8EDD */
-        --brand-success: 92 184 92;  /* #5cb85c */
-        --brand-info: 91 192 222;  /* #5bc0de */
-        --brand-warning: 240 173 78;  /* #f0ad4e */
-        --brand-danger: 217 83 79;  /* #d9534f */
-        
-        /* Scaffolding */
-        --body-bg: 255 255 255;  /* #fff */
-        --text-color: 51 51 51;  /* #333 */
-        --link-color: 44 142 221;  /* #2C8EDD */
-        --link-hover-color: 23 98 155;  /* darken(#2C8EDD, 15%) */
-        
-        /* Typography */
-        --font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        --font-family-serif: Georgia, "Times New Roman", Times, serif;
-        --font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace;
-        --font-size-base: 14px;
-        --font-size-large: 18px;
-        --font-size-small: 12px;
-        --font-size-h1: 36px;
-        --font-size-h2: 30px;
-        --font-size-h3: 24px;
-        --font-size-h4: 18px;
-        --font-size-h5: 14px;
-        --font-size-h6: 12px;
-        
-        /* Sidebar (existing) */
-        --sidebar-background: 210 20% 98%;
-        --sidebar-foreground: 215 25% 27%;
-        --sidebar-accent: 217 33% 17%;
-        --sidebar-accent-foreground: 210 40% 98%;
-        --sidebar-border: 214 32% 91%;
-        --sidebar-ring: 221 83% 53%;
-        
         /* Welcome page light mode colors */
-        --welcome-bg: 253 253 252;  /* #FDFDFC */
-        --welcome-text: 27 27 24;  /* #1b1b18 */
-        --welcome-text-muted: 112 111 108;  /* #706f6c */
-        --welcome-border: 227 227 224;  /* #e3e3e0 */
-        --welcome-border-hover: 98 96 91 / 0.29;  /* #62605b with opacity */
-        --welcome-accent: 245 48 3;  /* #f53003 */
-        --welcome-card-bg: 255 255 255;  /* white */
-        --welcome-hero-bg: 255 242 242;  /* #fff2f2 */
-        --welcome-dot-bg: 219 219 215;  /* #dbdbd7 */
-        --welcome-button-bg: 27 27 24;  /* #1b1b18 */
-        --welcome-button-text: 255 255 255;  /* white */
+        --welcome-bg: #FDFDFC;
+        --welcome-text: #1b1b18;
+        --welcome-text-muted: #706f6c;
+        --welcome-border: #e3e3e0;
+        --welcome-border-hover: #62605b;
+        --welcome-accent: #f53003;
+        --welcome-card-bg: #ffffff;
+        --welcome-hero-bg: #fff2f2;
+        --welcome-dot-bg: #dbdbd7;
+        --welcome-button-bg: #1b1b18;
+        --welcome-button-text: #ffffff;
     }
 
-    /* Dark Mode Theme */
     .dark {
-        /* Gray scale for dark mode */
-        --gray-base: 255 255 255;  /* inverted */
-        --gray-darker: 221 221 221;
-        --gray-dark: 204 204 204;
-        --gray: 170 170 170;
-        --gray-light: 136 136 136;
-        --gray-lighter: 51 51 51;
-        --gray-lightest: 34 34 34;
-        
-        /* Brand colors adjusted for dark mode */
-        --brand-primary: 66 165 245;  /* lighter blue for dark bg */
-        --brand-success: 129 199 132;  /* lighter green */
-        --brand-info: 129 212 250;  /* lighter cyan */
-        --brand-warning: 255 213 79;  /* lighter yellow */
-        --brand-danger: 239 83 80;  /* lighter red */
-        
-        /* Scaffolding for dark mode */
-        --body-bg: 18 18 18;  /* dark background */
-        --text-color: 229 229 229;  /* light text */
-        --link-color: 66 165 245;
-        --link-hover-color: 129 212 250;
-        
-        /* Sidebar dark mode */
-        --sidebar-background: 217 33% 17%;
-        --sidebar-foreground: 210 40% 98%;
-        --sidebar-accent: 210 40% 96%;
-        --sidebar-accent-foreground: 217 33% 17%;
-        --sidebar-border: 215 25% 27%;
-        --sidebar-ring: 221 83% 65%;
-        
         /* Welcome page dark mode colors */
-        --welcome-bg: 10 10 10;  /* #0a0a0a */
-        --welcome-text: 237 237 236;  /* #EDEDEC */
-        --welcome-text-muted: 161 160 154;  /* #A1A09A */
-        --welcome-border: 62 62 58;  /* #3E3E3A */
-        --welcome-border-hover: 98 96 91;  /* #62605b */
-        --welcome-accent: 246 21 0;  /* #F61500 */
-        --welcome-card-bg: 22 22 21;  /* #161615 */
-        --welcome-hero-bg: 29 0 2;  /* #1D0002 */
-        --welcome-dot-bg: 62 62 58;  /* #3E3E3A */
-        --welcome-button-bg: 238 238 236;  /* #eeeeec */
-        --welcome-button-text: 28 28 26;  /* #1C1C1A */
-    }
-    
-    /* Nord Theme */
-    [data-theme="nord"] {
-        /* Gray scale - Nord palette */
-        --gray-base: 76 86 106;  /* #4C566A */
-        --gray-darker: 46 52 64;  /* #2E3440 */
-        --gray-dark: 59 66 82;  /* #3B4252 */
-        --gray: 76 86 106;  /* #4C566A */
-        --gray-light: 216 222 233;  /* #d8dee9 */
-        --gray-lighter: 236 239 244;  /* #eceff4 */
-        --gray-lightest: 229 233 240;  /* #e5e9f0 */
-        
-        /* Brand colors - Nord palette */
-        --brand-primary: 76 86 106;  /* #4C566A */
-        --brand-success: 143 188 187;  /* #8FBCBB */
-        --dark-success: 5 46 22;  /* #052e16 */
-        --brand-info: 136 192 208;  /* #88C0D0 */
-        --dark-info: 8 47 73;  /* #082f49 */
-        --ivpl-info: 84 160 198;  /* #54a0c6 */
-        --brand-warning: 235 203 139;  /* #EBCB8B */
-        --dark-warning: 138 109 59;  /* #8a6d3b */
-        --brand-danger: 191 97 106;  /* #BF616A */
-        --dark-danger: 69 10 10;  /* #450a0a */
-        
-        /* Scaffolding - Nord theme */
-        --body-bg: 76 86 106;  /* #4C566A */
-        --text-color: 216 222 233;  /* #d8dee9 */
-        --link-color: 216 222 233;  /* #d8dee9 */
-        --link-hover-color: 236 239 244;  /* #eceff4 */
-        
-        /* Sidebar for Nord theme */
-        --sidebar-background: 46 52 64;  /* #2E3440 */
-        --sidebar-foreground: 236 239 244;  /* #eceff4 */
-        --sidebar-accent: 76 86 106;  /* #4C566A */
-        --sidebar-accent-foreground: 236 239 244;  /* #eceff4 */
-        --sidebar-border: 59 66 82;  /* #3B4252 */
-        --sidebar-ring: 136 192 208;  /* #88C0D0 */
-    }
-    
-    /* Nord Dark Theme */
-    [data-theme="nord"].dark {
-        /* Keep Nord color scheme but adjust for dark preference */
-        --gray-base: 76 86 106;
-        --gray-darker: 46 52 64;
-        --gray-dark: 59 66 82;
-        --gray: 76 86 106;
-        --gray-light: 216 222 233;
-        --gray-lighter: 236 239 244;
-        --gray-lightest: 229 233 240;
-        
-        --brand-primary: 76 86 106;
-        --brand-success: 143 188 187;
-        --brand-info: 136 192 208;
-        --brand-warning: 235 203 139;
-        --brand-danger: 191 97 106;
-        
-        --body-bg: 46 52 64;  /* Darker Nord background */
-        --text-color: 236 239 244;
-        --link-color: 136 192 208;
-        --link-hover-color: 143 188 187;
-        
-        --sidebar-background: 46 52 64;
-        --sidebar-foreground: 236 239 244;
-        --sidebar-accent: 59 66 82;
-        --sidebar-accent-foreground: 236 239 244;
-        --sidebar-border: 76 86 106;
-        --sidebar-ring: 136 192 208;
+        --welcome-bg: #0a0a0a;
+        --welcome-text: #EDEDEC;
+        --welcome-text-muted: #A1A09A;
+        --welcome-border: #3E3E3A;
+        --welcome-border-hover: #62605b;
+        --welcome-accent: #F61500;
+        --welcome-card-bg: #161615;
+        --welcome-hero-bg: #1D0002;
+        --welcome-dot-bg: #3E3E3A;
+        --welcome-button-bg: #eeeeec;
+        --welcome-button-text: #1C1C1A;
     }
 }
 

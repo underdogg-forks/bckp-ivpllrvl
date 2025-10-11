@@ -1,11 +1,22 @@
 # Theme System Documentation
 
-This application supports multiple themes with comprehensive CSS variable support, making it easy to add new themes or customize existing ones.
+This application supports multiple themes with comprehensive CSS variable support using separate theme files. Each theme is defined in its own CSS file with hex color values for easy customization.
+
+## Theme Architecture
+
+Themes are now organized in separate CSS files located in `resources/css/themes/`:
+- `default.css` - Default theme with standard colors
+- `nord.css` - Nord theme (Polar Night variant)
+- `nord-dark.css` - Nord Dark theme (darker backgrounds)
+
+All theme files are loaded via `vite.config.js` and compiled into separate CSS files that can be loaded on demand.
 
 ## Available Themes
 
 ### 1. Default Theme
 The default theme with a clean, modern look suitable for most use cases.
+
+**File:** `resources/css/themes/default.css`
 
 **Usage:**
 ```html
@@ -15,69 +26,72 @@ The default theme with a clean, modern look suitable for most use cases.
 </body>
 ```
 
+**To load in your layout:**
+```blade
+@vite(['resources/css/app.css', 'resources/css/themes/default.css'])
+```
+
 ### 2. Nord Theme
 A beautiful arctic, north-bluish color palette inspired by the beauty of the arctic.
 
+**File:** `resources/css/themes/nord.css`
+
 **Usage:**
-```html
-<!-- Add data-theme="nord" attribute to the root element -->
-<html data-theme="nord">
-    <!-- Your content -->
-</html>
+```blade
+@vite(['resources/css/app.css', 'resources/css/themes/nord.css'])
+```
+
+### 3. Nord Dark Theme  
+Darker variant of Nord with deeper backgrounds for better contrast.
+
+**File:** `resources/css/themes/nord-dark.css`
+
+**Usage:**
+```blade
+@vite(['resources/css/app.css', 'resources/css/themes/nord-dark.css'])
 ```
 
 ## Dark Mode Support
 
-All themes support dark mode out of the box. Toggle dark mode by adding/removing the `dark` class:
+The default theme includes dark mode support via the `.dark` class:
 
 ```html
 <!-- Light mode -->
-<html data-theme="nord">
+<html>
     <!-- Content -->
 </html>
 
 <!-- Dark mode -->
-<html data-theme="nord" class="dark">
+<html class="dark">
     <!-- Content -->
 </html>
 ```
 
-## Available CSS Variables
+## CSS Variables (Hex Colors)
 
-### Color Variables
+Each theme file defines the following CSS variables using hex colors:
 
-All themes define the following CSS variables:
+### Gray Scale
+- `--color-gray-base` - Base gray color
+- `--color-gray-darker` - Darker gray
+- `--color-gray-dark` - Dark gray
+- `--color-gray` - Medium gray
+- `--color-gray-light` - Light gray
+- `--color-gray-lighter` - Lighter gray
+- `--color-gray-lightest` - Lightest gray
 
-#### Gray Scale
-- `--gray-base` - Base gray color
-- `--gray-darker` - Darker gray (#222 equivalent)
-- `--gray-dark` - Dark gray (#333 equivalent)
-- `--gray` - Medium gray (#555 equivalent)
-- `--gray-light` - Light gray (#777 equivalent)
-- `--gray-lighter` - Lighter gray (#eee equivalent)
-- `--gray-lightest` - Lightest gray (#f5f5f5 equivalent)
+### Brand Colors
+- `--color-brand-primary` - Primary brand color
+- `--color-brand-success` - Success color (green)
+- `--color-brand-info` - Info color (blue/cyan)
+- `--color-brand-warning` - Warning color (yellow/orange)
+- `--color-brand-danger` - Danger color (red)
 
-#### Brand Colors
-- `--brand-primary` - Primary brand color
-- `--brand-success` - Success color (green)
-- `--brand-info` - Info color (blue/cyan)
-- `--brand-warning` - Warning color (yellow/orange)
-- `--brand-danger` - Danger color (red)
-
-#### Scaffolding
-- `--body-bg` - Background color for `<body>`
-- `--text-color` - Global text color
-- `--link-color` - Link color
-- `--link-hover-color` - Link hover color
-
-#### Typography
-- `--font-family-sans-serif`
-- `--font-family-serif`
-- `--font-family-monospace`
-- `--font-size-base`
-- `--font-size-large`
-- `--font-size-small`
-- `--font-size-h1` through `--font-size-h6`
+### Scaffolding
+- `--color-body-bg` - Background color for `<body>`
+- `--color-text` - Global text color
+- `--color-link` - Link color
+- `--color-link-hover` - Link hover color
 
 ## Utility Classes
 
@@ -113,43 +127,78 @@ Use these classes to apply theme colors:
 
 ## Creating a New Theme
 
-To create a new theme, add a new section in `resources/css/app.css`:
+To create a new theme (e.g., "mandarin-orange" or "reddit-red"):
+
+### Step 1: Create Theme File
+
+Create a new file in `resources/css/themes/your-theme.css`:
 
 ```css
-/* Your Custom Theme */
-[data-theme="custom"] {
+/**
+ * Your Custom Theme
+ * 
+ * Description of your theme
+ */
+
+@theme {
     /* Gray scale */
-    --gray-base: 0 0 0;
-    --gray-darker: 34 34 34;
-    --gray-dark: 51 51 51;
-    /* ... etc ... */
+    --color-gray-base: #000000;
+    --color-gray-darker: #1a1a1a;
+    --color-gray-dark: #333333;
+    --color-gray: #666666;
+    --color-gray-light: #999999;
+    --color-gray-lighter: #cccccc;
+    --color-gray-lightest: #f5f5f5;
     
-    /* Brand colors */
-    --brand-primary: 255 0 0;  /* Your primary color */
-    --brand-success: 0 255 0;  /* Your success color */
-    /* ... etc ... */
+    /* Brand colors - customize these */
+    --color-brand-primary: #ff6600;  /* Your primary color */
+    --color-brand-success: #00cc66;  /* Your success color */
+    --color-brand-info: #0099ff;     /* Your info color */
+    --color-brand-warning: #ffcc00;  /* Your warning color */
+    --color-brand-danger: #ff3333;   /* Your danger color */
     
     /* Scaffolding */
-    --body-bg: 255 255 255;
-    --text-color: 0 0 0;
-    /* ... etc ... */
+    --color-body-bg: #ffffff;
+    --color-text: #333333;
+    --color-link: #ff6600;
+    --color-link-hover: #cc5200;
 }
 
-/* Dark mode variant for your theme */
-[data-theme="custom"].dark {
-    /* Override variables for dark mode */
-    --body-bg: 0 0 0;
-    --text-color: 255 255 255;
+/* Optional: Dark mode variant */
+.dark {
+    --color-body-bg: #1a1a1a;
+    --color-text: #e5e5e5;
     /* ... etc ... */
 }
 ```
 
-Then use it:
+### Step 2: Add to vite.config.js
 
-```html
-<html data-theme="custom">
-    <!-- Your themed content -->
-</html>
+Update `vite.config.js` to include your new theme:
+
+```javascript
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                "resources/css/app.css",
+                "resources/css/themes/default.css",
+                "resources/css/themes/nord.css",
+                "resources/css/themes/nord-dark.css",
+                "resources/css/themes/your-theme.css",  // Add your theme
+                "resources/js/app.js"
+            ],
+            refresh: true,
+        }),
+        tailwindcss(),
+    ],
+});
+```
+
+### Step 3: Use in Your Layout
+
+```blade
+@vite(['resources/css/app.css', 'resources/css/themes/your-theme.css'])
 ```
 
 ## Theme Color Reference
@@ -174,12 +223,27 @@ Then use it:
 - Frost: #8FBCBB, #88C0D0, #81A1C1, #5E81AC
 - Aurora: #BF616A, #D08770, #EBCB8B, #A3BE8C, #B48EAD
 
-## JavaScript Theme Switcher Example
+### Nord Dark Theme
+Same as Nord but with darker background (#2E3440)
+
+## Dynamic Theme Loading
+
+You can dynamically load themes based on user preference:
 
 ```javascript
-// Toggle between themes
-function setTheme(themeName) {
-    document.documentElement.setAttribute('data-theme', themeName);
+// Theme switcher example
+function loadTheme(themeName) {
+    // Remove existing theme links
+    document.querySelectorAll('link[data-theme]').forEach(link => link.remove());
+    
+    // Create new theme link
+    const themeLink = document.createElement('link');
+    themeLink.rel = 'stylesheet';
+    themeLink.href = `/build/assets/${themeName}.css`;  // Vite build output
+    themeLink.setAttribute('data-theme', themeName);
+    document.head.appendChild(themeLink);
+    
+    // Save preference
     localStorage.setItem('theme', themeName);
 }
 
@@ -195,7 +259,7 @@ const savedTheme = localStorage.getItem('theme') || 'default';
 const savedDarkMode = localStorage.getItem('darkMode') === 'true';
 
 if (savedTheme !== 'default') {
-    setTheme(savedTheme);
+    loadTheme(savedTheme);
 }
 
 if (savedDarkMode) {
@@ -203,9 +267,19 @@ if (savedDarkMode) {
 }
 ```
 
+## Advantages of This Approach
+
+1. **Modular**: Each theme is in its own file, making it easy to manage
+2. **Hex Colors**: Easier to read and customize than RGB triplets
+3. **On-Demand Loading**: Load only the theme CSS you need
+4. **Easy Extension**: Add new themes without modifying existing files
+5. **Version Control Friendly**: Theme changes are isolated to specific files
+6. **Build Optimization**: Vite can optimize and cache each theme separately
+
 ## Notes
 
-- All CSS variable values are in RGB format (e.g., `255 0 0` for red) to work with Tailwind's opacity modifiers
-- HSL values are used for some variables (like sidebar) where noted in the code
-- Colors automatically adapt based on the active theme and dark mode setting
-- The `@source` directives ensure Tailwind scans all blade files in both `resources/views` and `Modules` directories
+- All CSS variable values use hex format for easier customization
+- Theme files are processed by Tailwind's `@theme` directive
+- The `app.css` file contains utilities that work with any theme
+- Welcome page colors are defined separately in `app.css` and can be customized per theme if needed
+

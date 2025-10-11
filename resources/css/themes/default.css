@@ -1,0 +1,51 @@
+/**
+ * Default Theme Colors
+ * 
+ * Standard color palette for the default theme
+ */
+
+@theme {
+    /* Gray scale */
+    --color-gray-base: #000000;
+    --color-gray-darker: #222222;
+    --color-gray-dark: #333333;
+    --color-gray: #555555;
+    --color-gray-light: #777777;
+    --color-gray-lighter: #eeeeee;
+    --color-gray-lightest: #f5f5f5;
+    
+    /* Brand colors */
+    --color-brand-primary: #2C8EDD;
+    --color-brand-success: #5cb85c;
+    --color-brand-info: #5bc0de;
+    --color-brand-warning: #f0ad4e;
+    --color-brand-danger: #d9534f;
+    
+    /* Scaffolding */
+    --color-body-bg: #ffffff;
+    --color-text: #333333;
+    --color-link: #2C8EDD;
+    --color-link-hover: #17629b;
+}
+
+/* Dark mode overrides for default theme */
+.dark {
+    --color-gray-base: #ffffff;
+    --color-gray-darker: #dddddd;
+    --color-gray-dark: #cccccc;
+    --color-gray: #aaaaaa;
+    --color-gray-light: #888888;
+    --color-gray-lighter: #333333;
+    --color-gray-lightest: #222222;
+    
+    --color-brand-primary: #42a5f5;
+    --color-brand-success: #81c784;
+    --color-brand-info: #81d4fa;
+    --color-brand-warning: #ffd54f;
+    --color-brand-danger: #ef5350;
+    
+    --color-body-bg: #121212;
+    --color-text: #e5e5e5;
+    --color-link: #42a5f5;
+    --color-link-hover: #81d4fa;
+}

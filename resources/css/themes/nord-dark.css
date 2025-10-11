@@ -1,0 +1,29 @@
+/**
+ * Nord Dark Theme
+ * 
+ * Darker variant of Nord theme with deeper backgrounds
+ */
+
+@theme {
+    /* Gray scale - darker Nord */
+    --color-gray-base: #4C566A;
+    --color-gray-darker: #2E3440;
+    --color-gray-dark: #3B4252;
+    --color-gray: #4C566A;
+    --color-gray-light: #D8DEE9;
+    --color-gray-lighter: #ECEFF4;
+    --color-gray-lightest: #E5E9F0;
+    
+    /* Brand colors */
+    --color-brand-primary: #4C566A;
+    --color-brand-success: #8FBCBB;
+    --color-brand-info: #88C0D0;
+    --color-brand-warning: #EBCB8B;
+    --color-brand-danger: #BF616A;
+    
+    /* Scaffolding - darker background */
+    --color-body-bg: #2E3440;        /* Darkest Nord */
+    --color-text: #ECEFF4;           /* Lightest Snow Storm */
+    --color-link: #88C0D0;           /* Frost blue */
+    --color-link-hover: #8FBCBB;     /* Frost cyan */
+}
