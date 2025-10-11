@@ -1,3 +1,13 @@
+/**
+ * Tailwind CSS v4 Application Stylesheet
+ * 
+ * This file configures Tailwind CSS v4 with:
+ * - Custom CSS variables for theme colors (sidebar, welcome page)
+ * - Dark mode support via custom variant
+ * - Source paths for automatic class detection
+ * - Component layer for reusable utility classes
+ * - Base layer for CSS variables in light/dark modes
+ */
 @import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

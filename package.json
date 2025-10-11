@@ -1,6 +1,7 @@
 {
     "private": true,
     "type": "module",
+    "description": "Laravel application with Tailwind CSS v4 - Build and development scripts",
     "scripts": {
         "build": "vite build",
         "dev": "vite"
