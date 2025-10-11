@@ -137,14 +137,15 @@ class ItemsService extends BaseService
      */
     public function getItemsSubtotal($invoice_id)
     {
-        $row = $this->db->query('
-            SELECT SUM(item_subtotal) AS items_subtotal
-            FROM ip_invoice_item_amounts
-            WHERE item_id
-                IN (SELECT item_id FROM ip_invoice_items WHERE invoice_id = ' . $this->db->escape($invoice_id) . ')
-            ')->row();
+        $result = \Illuminate\Support\Facades\DB::table('ip_invoice_item_amounts')
+            ->whereIn('item_id', function($query) use ($invoice_id) {
+                $query->select('item_id')
+                      ->from('ip_invoice_items')
+                      ->where('invoice_id', $invoice_id);
+            })
+            ->sum('item_subtotal');
 
-        return $row->items_subtotal;
+        return $result;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Modules\Users\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Users\Models\User;
 
 #[AllowDynamicProperties]
 class UsersService extends BaseService
@@ -172,8 +173,8 @@ class UsersService extends BaseService
         $user_psalt    = $this->crypt->salt();
         $user_password = $this->crypt->generate_password($password, $user_psalt);
         $db_array      = ['user_psalt' => $user_psalt, 'user_password' => $user_password];
-        $this->db->where('user_id', $user_id);
-        $this->db->update('ip_users', $db_array);
+        
+        User::query()->where('user_id', $user_id)->update($db_array);
         $this->session->set_flashdata('alert_success', trans('password_changed'));
     }
 
