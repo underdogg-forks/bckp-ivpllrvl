@@ -99,11 +99,6 @@ class PaymentsController extends AdminController
         }
 
         return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => PaymentMethod::all(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
-        if ($id) {
-            $this->layout->set('payment', (new PaymentsService())->where('ip_payments.payment_id', $id)->get()->row());
-        }
-        $this->layout->buffer('content', 'payments/form');
-        $this->layout->render();
     }
 
     /**
