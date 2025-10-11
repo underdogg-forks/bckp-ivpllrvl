@@ -4,6 +4,7 @@ namespace Modules\PaymentMethods\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\PaymentMethods\Services\PaymentMethodsService;
 
 #[AllowDynamicProperties]
 class PaymentMethodsController extends AdminController
@@ -14,7 +15,6 @@ class PaymentMethodsController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_payment_methods');
     }
 
     /**

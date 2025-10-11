@@ -3,6 +3,7 @@
 namespace Modules\Projects\Controllers;
 
 use AllowDynamicProperties;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
 use Modules\Tasks\Services\TasksService;
@@ -16,7 +17,6 @@ class ProjectsController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_projects');
     }
 
     /**
@@ -51,7 +51,6 @@ class ProjectsController extends AdminController
         if ($id && ! $this->input->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
             show_404();
         }
-        $this->load->model('clients/mdl_clients');
 
         return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => (new ClientsService())->where('client_active', 1)->get()->result()]);
     }
@@ -66,12 +65,10 @@ class ProjectsController extends AdminController
         if ($this->input->post('btn_cancel')) {
             redirect()->route('projects');
         }
-        $this->load->model('projects/mdl_projects');
         $project = (new ProjectsService())->getById($project_id);
         if ( ! $project) {
             show_404();
         }
-        $this->load->model('tasks/mdl_tasks');
 
         return view('projects.view', ['project' => $project, 'tasks' => (new ProjectsService())->getTasks($project->project_id), 'task_statuses' => (new TasksService())->statuses()]);
     }
@@ -83,7 +80,6 @@ class ProjectsController extends AdminController
      */
     public function delete($id)
     {
-        $this->load->model('tasks/mdl_tasks');
         (new TasksService())->updateOnProjectDelete($id);
         (new ProjectsService())->delete($id);
         redirect()->route('projects');
