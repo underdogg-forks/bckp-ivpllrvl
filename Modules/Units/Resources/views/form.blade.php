@@ -10,8 +10,8 @@
 
     <div id="content">
 
-        <div class="row">
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="flex flex-wrap -mx-4">
+            <div class="w-full px-4 md:w-1/2 col-md-offset-3">
 
                 @include('layout.alerts')
 
@@ -23,19 +23,19 @@
 }
                 >
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="unit_name">
                         @lang('unit_name')
                     </label>
-                    <input type="text" name="unit_name" id="unit_name" class="form-control"
+                    <input type="text" name="unit_name" id="unit_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                            value="{{ $this->mdl_units->form_value('unit_name', true) }}" required>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="unit_name_plrl">
                         @lang('unit_name_plrl')
                     </label>
-                    <input type="text" name="unit_name_plrl" id="unit_name_plrl" class="form-control"
+                    <input type="text" name="unit_name_plrl" id="unit_name_plrl" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                            value="{{ $this->mdl_units->form_value('unit_name_plrl', true) }}" required>
                 </div>
 

@@ -92,7 +92,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
                             }
                         }
 
-                        $('#quote_form').prepend('<div class="alert alert-danger">' + all_resp_errors + '</div>');
+                        $('#quote_form').prepend('<div class="p-4 mb-4 text-red-700 dark:text-red-200 bg-red-100 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg">' + all_resp_errors + '</div>');
                     }
                 });
         });
@@ -202,8 +202,8 @@ echo $legacy_calculation ? $modal_add_quote_tax : '';
         <a data-toggle="tooltip" data-placement="bottom"
            title="{{ $edit_user_title }}"
 href="{{ url('users/form/' . $quote->user_id) " }}>
-<i class="fa fa-xs fa-user text-{{ $my_class " }}></i>
-<span class="hidden-xs">{!! $quote->user_name !!}</span>
+<i class="fa fa-xs fa-user text-{{ $my_class" }}></i>
+<span class="hidden sm:block">{!! $quote->user_name !!}</span>
 </a>
 @if($quote->quote_status_id == 1)
     <span id="quote_change_user" class="fa fa-fw fa-edit text-{{ $its_mine ? 'muted' : 'danger' }} cursor-pointer"
@@ -216,12 +216,12 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
     // End if change_user
     </h1>
 
-    <div class="headerbar-item pull-right btn-group">
-        <div class="options btn-group btn-group-sm">
-            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+    <div class="headerbar-item float-right inline-flex rounded-md shadow-sm">
+        <div class="options inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
+            <a class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-toggle="dropdown" href="#">
                 <i class="fa fa-caret-down no-margin"></i> @lang('options')
             </a>
-            <ul class="dropdown-menu">
+            <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
 
 @if($legacy_calculation)
                 <li>
@@ -267,7 +267,7 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
             </ul>
         </div>
 
-        <a href="#" class="btn btn-success btn-sm ajax-loader" id="btn_save_quote">
+        <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors px-3 py-1.5 ajax-loader" id="btn_save_quote">
             <i class="fa fa-check"></i>
             @lang('save')
         </a>
@@ -282,8 +282,8 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
         <div id="quote_form">
             <div class="quote">
 
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-5">
+                <div class="flex flex-wrap -mx-4">
+                    <div class="w-full px-4 col-sm-6 col-md-5">
 
                         <h3>
                             <a href="{{ url('clients/view/' . $quote->client_id) " }}>
@@ -322,17 +322,17 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
 
                     </div>
 
-                    <div class="col-xs-12 visible-xs"><br></div>
+                    <div class="w-full px-4 block sm:hidden"><br></div>
 
-                    <div class="col-xs-12 col-sm-5 col-sm-offset-1 col-md-6 col-md-offset-1">
+                    <div class="w-full px-4 col-sm-5 col-sm-offset-1 md:w-1/2 col-md-offset-1">
                         <div class="details-box">
-                            <div class="row">
+                            <div class="flex flex-wrap -mx-4">
 
-                                <div class="col-xs-12 col-md-6">
+                                <div class="w-full px-4 md:w-1/2">
 
                                     <div class="quote-properties">
                                         @if($einvoice->name)
-                                            <label class="pull-right" id="e_invoice_active"
+                                            <label class="float-right" id="e_invoice_active"
                                                    data-toggle="tooltip" data-placement="bottom"
                                                    title="e-{{ __('invoice') . ' ' . ($einvoice->user ? trans('version') . ' ' . $einvoice->name . ' 🗸' : '🚫 ' . trans('einvoicing_user_fields_error')) }}"
                                             >
@@ -353,7 +353,7 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
                                         @endif
 
                                         <label for="quote_number">@lang('quote') #</label>
-                                        <input type="text" id="quote_number" class="form-control"
+                                        <input type="text" id="quote_number" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                                @if($quote->quote_number)
                                                    value="{{ $quote->quote_number }}"
                                                @else
@@ -367,7 +367,7 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
                                         </label>
                                         <div class="input-group">
                                             <input name="quote_date_created" id="quote_date_created"
-                                                   class="form-control datepicker"
+                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                                                    value="{{ date_from_mysql($quote->quote_date_created) }}"/>
                                             <span class="input-group-addon">
                                             <i class="fa fa-calendar fa-fw"></i>
@@ -380,7 +380,7 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
                                         </label>
                                         <div class="input-group">
                                             <input name="quote_date_expires" id="quote_date_expires"
-                                                   class="form-control datepicker"
+                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                                                    value="{{ date_from_mysql($quote->quote_date_expires) " }}>
                                             <span class="input-group-addon">
                                             <i class="fa fa-calendar fa-fw"></i>
@@ -388,14 +388,14 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-md-6">
+                                <div class="w-full px-4 md:w-1/2">
 
                                     <div class="quote-properties">
                                         <label for="quote_status_id">
                                             @lang('status')
                                         </label>
                                         <select name="quote_status_id" id="quote_status_id"
-                                                class="form-control simple-select"
+                                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                                 data-minimum-results-for-search="Infinity">
                                             @foreach($quote_statuses as $key => $status) {
     $is_selected = $key == $quote->quote_status_id ? ' selected="selected"' : '';
@@ -409,7 +409,7 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
                                         <label for="quote_password">
                                             @lang('quote_password')
                                         </label>
-                                        <input type="text" id="quote_password" class="form-control"
+                                        <input type="text" id="quote_password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                                value="{!! $quote->quote_password !!}">
                                     </div>
 
@@ -417,7 +417,7 @@ href="{{ url('users/form/' . $quote->user_id) " }}>
                                         <div class="quote-properties">
                                             <label for="quote-guest-url">@lang('guest_url')</label>
                                             <div class="input-group">
-                                                <input type="text" id="quote-guest-url" readonly class="form-control"
+                                                <input type="text" id="quote-guest-url" readonly class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                                        value="{{ url('guest/view/quote/' . $quote->quote_url_key) " }}>
                                                 <span class="input-group-addon to-clipboard cursor-pointer"
                                                       data-clipboard-target="#quote-guest-url">
@@ -448,36 +448,36 @@ $classes = ['control-label', 'controls', '', 'col-xs-12 col-md-6'];
 
             <hr/>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2">
 
-                    <div class="panel panel-default no-margin">
-                        <div class="panel-heading">@lang('notes')</div>
-                        <div class="panel-body">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('notes')</div>
+                        <div class="p-6">
                         <textarea name="notes" id="notes" rows="3"
-                                  class="form-control">{!! $quote->notes !!}</textarea>
+                                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">{!! $quote->notes !!}</textarea>
                         </div>
                     </div>
 
-                    <div class="col-xs-12 visible-xs visible-sm"><br></div>
+                    <div class="w-full px-4 block sm:hidden hidden sm:block md:hidden"><br></div>
 
                 </div>
-                <div class="col-xs-12 col-md-6">
+                <div class="w-full px-4 md:w-1/2">
 
                     @php _dropzone_html(false)
 
                 </div>
             </div>
             @if($default_custom)
-                <div class="row">
-                    <div class="col-xs-12 col-md-6">
+                <div class="flex flex-wrap -mx-4">
+                    <div class="w-full px-4 md:w-1/2">
 
                         <hr>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">@lang('custom_fields')</div>
-                            <div class="panel-body">
-                                <div class="row">
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('custom_fields')</div>
+                            <div class="p-6">
+                                <div class="flex flex-wrap -mx-4">
                                     @php
                                         $classes = ['control-label', 'controls', '', 'form-group col-xs-12 col-sm-6'];
                                         @foreach($custom_fields as $custom_field) {

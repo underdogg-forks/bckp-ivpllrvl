@@ -41,30 +41,30 @@
 
             <p>@lang('setup_create_user_message')</p>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="user_email">
                     @lang('email_address')
                 </label>
-                <input type="email" name="user_email" id="user_email" class="form-control"
+                <input type="email" name="user_email" id="user_email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_email', true) " }}>
                 <span class="help-block">@lang('setup_user_email_info')</span>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="user_name">
                     @lang('name')
                 </label>
-                <input type="text" name="user_name" id="user_name" class="form-control"
+                <input type="text" name="user_name" id="user_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_name', true) " }}>
                 <span class="help-block">@lang('setup_user_name_info')</span>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="user_password">
                     @lang('password')
                 </label>
                 <input type="password" name="user_password" id="user_password"
-                       class="form-control passwordmeter-input">
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors passwordmeter-input">
                 <div class="progress" style="height:3px " }}>
                     <div class="progress-bar progress-bar-danger passmeter passmeter-1" style="width: 33%"></div>
                     <div class="progress-bar progress-bar-warning passmeter passmeter-2"
@@ -76,19 +76,19 @@
                 <span class="help-block">@lang('setup_user_password_info')</span>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="user_passwordv">
                     @lang('verify_password')
                 </label>
-                <input type="password" name="user_passwordv" id="user_passwordv" class="form-control">
+                <input type="password" name="user_passwordv" id="user_passwordv" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                 <span class="help-block">@lang('setup_user_password_verify_info')</span>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="user_language">
                     @lang('lang')
                 </label>
-                <select name="user_language" id="user_language" class="form-control simple-select">
+                <select name="user_language" id="user_language" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                     <option value="system">
                         {{ __('use_system_language') }}
                     </option>
@@ -102,55 +102,55 @@
             <legend>@lang('address')</legend>
             <p>@lang('setup_user_address_info')</p>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('street_address')
                 </label>
-                <input type="text" name="user_address_1" id="user_address_1" class="form-control"
+                <input type="text" name="user_address_1" id="user_address_1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_address_1', true) " }}>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('street_address_2')
                 </label>
-                <input type="text" name="user_address_2" id="user_address_2" class="form-control"
+                <input type="text" name="user_address_2" id="user_address_2" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_address_2', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('city')
                 </label>
-                <input type="text" name="user_city" id="user_city" class="form-control"
+                <input type="text" name="user_city" id="user_city" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_city', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('state')
                 </label>
-                <input type="text" name="user_state" id="user_state" class="form-control"
+                <input type="text" name="user_state" id="user_state" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_state', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('zip_code')
                 </label>
-                <input type="text" name="user_zip" id="user_zip" class="form-control"
+                <input type="text" name="user_zip" id="user_zip" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_zip', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('country')
                 </label>
-                <select name="user_country" class="form-control simple-select">
+                <select name="user_country" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                     <option value="">@lang('none')</option>
                     @foreach($countries as $cldr => $country)
                     <option value="{{ $cldr }}"
@@ -165,43 +165,43 @@
 
             <p>@lang('setup_user_contact_info')</p>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('phone')
                 </label>
-                <input type="text" name="user_phone" id="user_phone" class="form-control"
+                <input type="text" name="user_phone" id="user_phone" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_phone', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('fax')
                 </label>
-                <input type="text" name="user_fax" id="user_fax" class="form-control"
+                <input type="text" name="user_fax" id="user_fax" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_fax', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('mobile')
                 </label>
-                <input type="text" name="user_mobile" id="user_mobile" class="form-control"
+                <input type="text" name="user_mobile" id="user_mobile" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_mobile', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label>
                     @lang('web')
                 </label>
-                <input type="text" name="user_web" id="user_web" class="form-control"
+                <input type="text" name="user_web" id="user_web" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_users->form_value('user_web', true) }}"
                        placeholder="@lang('optional')">
             </div>
 
-            <input type="submit" class="btn btn-success" name="btn_continue"
+            <input type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" name="btn_continue"
                    value="@lang('continue')">
 
         </form>

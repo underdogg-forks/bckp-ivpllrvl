@@ -10,7 +10,7 @@ $colspan = $show_item_discounts ? 5 : 4; <!DOCTYPE html>
     <link rel="stylesheet" href="{{ _core_asset('css/custom-pdf.css') }}" type="text/css">
 </head>
 <body>
-<header class="clearfix">
+<header class="clear-both">
 
     <div id="logo">
         {{ invoice_logo_pdf() }}
@@ -101,7 +101,7 @@ echo '<br/>';
 
 <main>
 
-    <div class="invoice-details clearfix">
+    <div class="invoice-details clear-both">
         <table>
             <tr>
                 <td>@lang('quote_date'):</td>
@@ -185,8 +185,7 @@ echo '<br/>';
 }
 
         <tr>
-            <td class=" text-right
-            " colspan="{{ $colspan ">
+            <td class="text-right" colspan="{{ $colspan ">
                 @lang('subtotal')
             </td>
             <td class="text-right">{{ format_currency($quote->quote_item_subtotal) }}</td>
@@ -198,8 +197,7 @@ echo '<br/>';
             <td class="text-right" colspan="{{ $colspan ">
                 @lang('item_tax')
             </td>
-            <td class=" text-right
-            ">
+            <td class="text-right">
             {{ format_currency($quote->quote_item_tax_total) }}
             </td>
         </tr>@endforeach
@@ -209,8 +207,7 @@ echo '<br/>';
             <td class="text-right" colspan="{{ $colspan ">
                 {{ $quote_tax_rate->quote_tax_rate_name . ' (' . format_amount($quote_tax_rate->quote_tax_rate_percent) . '%)' }}
             </td>
-            <td class=" text-right
-            ">
+            <td class="text-right">
             {{ format_currency($quote_tax_rate->quote_tax_rate_amount) }}
             </td>
         </tr>
@@ -224,8 +221,7 @@ echo '<br/>';
             <td class="text-right" colspan="{{ $colspan ">
                 <b>@lang('total')</b>
             </td>
-            <td class=" text-right
-            ">
+            <td class="text-right">
             <b>{{ format_currency($quote->quote_total) }}</b>
             </td>
         </tr>

@@ -7,11 +7,11 @@
 
     {{ $this->layout->loadView('layout/alerts') }}
 
-    <div class="panel panel-default">
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
 
-        <div class="panel-heading">@lang('quotes_requiring_approval')</div>
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('quotes_requiring_approval')</div>
 
-        <div class="panel-body no-padding">
+        <div class="p-6 no-padding">
 
             @if($open_quotes)
 {$this->layout->loadView(guest/partial_quotes_table, [quotes => $open_quotes])}
@@ -23,9 +23,9 @@
         </div>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">@lang('overdue_invoices')</div>
-        <div class="panel-body no-padding">
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('overdue_invoices')</div>
+        <div class="p-6 no-padding">
             @if($overdue_invoices)
 {$this->layout->loadView(guest/partial_invoices_table, [invoices => $overdue_invoices])}
 @endif else {
@@ -36,11 +36,11 @@
         </div>
     </div>
 
-    <div class="panel panel-default">
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
 
-        <div class="panel-heading">@lang('open_invoices')</div>
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('open_invoices')</div>
 
-        <div class="panel-body no-padding">
+        <div class="p-6 no-padding">
 
             @if($overdue_invoices)
 {$this->layout->loadView(guest/partial_invoices_table, [invoices => $open_invoices])}

@@ -5,53 +5,53 @@
 
 <div id="content">
 
-    <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 md:w-1/2 col-md-offset-3">
 
             @include('layout.alerts')
 
-            <div id="report_options" class="panel panel-default">
+            <div id="report_options" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
 
-                <div class="panel-heading">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                     <i class="fa fa-print"></i>
                     @lang('report_options')
                 </div>
 
-                <div class="panel-body">
+                <div class="p-6">
 
                     <form method="post" action="{{ url($this->uri->uri_string()) }}"
                         {{ get_setting('reports_in_new_tab', false) ? 'target="_blank"' : '' }}>
 
                         @csrf
 
-                        <div class="form-group has-feedback">
+                        <div class="mb-4 has-feedback">
                             <label for="from_date">
                                 @lang('from_date')
                             </label>
 
                             <div class="input-group">
                                 <input name="from_date" id="from_date"
-                                       class="form-control datepicker">
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker">
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar fa-fw"></i>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="form-group has-feedback">
+                        <div class="mb-4 has-feedback">
                             <label for="to_date">
                                 @lang('to_date')
                             </label>
 
                             <div class="input-group">
-                                <input name="to_date" id="to_date" class="form-control datepicker">
+                                <input name="to_date" id="to_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker">
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar fa-fw"></i>
                                 </span>
                             </div>
                         </div>
 
-                        <input type="submit" class="btn btn-success" name="btn_submit"
+                        <input type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" name="btn_submit"
                                value="@lang('run_report')">
 
                     </form>

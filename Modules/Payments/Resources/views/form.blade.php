@@ -23,7 +23,7 @@
     });
 </script>
 
-<form method="post" class="form-horizontal">
+<form method="post" class="space-y-4">
 
     @csrf
 
@@ -40,12 +40,12 @@
 
         @include('layout.alerts')
 
-        <div class="form-group">
-            <div class="col-xs-12 col-sm-2 text-right text-left-xs">
+        <div class="mb-4">
+            <div class="w-full px-4 col-sm-2 text-right text-left -xs">
                 <label for="invoice_id" class="control-label">@lang('invoice')</label>
             </div>
-            <div class="col-xs-12 col-sm-6">
-                <select name="invoice_id" id="invoice_id" class="form-control simple-select" required>
+            <div class="w-full px-4 col-sm-6">
+                <select name="invoice_id" id="invoice_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" required>
                     @if(!$payment_id)
                         {
                         @foreach($open_invoices as $invoice)
@@ -67,14 +67,14 @@
             </div>
         </div>
 
-        <div class="form-group has-feedback">
-            <div class="col-xs-12 col-sm-2 text-right text-left-xs">
+        <div class="mb-4 has-feedback">
+            <div class="w-full px-4 col-sm-2 text-right text-left -xs">
                 <label for="payment_date" class="control-label">@lang('date')</label>
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="w-full px-4 col-sm-6">
                 <div class="input-group">
                     <input name="payment_date" id="payment_date"
-                           class="form-control datepicker"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                            value="{{ date_from_mysql($this->mdl_payments->form_value('payment_date')) }}" required>
                     <span class="input-group-addon">
                         <i class="fa fa-calendar fa-fw"></i>
@@ -83,23 +83,23 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-xs-12 col-sm-2 text-right text-left-xs">
+        <div class="mb-4">
+            <div class="w-full px-4 col-sm-2 text-right text-left -xs">
                 <label for="payment_amount" class="control-label">@lang('amount')</label>
             </div>
-            <div class="col-xs-12 col-sm-6">
-                <input type="text" name="payment_amount" id="payment_amount" class="form-control"
+            <div class="w-full px-4 col-sm-6">
+                <input type="text" name="payment_amount" id="payment_amount" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ format_amount($this->mdl_payments->form_value('payment_amount')) }}" required>
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-xs-12 col-sm-2 text-right text-left-xs">
+        <div class="mb-4">
+            <div class="w-full px-4 col-sm-2 text-right text-left -xs">
                 <label for="payment_method_id" class="control-label">
                     @lang('payment_method')
                 </label>
             </div>
-            <div class="col-xs-12 col-sm-6 payment-method-wrapper">
+            <div class="w-full px-4 col-sm-6 payment-method-wrapper">
 
 @if($this->mdl_payments->form_value('payment_method_id'))
                 <input type="hidden" name="payment_method_id" class="hidden"
@@ -107,7 +107,7 @@
                 @endif
 
                 <select id="payment_method_id" name="payment_method_id"
-                        class="form-control simple-select" data-minimum-results-for-search="Infinity"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity"
                     {{ $this->mdl_payments->form_value('payment_method_id') ? 'disabled="disabled"' : '' }}>
                     @foreach($payment_methods as $payment_method)
                         <option value="{{ $payment_method->payment_method_id }}"
@@ -118,13 +118,13 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-xs-12 col-sm-2 text-right text-left-xs">
+        <div class="mb-4">
+            <div class="w-full px-4 col-sm-2 text-right text-left -xs">
                 <label for="payment_note" class="control-label">@lang('note')</label>
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="w-full px-4 col-sm-6">
                 <textarea name="payment_note"
-                          class="form-control">{{ $this->mdl_payments->form_value('payment_note', true) }}</textarea>
+                          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">{{ $this->mdl_payments->form_value('payment_note', true) }}</textarea>
             </div>
 
         </div>

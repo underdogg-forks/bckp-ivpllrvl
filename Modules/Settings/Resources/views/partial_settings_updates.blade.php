@@ -112,7 +112,7 @@
                 setTimeout(function () {
                     $('#ipnews-loading').addClass('hidden');
                     data.forEach(function (news) {
-                        var ipnews = '<div class="alert alert-' + news.type + '">';
+                        var ipnews = '<div class="alert alert-' + news.type '">';
                         ipnews += '<b>' + news.title + '</b><br/>';
                         ipnews += news.text + '<br/>';
                         @if(news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
@@ -135,7 +135,7 @@
                         setTimeout(function () {
                             $('#ipnews-loading').addClass('hidden');
                             data.forEach(function (news) {
-                                var ipnews = '<div class="alert alert-' + news.type + '">';
+                                var ipnews = '<div class="alert alert-' + news.type '">';
                                 ipnews += '<b>' + news.title + '</b><br/>';
                                 ipnews += news.text + '<br/>';
                                 @if(news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
@@ -160,32 +160,32 @@
     });
 </script>
 
-<div class="col-xs-12 col-md-8 col-md-offset-2">
+<div class="w-full px-4 col-md-8 col-md-offset-2">
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
             @lang('updatecheck')
         </div>
-        <div class="panel-body">
+        <div class="p-6">
 
-            <div class="form-group">
-                <input type="text" class="form-control" value="{{ get_setting('current_version') }}"
+            <div class="mb-4">
+                <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" value="{{ get_setting('current_version') }}"
                        readonly="readonly">
             </div>
             <div id="updatecheck-results">
-                <div id="updatecheck-loading" class="btn btn-default btn-sm disabled">
+                <div id="updatecheck-loading" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors px-3 py-1.5 disabled">
                     <i class="fa fa-circle-o-notch fa-spin"></i> @lang('checking_for_updates')
                 </div>
 
-                <div id="updatecheck-no-updates" class="btn btn-default btn-sm disabled hidden">
+                <div id="updatecheck-no-updates" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors px-3 py-1.5 disabled hidden">
                     @lang('no_updates_available')
                 </div>
 
-                <div id="updatecheck-failed" class="btn btn-danger btn-sm disabled hidden">
+                <div id="updatecheck-failed" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors px-3 py-1.5 disabled hidden">
                     @lang('updatecheck_failed')
                 </div>
 
-                <a href="" id="updatecheck-updates-available" class="btn btn-success btn-sm hidden" target="_blank">
+                <a href="" id="updatecheck-updates-available" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors px-3 py-1.5 hidden" target="_blank">
                     @lang('updates_available')
                 </a>
             </div>
@@ -193,14 +193,14 @@
         </div>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
             @lang('invoiceplane_news')
         </div>
-        <div class="panel-body">
+        <div class="p-6">
 
             <div id="ipnews-results">
-                <div id="ipnews-loading" class="btn btn-default btn-sm disabled">
+                <div id="ipnews-loading" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors px-3 py-1.5 disabled">
                     <i class="fa fa-circle-o-notch fa-spin"></i> @lang('checking_for_news')
                 </div>
 
