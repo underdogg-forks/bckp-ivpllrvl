@@ -6,8 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Dashboard\Controllers\NotThisOneDashboardController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Dashboard\route;
+
+use Tests\TestCase;
 
 #[CoversClass(NotThisOneDashboardController::class)]
 class DashboardControllerTest extends TestCase

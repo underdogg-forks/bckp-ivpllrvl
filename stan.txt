@@ -1,0 +1,108 @@
+Result cache is saved.
+Unignorable errors could not be added to the baseline:
+Class Modules\Core\Libraries\MyFormValidation extends unknown class CI_Form_validation.
+/var/www/projects/ivpllrvl/Modules/Core/Libraries/MyFormValidation.php
+
+Unignorable errors could not be added to the baseline:
+Class Modules\Core\Loaders\MYLoader extends unknown class MX_Loader.
+/var/www/projects/ivpllrvl/Modules/Core/Loaders/MYLoader.php
+
+Unignorable errors could not be added to the baseline:
+Class Modules\Core\Validators\Validator extends unknown class Modules\Core\Models\MyModel.
+/var/www/projects/ivpllrvl/Modules/Core/Validators/Validator.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $id (int) of method Modules\CustomValues\Services\CustomValuesService::getById() is not contravariant with parameter #1 $id (mixed) of method Modules\Core\Services\BaseService::getById().
+/var/www/projects/ivpllrvl/Modules/CustomValues/Services/CustomValuesService.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterProjects() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterTasks() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterProducts() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterUsers() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterFamilies() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterInvoicesRecuring() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterOnlineLogs() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterArchives() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Method Modules\Filter\Controllers\AjaxController::filterPayments() should return Illuminate\Contracts\View\View but return statement is missing.
+/var/www/projects/ivpllrvl/Modules/Filter/Controllers/AjaxController.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $id (int|null) of method Modules\Quotes\Services\QuoteItemsService::save() is not contravariant with parameter #1 $id (mixed) of method Modules\Core\Services\BaseService::save().
+/var/www/projects/ivpllrvl/Modules/Quotes/Services/QuoteItemsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #2 $db_array (array|null) of method Modules\Quotes\Services\QuoteItemsService::save() is not contravariant with parameter #2 $db_array (mixed) of method Modules\Core\Services\BaseService::save().
+/var/www/projects/ivpllrvl/Modules/Quotes/Services/QuoteItemsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $item_id (int) of method Modules\Quotes\Services\QuoteItemsService::delete() is not contravariant with parameter #1 $id (mixed) of method Modules\Core\Services\BaseService::delete().
+/var/www/projects/ivpllrvl/Modules/Quotes/Services/QuoteItemsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $key (string) of method Modules\Settings\Services\SettingsService::save() is not contravariant with parameter #1 $id (mixed) of method Modules\Core\Services\BaseService::save().
+/var/www/projects/ivpllrvl/Modules/Settings/Services/SettingsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $key of method Modules\Settings\Services\SettingsService::save() is required but parameter #1 $id of method Modules\Core\Services\BaseService::save() is optional.
+/var/www/projects/ivpllrvl/Modules/Settings/Services/SettingsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #2 $value (string) of method Modules\Settings\Services\SettingsService::save() is not contravariant with parameter #2 $db_array (mixed) of method Modules\Core\Services\BaseService::save().
+/var/www/projects/ivpllrvl/Modules/Settings/Services/SettingsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #2 $value of method Modules\Settings\Services\SettingsService::save() is required but parameter #2 $db_array of method Modules\Core\Services\BaseService::save() is optional.
+/var/www/projects/ivpllrvl/Modules/Settings/Services/SettingsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $key (string) of method Modules\Settings\Services\SettingsService::get() is not contravariant with parameter #1 $include_defaults (mixed) of method Modules\Core\Services\BaseService::get().
+/var/www/projects/ivpllrvl/Modules/Settings/Services/SettingsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $key of method Modules\Settings\Services\SettingsService::get() is required but parameter #1 $include_defaults of method Modules\Core\Services\BaseService::get() is optional.
+/var/www/projects/ivpllrvl/Modules/Settings/Services/SettingsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $key (string) of method Modules\Settings\Services\SettingsService::delete() is not contravariant with parameter #1 $id (mixed) of method Modules\Core\Services\BaseService::delete().
+/var/www/projects/ivpllrvl/Modules/Settings/Services/SettingsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $data (array) of method Modules\Units\Services\UnitsService::save() is not contravariant with parameter #1 $id (mixed) of method Modules\Core\Services\BaseService::save().
+/var/www/projects/ivpllrvl/Modules/Units/Services/UnitsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $data of method Modules\Units\Services\UnitsService::save() is required but parameter #1 $id of method Modules\Core\Services\BaseService::save() is optional.
+/var/www/projects/ivpllrvl/Modules/Units/Services/UnitsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #2 $id (int|null) of method Modules\Units\Services\UnitsService::save() is not contravariant with parameter #2 $db_array (mixed) of method Modules\Core\Services\BaseService::save().
+/var/www/projects/ivpllrvl/Modules/Units/Services/UnitsService.php
+
+Unignorable errors could not be added to the baseline:
+Parameter #1 $id (int) of method Modules\Units\Services\UnitsService::delete() is not contravariant with parameter #1 $id (mixed) of method Modules\Core\Services\BaseService::delete().
+/var/www/projects/ivpllrvl/Modules/Units/Services/UnitsService.php
