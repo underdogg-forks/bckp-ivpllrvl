@@ -50,6 +50,6 @@ class FamiliesService extends BaseService
      */
     public function getAll()
     {
-        return \Modules\Families\Models\Family::query()->get();
+        return Family::query()->get();
     }
 }
