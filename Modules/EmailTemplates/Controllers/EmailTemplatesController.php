@@ -9,7 +9,9 @@ use Modules\Core\Controllers\AdminController;
 class EmailTemplatesController extends AdminController
 {
     /**
-     * Email_Templates constructor.
+     * Initialize the EmailTemplatesController.
+     *
+     * Delegates initialization to the parent AdminController.
      */
     public function __construct()
     {
@@ -31,9 +33,15 @@ class EmailTemplatesController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display and process the email template creation/edit form.
      *
-     * @originalFile EmailTemplatesController.php
+     * Processes form submissions (save, cancel), validates uniqueness of a new title,
+     * runs service validation and save, prepares form data for editing, and assembles
+     * custom fields and available PDF templates for the form view.
+     *
+     * @param int|null $id The ID of the email template to edit, or `null` to create a new template.
+     * @return string The rendered form view content.
+     * @note This method may redirect to the email templates list or form, or trigger a 404 response when an edit ID cannot be prepared.
      */
     public function form($id = null)
     {

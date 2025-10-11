@@ -12,7 +12,9 @@ class ImportController extends AdminController
     private array $allowed_files = ['clients.csv', 'invoices.csv', 'invoice_items.csv', 'payments.csv'];
 
     /**
-     * ImportController constructor.
+     * Initialize the ImportController and perform parent controller setup.
+     *
+     * Calls the parent AdminController constructor to ensure standard admin controller initialization for import operations.
      */
     public function __construct()
     {
@@ -34,9 +36,14 @@ class ImportController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display the import form or process a submitted import.
      *
-     * @originalFile ImportController.php
+     * When accessed without a submission, prepares the list of allowed import files
+     * from the uploads/import directory and renders the import form view.
+     * When a submission is present, creates a new import record, processes the
+     * selected allowed CSV files (clients.csv, invoices.csv, invoice_items.csv,
+     * payments.csv), records import details for each processed file, and redirects
+     * to the import listing.
      */
     public function form()
     {

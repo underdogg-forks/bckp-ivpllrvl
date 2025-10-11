@@ -59,10 +59,16 @@ class SessionsController extends BaseController
     }
 
     /**
-     * @originalName authenticate
-     *
-     * @originalFile SessionsController.php
-     */
+         * Validate user credentials while enforcing login-attempt throttling.
+         *
+         * Attempts authentication only if the recorded failed attempts for the given
+         * email are below the configured threshold; on success the failed-attempt
+         * log for the email is cleared, on failure a failed-attempt is recorded.
+         *
+         * @param string $email_address The user's email address used to identify the account.
+         * @param string $password The plaintext password to verify for the account.
+         * @return bool `true` if authentication succeeds and the failure log is reset, `false` otherwise.
+         */
     public function authenticate($email_address, $password): bool
     {
         //check if user is banned

@@ -12,7 +12,7 @@ use Modules\Users\Services\UsersService;
 class UserClientsController extends AdminController
 {
     /**
-     * Custom_Values constructor.
+     * Initialize the controller and perform the parent controller setup.
      */
     public function __construct()
     {

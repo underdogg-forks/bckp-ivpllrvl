@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class PaymentsController extends AdminController
 {
     /**
-     * PaymentsController constructor.
+     * Initialize the PaymentsController and perform controller setup.
      */
     public function __construct()
     {
@@ -32,9 +32,12 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Prepare and handle the payment form: load form data and custom fields, process submissions (save or cancel), and render the online logs view.
      *
-     * @originalFile PaymentsController.php
+     * Handles cancellation and submission flow: validates and persists payments and custom field values, redirects on cancel or successful save, and populates form values from existing payment and custom data when editing. Also collects open invoices, payment methods, custom field definitions and their possible values for the view.
+     *
+     * @param int|null $id The payment ID to edit, or null to create a new payment.
+     * @return string The rendered view content for the payments online logs.
      */
     public function form($id = null)
     {

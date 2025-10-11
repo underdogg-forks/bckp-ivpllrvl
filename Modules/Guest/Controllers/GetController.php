@@ -22,7 +22,10 @@ class GetController extends BaseController
     public $content_types = [];
 
     /**
-     * UploadController constructor.
+     * Initialize the UploadController and populate MIME type mappings.
+     *
+     * Calls the parent constructor and sets the controller's `$content_types`
+     * property from UploadsService to provide file extension → MIME type mappings.
      */
     public function __construct()
     {

@@ -9,7 +9,9 @@ use Modules\Core\Controllers\AdminController;
 class CustomFieldsController extends AdminController
 {
     /**
-     * Custom_Fields constructor.
+     * Initialize the CustomFieldsController.
+     *
+     * Calls the parent AdminController constructor to set up base controller state.
      */
     public function __construct()
     {
@@ -28,9 +30,13 @@ class CustomFieldsController extends AdminController
     }
 
     /**
-     * @originalName table
+     * Render the custom fields list view for a specific table (or all) with pagination.
      *
-     * @originalFile CustomFieldsController.php
+     * The rendered view receives filter controls, the selected table's custom fields,
+     * the list of available custom tables, available custom value fields, and position options.
+     *
+     * @param string $name The custom table name to filter by, or 'all' to show all tables.
+     * @param int $page The pagination page number to display.
      */
     public function table(string $name = 'all', $page = 0): void
     {

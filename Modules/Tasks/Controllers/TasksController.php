@@ -12,7 +12,7 @@ use Modules\TaxRates\Services\TaxRatesService;
 class TasksController extends AdminController
 {
     /**
-     * TasksController constructor.
+     * Initialize the TasksController.
      */
     public function __construct()
     {
@@ -33,9 +33,14 @@ class TasksController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display and handle submission of the task create/edit form.
      *
-     * @originalFile TasksController.php
+     * Processes form input: if the cancel button is posted it redirects to the tasks list;
+     * if the form is submitted and validates, it saves the task and redirects to the tasks list.
+     * When opening the form for an existing task, a missing task will trigger a 404.
+     *
+     * @param int|null $id The task ID to edit, or null to create a new task.
+     * @return string Rendered HTML of the task form view.
      */
     public function form($id = null)
     {

@@ -425,10 +425,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName createRecurring
-     *
-     * @originalFile AjaxController.php
-     */
+         * Create or update a recurring invoice and output a JSON result.
+         *
+         * Validates input with InvoicesRecurringService; if validation passes, saves the recurring invoice.
+         * Outputs a JSON response with `success: 1` on success, or `success: 0` and `validation_errors` on failure.
+         */
     public function createRecurring()
     {
         if ((new InvoicesRecurringService())->runValidation()) {
@@ -492,9 +493,16 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName createCredit
+     * Create a credit invoice from an existing invoice.
      *
-     * @originalFile AjaxController.php
+     * Validates input, creates a new invoice as a credit for the posted source invoice, and emits a JSON response.
+     * On success the source invoice is optionally marked read-only (depending on configuration), the new invoice
+     * is linked to the source via `creditinvoice_parent_id`, and the new invoice amount sign is set to negative.
+     * If einvoicing is enabled, the method updates the legacy calculation mode from the posted `legacy_calculation` value.
+     *
+     * The method exits with a JSON object:
+     * - On success: `{"success": 1, "invoice_id": <new_invoice_id>}`
+     * - On validation failure: `{"success": 0, "validation_errors": ...}`
      */
     public function createCredit()
     {

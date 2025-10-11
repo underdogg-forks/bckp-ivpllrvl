@@ -10,7 +10,9 @@ use Modules\Invoices\Services\InvoiceTaxRatesService;
 class InvoicesController extends BaseGuestController
 {
     /**
-     * InvoicesController constructor.
+     * Initialize the InvoicesController for guest access.
+     *
+     * Sets up controller state by delegating to the BaseGuestController constructor.
      */
     public function __construct()
     {
@@ -59,9 +61,13 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName view
+     * Display the invoice page for a guest user.
      *
-     * @originalFile InvoicesController.php
+     * Loads the invoice belonging to one of the guest's clients, returns a 404 if not found,
+     * marks the invoice as viewed, prepares layout data (invoice, items, tax rates and payment settings),
+     * and renders the guest invoice view.
+     *
+     * @param int|string $invoice_id The invoice identifier.
      */
     public function view($invoice_id): void
     {

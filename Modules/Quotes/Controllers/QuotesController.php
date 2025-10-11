@@ -12,7 +12,7 @@ use Modules\Quotes\Models\Quote;
 class QuotesController extends AdminController
 {
     /**
-     * QuotesController constructor.
+     * Initialize the QuotesController.
      */
     public function __construct()
     {

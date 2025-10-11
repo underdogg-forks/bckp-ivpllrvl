@@ -11,7 +11,9 @@ use Modules\Units\Models\Unit;
 class UnitsController extends AdminController
 {
     /**
-     * UnitsController constructor.
+     * Initialize the UnitsController.
+     *
+     * Ensures base initialization required by the AdminController.
      */
     public function __construct()
     {

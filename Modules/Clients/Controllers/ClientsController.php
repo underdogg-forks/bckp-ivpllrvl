@@ -13,7 +13,10 @@ class ClientsController extends AdminController
     private const CLIENT_TITLE = 'client_title';
 
     /**
-     * ClientsController constructor.
+     * Initialize the ClientsController and perform required AdminController setup.
+     *
+     * Ensures the base controller's initialization runs so the clients controller
+     * inherits common admin behaviour and dependencies.
      */
     public function __construct()
     {

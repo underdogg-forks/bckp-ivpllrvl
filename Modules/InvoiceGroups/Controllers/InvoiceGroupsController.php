@@ -10,7 +10,9 @@ use Modules\InvoiceGroups\Services\InvoiceGroupsService;
 class InvoiceGroupsController extends AdminController
 {
     /**
-     * Invoice_Groups constructor.
+     * Create a new InvoiceGroupsController instance and perform controller initialization.
+     *
+     * Calls the parent controller constructor to inherit base setup required for admin controllers.
      */
     public function __construct()
     {

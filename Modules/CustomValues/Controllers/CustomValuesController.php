@@ -10,7 +10,7 @@ use Modules\Core\Controllers\AdminController;
 class CustomValuesController extends AdminController
 {
     /**
-     * Custom_Values constructor.
+     * Initialize the CustomValuesController and invoke the parent controller constructor.
      */
     public function __construct()
     {

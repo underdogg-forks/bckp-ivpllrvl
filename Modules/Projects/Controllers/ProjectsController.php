@@ -12,7 +12,7 @@ use Modules\Tasks\Services\TasksService;
 class ProjectsController extends AdminController
 {
     /**
-     * ProjectsController constructor.
+     * Initialize the ProjectsController and perform the parent controller setup.
      */
     public function __construct()
     {
@@ -33,9 +33,14 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display and process the project creation/edit form.
      *
-     * @originalFile ProjectsController.php
+     * Processes form submission, validates and saves project data, and renders the project form populated with the project and active clients when not redirected.
+     *
+     * @param int|null $id The project identifier to edit, or null to create a new project.
+     * @return string The rendered HTML of the project form view.
+     *
+     * Note: this method may redirect to the projects list on cancel or after a successful save, and will trigger a 404 response if the provided `$id` cannot be prepared for editing.
      */
     public function form($id = null)
     {
@@ -56,9 +61,10 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName view
+     * Display a project's details along with its tasks and available task statuses.
      *
-     * @originalFile ProjectsController.php
+     * @param int|string $project_id The identifier of the project to display.
+     * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|string The view response for the project page or a redirect response when cancelling.
      */
     public function view($project_id)
     {
@@ -74,9 +80,11 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a project and update its associated tasks.
      *
-     * @originalFile ProjectsController.php
+     * Deletes the project identified by $id and updates tasks that reference the project so they no longer do.
+     *
+     * @param int|string $id The ID of the project to delete.
      */
     public function delete($id)
     {
