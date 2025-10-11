@@ -125,12 +125,12 @@ class QuotesService extends BaseService
         // Free memory
         // Update the discounts - since v1.6.3
         $this->where('quote_id', $target_id)->update('ip_quotes', ['quote_discount_percent' => $global_discount['percent'], 'quote_discount_amount' => $global_discount['amount']]);
-        $quote_items = QuoteItem::where('quote_id', $source_id)->get();
+        $quote_items = QuoteItem::query()->where('quote_id', $source_id)->get();
         foreach ($quote_items as $quote_item) {
             $db_array = ['quote_id' => $target_id, 'item_tax_rate_id' => $quote_item->item_tax_rate_id, 'item_product_id' => $quote_item?->item_product_id, 'item_name' => $quote_item->item_name, 'item_description' => $quote_item->item_description, 'item_quantity' => $quote_item->item_quantity, 'item_price' => $quote_item->item_price, 'item_discount_amount' => $quote_item?->item_discount_amount, 'item_order' => $quote_item->item_order, 'item_product_unit' => $quote_item?->item_product_unit, 'item_product_unit_id' => $quote_item?->item_product_unit_id];
             $this->mdl_quote_items->save(null, $db_array, $global_discount);
         }
-        $quote_tax_rates = QuoteTaxRate::where('quote_id', $source_id)->get();
+        $quote_tax_rates = QuoteTaxRate::query()->where('quote_id', $source_id)->get();
         foreach ($quote_tax_rates as $quote_tax_rate) {
             $db_array = ['quote_id' => $target_id, 'tax_rate_id' => $quote_tax_rate->tax_rate_id, 'include_item_tax' => $quote_tax_rate->include_item_tax, 'quote_tax_rate_amount' => $quote_tax_rate->quote_tax_rate_amount];
             $this->mdl_quote_tax_rates->save(null, $db_array);

@@ -44,9 +44,9 @@ class ProductsController extends AdminController
         if ($id && ! $request->has('btn_submit') && ! $service->prepForm($id)) {
             abort(404);
         }
-        $families  = Family::all();
-        $units     = Unit::all();
-        $tax_rates = TaxRate::all();
+        $families  = Family::query()->get();
+        $units     = Unit::query()->get();
+        $tax_rates = TaxRate::query()->get();
 
         return view('products.form', [
             'families'  => $families,

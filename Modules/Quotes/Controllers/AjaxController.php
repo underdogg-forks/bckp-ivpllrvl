@@ -195,7 +195,7 @@ class AjaxController extends AdminController
     {
         $this->load->module('layout');
         $this->load->model(['quotes/mdl_quotes', 'invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'clients/mdl_clients']);
-        $data = ['invoice_groups' => InvoiceGroup::all(), 'tax_rates' => TaxRate::all(), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'quote' => Quote::where('quote_id', $this->input->post('quote_id'))->first(), 'client' => (new ClientsService())->getById($this->input->post('client_id'))];
+        $data = ['invoice_groups' => InvoiceGroup::query()->get(), 'tax_rates' => TaxRate::query()->get(), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'quote' => Quote::query()->where('quote_id', $this->input->post('quote_id'))->first(), 'client' => (new ClientsService())->getById($this->input->post('client_id'))];
         $this->layout->loadView('quotes/modal_copy_quote', $data);
     }
 
@@ -247,7 +247,7 @@ class AjaxController extends AdminController
         $this->load->model(['quotes/mdl_quotes', 'users/mdl_users']);
         // GetController the user ID
         $user_id = $this->security->xss_clean($this->input->post('user_id'));
-        $user    = User::where('user_id', $user_id)->first();
+        $user    = User::query()->where('user_id', $user_id)->first();
         if ( ! empty($user)) {
             $quote_id = $this->input->post('quote_id');
             $db_array = ['user_id' => $user_id];
@@ -284,7 +284,7 @@ class AjaxController extends AdminController
         $this->load->model(['quotes/mdl_quotes', 'clients/mdl_clients']);
         // GetController the client ID
         $client_id = $this->security->xss_clean($this->input->post('client_id'));
-        $client    = Client::where('client_id', $client_id)->first();
+        $client    = Client::query()->where('client_id', $client_id)->first();
         if ( ! empty($client)) {
             $quote_id = $this->input->post('quote_id');
             $db_array = ['client_id' => $client_id];
@@ -307,7 +307,7 @@ class AjaxController extends AdminController
     {
         $this->load->module('layout');
         $this->load->model(['invoice_groups/mdl_invoice_groups', 'tax_rates/mdl_tax_rates', 'clients/mdl_clients']);
-        $data = ['invoice_groups' => InvoiceGroup::all(), 'tax_rates' => TaxRate::all(), 'client' => (new ClientsService())->getById($this->input->post('client_id')), 'clients' => (new ClientsService())->getLatest()];
+        $data = ['invoice_groups' => InvoiceGroup::query()->get(), 'tax_rates' => TaxRate::query()->get(), 'client' => (new ClientsService())->getById($this->input->post('client_id')), 'clients' => (new ClientsService())->getLatest()];
         $this->layout->loadView('quotes/modal_create_quote', $data);
     }
 
@@ -337,7 +337,7 @@ class AjaxController extends AdminController
     public function modalQuoteToInvoice($quote_id)
     {
         $this->load->model(['invoice_groups/mdl_invoice_groups', 'quotes/mdl_quotes']);
-        $data = ['invoice_groups' => InvoiceGroup::all(), 'quote_id' => $this->security->xss_clean($quote_id), 'quote' => Quote::where('quote_id', $quote_id)->first()];
+        $data = ['invoice_groups' => InvoiceGroup::query()->get(), 'quote_id' => $this->security->xss_clean($quote_id), 'quote' => Quote::query()->where('quote_id', $quote_id)->first()];
         $this->load->view('quotes/modal_quote_to_invoice', $data);
     }
 
@@ -374,7 +374,7 @@ class AjaxController extends AdminController
             ];
             unset($quote);
             // Free memory
-            $quote_items = QuoteItem::where('quote_id', $this->input->post('quote_id'))->get();
+            $quote_items = QuoteItem::query()->where('quote_id', $this->input->post('quote_id'))->get();
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
@@ -384,7 +384,7 @@ class AjaxController extends AdminController
                 $db_array = ['invoice_id' => $invoice_id, 'item_tax_rate_id' => $quote_item->item_tax_rate_id, 'item_product_id' => $quote_item->item_product_id, 'item_name' => $quote_item->item_name, 'item_description' => $quote_item->item_description, 'item_quantity' => $quote_item->item_quantity, 'item_price' => $quote_item->item_price, 'item_product_unit_id' => $quote_item->item_product_unit_id, 'item_product_unit' => $quote_item->item_product_unit, 'item_discount_amount' => $quote_item->item_discount_amount, 'item_order' => $quote_item->item_order];
                 (new ItemsService())->save(null, $db_array, $global_discount);
             }
-            $quote_tax_rates = QuoteTaxRate::where('quote_id', $this->input->post('quote_id'))->get();
+            $quote_tax_rates = QuoteTaxRate::query()->where('quote_id', $this->input->post('quote_id'))->get();
             foreach ($quote_tax_rates as $quote_tax_rate) {
                 $db_array = ['invoice_id' => $invoice_id, 'tax_rate_id' => $quote_tax_rate->tax_rate_id, 'include_item_tax' => $quote_tax_rate->include_item_tax, 'invoice_tax_rate_amount' => $quote_tax_rate->quote_tax_rate_amount];
                 (new InvoiceTaxRatesService())->save(null, $db_array);

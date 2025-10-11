@@ -186,10 +186,10 @@ class InvoicesController extends AdminController
             'invoice_id' => $invoice_id,
             'einvoice' => $einvoice,
             'change_user' => $change_user,
-            'tax_rates' => TaxRate::all(),
-            'invoice_tax_rates' => InvoiceTaxRate::where('invoice_id', $invoice_id)->get(),
-            'units' => Unit::all(),
-            'payment_methods' => PaymentMethod::all(),
+            'tax_rates' => TaxRate::query()->get(),
+            'invoice_tax_rates' => InvoiceTaxRate::query()->where('invoice_id', $invoice_id)->get(),
+            'units' => Unit::query()->get(),
+            'payment_methods' => PaymentMethod::query()->get(),
             'custom_fields' => $custom_fields,
             'custom_values' => $custom_values,
             'custom_js_vars' => [
@@ -259,7 +259,7 @@ class InvoicesController extends AdminController
         if ( ! $invoice) {
             abort(404);
         }
-        $items = Item::where('invoice_id', $invoice_id)->get();
+        $items = Item::query()->where('invoice_id', $invoice_id)->get();
         $einvoice = get_einvoice_usage($invoice, $items, false);
         if ( ! $einvoice->user) {
             abort(404);
@@ -302,7 +302,7 @@ class InvoicesController extends AdminController
     {
         $sumex = new \Modules\Core\Libraries\Sumex([
             'invoice' => $this->invoicesService->getById($invoice_id),
-            'items' => Item::where('invoice_id', $invoice_id)->get(),
+            'items' => Item::query()->where('invoice_id', $invoice_id)->get(),
             'options' => ['copy' => '1', 'storno' => '0'],
         ]);
         response()->header('Content-Type', 'application/pdf')->setContent($sumex->pdf());

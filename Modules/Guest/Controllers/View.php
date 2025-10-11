@@ -41,7 +41,7 @@ class View extends BaseGuestController
         if (Session::get('user_type') != 1 && $invoice->invoice_status_id == 2) {
             (new InvoicesService())->markViewed($invoice->invoice_id);
         }
-        $payment_method = PaymentMethod::where('payment_method_id', $invoice->payment_method)->first();
+        $payment_method = PaymentMethod::query()->where('payment_method_id', $invoice->payment_method)->first();
         if ($invoice->payment_method == 0) {
             $payment_method = null;
         }
@@ -54,8 +54,8 @@ class View extends BaseGuestController
         $is_overdue  = $invoice->invoice_balance > 0 && strtotime($invoice->invoice_date_due) < time();
         $data        = [
             'invoice' => $invoice,
-            'items' => Item::where('invoice_id', $invoice->invoice_id)->get(),
-            'invoice_tax_rates' => InvoiceTaxRate::where('invoice_id', $invoice->invoice_id)->get(),
+            'items' => Item::query()->where('invoice_id', $invoice->invoice_id)->get(),
+            'invoice_tax_rates' => InvoiceTaxRate::query()->where('invoice_id', $invoice->invoice_id)->get(),
             'invoice_url_key' => $invoice_url_key,
             'flash_message' => Session::get('flash_message'),
             'payment_method' => $payment_method,
@@ -140,8 +140,8 @@ class View extends BaseGuestController
         $is_expired  = strtotime($quote->quote_date_expires) < time();
         $data        = [
             'quote' => $quote,
-            'items' => QuoteItem::where('quote_id', $quote->quote_id)->get(),
-            'quote_tax_rates' => QuoteTaxRate::where('quote_id', $quote->quote_id)->get(),
+            'items' => QuoteItem::query()->where('quote_id', $quote->quote_id)->get(),
+            'quote_tax_rates' => QuoteTaxRate::query()->where('quote_id', $quote->quote_id)->get(),
             'quote_url_key' => $quote_url_key,
             'flash_message' => Session::get('flash_message'),
             'is_expired' => $is_expired,

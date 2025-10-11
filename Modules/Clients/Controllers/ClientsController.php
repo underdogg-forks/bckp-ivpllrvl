@@ -5,6 +5,7 @@ namespace Modules\Clients\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Clients\Models\Client;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 
 #[AllowDynamicProperties]
@@ -109,7 +110,7 @@ class ClientsController extends AdminController
      */
     public function delete($client_id): \Illuminate\Http\RedirectResponse
     {
-        Client::destroy($client_id);
+        (new ClientsService())->delete($client_id);
 
         return redirect()->route('clients.index');
     }

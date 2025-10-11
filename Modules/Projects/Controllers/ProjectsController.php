@@ -54,7 +54,7 @@ class ProjectsController extends AdminController
         }
         $this->load->model('clients/mdl_clients');
 
-        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => Client::where('client_active', 1)->get()]);
+        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => Client::query()->where('client_active', 1)->get()]);
     }
 
     /**

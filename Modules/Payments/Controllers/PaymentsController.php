@@ -98,7 +98,7 @@ class PaymentsController extends AdminController
             $invoice_payment_methods['invoice' . $open_invoice->invoice_id] = $open_invoice->payment_method;
         }
 
-        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => PaymentMethod::all(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
+        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => PaymentMethod::query()->get(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
     }
 
     /**
