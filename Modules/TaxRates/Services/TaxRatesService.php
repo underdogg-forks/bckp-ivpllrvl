@@ -42,4 +42,14 @@ class TaxRatesService extends BaseService
     {
         return ['tax_rate_name' => ['field' => 'tax_rate_name', 'label' => trans('tax_rate_name'), 'rules' => 'required'], 'tax_rate_percent' => ['field' => 'tax_rate_percent', 'label' => trans('tax_rate_percent'), 'rules' => 'required']];
     }
+
+    /**
+     * Get all tax rates
+     *
+     * @return array Collection of tax rates
+     */
+    public function getAll()
+    {
+        return $this->get()->result();
+    }
 }

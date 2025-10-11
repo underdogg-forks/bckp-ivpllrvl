@@ -41,4 +41,14 @@ class PaymentMethodsService extends BaseService
     {
         return ['payment_method_name' => ['field' => 'payment_method_name', 'label' => trans('payment_method'), 'rules' => 'required']];
     }
+
+    /**
+     * Get all payment methods
+     *
+     * @return array Collection of payment methods
+     */
+    public function getAll()
+    {
+        return $this->get()->result();
+    }
 }

@@ -61,4 +61,14 @@ class UnitsService extends BaseService
     {
         return ['unit_name' => ['field' => 'unit_name', 'label' => trans('unit_name'), 'rules' => 'required'], 'unit_name_plrl' => ['field' => 'unit_name_plrl', 'label' => trans('unit_name_plrl'), 'rules' => 'required']];
     }
+
+    /**
+     * Get all units
+     *
+     * @return array Collection of units
+     */
+    public function getAll()
+    {
+        return $this->get()->result();
+    }
 }

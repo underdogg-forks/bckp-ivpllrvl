@@ -42,4 +42,14 @@ class FamiliesService extends BaseService
     {
         return ['family_name' => ['field' => 'family_name', 'label' => trans('family_name'), 'rules' => 'required']];
     }
+
+    /**
+     * Get all families
+     *
+     * @return array Collection of families
+     */
+    public function getAll()
+    {
+        return $this->get()->result();
+    }
 }

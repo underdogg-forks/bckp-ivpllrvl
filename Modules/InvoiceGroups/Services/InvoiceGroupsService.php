@@ -108,4 +108,14 @@ class InvoiceGroupsService extends BaseService
 
         return $identifier_format;
     }
+
+    /**
+     * Get all invoice groups
+     *
+     * @return array Collection of invoice groups
+     */
+    public function getAll()
+    {
+        return $this->get()->result();
+    }
 }

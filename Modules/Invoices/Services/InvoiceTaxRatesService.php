@@ -78,4 +78,15 @@ class InvoiceTaxRatesService extends BaseService
             'invoice_id' => ['field' => 'invoice_id', 'label' => trans('invoice'), 'rules' => 'required'], 'tax_rate_id' => ['field' => 'tax_rate_id', 'label' => trans('tax_rate'), 'rules' => 'required'], 'include_item_tax' => ['field' => 'include_item_tax', 'label' => trans('tax_rate_placement'), 'rules' => 'required'],
         ];
     }
+
+    /**
+     * Get all tax rates for a specific invoice
+     *
+     * @param int $invoice_id The invoice ID
+     * @return array Collection of invoice tax rates
+     */
+    public function getByInvoiceId($invoice_id)
+    {
+        return $this->where('invoice_id', $invoice_id)->get()->result();
+    }
 }

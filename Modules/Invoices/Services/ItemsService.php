@@ -142,4 +142,15 @@ class ItemsService extends BaseService
 
         return $row->items_subtotal;
     }
+
+    /**
+     * Get all items for a specific invoice
+     *
+     * @param int $invoice_id The invoice ID
+     * @return array Collection of invoice items
+     */
+    public function getByInvoiceId($invoice_id)
+    {
+        return $this->where('invoice_id', $invoice_id)->get()->result();
+    }
 }

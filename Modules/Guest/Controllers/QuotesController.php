@@ -4,8 +4,8 @@ namespace Modules\Guest\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
-use Modules\Quotes\Models\QuoteItem;
-use Modules\Quotes\Models\QuoteTaxRate;
+use Modules\Quotes\Services\QuoteItemsService;
+use Modules\Quotes\Services\QuoteTaxRatesService;
 
 #[AllowDynamicProperties]
 class QuotesController extends BaseGuestController
@@ -82,7 +82,7 @@ class QuotesController extends BaseGuestController
         (new QuotesService())->markViewed($quote->quote_id);
         $this->load->model(['quotes/mdl_quote_items', 'quotes/mdl_quote_tax_rates']);
         $this->load->helper('dropzone');
-        $this->layout->set(['quote_id' => $quote_id, 'quote' => $quote, 'items' => QuoteItem::query()->where('quote_id', $quote_id)->get(), 'quote_tax_rates' => QuoteTaxRate::query()->where('quote_id', $quote_id)->get(), 'legacy_calculation' => config_item('legacy_calculation')]);
+        $this->layout->set(['quote_id' => $quote_id, 'quote' => $quote, 'items' => (new QuoteItemsService())->getByQuoteId($quote_id), 'quote_tax_rates' => (new QuoteTaxRatesService())->getByQuoteId($quote_id), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/quotes_view');
         $this->layout->render('layout_guest');
     }

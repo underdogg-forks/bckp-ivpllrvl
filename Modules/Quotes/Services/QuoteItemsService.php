@@ -124,4 +124,15 @@ class QuoteItemsService extends BaseService
             ->orderBy('item_order')
             ->get();
     }
+
+    /**
+     * Get all items for a specific quote
+     *
+     * @param int $quote_id The quote ID
+     * @return array Collection of quote items
+     */
+    public function getByQuoteId($quote_id)
+    {
+        return $this->where('quote_id', $quote_id)->get()->result();
+    }
 }

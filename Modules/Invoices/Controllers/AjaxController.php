@@ -4,12 +4,9 @@ namespace Modules\Invoices\Controllers;
 
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
-use Modules\Clients\Models\Client;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
-use Modules\InvoiceGroups\Models\InvoiceGroup;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
-use Modules\Invoices\Models\Invoice;
 use Modules\Invoices\Services\InvoiceAmountsService;
 use Modules\Invoices\Services\InvoiceCustomService;
 use Modules\Invoices\Services\InvoicesRecurringService;
@@ -18,10 +15,8 @@ use Modules\Invoices\Services\InvoiceSumexService;
 use Modules\Invoices\Services\InvoiceTaxRatesService;
 use Modules\Invoices\Services\ItemsService;
 use Modules\Tasks\Services\TasksService;
-use Modules\TaxRates\Models\TaxRate;
 use Modules\TaxRates\Services\TaxRatesService;
 use Modules\Units\Services\UnitsService;
-use Modules\Users\Models\User;
 use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
@@ -280,10 +275,10 @@ class AjaxController extends AdminController
     public function modalCopyInvoice()
     {
         $data = [
-            'invoice_groups' => InvoiceGroup::query()->get(),
-            'tax_rates' => TaxRate::query()->get(),
+            'invoice_groups' => $this->invoiceGroupsService->getAll(),
+            'tax_rates' => $this->taxRatesService->getAll(),
             'invoice_id' => $this->input->post('invoice_id'),
-            'invoice' => Invoice::query()->where('invoice_id', $this->input->post('invoice_id'))->first(),
+            'invoice' => $this->invoicesService->getById($this->input->post('invoice_id')),
             'client' => $this->clientsService->getById($this->input->post('client_id')),
         ];
         return view('invoices.modal_copy_invoice', $data);
@@ -345,7 +340,7 @@ class AjaxController extends AdminController
     {
         // GetController the user ID
         $user_id = $this->security->xss_clean($this->input->post('user_id'));
-        $user    = User::query()->where('user_id', $user_id)->first();
+        $user    = $this->usersService->getById($user_id);
         if ( ! empty($user)) {
             $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
             $db_array   = ['user_id' => $user_id];
@@ -385,7 +380,7 @@ class AjaxController extends AdminController
     {
         // GetController the client ID
         $client_id = $this->security->xss_clean($this->input->post('client_id'));
-        $client    = Client::query()->where('client_id', $client_id)->first();
+        $client    = $this->clientsService->getById($client_id);
         if ( ! empty($client)) {
             $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
             $db_array   = ['client_id' => $client_id];
@@ -407,8 +402,8 @@ class AjaxController extends AdminController
     public function modalCreateInvoice()
     {
         $data = [
-            'invoice_groups' => InvoiceGroup::query()->get(),
-            'tax_rates' => TaxRate::query()->get(),
+            'invoice_groups' => $this->invoiceGroupsService->getAll(),
+            'tax_rates' => $this->taxRatesService->getAll(),
             'client' => $this->clientsService->getById($this->input->post('client_id')),
             'clients' => $this->clientsService->getLatest(),
         ];
@@ -495,10 +490,10 @@ class AjaxController extends AdminController
     public function modalCreateCredit()
     {
         $data = [
-            'invoice_groups' => InvoiceGroup::query()->get(),
-            'tax_rates' => TaxRate::query()->get(),
+            'invoice_groups' => $this->invoiceGroupsService->getAll(),
+            'tax_rates' => $this->taxRatesService->getAll(),
             'invoice_id' => $this->input->post('invoice_id'),
-            'invoice' => Invoice::query()->where('invoice_id', $this->input->post('invoice_id'))->first(),
+            'invoice' => $this->invoicesService->getById($this->input->post('invoice_id')),
         ];
         return view('invoices.modal_create_credit', $data);
     }
