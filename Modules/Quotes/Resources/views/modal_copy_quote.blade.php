@@ -25,10 +25,10 @@
                             },
                             function (data) {
                                 var response = json_parse(data, {{ (int) IP_DEBUG }});
-                                if (response.success === 1) {
+                                @if(response.success === 1) {
                                     window.location = "{{ url('quotes/view') }}/" + response.quote_id;
                                 }
-                                else {
+                                @else
                                     // The validation was not successful
                                     close_loader();
                                     $('.control-group').removeClass('has-error');
@@ -51,10 +51,10 @@
                     </div>
                     <div class="modal-body">
 
-                        <input type="hidden" name="user_id" id="user_id" value="{{ $quote->user_id }}">
+                        <input type="hidden" name="user_id" id="user_id" value="{{ $quote->user_id " }}>
 
                         <input class="hidden" id="input_permissive_search_clients"
-                               value="{{ get_setting('enable_permissive_search_clients') }}">
+                               value="{{ get_setting('enable_permissive_search_clients') " }}>
 
                         <div class="form-group has-feedback">
                             <label for="client_id">@lang('client')</label>
@@ -64,7 +64,7 @@
                                 </span>
                                 <select name="client_id" id="client_id" class="client-id-select form-control" autofocus="autofocus">
             @if(!empty($client))
-        <option value="{{ $client->client_id }}">{!! format_client($client, false) !!}</option>
+        <option value="{{ $client->client_id " }}>{!! format_client($client, false) !!}</option>
         @endif
     </select>
     </div>
@@ -75,7 +75,7 @@
             <div class="input-group">
                 <input name="quote_date_created_modal" id="quote_date_created_modal"
                        class="form-control datepicker"
-                       value="{{ date_from_mysql(date('Y-m-d', time()), true) }}">
+                       value="{{ date_from_mysql(date('Y-m-d', time()), true) " }}>
                     <span class="input-group-addon">
                         <i class="fa fa-calendar fa-fw"></i>
                     </span>

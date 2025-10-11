@@ -3,7 +3,7 @@
     $(function () {
         $('#quote_tax_submit').click(function () {
             var tax_rate_id = $('#tax_rate_id').val();
-            if ('0' == tax_rate_id) return;
+            @if('0' == tax_rate_id) return;
             show_loader(); // Show spinner
             $.post("{{ url('quotes/ajax/save_quote_tax_rate');
 ?>", {
@@ -13,7 +13,7 @@
                 },
                 function (data) {
                     var response = json_parse(data, {{ (int) IP_DEBUG }});
-                    if (response.success === 1) {
+                    @if(response.success === 1) {
                         window.location = "{{ url('quotes/view') }}/" + {{ $quote_id }};
                     }
                     // close_loader(); No error returned (show go to wiki if not success after 10s)  Todo: else // The validation was not successful
@@ -40,7 +40,7 @@
                     <select name="tax_rate_id" id="tax_rate_id" class="form-control simple-select" required>
                         <option value="0">@lang('none')</option>
                         @foreach($tax_rates as $tax_rate)
-                            <option value="{{ $tax_rate->tax_rate_id }}">
+                            <option value="{{ $tax_rate->tax_rate_id " }}>
                                 {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . htmlsc($tax_rate->tax_rate_name) }}
                             </option>@endforeach
                     </select>
@@ -49,7 +49,7 @@
 
             <div class="form-group">
                 <label for="include_item_tax">
-                    @lang('tax_rate_placement') }}
+                    @lang('tax_rate_placement')
                 </label>
 
                 <div class="controls">

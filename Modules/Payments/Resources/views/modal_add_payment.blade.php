@@ -21,9 +21,9 @@
                 },
                 function (data) {
                     var response = json_parse(data, {{ (int) IP_DEBUG }});
-            if (response.success === 1) {
+            @if(response.success === 1) {
                 // The validation was successful and payment was added
-                if ($('#payment_cf_exist').val() === 'yes') {
+                @if($('#payment_cf_exist').val() === 'yes') {
                     // There are payment custom fields, display the payment form
                     // to allow completing the custom fields
                     window.location = "{{ url('payments/form') }}/" + response.payment_id;
@@ -35,7 +35,7 @@
                 // The validation was not successful
                 $('.control-group').removeClass('has-error');
                 for (var key in response.validation_errors) {
-                    if (response.validation_errors.hasOwnProperty(key)) {
+                    @if(response.validation_errors.hasOwnProperty(key)) {
                         $('#' + key).parent().parent().addClass('has-error');
                     }
                 }
@@ -58,14 +58,14 @@
         <div class="modal-body">
             <form>
 
-                <input type="hidden" name="invoice_id" id="invoice_id" value="{{ $invoice_id }}">
+                <input type="hidden" name="invoice_id" id="invoice_id" value="{{ $invoice_id " }}>
 
                 <div class="form-group">
                     <label for="payment_amount">@lang('amount')</label>
 
                     <div class="controls">
                         <input type="text" name="payment_amount" id="payment_amount" class="form-control"
-                               value="{{ isset($invoice_balance) ? format_amount($invoice_balance) : '' }}">
+                               value="{{ isset($invoice_balance) ? format_amount($invoice_balance) : '' " }}>
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@
                     <div class="input-group">
                         <input name="payment_date" id="payment_date"
                                class="form-control datepicker"
-                               value="{{ date(date_format_setting()) }}">
+                               value="{{ date(date_format_setting()) " }}>
                         <span class="input-group-addon">
                             <i class="fa fa-calendar fa-fw"></i>
                         </span>
@@ -91,7 +91,7 @@
 
 @if($this->mdl_payments->form_value('payment_method_id'))
                         <input type="hidden" name="payment_method_id" class="hidden"
-                               value="{{ $this->mdl_payments->form_value('payment_method_id') }}">
+                               value="{{ $this->mdl_payments->form_value('payment_method_id') " }}>
                         @endif
                         <select name="payment_method_id" id="payment_method_id" class="form-control simple-select"
                             {{ empty($invoice_payment_method) ? '' : 'disabled="disabled"' }}>
@@ -117,7 +117,7 @@
                     </div>
 
                     <!-- Add a hidden input field to pass whether payment custom fields have been create -->
-                    <input type="hidden" name="payment_cf_exist" id="payment_cf_exist" value="{{ $payment_cf_exist }}">
+                    <input type="hidden" name="payment_cf_exist" id="payment_cf_exist" value="{{ $payment_cf_exist " }}>
 
             </form>
         </div>

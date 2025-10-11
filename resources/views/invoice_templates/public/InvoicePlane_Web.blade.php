@@ -53,76 +53,76 @@
 
         <div class="invoice">
 
-            @php $logo = invoice_logo();
-if ($logo)
-{$logo  <br><br>}
-@endif
+            @php $logo = invoice_logo(); @endphp
+            @if($logo)
+                {!! $logo !!}<br><br>
+            @endif
 
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-5">
 
                     <h4>{!! $invoice->user_name !!}</h4>
-                    <p>@if($invoice->user_vat_id)
-{trans(vat_id_short)  :   $invoice->user_vat_id  <br>}
-@endif
-if ($invoice->user_tax_code)
-{trans(tax_code_short)  :   $invoice->user_tax_code  <br>}
-@endif
-if ($invoice->user_address_1)
-{htmlsc($invoice->user_address_1)  <br>}
-@endif
-if ($invoice->user_address_2)
-{htmlsc($invoice->user_address_2)  <br>}
-@endif
-if ($invoice->user_city)
-{htmlsc($invoice->user_city)   InvoicePlane_Webphp}
-@endif
-if ($invoice->user_state)
-{htmlsc($invoice->user_state)   InvoicePlane_Webphp}
-@endif
-if ($invoice->user_zip)
-{htmlsc($invoice->user_zip)  <br>}
-@endif
-if ($invoice->user_phone) {
-    @lang('phone_abbr');
-    echo ': ' . htmlsc($invoice->user_phone) . '<br>';
-}
-if ($invoice->user_fax) {
-    @lang('fax_abbr');
-    echo ': ' . htmlsc($invoice->user_fax);
-} </p>
+                    <p>
+                        @if($invoice->user_vat_id)
+                            @lang('vat_id_short'): {{ $invoice->user_vat_id }}<br>
+                        @endif
+                        @if($invoice->user_tax_code)
+                            @lang('tax_code_short'): {{ $invoice->user_tax_code }}<br>
+                        @endif
+                        @if($invoice->user_address_1)
+                            {{ htmlsc($invoice->user_address_1) }}<br>
+                        @endif
+                        @if($invoice->user_address_2)
+                            {{ htmlsc($invoice->user_address_2) }}<br>
+                        @endif
+                        @if($invoice->user_city)
+                            {{ htmlsc($invoice->user_city) }}
+                        @endif
+                        @if($invoice->user_state)
+                            {{ htmlsc($invoice->user_state) }}
+                        @endif
+                        @if($invoice->user_zip)
+                            {{ htmlsc($invoice->user_zip) }}<br>
+                        @endif
+                        @if($invoice->user_phone)
+                            @lang('phone_abbr'): {{ htmlsc($invoice->user_phone) }}<br>
+                        @endif
+                        @if($invoice->user_fax)
+                            @lang('fax_abbr'): {{ htmlsc($invoice->user_fax) }}
+                        @endif
+                    </p>
 
                 </div>
                 <div class="col-lg-2"></div>
                 <div class="col-xs-12 col-md-6 col-lg-5 text-right">
 
                     <h4>{!! format_client($invoice) !!}</h4>
-                    <p>@if($invoice->client_vat_id) {
-        @lang('vat_id_short');
-        echo ': ' . $invoice->client_vat_id . '<br>';
-    }
-if ($invoice->client_tax_code) {
-    @lang('tax_code_short');
-    echo ': ' . $invoice->client_tax_code . '<br>';
-}
-if ($invoice->client_address_1)
-{htmlsc($invoice->client_address_1)  <br>}
-@endif
-if ($invoice->client_address_2)
-{htmlsc($invoice->client_address_2)  <br>}
-@endif
-if ($invoice->client_city)
-{htmlsc($invoice->client_city)   InvoicePlane_Webphp}
-@endif
-if ($invoice->client_state)
-{htmlsc($invoice->client_state)   InvoicePlane_Webphp}
-@endif
-if ($invoice->client_zip)
-{htmlsc($invoice->client_zip)  <br>}
-@endif
-if ($invoice->client_phone)
-{trans(phone_abbr)  :   htmlsc($invoice->client_phone)  <br>}
-@endif </p>
+                    <p>
+                        @if($invoice->client_vat_id)
+                            @lang('vat_id_short'): {{ $invoice->client_vat_id }}<br>
+                        @endif
+                        @if($invoice->client_tax_code)
+                            @lang('tax_code_short'): {{ $invoice->client_tax_code }}<br>
+                        @endif
+                        @if($invoice->client_address_1)
+                            {{ htmlsc($invoice->client_address_1) }}<br>
+                        @endif
+                        @if($invoice->client_address_2)
+                            {{ htmlsc($invoice->client_address_2) }}<br>
+                        @endif
+                        @if($invoice->client_city)
+                            {{ htmlsc($invoice->client_city) }}
+                        @endif
+                        @if($invoice->client_state)
+                            {{ htmlsc($invoice->client_state) }}
+                        @endif
+                        @if($invoice->client_zip)
+                            {{ htmlsc($invoice->client_zip) }}<br>
+                        @endif
+                        @if($invoice->client_phone)
+                            @lang('phone_abbr'): {{ htmlsc($invoice->client_phone) }}<br>
+                        @endif
+                    </p>
 
                     <br>
 
@@ -132,17 +132,13 @@ if ($invoice->client_phone)
                             <td>@lang('invoice_date')</td>
                             <td style="text-align:right;">{{ date_from_mysql($invoice->invoice_date_created) }}</td>
                         </tr>
-                        <tr class="{{ $is_overdue ? 'overdue' : '' ?>">
-                                    <td>@lang('due_date') }}</td>
-                                    <td class=" amount
-                        ">
-                        {{ date_from_mysql($invoice->invoice_date_due) }}
-                        </td>
+                        <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
+                            <td>@lang('due_date')</td>
+                            <td class="amount">{{ date_from_mysql($invoice->invoice_date_due) }}</td>
                         </tr>
-                        <tr class="{{ $is_overdue ? 'overdue' : '' ">
-                                    <td>@lang('amount_due') }}</td>
-                                    <td style=" text-align:right;
-                        ">{{ format_currency($invoice->invoice_balance) }}</td>
+                        <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
+                            <td>@lang('amount_due')</td>
+                            <td style="text-align:right;">{{ format_currency($invoice->invoice_balance) }}</td>
                         </tr>
                         @if($payment_method)
 
@@ -249,9 +245,9 @@ if ($invoice->client_phone)
                             <td class="amount">@lang('paid')</td>
                             <td class="amount">{{ format_currency($invoice->invoice_paid) </td>
                                 </tr>
-                                <tr class="{{ ($invoice->invoice_balance > 0) ? 'overdue' : 'text-success' }}">
+                                <tr class="{{ ($invoice->invoice_balance > 0)  ? 'overdue' : 'text-success' " }}>
                             <td class="no-bottom-border" colspan="4"></td>
-                            <td class="amount">@php @lang('balance') }}</td>
+                            <td class="amount">@php @lang('balance')</td>
                             <td class="amount">
                                 <b>{{ format_currency($invoice->invoice_balance) </b>
                                     </td>
@@ -261,8 +257,11 @@ if ($invoice->client_phone)
                     </div>
 
 @if($invoice->invoice_balance == 0)
-{<span class="stamp rotate bottom paid">  trans(paid)  </span>}@endforeach elseif ($is_overdue)
-{<span class="stamp rotate bottom overdue">  trans(overdue)  </span>}@endforeach
+                        @if($invoice->invoice_balance > 0 && $invoice->invoice_status_id != 4)
+                            <span class="stamp rotate bottom paid">@lang('paid')</span>
+                        @elseif($is_overdue)
+                            <span class="stamp rotate bottom overdue">@lang('overdue')</span>
+                        @endif
 
                 </div><!-- .invoice-items -->
 
@@ -275,13 +274,13 @@ if ($invoice->client_phone)
                         <tr>
                             <td>
                                 <div>
-                                    <strong>@lang('qr_code_settings_recipient') }}:</strong>
-                    {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
-                </div>
-                <div>
-                    <strong><?php @lang('qr_code_settings_iban'):</strong>
-                    {{ $invoice->user_iban ?: get_setting('qr_code_iban') }}
-                </div>
+                                    <strong>@lang('qr_code_settings_recipient'):</strong>
+                                    {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
+                                </div>
+                                <div>
+                                    <strong>@lang('qr_code_settings_iban'):</strong>
+                                    {{ $invoice->user_iban ?: get_setting('qr_code_iban') }}
+                                </div>
                 <div>
                     <strong>@lang('qr_code_settings_bic'):</strong>
                     {{ $invoice->user_bic ?: get_setting('qr_code_bic') }}

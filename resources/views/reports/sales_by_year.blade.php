@@ -28,27 +28,27 @@ $contRows     = 0;
 $contYears    = 0;
 $pattern      = '/^payment_*/i';
 
-foreach ($results as $result) {
-    if ($final_year == 0) {
-        foreach ($result as $index => $value) {
-            if ($initial_year == 0) {
+@foreach($results as $result) {
+    @if($final_year == 0) {
+        @foreach($result as $index => $value) {
+            @if($initial_year == 0) {
                 $initial_year = (int) (mb_substr($index, 11, 4));
             }
 
             $aux = (int) (mb_substr($index, 11, 4));
 
-            if ($aux > $final_year) {
+            @if($aux > $final_year) {
                 $final_year = $aux;
             }
         }
     }
 
-    if ($contYears == 0 && ($final_year - $initial_year) > 0) {
+    @if($contYears == 0 && ($final_year - $initial_year) > 0) {
         $numYears  = $final_year - $initial_year + 1;
         $contYears = 1;
     }
 
-    if ($contRows == 0) {
+    @if($contRows == 0) {
         $numRows += $numYears * 4;
         $contRows = 1;
     }
@@ -65,7 +65,7 @@ foreach ($results as $result) {
             $quarter = mb_substr($index, 8, 2);
             $year    = mb_substr($index, 11, 4);
 
-            if (preg_match($pattern, $index)) {
+            @if(preg_match($pattern, $index)) {
         <tr>
             <td style="border-bottom: none;">&nbsp;</td>
             <td style="border-bottom: none;text-align:center;">@switch($quarter)

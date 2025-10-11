@@ -33,7 +33,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ url('users/form/' . $user->user_id) }}">
+                            <a href="{{ url('users/form/' . $user->user_id) " }}>
                                 <i class="fa fa-edit fa-margin"></i> @lang('edit')
                             </a>
                         </li>

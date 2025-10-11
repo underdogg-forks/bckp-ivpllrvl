@@ -17,10 +17,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="NOINDEX,NOFOLLOW">
-    <meta name="_csrf" content="{{ $this->security->get_csrf_hash() }}">
-    <meta name="csrf_token_name" content="{{ config_item('csrf_token_name') }}">
-    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') }}">
-    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') }}">
+    <meta name="_csrf" content="{{ $this->security->get_csrf_hash() " }}>
+    <meta name="csrf_token_name" content="{{ config_item('csrf_token_name') " }}>
+    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') " }}>
+    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') " }}>
 
     <link rel="icon" href="@php _core_asset('img/favicon.png')" type="image/png">
 
@@ -32,13 +32,13 @@
     @endif
 
         <!--[if lt IE 9]>
-    <script src="{{ _core_asset('js/legacy.min.js') }}"></script>
+    <script src="{{ _core_asset('js/legacy.min.js') " }}></script>
     <![endif]-->
 
-    <script src="{{ _core_asset('js/dependencies.min.js') }}"></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') " }}></script>
 
 </head>
-<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : '' }}">
+<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : '' " }}>
 
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="container-fluid">
@@ -74,7 +74,7 @@
 
 <div id="main-area">
 
-    <div class="sidebar hidden-xs{{ get_setting('disable_sidebar') == 1 ? ' hidden' : '' }}">
+    <div class="sidebar hidden-xs{{ get_setting('disable_sidebar') == 1 ? ' hidden' : '' " }}>
         <ul>
             <li>
                 <a href="{{ url('guest') }}" title="@lang('dashboard')" class="tip"
@@ -117,7 +117,7 @@
 <script defer src="{{ _core_asset('js/scripts.min.js')"></script>
 @if(trans('cldr') != 'en')
 <script src="@php
-    _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js') }}"></script>
+    _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js') " }}></script>
     @endif
 
 </body>

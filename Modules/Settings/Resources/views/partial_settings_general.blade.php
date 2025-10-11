@@ -118,7 +118,7 @@
                         </label>
                         <input type="number" name="settings[default_list_limit]" id="default_list_limit"
                                class="form-control" minlength="1" min="1" required
-                               value="{{ get_setting('default_list_limit', 15, true) }}">
+                               value="{{ get_setting('default_list_limit', 15, true) " }}>
                     </div>
                 </div>
             </div>
@@ -140,7 +140,7 @@
                                 </label>
                                 <input type="text" name="settings[currency_symbol]" id="settings[currency_symbol]"
                                        class="form-control"
-                                       value="{{ get_setting('currency_symbol', '', true) }}">
+                                       value="{{ get_setting('currency_symbol', '', true) " }}>
                             </div>
                         </div>
 
@@ -393,7 +393,7 @@
                                 </label>
                                 <input type="text" name="settings[custom_title]" id="settings[custom_title]"
                                        class="form-control"
-                                       value="{{ get_setting('custom_title', '', true) }}">
+                                       value="{{ get_setting('custom_title', '', true) " }}>
                             </div>
                         </div>
                     </div>
@@ -428,7 +428,7 @@
                                 @if(get_setting('login_logo'))
                                 <br/>
                                 <img class="personal_logo"
-                                     src="{{ url() }}uploads/{{ get_setting('login_logo') }}"><br>
+                                     src="{{ url() }}uploads/{{ get_setting('login_logo') " }}><br>
                                     {{ anchor('settings/remove_logo/login', trans('remove_logo')) }}<br/>@endforeach
                                     <input type="file" name="login_logo" id="login_logo" class="form-control"/>
                             </div>
@@ -509,7 +509,7 @@
                                 <div class="input-group">
                                     <input type="text" name="settings[cron_key]" id="cron_key" class="form-control"
                                            readonly
-                                           value="{{ get_setting('cron_key') }}">
+                                           value="{{ get_setting('cron_key') " }}>
                                         <div class="input-group-btn">
                                             <button id="btn_generate_cron_key" type="button"
                                                     class="btn btn-primary btn-block">

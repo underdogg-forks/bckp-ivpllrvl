@@ -45,7 +45,7 @@
 
         <p>@lang('password_reset_info')</p>
 
-        <form method="post" action="{{ url($this->uri->uri_string()) }}">
+        <form method="post" action="{{ url($this->uri->uri_string()) " }}>
 
             @csrf
 

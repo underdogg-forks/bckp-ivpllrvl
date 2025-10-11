@@ -16,15 +16,15 @@
     <div class="headerbar-item pull-right">
         <div class="btn-group btn-group-sm index-options">
             <a href="{{ url('invoices/client/' . $client_id . '/open') }}"
-               class="btn {{ $status == 'open' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'open' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('open')
             </a>
             <a href="{{ url('invoices/client/' . $client_id . '/closed') }}"
-               class="btn  {{ $status == 'closed' ? 'btn-primary' : 'btn-default' }}">
+               class="btn  {{ $status == 'closed' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('closed')
             </a>
             <a href="{{ url('invoices/client/' . $client_id . '/overdue') }}"
-               class="btn  {{ $status == 'overdue' ? 'btn-primary' : 'btn-default' }}">
+               class="btn  {{ $status == 'overdue' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('overdue')
             </a>
         </div>

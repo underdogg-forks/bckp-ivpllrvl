@@ -20,7 +20,7 @@
 
         @if($this->session->userdata('setup_notice')) {
     $setup_notice = $this->session->userdata('setup_notice')
-        <div class="alert {{ $setup_notice['type'] }}">
+        <div class="alert {{ $setup_notice['type'] " }}>
             {{ $setup_notice['content'] }}
         </div>
             @endif

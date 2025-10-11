@@ -5,7 +5,7 @@
     <h1 class="headerbar-title">@lang('custom_fields')</h1>
 
     <div class="headerbar-item pull-right">
-        <a class="btn btn-sm btn-primary" href="{{ url('custom_fields/form') }}">
+        <a class="btn btn-sm btn-primary" href="{{ url('custom_fields/form') " }}>
             <i class="fa fa-plus"></i> @lang('new')
         </a>
     </div>
@@ -17,12 +17,12 @@
     <div class="headerbar-item pull-right visible-lg">
         <div class="btn-group btn-group-sm index-options">
             <a href="{{ url('custom_fields/table/all') }}"
-               class="btn {{ $active == 'all' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $active == 'all' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('all')
             </a>
             @foreach($custom_tables as $table)
             <a href="{{ url('custom_fields/table/' . $table) }}"
-               class="btn {{ $active == $table ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $active == $table ? 'btn-primary' : 'btn-default' " }}>
                 @php
                     _trans($table)
             </a>@endforeach

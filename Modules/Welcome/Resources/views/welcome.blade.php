@@ -36,7 +36,7 @@ $disabled = env_bool('DISABLE_SETUP') ? ' hidden' : '';
 
     <div id="content">
         <div id="logo"><span>InvoicePlane</span></div>
-        <p class="alert alert-info text-center{{ $completed ? '' : ' hidden' }}">
+        <p class="alert alert-info text-center{{ $completed ? '' : ' hidden' " }}>
             Please install InvoicePlane.<br/>
             <span class="text-muted">Bitte installiere InvoicePlane.</span><br/>
             <span class="text-muted">S'il vous plaît installer InvoicePlane</span><br/>
@@ -44,10 +44,10 @@ $disabled = env_bool('DISABLE_SETUP') ? ' hidden' : '';
         </p>
 
         <div class="btn-group btn-group-justified">
-            <a href="{{ url() }}" class="btn btn-default{{ $completed }}">
+            <a href="{{ url() }}" class="btn btn-default{{ $completed " }}>
                 <i class="fa fa-user"></i> Enter
             </a>
-            <a href="{{ url('setup') }}" class="btn btn-success{{ $disabled }}">
+            <a href="{{ url('setup') }}" class="btn btn-success{{ $disabled " }}>
                 <i class="fa fa-cogs"></i> Setup
             </a>
             <a href="https://wiki.invoiceplane.com/" class="btn btn-info">

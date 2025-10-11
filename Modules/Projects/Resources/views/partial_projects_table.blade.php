@@ -23,7 +23,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ url('projects/form/' . $project->project_id) }}">
+                            <a href="{{ url('projects/form/' . $project->project_id) " }}>
                                 <i class="fa fa-edit fa-margin"></i> @lang('edit')
                             </a>
                         </li>

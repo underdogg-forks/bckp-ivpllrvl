@@ -37,7 +37,7 @@
                                 <input type="text" name="settings[default_hourly_rate]"
                                        id="settings[default_hourly_rate]"
                                        class="form-control amount"
-                                       value="{{ get_setting('default_hourly_rate') ? format_amount(get_setting('default_hourly_rate')) : get_setting('default_hourly_rate') }}">
+                                       value="{{ get_setting('default_hourly_rate') ? format_amount(get_setting('default_hourly_rate')) : get_setting('default_hourly_rate') " }}>
                                 <span class="input-group-addon">{{ get_setting('currency_symbol') }}</span>
                                 <input type="hidden" name="settings[default_hourly_rate_field_is_amount]" value="1">
                             </div>

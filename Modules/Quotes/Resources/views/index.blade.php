@@ -20,31 +20,31 @@
     <div class="headerbar-item pull-right visible-lg">
         <div class="btn-group btn-group-sm index-options">
             <a href="{{ url('quotes/status/all') }}"
-               class="btn {{ $status == 'all' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'all' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('all')
             </a>
             <a href="{{ url('quotes/status/draft') }}"
-               class="btn {{ $status == 'draft' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'draft' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('draft')
             </a>
             <a href="{{ url('quotes/status/sent') }}"
-               class="btn {{ $status == 'sent' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'sent' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('sent')
             </a>
             <a href="{{ url('quotes/status/viewed') }}"
-               class="btn {{ $status == 'viewed' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'viewed' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('viewed')
             </a>
             <a href="{{ url('quotes/status/approved') }}"
-               class="btn {{ $status == 'approved' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'approved' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('approved')
             </a>
             <a href="{{ url('quotes/status/rejected') }}"
-               class="btn {{ $status == 'rejected' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'rejected' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('rejected')
             </a>
             <a href="{{ url('quotes/status/canceled') }}"
-               class="btn {{ $status == 'canceled' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'canceled' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('canceled')
             </a>
         </div>
@@ -62,31 +62,31 @@
         <div class="submenu-row">
             <div class="btn-group btn-group-sm index-options">
                 <a href="{{ url('quotes/status/all') }}"
-                   class="btn {{ $status == 'all' ? 'btn-primary' : 'btn-default' }}">
+                   class="btn {{ $status == 'all' ? 'btn-primary' : 'btn-default' " }}>
                     @lang('all')
                 </a>
                 <a href="{{ url('quotes/status/draft') }}"
-                   class="btn {{ $status == 'draft' ? 'btn-primary' : 'btn-default' }}">
+                   class="btn {{ $status == 'draft' ? 'btn-primary' : 'btn-default' " }}>
                     @lang('draft')
                 </a>
                 <a href="{{ url('quotes/status/sent') }}"
-                   class="btn {{ $status == 'sent' ? 'btn-primary' : 'btn-default' }}">
+                   class="btn {{ $status == 'sent' ? 'btn-primary' : 'btn-default' " }}>
                     @lang('sent')
                 </a>
                 <a href="{{ url('quotes/status/viewed') }}"
-                   class="btn {{ $status == 'viewed' ? 'btn-primary' : 'btn-default' }}">
+                   class="btn {{ $status == 'viewed' ? 'btn-primary' : 'btn-default' " }}>
                     @lang('viewed')
                 </a>
                 <a href="{{ url('quotes/status/approved') }}"
-                   class="btn {{ $status == 'approved' ? 'btn-primary' : 'btn-default' }}">
+                   class="btn {{ $status == 'approved' ? 'btn-primary' : 'btn-default' " }}>
                     @lang('approved')
                 </a>
                 <a href="{{ url('quotes/status/rejected') }}"
-                   class="btn {{ $status == 'rejected' ? 'btn-primary' : 'btn-default' }}">
+                   class="btn {{ $status == 'rejected' ? 'btn-primary' : 'btn-default' " }}>
                     @lang('rejected')
                 </a>
                 <a href="{{ url('quotes/status/canceled') }}"
-                   class="btn {{ $status == 'canceled' ? 'btn-primary' : 'btn-default' }}">
+                   class="btn {{ $status == 'canceled' ? 'btn-primary' : 'btn-default' " }}>
                     @lang('canceled')
                 </a>
             </div>

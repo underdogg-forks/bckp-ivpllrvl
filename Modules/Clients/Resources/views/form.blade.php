@@ -1,7 +1,7 @@
 $client_active = $this->mdl_clients->form_value('client_active');
 $active = $client_active == 1 || !is_numeric($client_active) ? ' checked="checked"' : '';
 $itsCompany = $this->mdl_clients->form_value('client_company') || $this->mdl_clients->form_value('client_vat_id');
-if ($req_einvoicing) {
+@if($req_einvoicing) {
     // eInvoicing panel
     $nb_users = count($req_einvoicing->users);
     $me = $req_einvoicing->users[$_SESSION['user_id']]->show_table;
@@ -46,7 +46,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
         @include('layout.alerts')
 
-        <input class="hidden" name="is_update" type="hidden" value="{{ $this->mdl_clients->form_value('is_update') ? '1' : '0' }}">
+        <input class="hidden" name="is_update" type="hidden" value="{{ $this->mdl_clients->form_value('is_update') ? '1' : '0' " }}>
 
         <div class="row">
             <div class="col-xs-12 col-sm-6"><!-- personal -->
@@ -74,14 +74,14 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                                 @lang('client_surname_optional')
                             </label>
                             <input id="client_surname" name="client_surname" type="text" class="form-control"
-                                   value="{{ $this->mdl_clients->form_value('client_surname', true) }}">
+                                   value="{{ $this->mdl_clients->form_value('client_surname', true) " }}>
                         </div>
                         <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
                             <label for="client_company">@lang('client_company') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>
 
                             <div class="controls">
                                 <input id="client_company" name="client_company" type="text" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_company', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_company', true) " }}>
                             </div>
                         </div>
                         <div class="form-group no-margin">
@@ -112,11 +112,11 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                     <div class="panel-heading">
                         e-@lang('invoicing')
-                        <span class="{{ $xml_templates && $client_id ? 'pull-right' : 'hidden' }} toggle_einvoicing{{ $req_einvoicing->show_table ? ' btn btn-xs btn-default cursor-pointer alert-' . $user_toggle . '"
+                        <span class="{{ $xml_templates && $client_id  ? 'pull-right' : 'hidden' }} toggle_einvoicing{{ $req_einvoicing->show_table ? ' btn btn-xs btn-default cursor-pointer alert-' . $user_toggle . '"
                               data-toggle="collapse" data-target=".einvoice-user-check-lists"
-                              onclick="switch_fa_toggle(\'einvoice_users_check_fa_toggle\')' : '' }}">
-                            <i class="fa fa-{{ $nb ? $me ? 'ban' : 'warning' : 'check-square-o text-success' }}"></i>
-                            <span data-toggle="tooltip" data-placement="bottom" title="{{ '🗸 ' . ($nb_users - $nb) . '/' . $nb_users . ' ' . trans('user' . ($nb_users > 1 ? 's' : '')) }}">
+                              onclick="switch_fa_toggle(\'einvoice_users_check_fa_toggle\')' : '' " }}>
+                            <i class="fa fa-{{ $nb ? $me ? 'ban' : 'warning' : 'check-square-o text-success' " }}></i>
+                            <span data-toggle="tooltip" data-placement="bottom" title="{{ '🗸 ' . ($nb_users - $nb) . '/' . $nb_users . ' ' . trans('user' . ($nb_users > 1 ? 's' : '')) " }}>
                                 {{ ($nb ?: $nb_users) . ' ' . trans($ln) }}
                             </span>
                             <i id="einvoice_users_check_fa_toggle" class="fa fa-{{ $nb ? 'user' . ($me ? '' : 's') : 'file-code-o' }} fa-margin"></i>
@@ -125,7 +125,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                     <div class="panel-body">
 @if($xml_templates) {
-        if ($client_id) {
+        @if($client_id) {
             $this->layout->loadView('clients/partial_client_einvoicing');
         } else {
 
@@ -167,7 +167,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_address_1" id="client_address_1" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_address_1', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_address_1', true) " }}>
                             </div>
                         </div>
 
@@ -176,7 +176,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_address_2" id="client_address_2" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_address_2', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_address_2', true) " }}>
                             </div>
                         </div>
 
@@ -185,7 +185,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_city" id="client_city" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_city', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_city', true) " }}>
                             </div>
                         </div>
 
@@ -194,7 +194,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_state" id="client_state" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_state', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_state', true) " }}>
                             </div>
                         </div>
 
@@ -203,7 +203,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_zip" id="client_zip" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_zip', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_zip', true) " }}>
                             </div>
                         </div>
 
@@ -222,7 +222,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                             </div>
                         </div>
 @foreach($custom_fields as $custom_field) {
-    if ($custom_field->custom_field_location == 1) {
+    @if($custom_field->custom_field_location == 1) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
 }
@@ -255,7 +255,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_phone" id="client_phone" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_phone', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_phone', true) " }}>
                             </div>
                         </div>
 
@@ -264,7 +264,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_fax" id="client_fax" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_fax', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_fax', true) " }}>
                             </div>
                         </div>
 
@@ -273,7 +273,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_mobile" id="client_mobile" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_mobile', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_mobile', true) " }}>
                             </div>
                         </div>
 
@@ -282,7 +282,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_email" id="client_email" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_email', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_email', true) " }}>
                             </div>
                         </div>
 
@@ -291,12 +291,12 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_web" id="client_web" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_web', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_web', true) " }}>
                             </div>
                         </div>
 
 @foreach($custom_fields as $custom_field) {
-    if ($custom_field->custom_field_location == 2) {
+    @if($custom_field->custom_field_location == 2) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
 }
@@ -319,7 +319,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_vat_id" id="client_vat_id" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_vat_id', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_vat_id', true) " }}>
                             </div>
                         </div>
 
@@ -328,12 +328,12 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                             <div class="controls">
                                 <input type="text" name="client_tax_code" id="client_tax_code" class="form-control"
-                                       value="{{ $this->mdl_clients->form_value('client_tax_code', true) }}">
+                                       value="{{ $this->mdl_clients->form_value('client_tax_code', true) " }}>
                             </div>
                         </div>
 
 @foreach($custom_fields as $custom_field) {
-    if ($custom_field->custom_field_location == 4) {
+    @if($custom_field->custom_field_location == 4) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
 }
@@ -356,7 +356,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
                                         class="form-control simple-select" data-minimum-results-for-search="Infinity">
 @php $genders = [trans('gender_male'), trans('gender_female'), trans('gender_other')];
 $client_gender = $this->mdl_clients->form_value('client_gender');
-foreach ($genders as $key => $val)
+@foreach($genders as $key => $val)
                                     <option value=" {{ $key }}" @php
     check_select($key, $client_gender)>
                                         {{ $val }}
@@ -439,11 +439,11 @@ $bdate = $bdate && $bdate != '0000-00-00' ? date_from_mysql($bdate) : '';
 // End if sumex
 
 @php $default_custom = false;
-foreach ($custom_fields as $custom_field) {
-    if (!$default_custom && !$custom_field->custom_field_location) {
+@foreach($custom_fields as $custom_field) {
+    @if(!$default_custom && !$custom_field->custom_field_location) {
         $default_custom = true;
     }
-    if ($custom_field->custom_field_location == 3) {
+    @if($custom_field->custom_field_location == 3) {
         print_field($this->mdl_clients, $custom_field, $custom_values);
     }
 }
@@ -466,8 +466,8 @@ foreach ($custom_fields as $custom_field) {
                         <div class="row">
 @php
     $classes = ['control-label', 'controls', '', 'form-group col-xs-12 col-sm-6'];
-    foreach ($custom_fields as $custom_field) {
-        if (!$custom_field->custom_field_location) {
+    @foreach($custom_fields as $custom_field) {
+        @if(!$custom_field->custom_field_location) {
             // == 0
             print_field($this->mdl_clients, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
         }

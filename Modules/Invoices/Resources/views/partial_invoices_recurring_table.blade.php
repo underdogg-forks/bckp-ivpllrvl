@@ -19,13 +19,13 @@
         @foreach($recurring_invoices as $invoice)
         <tr>
             <td>
-                            <span class="label label-{{ $invoice->recur_status != 'active' ? 'default' : 'success' }}">
+                            <span class="label label-{{ $invoice->recur_status != 'active' ? 'default' : 'success' " }}>
                                 @php
                                     _trans($invoice->recur_status)
                             </span>
             </td>
             <td>
-                <a href="{{ url('invoices/view/' . $invoice->invoice_id) }}">
+                <a href="{{ url('invoices/view/' . $invoice->invoice_id) " }}>
                     {{ $invoice->invoice_number }}
                 </a>
             </td>
@@ -41,7 +41,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ url('invoices/recurring/stop/' . $invoice->invoice_recurring_id) }}">
+                            <a href="{{ url('invoices/recurring/stop/' . $invoice->invoice_recurring_id) " }}>
                                 <i class="fa fa-ban fa-margin"></i> @lang('stop')
                             </a>
                         </li>

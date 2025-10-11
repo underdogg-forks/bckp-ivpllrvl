@@ -36,7 +36,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ url('payments/form/' . $payment->payment_id) }}">
+                                <a href="{{ url('payments/form/' . $payment->payment_id) " }}>
                                     <i class="fa fa-edit fa-margin"></i>
                                     @lang('edit')
                                 </a>

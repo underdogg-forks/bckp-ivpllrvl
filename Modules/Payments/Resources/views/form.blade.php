@@ -12,7 +12,7 @@
             $('#payment_amount').val(amounts[invoice_identifier].replace("&nbsp;", " "));
             $('#payment_method_id').val(invoice_payment_methods[invoice_identifier]).trigger('change');
 
-            if (invoice_payment_methods[invoice_identifier] != 0) {
+            @if(invoice_payment_methods[invoice_identifier] != 0) {
                 $('.payment-method-wrapper').append("<input type='hidden' name='payment_method_id' id='payment-method-id-hidden' class='hidden' value='" + invoice_payment_methods[invoice_identifier] + "'>");
                 $('#payment_method_id').prop('disabled', true);
             } else {
@@ -28,11 +28,11 @@
     @csrf
 
     @if($payment_id)
-        <input type="hidden" name="payment_id" value="{{ $payment_id }}">
+        <input type="hidden" name="payment_id" value="{{ $payment_id " }}>
     @endif
 
     <div id="headerbar">
-        <h1 class="headerbar-title">@lang('payment_form') }}</h1>
+        <h1 class="headerbar-title">@lang('payment_form')</h1>
         @php $this->layout->loadView('layout/header_buttons', ['attribute_cancel' => 'onclick="window.location.href = `' . site_url('payments') . '`;"'])
     </div>
 
@@ -48,7 +48,7 @@
                 <select name="invoice_id" id="invoice_id" class="form-control simple-select" required>
                     @if(!$payment_id)
                         {
-                        foreach ($open_invoices as $invoice)
+                        @foreach($open_invoices as $invoice)
                         <option value="{{ $invoice->invoice_id }}"
                             @php
                                 check_select($this->mdl_payments->form_value('invoice_id'), $invoice->invoice_id)>
@@ -59,7 +59,7 @@
                             // End foreach
                         } else {
 
-                        <option value="{{ $payment->invoice_id }}">
+                        <option value="{{ $payment->invoice_id " }}>
                             {{ $payment->invoice_number . ' - ' . htmlsc(format_client($payment)) . ' - ' . format_currency($payment->invoice_balance) }}
                         </option>
                     @endif
@@ -103,7 +103,7 @@
 
 @if($this->mdl_payments->form_value('payment_method_id'))
                 <input type="hidden" name="payment_method_id" class="hidden"
-                       value="{{ $this->mdl_payments->form_value('payment_method_id') }}">
+                       value="{{ $this->mdl_payments->form_value('payment_method_id') " }}>
                 @endif
 
                 <select id="payment_method_id" name="payment_method_id"
@@ -130,7 +130,7 @@
         </div>
 
         @php $classes = ['col-xs-12 col-sm-2 text-right text-left-xs', 'col-xs-12 col-sm-6', 'control-label', 'form-group'];
-foreach ($custom_fields as $custom_field) {
+@foreach($custom_fields as $custom_field) {
     print_field($this->mdl_payments, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
 }
 

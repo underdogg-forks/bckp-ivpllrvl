@@ -44,7 +44,7 @@
                             </label>
                             <input type="number" name="settings[quotes_expire_after]" id="settings[quotes_expire_after]"
                                    class="form-control"
-                                   value="{{ get_setting('quotes_expire_after') }}">
+                                   value="{{ get_setting('quotes_expire_after') " }}>
                         </div>
 
                         <div class="form-group">
@@ -101,7 +101,7 @@
                                 @lang('quote_pre_password')
                             </label>
                             <input type="text" name="settings[quote_pre_password]" id="settings[quote_pre_password]"
-                                   class="form-control" value="{{ get_setting('quote_pre_password', '', true) }}">
+                                   class="form-control" value="{{ get_setting('quote_pre_password', '', true) " }}>
                         </div>
 
                     </div>

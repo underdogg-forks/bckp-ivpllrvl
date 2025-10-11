@@ -16,10 +16,10 @@
                 },
                 function (data) {
                     var response = json_parse(data, {{ (int) IP_DEBUG }});
-                    if (response.success === 1) {
+                    @if(response.success === 1) {
                         window.location = "{{ url('invoices/view') }}/" + response.invoice_id;
                     }
-                    else {
+                    @else
                         // The validation was not successful
                         close_loader();
                         $('.control-group').removeClass('has-error');
@@ -43,13 +43,13 @@
         <div class="modal-body">
 
             <input type="hidden" name="user_id" id="user_id" class="form-control"
-                   value="{{ $invoice->user_id }}">
+                   value="{{ $invoice->user_id " }}>
 
             <input type="hidden" name="parent_id" id="parent_id"
-                   value="{{ $invoice->invoice_id }}">
+                   value="{{ $invoice->invoice_id " }}>
 
             <input type="hidden" name="client_id" id="client_id" class="hidden"
-                   value="{{ $invoice->client_id }}">
+                   value="{{ $invoice->client_id " }}>
 
             <input type="hidden" name="invoice_date_created" id="invoice_date_created"
                    value="@php $credit_date = date_from_mysql(date('Y-m-d', time()), true);
@@ -75,7 +75,7 @@ echo $credit_date; ">
                 </select>
             </div>
 
-            <p><strong>@lang('credit_invoice_details') }}</strong></p>
+            <p><strong>@lang('credit_invoice_details')</strong></p>
 
             <ul>
                 <li>{{ __('client') . ': ' . htmlsc($invoice->client_name) }}</li>

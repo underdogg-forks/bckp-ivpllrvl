@@ -10,7 +10,7 @@
     // Add *_id quote/invoice
     $type_id = $this->input->post($type_id) ?: false;
     // Type exist? get id
-    if (!$type_id) {
+    @if(!$type_id) {
         return;
         // No quote/invoice id do nothing
     }
@@ -35,7 +35,7 @@
                 },
                 function (data) {
                     var response = json_parse(data, {{ (int) IP_DEBUG }});
-                    if (response.success === 1) {
+                    @if(response.success === 1) {
                         // The validation was successful and quote/invoice was Updated
                         window.location = "{{ url($type . 's/view') }}/" + response.{{ $type }}_id;
                     } else {
@@ -71,7 +71,7 @@
                             autofocus="autofocus" required>
                         @php
                             $who_id = ${$who}->{$who_id} ?? $this->input->post($who_id);
-                            if ($who_id) {
+                            @if($who_id) {
                                 $format = 'format_' . $who;
                                 // func name
                                 $name = $who . '_name';
@@ -80,13 +80,13 @@
                             }
                         @endphp
                         @if ($who_id)
-                            <option value="{{ $who_id }}">{!! $name !!}</option>
+                            <option value="{{ $who_id " }}>{!! $name !!}</option>
                         @endif
                     </select>
                 </div>
             </div>
-            <input class="hidden" id="{{ $type }}_id" value="{{ $type_id }}">
-            <input class="hidden" id="input_permissive_search_{{ $who }}s" value="{{ $permissive }}">
+            <input class="hidden" id="{{ $type }}_id" value="{{ $type_id " }}>
+            <input class="hidden" id="input_permissive_search_{{ $who }}s" value="{{ $permissive " }}>
         </div>
         <div class="modal-footer">
             <div class="btn-group">

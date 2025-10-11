@@ -17,6 +17,6 @@
 </style>
 <div>
     <p>{{ trans('ip.password_reset_email') }}</p>
-    <p><a href="{{ $resetlink }}">{{ $resetlink }}</a></p>
+    <p><a href="{{ $resetlink " }}>{{ $resetlink }}</a></p>
 </div>
 

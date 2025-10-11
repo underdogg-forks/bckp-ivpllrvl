@@ -4,7 +4,7 @@
 
         <h1 id="logo"><span>InvoicePlane</span></h1>
 
-        <form method="post" action="{{ url($this->uri->uri_string()) }}">
+        <form method="post" action="{{ url($this->uri->uri_string()) " }}>
 
             @csrf
 

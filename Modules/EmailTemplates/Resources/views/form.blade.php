@@ -13,7 +13,7 @@
         @include('layout.alerts')
 
         <input class="hidden" name="is_update" type="hidden"
-               value="{{ $this->mdl_email_templates->form_value('is_update') ? '1' : '0' }}">
+               value="{{ $this->mdl_email_templates->form_value('is_update') ? '1' : '0' " }}>
 
         <div class="row">
             <div class="col-xs-12 col-md-8 col-md-offset-2">
@@ -51,7 +51,7 @@
                     </label>
                     <input type="text" name="email_template_from_name" id="email_template_from_name"
                            class="form-control taggable"
-                           value="{{ $this->mdl_email_templates->form_value('email_template_from_name', true) }}">
+                           value="{{ $this->mdl_email_templates->form_value('email_template_from_name', true) " }}>
                 </div>
 
                 <div class="form-group">
@@ -60,19 +60,19 @@
                     </label>
                     <input type="text" name="email_template_from_email" id="email_template_from_email"
                            class="form-control taggable"
-                           value="{{ $this->mdl_email_templates->form_value('email_template_from_email', true) }}">
+                           value="{{ $this->mdl_email_templates->form_value('email_template_from_email', true) " }}>
                 </div>
 
                 <div class="form-group">
                     <label for="email_template_cc" class="control-label">@lang('cc')</label>
                     <input type="text" name="email_template_cc" id="email_template_cc" class="form-control taggable"
-                           value="{{ $this->mdl_email_templates->form_value('email_template_cc', true) }}">
+                           value="{{ $this->mdl_email_templates->form_value('email_template_cc', true) " }}>
                 </div>
 
                 <div class="form-group">
                     <label for="email_template_bcc" class="control-label">@lang('bcc'): </label>
                     <input type="text" name="email_template_bcc" id="email_template_bcc" class="form-control taggable"
-                           value="{{ $this->mdl_email_templates->form_value('email_template_bcc', true) }}">
+                           value="{{ $this->mdl_email_templates->form_value('email_template_bcc', true) " }}>
                 </div>
 
                 <div class="form-group">
@@ -81,7 +81,7 @@
                     </label>
                     <input type="text" name="email_template_subject" id="email_template_subject"
                            class="form-control taggable"
-                           value="{{ $this->mdl_email_templates->form_value('email_template_subject', true) }}">
+                           value="{{ $this->mdl_email_templates->form_value('email_template_subject', true) " }}>
                 </div>
 
                 <div class="form-group">
@@ -205,11 +205,11 @@
             // add show class to corresponding class
             $(".hidden-" + $(this).val()).addClass("show");
         });
-        if (email_template_type === "") {
+        @if(email_template_type === "") {
             $email_template_type_options.first().click();
         } else {
             $email_template_type_options.each(function () {
-                if ($(this).val() === email_template_type) {
+                @if($(this).val() === email_template_type) {
                     $(this).click();
                 }
             });
@@ -221,7 +221,7 @@
         // the invoice and quote selects as required
         var inputValue = $('input[type="radio"]:checked').attr("value");
 
-        if (inputValue === 'quote') {
+        @if(inputValue === 'quote') {
             $('#tags_invoice').prop('disabled', 'disabled');
             $('#tags_quote').prop('disabled', false);
         } else {
@@ -235,7 +235,7 @@
         $('input[type="radio"]').click(function () {
             var inputValue = $(this).attr("value");
 
-            if (inputValue === 'quote') {
+            @if(inputValue === 'quote') {
                 $('#tags_invoice').prop('disabled', 'disabled');
                 $('#tags_quote').prop('disabled', false);
             } else {

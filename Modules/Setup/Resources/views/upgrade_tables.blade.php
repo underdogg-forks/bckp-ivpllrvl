@@ -14,7 +14,7 @@
             @if($errors)
                 <p>
                     @php
-    @lang('setup_upgrade_message') }}
+    @lang('setup_upgrade_message')
                 </p>
 
                 @foreach($errors as $error)

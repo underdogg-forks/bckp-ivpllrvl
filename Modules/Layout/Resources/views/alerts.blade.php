@@ -18,7 +18,7 @@ $icons = ['info-circle', 'info-circle', 'exclamation-circle', 'warning'];
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <i class="fa fa-fw fa-lg fa-{{ $icons[$index] }}"></i>
+            <i class="fa fa-fw fa-lg fa-{{ $icons[$index] " }}></i>
             <span>{{ $this->session->flashdata('alert_' . $type) }}</span>
         </div>
     @endif

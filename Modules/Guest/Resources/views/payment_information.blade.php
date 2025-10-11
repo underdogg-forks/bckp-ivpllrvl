@@ -17,10 +17,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="NOINDEX,NOFOLLOW">
-    <meta name="_csrf" content="{{ $this->security->get_csrf_hash() }}">
-    <meta name="csrf_token_name" content="{{ config_item('csrf_token_name') }}">
-    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') }}">
-    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') }}">
+    <meta name="_csrf" content="{{ $this->security->get_csrf_hash() " }}>
+    <meta name="csrf_token_name" content="{{ config_item('csrf_token_name') " }}>
+    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') " }}>
+    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') " }}>
 
     <link rel="icon" href="@php _core_asset('img/favicon.png')" type="image/png">
 
@@ -32,10 +32,10 @@
     @endif
 
         <!--[if lt IE 9]>
-    <script src="{{ _core_asset('js/legacy.min.js') }}"></script>
+    <script src="{{ _core_asset('js/legacy.min.js') " }}></script>
     <![endif]-->
 
-    <script src="{{ _core_asset('js/dependencies.min.js') }}"></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') " }}></script>
 
 </head>
 <body>
@@ -49,7 +49,7 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a target="_blank" href="{{ url('guest/view/generate_invoice_pdf/' . $invoice->invoice_url_key) }}">
+                <a target="_blank" href="{{ url('guest/view/generate_invoice_pdf/' . $invoice->invoice_url_key) " }}>
                     <i class="fa fa-print"></i> @lang('download_pdf')
                 </a>
             </li>
@@ -65,7 +65,7 @@
 
             <br>
             @php $logo = invoice_logo();
-if ($logo)
+@if($logo)
 {$logo  <br><br>}
 @endif
 
@@ -96,17 +96,17 @@ if ($logo)
                                         <td>{{ __('invoice_date') }}</td>
                                         <td class="text-right">{{ date_from_mysql($invoice->invoice_date_created) }}</td>
                                     </tr>
-                                    <tr class="{{ $is_overdue ? 'overdue' : '' }}">
+                                    <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
                                         <td>{{ __('due_date') }}</td>
                                         <td class="text-right">
                                             {{ date_from_mysql($invoice->invoice_date_due) }}
                                         </td>
                                     </tr>
-                                    <tr class="{{ $is_overdue ? 'overdue' : '' }}">
+                                    <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
                                         <td>{{ __('total') }}</td>
                                         <td class="text-right">{{ format_currency($invoice->invoice_total) }}</td>
                                     </tr>
-                                    <tr class="{{ $is_overdue ? 'overdue' : '' }}">
+                                    <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
                                         <td>{{ __('balance') }}</td>
                                         <td class="text-right">{{ format_currency($invoice->invoice_balance) }}</td>
                                     </tr>
@@ -138,7 +138,7 @@ if ($logo)
             <ul class="list-group">
                 @foreach($gateways as $gateway)
                 <a class="list-group-item list-group-item-action"
-                   href="{{ url('guest/payment_information/form/' . $invoice->invoice_url_key . '/' . $gateway) }}">{{ ucwords(str_replace('_', ' ', $gateway)) }}</a>@endforeach
+                   href="{{ url('guest/payment_information/form/' . $invoice->invoice_url_key . '/' . $gateway) " }}>{{ ucwords(str_replace('_', ' ', $gateway)) }}</a>@endforeach
             </ul>@endforeach
         </div>
     </div>

@@ -16,13 +16,13 @@
                 </div>
 
                 <div class="panel-body">
-                    <form method="post" action="{{ url($this->uri->uri_string()) }}">
+                    <form method="post" action="{{ url($this->uri->uri_string()) " }}>
 
                         {{ _csrf_field() }}foreach ($files as $file) {
 
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="files[]" value="{{ $file }}">
+                                <input type="checkbox" name="files[]" value="{{ $file " }}>
                                 {{ $file }}
                             </label>
                         </div>

@@ -59,7 +59,7 @@
                                 @lang('invoices_due_after')
                             </label>
                             <input type="number" name="settings[invoices_due_after]" id="settings[invoices_due_after]"
-                                   class="form-control" value="{{ get_setting('invoices_due_after') }}">
+                                   class="form-control" value="{{ get_setting('invoices_due_after') " }}>
                         </div>
 
                         <div class="form-group">
@@ -135,7 +135,7 @@
                             </label>
                             <input type="text" name="settings[invoice_pre_password]" id="settings[invoice_pre_password]"
                                    class="form-control"
-                                   value="{{ get_setting('invoice_pre_password', '', true) }}">
+                                   value="{{ get_setting('invoice_pre_password', '', true) " }}>
                         </div>
 
                     </div>
@@ -161,7 +161,7 @@
                             @if(get_setting('invoice_logo'))
                             <br/>
                             <img class="personal_logo"
-                                 src="{{ url() }}uploads/{{ get_setting('invoice_logo') }}">
+                                 src="{{ url() }}uploads/{{ get_setting('invoice_logo') " }}>
                             <br>
                             {{ anchor('settings/remove_logo/invoice', trans('remove_logo')) }}<br/>@endforeach
                             <input type="file" name="invoice_logo" size="40" class="form-control"/>
@@ -349,7 +349,7 @@
                     </div>
                 </div>
 
-                <div class="row {{ $qr_code ? '' : 'hidden' }}">
+                <div class="row {{ $qr_code ? '' : 'hidden' " }}>
                     <div class="col-xs-12">
                         <p class="alert alert-info no-padding">
                             <i class="fa fa-info"></i>@lang('qr_code_settings_enable_hint_users')&nbsp;<i
@@ -358,7 +358,7 @@
                     </div>
                 </div>
 
-                <div class="row {{ $qr_code ? '' : 'hidden' }}">
+                <div class="row {{ $qr_code ? '' : 'hidden' " }}>
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group">
                             <label for="settings[qr_code_recipient]">
@@ -390,7 +390,7 @@
                     </div>
                 </div>
 
-                <div class="row {{ $qr_code ? '' : 'hidden' }}">
+                <div class="row {{ $qr_code ? '' : 'hidden' " }}>
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group">
                             <label for="settings[qr_code_bic]">
@@ -513,7 +513,7 @@
         </div>
         @php $sumex = get_setting('sumex');
 // Set in ipconfig OR is 1 (in db)
-if (SUMEX_SETTINGS || $sumex == '1') {
+@if(SUMEX_SETTINGS || $sumex == '1') {
 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -548,7 +548,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                 @php
                                     $slipTypes = ['esr9', 'esrRed'];
-                                    foreach ($slipTypes as $k => $v) {
+                                    @foreach($slipTypes as $k => $v) {
 
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_sliptype'), $k)>
@@ -566,7 +566,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     class="form-control simple-select">
                                 @php
                                     $roles = Modules\Core\Libraries\Sumex::ROLES;
-                                    foreach ($roles as $k => $v) {
+                                    @foreach($roles as $k => $v) {
 
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_role'), $k)>
@@ -582,7 +582,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     class="form-control simple-select" data-minimum-results-for-search="Infinity">
                                 @php
                                     $places = Modules\Core\Libraries\Sumex::PLACES;
-                                    foreach ($places as $k => $v) {
+                                    @foreach($places as $k => $v) {
 
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_place'), $k)>
@@ -598,7 +598,7 @@ if (SUMEX_SETTINGS || $sumex == '1') {
                                     class="form-control simple-select">
                                 @php
                                     $cantons = Modules\Core\Libraries\Sumex::CANTONS;
-                                    foreach ($cantons as $k => $v) {
+                                    @foreach($cantons as $k => $v) {
 
                                 <option value="{{ $k }}" @php
                                     check_select(get_setting('sumex_canton'), $k)>

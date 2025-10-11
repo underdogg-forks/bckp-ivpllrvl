@@ -15,7 +15,7 @@ $is_update = $this->mdl_families->form_value('is_update');
 
                 @include('layout.alerts')
 
-                <input class="hidden" name="is_update" type="hidden" value="{{ $is_update ? '1' : '0' }}">
+                <input class="hidden" name="is_update" type="hidden" value="{{ $is_update ? '1' : '0' " }}>
 
                 <div class="form-group">
                     <label for="family_name">

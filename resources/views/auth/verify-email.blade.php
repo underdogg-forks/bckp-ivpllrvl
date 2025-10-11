@@ -18,7 +18,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('verification.store') }}">
+            <form method="POST" action="{{ route('verification.store') " }}>
                 @csrf
                 <x-button type="primary" buttonType="submit" class="w-full">
                     {{ trans('ip.Resend Verification Email') }}
@@ -26,7 +26,7 @@
             </form>
 
             <div class="text-center mt-6">
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') " }}>
                     @csrf
                     <button type="submit" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">
                         {{ trans('ip.Log out') }}

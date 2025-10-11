@@ -48,7 +48,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
             $('#item_table .item').each(function () {
                 var row = {};
                 $(this).find('input,select,textarea').each(function () {
-                    if ($(this).is(':checkbox')) {
+                    @if($(this).is(':checkbox')) {
                         row[$(this).attr('name')] = $(this).is(':checked');
                     } else {
                         row[$(this).attr('name')] = $(this).val();
@@ -74,7 +74,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
                 },
                 function (data) {
                     var response = json_parse(data, {{ (int) IP_DEBUG }});
-                    if (response.success === 1) {
+                    @if(response.success === 1) {
                         window.location = "{{ url('quotes/view') }}/" + {{ $quote_id }};
                     } else {
                         $('#fullpage-loader').hide();
@@ -83,7 +83,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
                         var resp_errors = response.validation_errors,
                             all_resp_errors = '';
 
-                        if (typeof (resp_errors) == 'string') {
+                        @if(typeof (resp_errors) == 'string') {
                             all_resp_errors = resp_errors;
                         } else {
                             for (var key in resp_errors) {
@@ -102,7 +102,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
             var item_id = btn.data('item-id');
 
             // Just remove the row if no item ID is set (new row)
-            if (typeof item_id === 'undefined') {
+            @if(typeof item_id === 'undefined') {
                 $(this).parents('.item').remove();
                 check_items_tax_usages();
             } else {
@@ -111,7 +111,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
                     },
                     function (data) {
                         var response = json_parse(data, {{ (int) IP_DEBUG }});
-                        if (response.success === 1) {
+                        @if(response.success === 1) {
                             btn.parents('.item').remove();
                         } else {
                             btn.removeClass('btn-link').addClass('btn-danger').prop('disabled', true);
@@ -128,22 +128,22 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
         });
 
         $(document).ready(function () {
-            if ($('#quote_discount_percent').val().length > 0) {
+            @if($('#quote_discount_percent').val().length > 0) {
                 $('#quote_discount_amount').prop('disabled', true);
             }
-            if ($('#quote_discount_amount').val().length > 0) {
+            @if($('#quote_discount_amount').val().length > 0) {
                 $('#quote_discount_percent').prop('disabled', true);
             }
         });
         $('#quote_discount_amount').keyup(function () {
-            if (this.value.length > 0) {
+            @if(this.value.length > 0) {
                 $('#quote_discount_percent').prop('disabled', true);
             } else {
                 $('#quote_discount_percent').prop('disabled', false);
             }
         });
         $('#quote_discount_percent').keyup(function () {
-            if (this.value.length > 0) {
+            @if(this.value.length > 0) {
                 $('#quote_discount_amount').prop('disabled', true);
             } else {
                 $('#quote_discount_amount').prop('disabled', false);
@@ -183,8 +183,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
             helper: fixHelper,
             items: 'tbody',
         });
-        @endif
-    });
+        @endif);
 </script>
 
 {{ $modal_delete_quote;
@@ -193,7 +192,7 @@ echo $legacy_calculation ? $modal_add_quote_tax : '';
 ?>
 <div id="headerbar">
     <h1 class="headerbar-title">
-        <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing') }}: <?php
+        <span data-toggle="tooltip" data-placement="bottom" title="@lang('invoicing'): <?php
                                                                                           htmlspecialchars(PHP_EOL . format_user($quote->user_id)) }
                                                                                           }">
             {{ __('quote') . ' ' . ($quote->quote_number ? '#' . $quote->quote_number : trans('id') . ': ' . $quote->quote_id) }}
@@ -202,8 +201,8 @@ echo $legacy_calculation ? $modal_add_quote_tax : '';
 @if($change_user)
         <a data-toggle="tooltip" data-placement="bottom"
            title="{{ $edit_user_title }}"
-href="{{ url('users/form/' . $quote->user_id) }}">
-<i class="fa fa-xs fa-user text-{{ $my_class }}"></i>
+href="{{ url('users/form/' . $quote->user_id) " }}>
+<i class="fa fa-xs fa-user text-{{ $my_class " }}></i>
 <span class="hidden-xs">{!! $quote->user_name !!}</span>
 </a>
 @if($quote->quote_status_id == 1)
@@ -234,20 +233,20 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                 @endif
                 <li>
                     <a href="#" id="btn_generate_pdf"
-                       data-quote-id="{{ $quote_id }}">
+                       data-quote-id="{{ $quote_id " }}>
                         <i class="fa fa-print fa-margin"></i>
                         @lang('download_pdf')
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('mailer/quote/' . $quote->quote_id) }}">
+                    <a href="{{ url('mailer/quote/' . $quote->quote_id) " }}>
                         <i class="fa fa-send fa-margin"></i>
                         @lang('send_email')
                     </a>
                 </li>
                 <li>
                     <a href="#" id="btn_quote_to_invoice"
-                       data-quote-id="{{ $quote_id }}">
+                       data-quote-id="{{ $quote_id " }}>
                         <i class="fa fa-refresh fa-margin"></i>
                         @lang('quote_to_invoice')
                     </a>
@@ -255,7 +254,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                 <li>
                     <a href="#" id="btn_copy_quote"
                        data-quote-id="{{ $quote_id }}"
-                       data-client-id="{{ $quote->client_id }}">
+                       data-client-id="{{ $quote->client_id " }}>
                         <i class="fa fa-copy fa-margin"></i>
                         @lang('copy_quote')
                     </a>
@@ -287,7 +286,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                     <div class="col-xs-12 col-sm-6 col-md-5">
 
                         <h3>
-                            <a href="{{ url('clients/view/' . $quote->client_id) }}">
+                            <a href="{{ url('clients/view/' . $quote->client_id) " }}>
                                 {!! format_client($quote) !!}
                             </a>
                             @if($quote->quote_status_id == 1)
@@ -304,7 +303,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                             <hr>
                             @php
                                 }
-                                if ($quote->client_phone) {
+                                @if($quote->client_phone) {
 
                             <div>
                                 @lang('phone'):&nbsp;
@@ -312,7 +311,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                             </div>
                             @php
                                 }
-                                if ($quote->client_email) {
+                                @if($quote->client_email) {
 
                             <div>
                                 @lang('email'):&nbsp;
@@ -339,7 +338,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                             >
                                                 <i class="fa fa-file-code-o"></i>
                                                 {{ $einvoice->name;
-            if ($einvoice->user) {
+            @if($einvoice->user) {
 
                                                 <i class="fa fa-check-square-o text-success"></i>
         @else
@@ -353,7 +352,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                             </label>
                                         @endif
 
-                                        <label for="quote_number">@lang('quote') }} #</label>
+                                        <label for="quote_number">@lang('quote') #</label>
                                         <input type="text" id="quote_number" class="form-control"
                                                @if($quote->quote_number)
                                                    value="{{ $quote->quote_number }}"
@@ -382,7 +381,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                         <div class="input-group">
                                             <input name="quote_date_expires" id="quote_date_expires"
                                                    class="form-control datepicker"
-                                                   value="{{ date_from_mysql($quote->quote_date_expires) }}">
+                                                   value="{{ date_from_mysql($quote->quote_date_expires) " }}>
                                             <span class="input-group-addon">
                                             <i class="fa fa-calendar fa-fw"></i>
                                         </span>
@@ -419,7 +418,7 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                             <label for="quote-guest-url">@lang('guest_url')</label>
                                             <div class="input-group">
                                                 <input type="text" id="quote-guest-url" readonly class="form-control"
-                                                       value="{{ url('guest/view/quote/' . $quote->quote_url_key) }}">
+                                                       value="{{ url('guest/view/quote/' . $quote->quote_url_key) " }}>
                                                 <span class="input-group-addon to-clipboard cursor-pointer"
                                                       data-clipboard-target="#quote-guest-url">
                                             <i class="fa fa-clipboard fa-fw"></i>
@@ -430,11 +429,11 @@ href="{{ url('users/form/' . $quote->user_id) }}">
                                 </div>
                                 @php $default_custom = false;
 $classes = ['control-label', 'controls', '', 'col-xs-12 col-md-6'];
-foreach ($custom_fields as $custom_field) {
-    if (!$default_custom && !$custom_field->custom_field_location) {
+@foreach($custom_fields as $custom_field) {
+    @if(!$default_custom && !$custom_field->custom_field_location) {
         $default_custom = true;
     }
-    if ($custom_field->custom_field_location == 1) {
+    @if($custom_field->custom_field_location == 1) {
         print_field($this->mdl_quotes, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
     }
 }
@@ -481,8 +480,8 @@ foreach ($custom_fields as $custom_field) {
                                 <div class="row">
                                     @php
                                         $classes = ['control-label', 'controls', '', 'form-group col-xs-12 col-sm-6'];
-                                        foreach ($custom_fields as $custom_field) {
-                                            if (!$custom_field->custom_field_location) {
+                                        @foreach($custom_fields as $custom_field) {
+                                            @if(!$custom_field->custom_field_location) {
                                                 // == 0
                                                 print_field($this->mdl_quotes, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
                                             }

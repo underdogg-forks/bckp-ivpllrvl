@@ -3,7 +3,7 @@
     <h1 class="headerbar-title">@lang('payment_methods')</h1>
 
     <div class="headerbar-item pull-right">
-        <a class="btn btn-sm btn-primary" href="{{ url('payment_methods/form') }}">
+        <a class="btn btn-sm btn-primary" href="{{ url('payment_methods/form') " }}>
             <i class="fa fa-plus"></i> @lang('new')
         </a>
     </div>
@@ -41,7 +41,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ url('payment_methods/form/' . $payment_method->payment_method_id) }}">
+                                <a href="{{ url('payment_methods/form/' . $payment_method->payment_method_id) " }}>
                                     <i class="fa fa-edit fa-margin"></i>
                                     @lang('edit')
                                 </a>

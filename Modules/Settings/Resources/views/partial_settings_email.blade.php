@@ -10,7 +10,7 @@
         function toggle_smtp_settings() {
             email_send_method = $('#email_send_method').val();
 
-            if (email_send_method === 'smtp') {
+            @if(email_send_method === 'smtp') {
                 $('#div-smtp-settings').show();
             } else {
                 $('#div-smtp-settings').hide();
@@ -76,7 +76,7 @@
                                 <input type="text" name="settings[smtp_server_address]"
                                        id="settings[smtp_server_address]"
                                        class="form-control"
-                                       value="{{ get_setting('smtp_server_address', '', true) }}">
+                                       value="{{ get_setting('smtp_server_address', '', true) " }}>
                             </div>
 
                             <div class="form-group">
@@ -85,7 +85,7 @@
                                 </label>
                                 <input type="email" name="settings[smtp_mail_from]" id="settings[smtp_mail_from]"
                                        class="form-control"
-                                       value="{{ get_setting('smtp_mail_from', '', true) }}">
+                                       value="{{ get_setting('smtp_mail_from', '', true) " }}>
                             </div>
 
                             <div class="form-group">
@@ -110,7 +110,7 @@
                                 </label>
                                 <input type="text" name="settings[smtp_username]" id="settings[smtp_username]"
                                        class="form-control"
-                                       value="{{ get_setting('smtp_username', '', true) }}">
+                                       value="{{ get_setting('smtp_username', '', true) " }}>
                             </div>
 
                             <div class="form-group">
@@ -130,7 +130,7 @@
                                     </label>
                                     <input type="number" name="settings[smtp_port]" id="settings[smtp_port]"
                                            class="form-control"
-                                           value="{{ get_setting('smtp_port') }}">
+                                           value="{{ get_setting('smtp_port') " }}>
                                 </div>
                             </div>
 

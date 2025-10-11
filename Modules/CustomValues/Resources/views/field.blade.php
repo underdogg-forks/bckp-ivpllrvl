@@ -8,10 +8,10 @@
     <h1 class="headerbar-title">@lang('custom_values')</h1>
     <div class="headerbar-item pull-right">
         <div class="btn-group btn-group-sm">
-            <a class="btn btn-default" href="{{ url('custom_values') }}">
+            <a class="btn btn-default" href="{{ url('custom_values') " }}>
                 <i class="fa fa-arrow-left"></i> @lang('back')
             </a>
-            <a class="btn btn-primary" href="{{ url('custom_values/create/' . $id) }}">
+            <a class="btn btn-primary" href="{{ url('custom_values/create/' . $id) " }}>
                 <i class="fa fa-plus"></i> @lang('new')
             </a>
         </div>

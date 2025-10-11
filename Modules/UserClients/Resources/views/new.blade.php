@@ -6,7 +6,7 @@
         });
 
         function all_client_check() {
-            if ($('#user_all_clients').is(':checked')) {
+            @if($('#user_all_clients').is(':checked')) {
                 $('#list_client').hide();
             } else {
                 $('#list_client').show();

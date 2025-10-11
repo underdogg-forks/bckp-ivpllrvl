@@ -6,7 +6,7 @@
             <div class="input-group input-group-sm">
                 <input id="quote_discount_amount" name="quote_discount_amount"
                        class="discount-option form-control amount" aria-label="@lang('global_discount')"
-                       value="{{ format_amount($quote->quote_discount_amount != 0 ? $quote->quote_discount_amount : '') }}">
+                       value="{{ format_amount($quote->quote_discount_amount != 0 ? $quote->quote_discount_amount : '') " }}>
                 <span class="input-group-addon">{{ get_setting('currency_symbol') }}</span>
             </div>
         </div>

@@ -16,8 +16,8 @@
         </div>
     </div>
     @if ($disabled)
-        <input type="hidden" name="custom_field_table" value="{{ $custom_field_table }}">
-        <input type="hidden" name="custom_field_type" value="{{ $custom_field_type }}">
+        <input type="hidden" name="custom_field_table" value="{{ $custom_field_table " }}>
+        <input type="hidden" name="custom_field_type" value="{{ $custom_field_type " }}>
     @endif
     <div id="content" class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
@@ -68,7 +68,7 @@
             <div class="form-group">
                 <label for="custom_field_order">{{ __('order') }}</label>
                 <input type="number" name="custom_field_order" id="custom_field_order" class="form-control"
-                       value="{{ $this->mdl_custom_fields->form_value('custom_field_order', true) }}">
+                       value="{{ $this->mdl_custom_fields->form_value('custom_field_order', true) " }}>
             </div>
         </div>
 
@@ -84,7 +84,7 @@
                 var opt = $("<option>");
                 opt.attr("value", pos);
                 opt.text(jsonPositions[key][pos]);
-                if (selKey == pos) {
+                @if(selKey == pos) {
                     opt.attr("selected", "selected");
                 }
                 $("#custom_field_location").append(opt);

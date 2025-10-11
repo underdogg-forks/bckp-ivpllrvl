@@ -3,7 +3,7 @@
     <h1 class="headerbar-title">@lang('import_data')</h1>
 
     <div class="headerbar-item pull-right">
-        <a class="btn btn-sm btn-primary" href="{{ url('import/form') }}">
+        <a class="btn btn-sm btn-primary" href="{{ url('import/form') " }}>
             <i class="fa fa-plus"></i> @lang('new')
         </a>
     </div>

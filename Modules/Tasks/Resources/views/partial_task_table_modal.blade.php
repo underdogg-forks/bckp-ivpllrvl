@@ -15,7 +15,7 @@
         <tr class="task-row">
             <td class="text-left">
                 <input type="checkbox" class="modal-task-id" name="task_ids[]"
-                       id="task-id-{{ $task->task_id }}" value="{{ $task->task_id }}">
+                       id="task-id-{{ $task->task_id }}" value="{{ $task->task_id " }}>
             </td>
             <td nowrap class="text-left">
                 <b>{{ isset($task->project_name) ? htmlsc($task->project_name) : '' }}</b>

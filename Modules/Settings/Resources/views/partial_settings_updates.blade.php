@@ -8,7 +8,7 @@
             var curr = currend;
             // set the version to check to the passed variable
             var check = checked;
-            if (curr === check) {
+            @if(curr === check) {
                 return 0;
             }
             var curr_components = curr.split(".");
@@ -17,18 +17,18 @@
             var len = Math.min(curr_components.length, check_components.length);
             for (var i = 0; i < len; i++) {
                 // curr bigger than check
-                if (parseInt(curr_components[i]) > parseInt(check_components[i])) {
+                @if(parseInt(curr_components[i]) > parseInt(check_components[i])) {
                     return 0;
                 }
                 // check bigger than curr
-                if (parseInt(curr_components[i]) < parseInt(check_components[i])) {
+                @if(parseInt(curr_components[i]) < parseInt(check_components[i])) {
                     return 1;
                 }
             }
-            if (curr_components.length > check_components.length) {
+            @if(curr_components.length > check_components.length) {
                 return 0;
             }
-            if (curr_components.length < check_components.length) {
+            @if(curr_components.length < check_components.length) {
                 return 1;
             }
             return 0;
@@ -52,7 +52,7 @@
                 // Compare each versions and replace the placeholder with a download button
                 // or info label after 2 seconds
                 setTimeout(function () {
-                    if (update(ip_version, updatecheck)) {
+                    @if(update(ip_version, updatecheck)) {
                         $('#updatecheck-updates-available').attr("href", "https://www.invoiceplane.com/downloads")
                         $('#updatecheck-loading').addClass('hidden');
                         $('#updatecheck-updates-available').removeClass('hidden');
@@ -77,7 +77,7 @@
                         // Compare each versions and replace the placeholder with a download button
                         // or info label after 2 seconds
                         setTimeout(function () {
-                            if (update(ip_version, updatecheck)) {
+                            @if(update(ip_version, updatecheck)) {
                                 $('#updatecheck-updates-available').attr("href", "https://www.invoiceplane.org/downloads")
                                 $('#updatecheck-loading').addClass('hidden');
                                 $('#updatecheck-updates-available').removeClass('hidden');
@@ -115,7 +115,7 @@
                         var ipnews = '<div class="alert alert-' + news.type + '">';
                         ipnews += '<b>' + news.title + '</b><br/>';
                         ipnews += news.text + '<br/>';
-                        if (news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
+                        @if(news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
                         ipnews += '</div>';
                         ipnews = ipnews.replace(/\n/g, "<br />");
                         $('#ipnews-container').append(ipnews);
@@ -138,7 +138,7 @@
                                 var ipnews = '<div class="alert alert-' + news.type + '">';
                                 ipnews += '<b>' + news.title + '</b><br/>';
                                 ipnews += news.text + '<br/>';
-                                if (news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
+                                @if(news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
                                 ipnews += '</div>';
                                 ipnews = ipnews.replace(/\n/g, "<br />");
                                 $('#ipnews-container').append(ipnews);

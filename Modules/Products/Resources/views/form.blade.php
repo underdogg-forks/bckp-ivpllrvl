@@ -37,7 +37,7 @@
                                 @lang('product_sku')
                             </label>
                             <input type="text" name="product_sku" id="product_sku" class="form-control"
-                                   value="{{ $this->mdl_products->form_value('product_sku', true) }}">
+                                   value="{{ $this->mdl_products->form_value('product_sku', true) " }}>
                         </div>
                         <div class="form-group">
                             <label for="product_name">
@@ -106,7 +106,7 @@
                                 @lang('provider_name')
                             </label>
                             <input type="text" name="provider_name" id="provider_name" class="form-control"
-                                   value="{{ $this->mdl_products->form_value('provider_name', true) }}">
+                                   value="{{ $this->mdl_products->form_value('provider_name', true) " }}>
                         </div>
                         <div class="form-group">
                             <label for="purchase_price">
@@ -114,7 +114,7 @@
                             </label>
                             <div class="input-group has-feedback">
                                 <input type="text" name="purchase_price" id="purchase_price" class="form-control"
-                                       value="{{ format_amount($this->mdl_products->form_value('purchase_price')) }}">
+                                       value="{{ format_amount($this->mdl_products->form_value('purchase_price')) " }}>
                                 <span class="input-group-addon">{{ get_setting('currency_symbol') }}</span>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                                     @lang('product_tariff')
                                 </label>
                                 <input type="text" name="product_tariff" id="product_tariff" class="form-control"
-                                       value="{{ $this->mdl_products->form_value('product_tariff', true) }}">
+                                       value="{{ $this->mdl_products->form_value('product_tariff', true) " }}>
                             </div>
                         </div>
                     </div>

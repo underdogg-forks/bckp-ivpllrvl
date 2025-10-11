@@ -33,7 +33,7 @@
             },
             function (data) {
                 var response = json_parse(data, {{ (int) IP_DEBUG }});
-                if (response.success === 1) {
+                @if(response.success === 1) {
                     window.location = "{{ url('invoices/view') }}/" + response.invoice_id;
                 } else {
                     // The validation was not successful
@@ -60,9 +60,9 @@
         <div class="modal-body">
 
             <input type="hidden" name="client_id" id="client_id"
-                   value="{{ $quote->client_id }}">
+                   value="{{ $quote->client_id " }}>
             <input type="hidden" name="user_id" id="user_id"
-                   value="{{ $quote->user_id }}">
+                   value="{{ $quote->user_id " }}>
 
             <div class="form-group has-feedback">
                 <label for="invoice_date_created">

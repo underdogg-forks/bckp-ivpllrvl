@@ -58,19 +58,19 @@
                     <p class="small">@lang('identifier_format_template_tags_instructions')</p>
 
                     <select id="tags_client" class="tag-select form-control">
-                        <option value="{{{id}}}">
+                        <option value="{{{id}" }}>
                             @lang('id')
                         </option>
-                        <option value="{{{year}}}">
+                        <option value="{{{year}" }}>
                             @lang('current_year')
                         </option>
-                        <option value="{{{yy}}}">
+                        <option value="{{{yy}" }}>
                             @lang('current_yy')
                         </option>
-                        <option value="{{{month}}}">
+                        <option value="{{{month}" }}>
                             @lang('current_month')
                         </option>
-                        <option value="{{{day}}}">
+                        <option value="{{{day}" }}>
                             @lang('current_day')
                         </option>
                     </select>

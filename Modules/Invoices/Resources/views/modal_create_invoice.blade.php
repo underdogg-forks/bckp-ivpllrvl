@@ -26,11 +26,11 @@
                             },
                             function (data) {
                                 var response = json_parse(data, {{ (int) IP_DEBUG }});
-                                if (response.success === 1) {
+                                @if(response.success === 1) {
                                     // The validation was successful and invoice was created
                                     window.location = "{{ url('invoices/view') }}/" + response.invoice_id;
                                 }
-                                else {
+                                @else
                                     // The validation was not successful
                                     $('.control-group').removeClass('has-error');
                                     for (var key in response.validation_errors) {
@@ -53,9 +53,9 @@
                     <div class="modal-body">
 
                         <input class="hidden" id="payment_method_id"
-                               value="{{ get_setting('invoice_default_payment_method') }}">
+                               value="{{ get_setting('invoice_default_payment_method') " }}>
                         <input class="hidden" id="input_permissive_search_clients"
-                               value="{{ get_setting('enable_permissive_search_clients') }}">
+                               value="{{ get_setting('enable_permissive_search_clients') " }}>
 
                         <div class="form-group has-feedback">
                             <label for="create_invoice_client_id">@lang('client')</label>
@@ -66,7 +66,7 @@
                                 <select name="client_id" id="create_invoice_client_id" class="client-id-select form-control"
                                         autofocus="autofocus" required>
             @if(!empty($client))
-        <option value="{{ $client->client_id }}">{!! format_client($client, false) !!}</option>
+        <option value="{{ $client->client_id " }}>{!! format_client($client, false) !!}</option>
         @endif
     </select>
     </div>

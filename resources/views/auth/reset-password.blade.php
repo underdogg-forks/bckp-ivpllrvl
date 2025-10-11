@@ -9,9 +9,9 @@
                 </p>
             </div>
 
-            <form method="POST" action="{{ route('password.store') }}">
+            <form method="POST" action="{{ route('password.store') " }}>
                 @csrf
-                <input type="hidden" name="token" value="{{ request()->route('token') }}">
+                <input type="hidden" name="token" value="{{ request()->route('token') " }}>
 
                 <!-- Email Input -->
                 <div class="mb-4">

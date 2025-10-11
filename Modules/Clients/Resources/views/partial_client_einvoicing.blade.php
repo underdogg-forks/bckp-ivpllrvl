@@ -16,7 +16,7 @@
         function toggle_einvoicing() {
             const start_einvoicing = $client_start_einvoicing.val();
 
-            if (start_einvoicing === '1') {
+            @if(start_einvoicing === '1') {
                 $toggle_einvoicing.show();
             } else {
                 $toggle_einvoicing.hide();
@@ -47,7 +47,7 @@
 // hint (And little tweak for .help-block)
 $client_einvoicing_version = $this->mdl_clients->form_value('client_einvoicing_version');
 // Check logged user e-invoice fields (show_table 0 = ok, 1 = no)
-if ($req_einvoicing->users[$_SESSION['user_id']]->show_table > 0) {
+@if($req_einvoicing->users[$_SESSION['user_id']]->show_table > 0) {
     $disabled = ' disabled="disabled"' }}
             <p class=" help-block">@lang('einvoicing_start_hint')</p>
 @endif
@@ -85,8 +85,8 @@ $keys = explode(' ', $base);
 $lang = explode(' ', strtr($base, ['_1' => '']));
 // Translation vars name
 // UsersController loop
-foreach ($req_einvoicing->users as $user_id => $user) {
-    if ($user->show_table) {
+@foreach($req_einvoicing->users as $user_id => $user) {
+    @if($user->show_table) {
         $title_tip = ' data-toggle="tooltip" data-placement="bottom" title="' . trans('edit');
         // Tooltip helper ! Need add: . '"'
         $user_link = anchor('/users/form/' . $user_id, trans('user'), $title_tip . ' ' . htmlsc($user->user_name) . '"');
@@ -96,7 +96,7 @@ foreach ($req_einvoicing->users as $user_id => $user) {
 
         <!-- Check if mandatory eInvoicing fields are empty -->
     <div
-        class="col-xs-12 col-md-6 einvoice-user-check-lists collapse{{ $open ? ' in" aria-expanded="true' : '" aria-expanded="false' }}">
+        class="col-xs-12 col-md-6 einvoice-user-check-lists collapse{{ $open ? ' in" aria-expanded="true' : '" aria-expanded="false' " }}>
         <div class="form-group" data-toggle="tooltip" data-placement="top" title="{!! $user->user_name !!}">
             <div class="table-responsive">
                 <table class="table table-hover table-condensed table-bordered no-margin">
@@ -119,11 +119,11 @@ foreach ($req_einvoicing->users as $user_id => $user) {
                     <tbody>
                     @php
                         // Loop on required keys
-                        foreach ($keys as $l => $key) {
+                        @foreach($keys as $l => $key) {
                             // tr_show_* (attr name)
                             $tr_show_key = 'tr_show_' . $key;
                             // Show it in Errors (1)
-                            if ($user->{$tr_show_key}) {
+                            @if($user->{$tr_show_key}) {
                                 // Prepare some stuff
                                 $c_icon = '<i class="' . $class_checks[$req_einvoicing->clients[$client_id]->{$key}] . '"></i>';
                                 $u_icon = '<i class="' . $class_checks[$user->{$key}] . '"></i>';

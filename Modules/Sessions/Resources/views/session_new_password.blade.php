@@ -42,7 +42,7 @@
 
         <div class="row">@include('layout.alerts')</div>
 
-        <form method="post" action="{{ url('sessions/passwordreset') }}">
+        <form method="post" action="{{ url('sessions/passwordreset') " }}>
 
             @csrf
 

@@ -10,19 +10,19 @@
     <div class="headerbar-item pull-right">
         <div class="btn-group btn-group-sm index-options">
             <a href="{{ url('guest/invoices/status/open') }}"
-               class="btn {{ $status == 'open' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'open' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('open')
             </a>
             <a href="{{ url('guest/invoices/status/overdue') }}"
-               class="btn {{ $status == 'overdue' ? 'btn-primary' : 'btn-default' }}">
+               class="btn {{ $status == 'overdue' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('overdue')
             </a>
             <a href="{{ url('guest/invoices/status/paid') }}"
-               class="btn  {{ $status == 'paid' ? 'btn-primary' : 'btn-default' }}">
+               class="btn  {{ $status == 'paid' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('paid')
             </a>
             <a href="{{ url('guest/invoices/status/all') }}"
-               class="btn  {{ $status == 'all' ? 'btn-primary' : 'btn-default' }}">
+               class="btn  {{ $status == 'all' ? 'btn-primary' : 'btn-default' " }}>
                 @lang('all')
             </a>
         </div>

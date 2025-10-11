@@ -37,7 +37,7 @@
                     </a>@endforeach
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ url('custom_fields/form/' . $custom_field->custom_field_id) }}">
+                            <a href="{{ url('custom_fields/form/' . $custom_field->custom_field_id) " }}>
                                 <i class="fa fa-edit fa-margin"></i> @lang('edit')
                             </a>
                         </li>

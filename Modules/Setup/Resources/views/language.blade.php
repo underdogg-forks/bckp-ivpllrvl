@@ -20,7 +20,7 @@
 
             <br/>
 
-            <input class="btn btn-success" type="submit" name="btn_continue" value="@lang('continue') }}">
+            <input class="btn btn-success" type="submit" name="btn_continue" value="@lang('continue')">
 
         </form>
 

@@ -13,7 +13,7 @@
                 product_ids.push(parseInt($(this).val()));
             });
             // No Check No post
-            if (!product_ids.length) return; // todo: why not animate checkboxes
+            @if(!product_ids.length) return; // todo: why not animate checkboxes
 
             $.post("{{ url('products/ajax/process_product_selections') }}", {
                 product_ids: product_ids
@@ -21,9 +21,9 @@
                 var items = json_parse(data, {{ (int) IP_DEBUG }});
                 for (var key in items) {
                     // Set default tax rate id if empty
-                    if (!items[key].tax_rate_id) items[key].tax_rate_id = '{{ $default_item_tax_rate }}';
+                    @if(!items[key].tax_rate_id) items[key].tax_rate_id = '{{ $default_item_tax_rate }}';
 
-                    if ($('#item_table .item:last input[name=item_name]').val() !== '') {
+                    @if($('#item_table .item:last input[name=item_name]').val() !== '') {
                         $('#new_row').clone().appendTo('#item_table').removeAttr('id').addClass('item').show();
                     }
 
@@ -48,7 +48,7 @@
         // Add on rows a click event to Toggle they checkbox
         function addClickTrToggleCheck() {
             $('#products_table tr').click(function (event) {
-                if (event.target.type !== 'checkbox') {
+                @if(event.target.type !== 'checkbox') {
                     $(':checkbox', this).trigger('click');
                 }
             });
@@ -93,11 +93,11 @@
             var lookup_url = "{{ url('products/ajax/modal_product_lookups') }}/";
             lookup_url += Math.floor(Math.random() * 1000) + '/?';
 
-            if (filter_family) {
+            @if(filter_family) {
                 lookup_url += "&filter_family=" + filter_family;
             }
 
-            if (filter_product) {
+            @if(filter_product) {
                 lookup_url += "&filter_product=" + filter_product;
             }
 
@@ -109,7 +109,7 @@
 
         // Bind enter to product search if search field is focused
         $(document).keypress(function (e) {
-            if (e.which === 13 && $('#filter_product').is(':focus')) {
+            @if(e.which === 13 && $('#filter_product').is(':focus')) {
                 $('#filter-button').click();
                 return false;
             }
@@ -143,7 +143,7 @@
             <div class="form-group">
                 <input type="text" class="form-control" name="filter_product" id="filter_product"
                        placeholder="@lang('product_name')"
-                       value="{{ $filter_product }}">
+                       value="{{ $filter_product " }}>
             </div>
             <button type="button" id="filter-button"
                     class="btn btn-default">@lang('search_product')</button>

@@ -22,7 +22,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{{ url('custom_values/edit/' . $element->custom_values_id) }}">
+                        <a href="{{ url('custom_values/edit/' . $element->custom_values_id) " }}>
                             <i class="fa fa-edit fa-margin"></i> @lang('edit')
                         </a>
                     </li>
@@ -30,7 +30,7 @@
                         <form action="{{ url('custom_values/delete/' . $element->custom_values_id) }}"
                               method="POST">
                             @csrf
-                            <input type="hidden" name="custom_field_id" value="{{ $id }}">
+                            <input type="hidden" name="custom_field_id" value="{{ $id " }}>
                             <button type="submit" class="dropdown-button"
                                     onclick="return confirm(`@lang('delete_record_warning')`);">
                                 <i class="fa fa-trash-o fa-margin"></i> @lang('delete')

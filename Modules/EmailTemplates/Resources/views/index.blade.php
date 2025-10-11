@@ -3,7 +3,7 @@
     <h1 class="headerbar-title">@lang('email_templates')</h1>
 
     <div class="headerbar-item pull-right">
-        <a class="btn btn-sm btn-primary" href="{{ url('email_templates/form') }}">
+        <a class="btn btn-sm btn-primary" href="{{ url('email_templates/form') " }}>
             <i class="fa fa-plus"></i> @lang('new')
         </a>
     </div>
@@ -38,7 +38,7 @@
                             class="fa fa-cog"></i> @lang('options')</a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ url('email_templates/form/' . $email_template->email_template_id) }}">
+                            <a href="{{ url('email_templates/form/' . $email_template->email_template_id) " }}>
                                 <i class="fa fa-edit fa-margin"></i> @lang('edit')
                             </a>
                         </li>

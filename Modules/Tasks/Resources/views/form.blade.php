@@ -1,4 +1,4 @@
-if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4) {
+@if($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4) {
 <script type="text/javascript">
     $(document).ready(function () {
         $('#task-form').find(':input').prop('disabled', 'disabled');
@@ -94,7 +94,7 @@ if ($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('tas
                     <select name="task_status" id="task_status"
                             class="form-control simple-select" data-minimum-results-for-search="Infinity">
                         @foreach($task_statuses as $key => $status) {
-    if ($this->mdl_tasks->form_value('task_status') != 4 && $key == 4) {
+    @if($this->mdl_tasks->form_value('task_status') != 4 && $key == 4) {
         continue;
     }
 

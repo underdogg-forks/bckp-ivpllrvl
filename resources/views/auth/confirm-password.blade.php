@@ -10,7 +10,7 @@
                 </p>
             </div>
 
-            <form method="POST" action="{{ route('password.confirm') }}">
+            <form method="POST" action="{{ route('password.confirm') " }}>
                 @csrf
                 <!-- Password Input -->
                 <div class="mb-4">

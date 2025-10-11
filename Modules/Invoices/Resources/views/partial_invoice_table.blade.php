@@ -18,9 +18,9 @@
         @php $invoice_idx = 1;
 $invoice_count = count($invoices);
 $invoice_list_split = $invoice_count > 3 ? $invoice_count / 2 : 9999;
-foreach ($invoices as $invoice) {
+@foreach($invoices as $invoice) {
     // Disable read-only if not applicable
-    if ($this->config->item('disable_read_only') == true) {
+    @if($this->config->item('disable_read_only') == true) {
         $invoice->is_read_only = 0;
     }
     // Convert the dropdown menu to a dropup if invoice is after the invoice split
@@ -28,16 +28,16 @@ foreach ($invoices as $invoice) {
 
         <tr>
             <td>
-                    <span class="label {{ $invoice_statuses[$invoice->invoice_status_id]['class'] }}">
+                    <span class="label {{ $invoice_statuses[$invoice->invoice_status_id]['class'] " }}>
                         {{ $invoice_statuses[$invoice->invoice_status_id]['label'];
-    if ($invoice->invoice_sign == '-1') {
+    @if($invoice->invoice_sign == '-1') {
         &nbsp;<i class="fa fa-credit-invoice" title="@php
-        @lang('credit_invoice') }}"></i>@php
+        @lang('credit_invoice')"></i>@php
                             }
-                            if ($invoice->is_read_only) {
+                            @if($invoice->is_read_only) {
                         &nbsp;<i class="fa fa-read-only" title="@lang('read_only')"></i>@php
                             }
-                            if ($invoice->invoice_is_recurring) {
+                            @if($invoice->invoice_is_recurring) {
                         &nbsp;<i class="fa fa-refresh" title="@lang('recurring')"></i>@endif
                     </span>
             </td>
@@ -54,7 +54,7 @@ foreach ($invoices as $invoice) {
             </td>
 
             <td>
-                    <span class="{{ $invoice->is_overdue ? 'font-overdue' : '' }}">
+                    <span class="{{ $invoice->is_overdue ? 'font-overdue' : '' " }}>
                         {{ date_from_mysql($invoice->invoice_date_due) }}
                     </span>
             </td>
@@ -66,7 +66,7 @@ foreach ($invoices as $invoice) {
                 </a>
             </td>
 
-            <td class="amount {{ $invoice->invoice_sign == '-1' ? 'text-danger' : '' }}">
+            <td class="amount {{ $invoice->invoice_sign == '-1' ? 'text-danger' : '' " }}>
                 {{ format_currency($invoice->invoice_total) }}
             </td>
 
@@ -75,14 +75,14 @@ foreach ($invoices as $invoice) {
             </td>
 
             <td>
-                <div class="options btn-group{{ $dropup ? ' dropup' : '' }}">
+                <div class="options btn-group{{ $dropup ? ' dropup' : '' " }}>
                     <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-cog"></i> @lang('options')
                     </a>
                     <ul class="dropdown-menu">
                         @if($invoice->is_read_only != 1)
                         <li>
-                            <a href="{{ url('invoices/view/' . $invoice->invoice_id) }}">
+                            <a href="{{ url('invoices/view/' . $invoice->invoice_id) " }}>
                                 <i class="fa fa-edit fa-margin"></i> @lang('edit')
                             </a>
                         </li>
@@ -94,7 +94,7 @@ foreach ($invoices as $invoice) {
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('mailer/invoice/' . $invoice->invoice_id) }}">
+                            <a href="{{ url('mailer/invoice/' . $invoice->invoice_id) " }}>
                                 <i class="fa fa-send fa-margin"></i> @lang('send_email')
                             </a>
                         </li>
@@ -102,7 +102,7 @@ foreach ($invoices as $invoice) {
                             <a href="#" class="invoice-add-payment"
                                data-invoice-id="{{ $invoice->invoice_id }}"
                                data-invoice-balance="{{ $invoice->invoice_balance }}"
-                               data-invoice-payment-method="{{ $invoice->payment_method }}">
+                               data-invoice-payment-method="{{ $invoice->payment_method " }}>
                                 <i class="fa fa-money fa-margin"></i>
                                 @lang('enter_payment')
                             </a>

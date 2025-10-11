@@ -6,7 +6,7 @@
         $('#email_template').change(function () {
             var email_template_id = $(this).val();
 
-            if (email_template_id === '') return;
+            @if(email_template_id === '') return;
 
             $.post("{{ url('email_templates/ajax/get_content');
 ?>", {
@@ -33,7 +33,7 @@
 
 </script>
 
-<form method="post" action="{{ url('mailer/send_quote/' . $quote->quote_id) }}">
+<form method="post" action="{{ url('mailer/send_quote/' . $quote->quote_id) " }}>
 
     @csrf
 
@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <label for="to_email">@lang('to_email')</label>
                     <input type="email" multiple name="to_email" id="to_email" class="form-control" required
-                           value="{{ $quote->client_email }}">
+                           value="{{ $quote->client_email " }}>
                 </div>
 
                 <hr>
@@ -91,7 +91,7 @@
                 <div class="form-group">
                     <label for="from_email">@lang('from_email')</label>
                     <input type="text" name="from_email" id="from_email" class="form-control" required
-                           value="{{ $quote->user_email }}">
+                           value="{{ $quote->user_email " }}>
                 </div>
 
                 <div class="form-group">
@@ -107,7 +107,7 @@
                 <div class="form-group">
                     <label for="subject">@lang('subject')</label>
                     <input type="text" name="subject" id="subject" class="form-control"
-                           value="@lang('quote') #{{ $quote->quote_number }}">
+                           value="@lang('quote') #{{ $quote->quote_number " }}>
                 </div>
 
                 <div class="form-group">
@@ -207,7 +207,7 @@
                     <label for="quote-guest-url">@lang('guest_url')</label>
                     <div class="input-group">
                         <input type="text" id="quote-guest-url" readonly class="form-control"
-                               value="{{ url('guest/view/quote/' . $quote->quote_url_key) }}">
+                               value="{{ url('guest/view/quote/' . $quote->quote_url_key) " }}>
                         <div class="input-group-addon to-clipboard cursor-pointer"
                              data-clipboard-target="#quote-guest-url">
                             <i class="fa fa-clipboard fa-fw"></i>

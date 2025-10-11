@@ -2,7 +2,7 @@
     <h1 class="headerbar-title">@lang('invoice_groups')</h1>
 
     <div class="headerbar-item pull-right">
-        <a class="btn btn-sm btn-primary" href="{{ url('invoice_groups/form') }}">
+        <a class="btn btn-sm btn-primary" href="{{ url('invoice_groups/form') " }}>
             <i class="fa fa-plus"></i> @lang('new')
         </a>
     </div>
@@ -43,7 +43,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="{{ url('invoice_groups/form/' . $invoice_group->invoice_group_id) }}">
+                                    <a href="{{ url('invoice_groups/form/' . $invoice_group->invoice_group_id) " }}>
                                         <i class="fa fa-edit fa-margin"></i> @lang('edit')
                                     </a>
                                 </li>

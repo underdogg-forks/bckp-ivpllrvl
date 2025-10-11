@@ -4,10 +4,10 @@
 
     <div class="headerbar-item pull-right">
         <div class="btn-group btn-group-sm">
-            <a class="btn btn-default" href="{{ url('custom_fields') }}">
+            <a class="btn btn-default" href="{{ url('custom_fields') " }}>
                 <i class="fa fa-arrow-left"></i> @lang('back')
             </a>
-            <a class="btn btn-primary" href="{{ url('custom_fields/form') }}">
+            <a class="btn btn-primary" href="{{ url('custom_fields/form') " }}>
                 <i class="fa fa-plus"></i> @lang('new')
             </a>
         </div>

@@ -7,7 +7,7 @@
         var selectedTasks = [];
         $('.item-task-id').each(function () {
             var currentVal = $(this).val();
-            if (currentVal.length) {
+            @if(currentVal.length) {
                 selectedTasks.push(parseInt(currentVal));
             }
         });
@@ -15,14 +15,14 @@
         var hiddenTasks = 0;
         $('.modal-task-id').each(function () {
             var currentId = parseInt($(this).attr('id').replace('task-id-', ''));
-            if (selectedTasks.indexOf(currentId) !== -1) {
+            @if(selectedTasks.indexOf(currentId) !== -1) {
 //                $('#task-id-' + currentId).prop('disabled', true);
                 $('#task-id-' + currentId).parent().parent().hide();
                 hiddenTasks++;
             }
         });
 
-        if (hiddenTasks >= $('.task-row').length) {
+        @if(hiddenTasks >= $('.task-row').length) {
             $('#task-modal-submit').hide();
         }
 
@@ -34,7 +34,7 @@
                 task_ids.push(parseInt($(this).val()));
             });
             // No Check No post
-            if (!task_ids.length) return; // todo: why not animate checkboxes
+            @if(!task_ids.length) return; // todo: why not animate checkboxes
 
             $.post("{{ url('tasks/ajax/process_task_selections') }}", {
                 task_ids: task_ids
@@ -42,9 +42,9 @@
                 var items = json_parse(data, {{ (int) IP_DEBUG }});
                 for (var key in items) {
                     // Set default tax rate id if empty
-                    if (!items[key].tax_rate_id) items[key].tax_rate_id = '{{ $default_item_tax_rate }}';
+                    @if(!items[key].tax_rate_id) items[key].tax_rate_id = '{{ $default_item_tax_rate }}';
 
-                    if ($('#item_table .item:last input[name=item_name]').val() !== '') {
+                    @if($('#item_table .item:last input[name=item_name]').val() !== '') {
                         $('#new_row').clone().appendTo('#item_table').removeAttr('id').addClass('item').show();
                     }
 
@@ -68,7 +68,7 @@
 
         // Toggle checkbox when click on row
         $('#tasks_table tr').click(function (event) {
-            if (event.target.type !== 'checkbox') {
+            @if(event.target.type !== 'checkbox') {
                 $(':checkbox', this).trigger('click');
             }
         });

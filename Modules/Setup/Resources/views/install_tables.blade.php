@@ -13,7 +13,7 @@
 
             @if($errors)
                 <p>@php
-    @lang('setup_tables_errors') }}</p>
+    @lang('setup_tables_errors')</p>
 
                 @foreach($errors as $error)
                     <p>

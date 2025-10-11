@@ -7,12 +7,12 @@
         });
 
         var password_input = $('.passwordmeter-input');
-        if (password_input) {
+        @if(password_input) {
             password_input.on('input', function () {
                 var strength = zxcvbn(password_input.val());
 
                 $('.passmeter-2, .passmeter-3').hide();
-                if (strength.score === 4) {
+                @if(strength.score === 4) {
                     $('.passmeter-2, .passmeter-3').show();
                 } else if (strength.score === 3) {
                     $('.passmeter-2').show();
@@ -29,7 +29,7 @@
 
         <h1 id="logo"><span>InvoicePlane</span></h1>
 
-        <form method="post" action="{{ url($this->uri->uri_string()) }}">
+        <form method="post" action="{{ url($this->uri->uri_string()) " }}>
 
             @csrf
 
@@ -46,7 +46,7 @@
                     @lang('email_address')
                 </label>
                 <input type="email" name="user_email" id="user_email" class="form-control"
-                       value="{{ $this->mdl_users->form_value('user_email', true) }}">
+                       value="{{ $this->mdl_users->form_value('user_email', true) " }}>
                 <span class="help-block">@lang('setup_user_email_info')</span>
             </div>
 
@@ -55,7 +55,7 @@
                     @lang('name')
                 </label>
                 <input type="text" name="user_name" id="user_name" class="form-control"
-                       value="{{ $this->mdl_users->form_value('user_name', true) }}">
+                       value="{{ $this->mdl_users->form_value('user_name', true) " }}>
                 <span class="help-block">@lang('setup_user_name_info')</span>
             </div>
 
@@ -65,7 +65,7 @@
                 </label>
                 <input type="password" name="user_password" id="user_password"
                        class="form-control passwordmeter-input">
-                <div class="progress" style="height:3px }}">
+                <div class="progress" style="height:3px " }}>
                     <div class="progress-bar progress-bar-danger passmeter passmeter-1" style="width: 33%"></div>
                     <div class="progress-bar progress-bar-warning passmeter passmeter-2"
                          style="display: none; width: 33%"></div>
@@ -93,7 +93,7 @@
                         {{ __('use_system_language') }}
                     </option>
                     @foreach($languages as $language)
-                    <option value="{{ $language }}">
+                    <option value="{{ $language " }}>
                         {{ ucfirst($language) }}
                     </option>@endforeach
                 </select>
@@ -107,7 +107,7 @@
                     @lang('street_address')
                 </label>
                 <input type="text" name="user_address_1" id="user_address_1" class="form-control"
-                       value="{{ $this->mdl_users->form_value('user_address_1', true) }}">
+                       value="{{ $this->mdl_users->form_value('user_address_1', true) " }}>
             </div>
 
             <div class="form-group">

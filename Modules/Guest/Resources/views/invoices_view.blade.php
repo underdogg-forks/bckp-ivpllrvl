@@ -1,7 +1,7 @@
 $global_discount = $invoice->invoice_discount_percent > 0 ? format_amount($invoice->invoice_discount_percent) . '%' : format_currency($invoice->invoice_discount_amount);
-if ($invoice_tax_rates) {
+@if($invoice_tax_rates) {
     $global_taxes = [];
-    foreach ($invoice_tax_rates as $invoice_tax_rate) {
+    @foreach($invoice_tax_rates as $invoice_tax_rate) {
         $global_taxes[] = $invoice_tax_rate->invoice_tax_rate_name . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%): ' . format_currency($invoice_tax_rate->invoice_tax_rate_amount);
     }
     $global_taxes = implode('<br>', $global_taxes);
@@ -54,7 +54,7 @@ if ($invoice_tax_rates) {
                         <br><span><strong>@lang('phone'):</strong> {!! $invoice->client_phone !!}</span>
                         @php
                             }
-                            if ($invoice->client_email) {
+                            @if($invoice->client_email) {
 
                         <br><span><strong>@lang('email'):</strong> {!! $invoice->client_email !!}</span>
                         @endif
@@ -72,7 +72,7 @@ if ($invoice_tax_rates) {
                             <td>@lang('date')</td>
                             <td>{{ date_from_mysql($invoice->invoice_date_created) }}</td>
                         </tr>
-                        <tr class="{{ $invoice->invoice_status_id != 4 && $invoice->invoice_date_due < date('Y-m-d') ? 'font-overdue' : '' }}">
+                        <tr class="{{ $invoice->invoice_status_id != 4 && $invoice->invoice_date_due < date('Y-m-d') ? 'font-overdue' : '' " }}>
                             <td>@lang('due_date')</td>
                             <td>{{ date_from_mysql($invoice->invoice_date_due) }}</td>
                         </tr>
@@ -124,7 +124,7 @@ if ($invoice_tax_rates) {
 @php
     // New Discount calculation - since v1.6.3
     $item_global_discount = $legacy_calculation ? 0 : $item->item_subtotal - ($item->item_total - $item->item_tax_total + $item->item_discount);
-    if ($item_global_discount) {
+    @if($item_global_discount) {
 
                                     <span data-toggle="tooltip" data-placement="bottom"
                                           title="@lang('global_discount')">
@@ -165,7 +165,7 @@ if ($invoice_tax_rates) {
                         <th class="text-right">@lang('invoice_tax')</th>
                         @php
                             }
-                            if ($legacy_calculation) {
+                            @if($legacy_calculation) {
 
                         <th class="text-right">@lang('global_discount')</th>@endforeach
                         <th class="text-right">@lang('total')</th>
@@ -183,7 +183,7 @@ if ($invoice_tax_rates) {
                         <td class="amount">{{ $global_taxes }}</td>
                         @php
                             }
-                            if ($legacy_calculation) {
+                            @if($legacy_calculation) {
 
                         <td class="amount">{{ $global_discount }}</td>@endforeach
                         <td class="amount"><b>{{ format_currency($invoice->invoice_total) }}</b></td>

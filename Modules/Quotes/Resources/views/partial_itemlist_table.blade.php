@@ -28,7 +28,7 @@
         <tr>
             <td rowspan="2" class="td-icon"><i class="fa fa-arrows cursor-move"></i></td>
             <td class="td-text">
-                <input type="hidden" name="quote_id" value="{{ $quote_id }}">
+                <input type="hidden" name="quote_id" value="{{ $quote_id " }}>
                 <input type="hidden" name="item_id" value="">
                 <input type="hidden" name="item_product_id" value="">
 
@@ -59,7 +59,7 @@
                     <select name="item_tax_rate_id" class="form-control">
                         <option value="0">@lang('none')</option>
                         @foreach($tax_rates as $tax_rate)
-                        <option value="{{ $tax_rate->tax_rate_id }}">
+                        <option value="{{ $tax_rate->tax_rate_id " }}>
                             {{ format_amount($tax_rate->tax_rate_percent) . '% - ' . $tax_rate->tax_rate_name }}
                         </option>@endforeach
                     </select>
@@ -88,7 +88,7 @@
                             class="form-control">
                         <option value="0">@lang('none')</option>
                         @foreach($units as $unit)
-                        <option value="{{ $unit->unit_id }}">
+                        <option value="{{ $unit->unit_id " }}>
                             {!! $unit->unit_name) . '/' . htmlsc($unit->unit_name_plrl !!}
                         </option>@endforeach
                     </select>
@@ -120,9 +120,9 @@
         <tr>
             <td rowspan="2" class="td-icon"><i class="fa fa-arrows cursor-move"></i></td>
             <td class="td-text">
-                <input type="hidden" name="quote_id" value="{{ $quote_id }}">
-                <input type="hidden" name="item_id" value="{{ $item->item_id }}">
-                <input type="hidden" name="item_product_id" value="{{ $item->item_product_id }}">
+                <input type="hidden" name="quote_id" value="{{ $quote_id " }}>
+                <input type="hidden" name="item_id" value="{{ $item->item_id " }}>
+                <input type="hidden" name="item_product_id" value="{{ $item->item_product_id " }}>
 
                 <div class="input-group">
                     <span class="input-group-addon">@lang('item')</span>
@@ -134,14 +134,14 @@
                 <div class="input-group">
                     <span class="input-group-addon">@lang('quantity')</span>
                     <input type="text" name="item_quantity" class="form-control amount"
-                           value="{{ format_quantity($item->item_quantity) }}">
+                           value="{{ format_quantity($item->item_quantity) " }}>
                 </div>
             </td>
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('price')</span>
                     <input type="text" name="item_price" class="form-control amount"
-                           value="{{ format_amount($item->item_price) }}">
+                           value="{{ format_amount($item->item_price) " }}>
                     <div class="input-group-addon">{{ get_setting('currency_symbol') }}</div>
                 </div>
             </td>
@@ -169,7 +169,7 @@
 
             <td class="td-icon text-right td-vert-middle">
                 <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')"
-                        data-item-id="{{ $item->item_id }}">
+                        data-item-id="{{ $item->item_id " }}>
                     <i class="fa fa-trash-o text-danger"></i>
                 </button>
             </td>
@@ -268,9 +268,9 @@
                 <td>@lang('quote_tax')</td>
                 <td>
                     @if($quote_tax_rates) {
-                            foreach ($quote_tax_rates as $quote_tax_rate)
+                            @foreach($quote_tax_rates as $quote_tax_rate)
                     <form method="POST" class="form-inline"
-                          action="{{ url('quotes/delete_quote_tax/' . $quote->quote_id . '/' . $quote_tax_rate->quote_tax_rate_id) }}">
+                          action="{{ url('quotes/delete_quote_tax/' . $quote->quote_id . '/' . $quote_tax_rate->quote_tax_rate_id) " }}>
                         @csrf
                         <button type="submit" class="btn btn-xs btn-link"
                                 onclick="var Y=confirm('@lang('delete_tax_warning')');if(Y)show_loader();return Y;">

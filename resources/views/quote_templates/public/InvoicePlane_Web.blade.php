@@ -75,29 +75,29 @@
                     <p>@if($quote->user_vat_id) {
                                 @lang('vat_id_short') . ': ' . $quote->user_vat_id . '<br>' }}
                             }
-if ($quote->user_tax_code) {
+@if($quote->user_tax_code) {
     @lang('tax_code_short') . ': ' . $quote->user_tax_code . '<br>' }}
 }
-if ($quote->user_address_1) {
+@if($quote->user_address_1) {
     {!! $quote->user_address_1) . '<br>' }}
 }
-if ($quote->user_address_2) {
+@if($quote->user_address_2) {
     {!! $quote->user_address_2) . '<br>' }}
 }
-if ($quote->user_city) {
+@if($quote->user_city) {
     {!! $quote->user_city) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->user_state) {
+@if($quote->user_state) {
     {!! $quote->user_state) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->user_zip) {
+@if($quote->user_zip) {
     {!! $quote->user_zip) . '<br>' }}
 }
-if ($quote->user_phone) {
+@if($quote->user_phone) {
     @lang('phone_abbr');
     {{ ': ' . htmlsc($quote->user_phone) . '<br>' }}
 }
-if ($quote->user_fax) {
+@if($quote->user_fax) {
     @lang('fax_abbr');
     {{ ': ' . htmlsc($quote->user_fax !!}
 } </p>
@@ -111,26 +111,26 @@ if ($quote->user_fax) {
     @lang('vat_id_short');
     {{ ': ' . $quote->client_vat_id . '<br>' }}
 }
-if ($quote->client_tax_code) {
+@if($quote->client_tax_code) {
     @lang('tax_code_short');
     {{ ': ' . $quote->client_tax_code . '<br>' }}
 }
-if ($quote->client_address_1) {
+@if($quote->client_address_1) {
     {!! $quote->client_address_1) . '<br>' }}
 }
-if ($quote->client_address_2) {
+@if($quote->client_address_2) {
     {!! $quote->client_address_2) . '<br>' }}
 }
-if ($quote->client_city) {
+@if($quote->client_city) {
     {!! $quote->client_city) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->client_state) {
+@if($quote->client_state) {
     {!! $quote->client_state) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->client_zip) {
+@if($quote->client_zip) {
     {!! $quote->client_zip) . '<br>' }}
 }
-if ($quote->client_phone) {
+@if($quote->client_phone) {
     @lang('phone_abbr');
     {{ ': ' . htmlsc($quote->client_phone) . '<br>' }}
 } </p>
@@ -260,7 +260,7 @@ if ($quote->client_phone) {
 @if($quote->notes)
 
                         <div class="col-xs-12 col-md-6">
-                            <h4>@lang('notes') }}</h4>
+                            <h4>@lang('notes')</h4>
                                 <p>{{ nl2br(e($quote->notes)) }}</p>
                 </div>@endforeach
 

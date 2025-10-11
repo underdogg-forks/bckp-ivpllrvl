@@ -35,7 +35,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                 @endif
             </td>
             <td class="td-text">
-                <input type="hidden" name="invoice_id" value="{{ $invoice_id }}">
+                <input type="hidden" name="invoice_id" value="{{ $invoice_id " }}>
                 <input type="hidden" name="item_id" value="">
                 <input type="hidden" name="item_product_id" value="">
                 <input type="hidden" name="item_task_id" class="item-task-id" value="">
@@ -106,7 +106,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                     <select name="item_product_unit_id" class="form-control">
                         <option value="0">@lang('none')</option>
                         @foreach($units as $unit)
-                        <option value="{{ $unit->unit_id }}">
+                        <option value="{{ $unit->unit_id " }}>
                             {{ $unit->unit_name . '/' . $unit->unit_name_plrl }}
                         </option>@endforeach
                     </select>
@@ -139,7 +139,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td rowspan="2" class="td-icon">
                 <i class="fa fa-arrows cursor-move"></i>
                 @if($invoice->invoice_is_recurring) {
-                        if ($item->item_is_recurring == 1 || null === $item->item_is_recurring) {
+                        @if($item->item_is_recurring == 1 || null === $item->item_is_recurring) {
                             $item_recurrence_state = '1';
                             $item_recurrence_class = 'fa-calendar-check-o text-success';
                         } else {
@@ -149,15 +149,15 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
 
                 <br/>
                 <i title="{{ __('recurring') }}"
-                   class="js-item-recurrence-toggler cursor-pointer fa {{ $item_recurrence_class }}"></i>
+                   class="js-item-recurrence-toggler cursor-pointer fa {{ $item_recurrence_class " }}></i>
                 <input type="hidden" name="item_is_recurring" value="{{ $item_recurrence_state }}"/>@endforeach
             </td>
             <td class="td-text">
-                <input type="hidden" name="invoice_id" value="{{ $invoice_id }}">
+                <input type="hidden" name="invoice_id" value="{{ $invoice_id " }}>
                 <input type="hidden" name="item_id" value="{{ $item->item_id }}"{{ $invoice_disabled }}>
                 <input type="hidden" name="item_task_id" class="item-task-id"
-                       value="{{ $item->item_task_id ? $item->item_task_id : '' }}">
-                <input type="hidden" name="item_product_id" value="{{ $item->item_product_id }}">
+                       value="{{ $item->item_task_id ? $item->item_task_id : '' " }}>
+                <input type="hidden" name="item_product_id" value="{{ $item->item_product_id " }}>
 
                 <div class="input-group">
                     <span class="input-group-addon">@lang('item')</span>
@@ -205,7 +205,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td class="td-icon text-right td-vert-middle">
                 @if($invoice->is_read_only != 1)
                 <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')"
-                        data-item-id="{{ $item->item_id }}">
+                        data-item-id="{{ $item->item_id " }}>
                     <i class="fa fa-trash-o text-danger"></i>
                 </button>@endforeach
             </td>
@@ -292,7 +292,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                 @lang('add_product')
             </a>
             <a href="javascript:void(0);"
-               class="btn_add_task btn btn-sm btn-default{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' }}">
+               class="btn_add_task btn btn-sm btn-default{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' " }}>
                 <i class="fa fa-database"></i> @lang('add_task')
             </a>@endforeach
         </div>
@@ -319,9 +319,9 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                 <td>@lang('invoice_tax')</td>
                 <td>
                     @if($invoice_tax_rates) {
-                            foreach ($invoice_tax_rates as $invoice_tax_rate)
+                            @foreach($invoice_tax_rates as $invoice_tax_rate)
                     <form method="post"
-                          action="{{ url('invoices/delete_invoice_tax/' . $invoice->invoice_id . '/' . $invoice_tax_rate->invoice_tax_rate_id) }}">
+                          action="{{ url('invoices/delete_invoice_tax/' . $invoice->invoice_id . '/' . $invoice_tax_rate->invoice_tax_rate_id) " }}>
                         @csrf
                         <button type="submit" class="btn btn-xs btn-link"
                                 onclick="var Y=confirm('@lang('delete_tax_warning')');if(Y)show_loader();return Y;">

@@ -7,7 +7,7 @@
         </button>
         @php
             }
-            if (!isset($hide_cancel_button)) {
+            @if(!isset($hide_cancel_button)) {
                 $attribute_cancel = empty($attribute_cancel) ? 'onclick="window.history.back()"' : $attribute_cancel;
 
         <button type="button" {{ $attribute_cancel }} id="btn-cancel" name="btn_cancel"

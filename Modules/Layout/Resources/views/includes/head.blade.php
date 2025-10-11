@@ -4,9 +4,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="NOINDEX,NOFOLLOW">
-<meta name="csrf_token_name" content="{{ config_item('csrf_token_name') }}">
-    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') }}">
-    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') }}">
+<meta name="csrf_token_name" content="{{ config_item('csrf_token_name') " }}>
+    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') " }}>
+    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') " }}>
 
     <link rel="icon" href="{{ _core_asset('img/favicon.png') }}" type="image/png">
 
@@ -18,12 +18,12 @@
     @endif
 
     <!--[if lt IE 9]>
-    <script src="{{ _core_asset('js/legacy.min.js') }}"></script>
+    <script src="{{ _core_asset('js/legacy.min.js') " }}></script>
     <![endif]-->
 
-    <script src="{{ _core_asset('js/dependencies.min.js') }}"></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') " }}></script>
     @if(trans('cldr') != 'en')
-        <script src="{{ _core_asset('js/locales/select2/' . trans('cldr') . '.js') }}"></script>
+        <script src="{{ _core_asset('js/locales/select2/' . trans('cldr') . '.js') " }}></script>
     @endif
 
     <script>

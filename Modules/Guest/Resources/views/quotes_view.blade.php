@@ -1,7 +1,7 @@
 $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->quote_discount_percent) . '%' : format_currency($quote->quote_discount_amount);
-if ($quote_tax_rates) {
+@if($quote_tax_rates) {
     $global_taxes = [];
-    foreach ($quote_tax_rates as $quote_tax_rate) {
+    @foreach($quote_tax_rates as $quote_tax_rate) {
         $global_taxes[] = $quote_tax_rate->quote_tax_rate_name . ' (' . format_amount($quote_tax_rate->quote_tax_rate_percent) . '%): ' . format_currency($quote_tax_rate->quote_tax_rate_amount);
     }
     $global_taxes = implode('<br>', $global_taxes);
@@ -62,7 +62,7 @@ if ($quote_tax_rates) {
                     <br><span><strong>@lang('phone'):</strong> {!! $quote->client_phone !!}</span>
                     @php
                         }
-                        if ($quote->client_email) {
+                        @if($quote->client_email) {
 
                     <br><span><strong>@lang('email'):</strong> {!! $quote->client_email !!}</span>
                     @endif
@@ -132,7 +132,7 @@ if ($quote_tax_rates) {
 @php
     // New Discount calculation - since v1.6.3
     $item_global_discount = $legacy_calculation ? 0 : $item->item_subtotal - ($item->item_total - $item->item_tax_total + $item->item_discount);
-    if ($item_global_discount) {
+    @if($item_global_discount) {
 
                             <span data-toggle="tooltip" data-placement="bottom" title="@lang('global_discount')">
                                 + {{ format_currency($item_global_discount) }}
@@ -172,7 +172,7 @@ if ($quote_tax_rates) {
                     <th class="text-right">@lang('quote_tax')</th>
                     @php
                         }
-                        if ($legacy_calculation) {
+                        @if($legacy_calculation) {
 
                     <th class="text-right">@lang('global_discount')</th>@endforeach
                     <th class="text-right">@lang('total')</th>
@@ -188,7 +188,7 @@ if ($quote_tax_rates) {
                     <td class="amount">{{ $global_taxes }}</td>
                     @php
                         }
-                        if ($legacy_calculation) {
+                        @if($legacy_calculation) {
 
                     <td class="amount">{{ $global_discount }}</td>@endforeach
                     <td class="amount"><b>{{ format_currency($quote->quote_total) }}</b></td>

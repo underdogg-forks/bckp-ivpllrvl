@@ -4,10 +4,10 @@
 
     <div class="headerbar-item pull-right">
         <div class="btn-group btn-group-sm">
-            <a class="btn btn-default" href="{{ url('users') }}">
+            <a class="btn btn-default" href="{{ url('users') " }}>
                 <i class="fa fa-arrow-left"></i> @lang('back')
             </a>
-            <a class="btn btn-primary" href="{{ url('user_clients/create/' . $id) }}">
+            <a class="btn btn-primary" href="{{ url('user_clients/create/' . $id) " }}>
                 <i class="fa fa-plus"></i> @lang('new')
             </a>
         </div>
@@ -41,7 +41,7 @@
                             @foreach($user_clients as $user_client)
                             <tr>
                                 <td>
-                                    <a href="{{ url('clients/view/' . $user_client->client_id) }}">
+                                    <a href="{{ url('clients/view/' . $user_client->client_id) " }}>
                                         {!! format_client($user_client) !!}
                                     </a>
                                 </td>

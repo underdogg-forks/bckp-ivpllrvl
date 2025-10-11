@@ -20,7 +20,7 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
 
             var user_type = $('#user_type').val();
 
-            if (user_type === '1') {
+            @if(user_type === '1') {
                 $('#administrator_fields').show();
             } else if (user_type === '2') {
                 $('#guest_fields').show(); // Todo this id missing. (Idea* For a new user type, like company? Need new module?)
@@ -63,13 +63,13 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                             <div class="form-group">
                                 <label for="user_name">@lang('name')</label>
                                 <input type="text" name="user_name" id="user_name" class="form-control"
-                                       value="{{ $this->mdl_users->form_value('user_name', true) }}">
+                                       value="{{ $this->mdl_users->form_value('user_name', true) " }}>
                             </div>
 
                             <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
                                 <label for="user_company">@lang('company') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>{{ $qr_code_info }}
                                 <input type="text" name="user_company" id="user_company" class="form-control"
-                                       value="{{ $this->mdl_users->form_value('user_company', true) }}">
+                                       value="{{ $this->mdl_users->form_value('user_company', true) " }}>
                             </div>
 
                             <div class="form-group">
@@ -111,7 +111,7 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                                         {{ __('use_system_language') }}
                                     </option>
 @php $usr_lang = $this->mdl_users->form_value('user_language');
-foreach ($languages as $language) {
+@foreach($languages as $language) {
 
                                     <option value="{{ $language }}" @php
     check_select($usr_lang, $language)>
@@ -125,7 +125,7 @@ foreach ($languages as $language) {
                                 <label for="user_type">@lang('user_type')</label>
                                 <select name="user_type" id="user_type" class="form-control simple-select" required>
 @php $user_type = $this->mdl_users->form_value('user_type');
-foreach ($user_types as $key => $type) {
+@foreach($user_types as $key => $type) {
 
                                     <option value="{{ $key }}" @php
     check_select($user_type, $key)>
@@ -146,31 +146,31 @@ foreach ($user_types as $key => $type) {
                                 <div class="form-group"{{ $einvoicingReq }}>
                                     <label for="user_address_1">@lang('street_address')</label>
                                     <input type="text" name="user_address_1" id="user_address_1" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_address_1', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_address_1', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingOpt }}>
                                     <label for="user_address_2">@lang('street_address_2')</label>
                                     <input type="text" name="user_address_2" id="user_address_2" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_address_2', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_address_2', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingReq }}>
                                     <label for="user_city">@lang('city')</label>
                                     <input type="text" name="user_city" id="user_city" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_city', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_city', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingOpt }}>
                                     <label for="user_state">@lang('state')</label>
                                     <input type="text" name="user_state" id="user_state" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_state', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_state', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingReq }}>
                                     <label for="user_zip">@lang('zip_code')</label>
                                     <input type="text" name="user_zip" id="user_zip" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_zip', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_zip', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingReq }}>
@@ -186,7 +186,7 @@ foreach ($user_types as $key => $type) {
                                     </select>
                                 </div>
 @foreach($custom_fields['ip_user_custom'] as $custom_field) {
-    if ($custom_field->custom_field_location == 2) {
+    @if($custom_field->custom_field_location == 2) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
 }
@@ -200,17 +200,17 @@ foreach ($user_types as $key => $type) {
                                 <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
                                     <label for="user_vat_id">@lang('vat_id') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>
                                     <input type="text" name="user_vat_id" id="user_vat_id" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_vat_id', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_vat_id', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingReq }}>
                                     <label for="user_tax_code">@lang('tax_code')</label>
                                     <input type="text" name="user_tax_code" id="user_tax_code" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_tax_code', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_tax_code', true) " }}>
                                 </div>
 
 @foreach($custom_fields['ip_user_custom'] as $custom_field) {
-    if ($custom_field->custom_field_location == 3) {
+    @if($custom_field->custom_field_location == 3) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
 }
@@ -226,27 +226,27 @@ foreach ($user_types as $key => $type) {
                                 <div class="form-group"{{ $einvoicingOpt }}>
                                     <label for="user_bank">@lang('bank')</label>
                                     <input type="text" name="user_bank" id="user_bank" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_bank', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_bank', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingReq }}>{{ $qr_code_info }}
                                     <label for="user_iban">{{ 'IBAN' }}</label>
                                     <input type="text" name="user_iban" id="user_iban" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_iban', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_iban', true) " }}>
                                 </div>
 
                                 <div class="form-group"{{ $einvoicingOpt }}>{{ $qr_code_info }}
                                     <label for="user_bic">{{ 'BIC' }}</label>
                                     <input type="text" name="user_bic" id="user_bic"
                                            class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_bic', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_bic', true) " }}>
                                 </div>
 
                                 <div class="form-group">{{ $qr_code_info }}
                                     <label for="user_remittance_text">@lang('user_remittance_text')</label>
                                     <input type="text" name="user_remittance_text" id="user_remittance_text" class="form-control taggable"
                                            placeholder="{{{invoice_number}}} {{{invoice_date_due}}}"
-                                           value="{{ $this->mdl_users->form_value('user_remittance_text', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_remittance_text', true) " }}>
                                 </div>
 
                                 <div class="panel panel-default">
@@ -269,19 +269,19 @@ foreach ($user_types as $key => $type) {
                                 <div class="form-group">
                                     <label for="user_subscribernumber">@lang('user_subscriber_number')</label>
                                     <input type="text" name="user_subscribernumber" id="user_subscribernumber" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_subscribernumber', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_subscribernumber', true) " }}>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="user_gln">@lang('gln')</label>
                                     <input type="text" name="user_gln" id="user_gln" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_gln', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_gln', true) " }}>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="user_rcc">@lang('sumex_rcc')</label>
                                     <input type="text" name="user_rcc" id="user_rcc" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_rcc', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_rcc', true) " }}>
                                 </div>
                             </div>
 
@@ -298,38 +298,38 @@ foreach ($user_types as $key => $type) {
                                 <div class="form-group">
                                     <label for="user_invoicing_con>tact">@lang('contact') (@lang('invoicing'))</label>
                                     <input type="text" name="user_invoicing_contact" id="user_invoicing_contact" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_invoicing_contact', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_invoicing_contact', true) " }}>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="user_phone">@lang('phone_number')</label>
                                     <input type="text" name="user_phone" id="user_phone" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_phone', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_phone', true) " }}>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="user_fax">@lang('fax_number')</label>
                                     <input type="text" name="user_fax" id="user_fax" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_fax', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_fax', true) " }}>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="user_mobile">@lang('mobile_number')</label>
                                     <input type="text" name="user_mobile" id="user_mobile" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_mobile', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_mobile', true) " }}>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="user_web">@lang('web_address')</label>
                                     <input type="text" name="user_web" id="user_web" class="form-control"
-                                           value="{{ $this->mdl_users->form_value('user_web', true) }}">
+                                           value="{{ $this->mdl_users->form_value('user_web', true) " }}>
                                 </div>
 @php $default_custom = false;
-foreach ($custom_fields['ip_user_custom'] as $custom_field) {
-    if (!$default_custom && !$custom_field->custom_field_location) {
+@foreach($custom_fields['ip_user_custom'] as $custom_field) {
+    @if(!$default_custom && !$custom_field->custom_field_location) {
         $default_custom = true;
     }
-    if ($custom_field->custom_field_location == 4) {
+    @if($custom_field->custom_field_location == 4) {
         print_field($this->mdl_users, $custom_field, $custom_values);
     }
 }
@@ -350,8 +350,8 @@ foreach ($custom_fields['ip_user_custom'] as $custom_field) {
                                         <div class="row">
 @php
     $classes = ['control-label', 'controls', '', 'form-group col-xs-12 col-sm-6'];
-    foreach ($custom_fields['ip_user_custom'] as $custom_field) {
-        if (!$custom_field->custom_field_location) {
+    @foreach($custom_fields['ip_user_custom'] as $custom_field) {
+        @if(!$custom_field->custom_field_location) {
             // == 0
             print_field($this->mdl_users, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
         }

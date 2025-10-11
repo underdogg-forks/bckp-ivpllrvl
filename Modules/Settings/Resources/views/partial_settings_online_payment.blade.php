@@ -38,7 +38,7 @@
                         <option value="">@lang('none')</option>
                         @foreach($gateway_drivers as $driver => $fields) {
     $d = mb_strtolower($driver)
-                        <option value="{{ $d }}">
+                        <option value="{{ $d " }}>
                             {{ ucwords(str_replace('_', ' ', $driver)) }}
                         </option>@endforeach
                     </select>
@@ -51,7 +51,7 @@
     $d = mb_strtolower($driver);
 
         <div id="gateway-settings-{{ $d }}"
-             class="gateway-settings panel panel-default {{ get_setting('gateway_' . $d . '_enabled') ? 'active-gateway' : 'hidden' }}">
+             class="gateway-settings panel panel-default {{ get_setting('gateway_' . $d . '_enabled') ? 'active-gateway' : 'hidden' " }}>
 
             <div class="panel-heading">
                 {{ ucwords(str_replace('_', ' ', $driver)) }}

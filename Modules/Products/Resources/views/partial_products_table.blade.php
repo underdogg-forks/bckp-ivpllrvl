@@ -20,10 +20,10 @@
         <tbody>
         @foreach($products as $product)
             <tr>
-                <td><a href="{{ url('families/form/' . $product->family_id) }}"><i
+                <td><a href="{{ url('families/form/' . $product->family_id) " }}><i
                             class="fa fa-edit"></i> {!! $product->family_name !!}</a></td>
                 <td>{!! $product->product_sku !!}</td>
-                <td><a href="{{ url('products/form/' . $product->product_id) }}"><i
+                <td><a href="{{ url('products/form/' . $product->product_id) " }}><i
                             class="fa fa-edit"></i> {!! $product->product_name !!}</a></td>
                 <td>{{ nl2br(e($product->product_description)) }}</td>
                 <td class="amount last">{{ format_currency($product->product_price) }}</td>
@@ -40,7 +40,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ url('products/form/' . $product->product_id) }}">
+                                <a href="{{ url('products/form/' . $product->product_id) " }}>
                                     <i class="fa fa-edit fa-margin"></i> @lang('edit')
                                 </a>
                             </li>

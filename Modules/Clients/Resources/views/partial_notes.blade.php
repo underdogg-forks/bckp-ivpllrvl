@@ -1,4 +1,4 @@
-foreach ($client_notes as $client_note) {
+@foreach($client_notes as $client_note) {
 <div class="panel panel-default small">
     <div class="panel-body">
         {{ nl2br(e($client_note->client_note)) }}

@@ -41,12 +41,12 @@
             <img src="{{ url() }}uploads/{{ $login_logo }}" class="login-logo img-responsive">
         @else
         <h1>@php
-            @lang('login') }}</h1>
+            @lang('login')</h1>
         @endif
 
         <div class="row">@include('layout.alerts')</div>
 
-        <form method="post" action="{{ url($this->uri->uri_string()) }}">
+        <form method="post" action="{{ url($this->uri->uri_string()) " }}>
 
         @csrf
 

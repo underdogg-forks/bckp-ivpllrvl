@@ -65,12 +65,12 @@
                     <tr>
                         <td>{{ anchor('tasks/form/' . $task->task_id, htmlsc($task->task_name)) }}</td>
                         <td>
-                                        <span class="label {{ $task_statuses[$task->task_status]['class'] }}">
+                                        <span class="label {{ $task_statuses[$task->task_status]['class'] " }}>
                                             {{ $task_statuses[$task->task_status]['label'] }}
                                         </span>
                         </td>
                         <td>
-                                        <span class="{{ $task->is_overdue ? 'text-danger' : '' }}">
+                                        <span class="{{ $task->is_overdue ? 'text-danger' : '' " }}>
                                             {{ date_from_mysql($task->task_finish_date) }}
                                         </span>
                         </td>

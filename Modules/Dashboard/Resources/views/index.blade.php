@@ -3,7 +3,7 @@
     {{ $this->layout->loadView('layout/alerts');
 ?>
 
-    <div class="row{{ get_setting('disable_quickactions') == 1 ? ' hidden' : '' }}">
+    <div class="row{{ get_setting('disable_quickactions') == 1 ? ' hidden' : '' " }}>
     <div class="col-xs-12">
 
         <div id="panel-quick-actions" class="panel panel-default quick-actions">
@@ -49,12 +49,12 @@
                 @foreach($quote_status_totals as $total)
                     <tr>
                         <td>
-                            <a href="{{ url($total['href']) }}">
+                            <a href="{{ url($total['href']) " }}>
                                 {{ $total['label'] }}
                             </a>
                         </td>
                         <td class="amount">
-                            <span class="{{ $total['class'] }}">
+                            <span class="{{ $total['class'] " }}>
                                 {{ format_currency($total['sum_total']) }}
                             </span>
                         </td>
@@ -68,7 +68,7 @@
         <div id="panel-invoice-overview" class="panel panel-default overview">
 
             <div class="panel-heading">
-                <b><i class="fa fa-bar-chart fa-margin"></i> @lang('invoice_overview') }}</b>
+                <b><i class="fa fa-bar-chart fa-margin"></i> @lang('invoice_overview')</b>
                 <span class="pull-right text-muted">{{ lang($invoice_status_period) }}</span>
             </div>
 
@@ -76,12 +76,12 @@
                 @foreach($invoice_status_totals as $total)
                     <tr>
                         <td>
-                            <a href="{{ url($total['href']) }}">
+                            <a href="{{ url($total['href']) " }}>
                                 {{ $total['label'] }}
                             </a>
                         </td>
                         <td class="amount">
-                            <span class="{{ $total['class'] }}">
+                            <span class="{{ $total['class'] " }}>
                                 {{ format_currency($total['sum_total']) }}
                             </span>
                         </td>
@@ -95,7 +95,7 @@
             @php
                 } else {
                     $overdue_invoices_total = 0;
-                    foreach ($overdue_invoices as $invoice) {
+                    @foreach($overdue_invoices as $invoice) {
                         $overdue_invoices_total += $invoice->invoice_balance;
                     }
 
@@ -134,7 +134,7 @@
                         <tr>
                             <td>
                                 <span class="label
-                                {{ $quote_statuses[$quote->quote_status_id]['class'] }}">
+                                {{ $quote_statuses[$quote->quote_status_id]['class'] " }}>
                                     {{ $quote_statuses[$quote->quote_status_id]['label'] }}
                                 </span>
                             </td>
@@ -191,26 +191,26 @@
                     <tbody>
 
                     @foreach($invoices as $invoice) {
-                    if ($this->config->item('disable_read_only') == true) {
+                    @if($this->config->item('disable_read_only') == true) {
                     $invoice->is_read_only = 0;
                     }
 
                     <tr>
                         <td>
-                                    <span class="label {{ $invoice_statuses[$invoice->invoice_status_id]['class'] }}">
+                                    <span class="label {{ $invoice_statuses[$invoice->invoice_status_id]['class'] " }}>
                                         {{ $invoice_statuses[$invoice->invoice_status_id]['label'];
-    if ($invoice->invoice_sign == '-1')&nbsp;<i class="fa fa-credit-invoice" title="@php
-        @lang('credit_invoice') }}"></i>@php
+    @if($invoice->invoice_sign == '-1')&nbsp;<i class="fa fa-credit-invoice" title="@php
+        @lang('credit_invoice')"></i>@php
                                             }
-                                            if ($invoice->is_read_only) {
+                                            @if($invoice->is_read_only) {
                                         &nbsp;<i class="fa fa-read-only" title="@lang('read_only')"></i>@php
                                             }
-                                            if ($invoice->invoice_is_recurring) {
+                                            @if($invoice->invoice_is_recurring) {
                                         &nbsp;<i class="fa fa-refresh" title="@lang('recurring')"></i>@endforeach
                                     </span>
                         </td>
                         <td>
-                                    <span class="{{ $invoice->is_overdue ? 'font-overdue' : '' }}">
+                                    <span class="{{ $invoice->is_overdue ? 'font-overdue' : '' " }}>
                                         {{ date_from_mysql($invoice->invoice_date_due) }}
                                     </span>
                         </td>
@@ -317,7 +317,7 @@
                         @foreach($tasks as $task)
                             <tr>
                                 <td>
-                                    <span class="label {{ $task_statuses[$task->task_status]['class'] ?? '' }}">
+                                    <span class="label {{ $task_statuses[$task->task_status]['class'] ?? '' " }}>
                                         @if(isset($task_statuses[$task->task_status]['label']))
 {$task_statuses[$task->task_status][label]}@endforeach
 
@@ -327,7 +327,7 @@
                                     {{ anchor('tasks/form/' . $task->task_id, htmlsc($task->task_name)) }}
                                 </td>
                                 <td>
-                                    <span class="{{ $task->is_overdue ? 'font-overdue' : '' }}">
+                                    <span class="{{ $task->is_overdue ? 'font-overdue' : '' " }}>
                                         {{ date_from_mysql($task->task_finish_date) }}
                                     </span>
                                 </td>

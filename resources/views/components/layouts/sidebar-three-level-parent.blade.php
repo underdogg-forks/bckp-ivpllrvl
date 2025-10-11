@@ -2,7 +2,7 @@
 
 <div x-data="{ subOpen: {{ $active ? 'true' : 'false' }} }">
     <button @click="
-        if (sidebarOpen) {
+        @if(sidebarOpen) {
             subOpen = !subOpen;
         } else {
             temporarilyOpenSidebar();

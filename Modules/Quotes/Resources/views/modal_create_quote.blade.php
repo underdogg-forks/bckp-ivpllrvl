@@ -25,11 +25,11 @@
                             },
                             function (data) {
                                 var response = json_parse(data, {{ (int) IP_DEBUG }});
-                                if (response.success === 1) {
+                                @if(response.success === 1) {
                                     // The validation was successful and quote was created
                                     window.location = "{{ url('quotes/view') }}/" + response.quote_id;
                                 }
-                                else {
+                                @else
                                     // The validation was not successful
                                     close_loader();
                                     $('.control-group').removeClass('has-error');
@@ -51,7 +51,7 @@
                     <div class="modal-body">
 
                         <input class="hidden" id="input_permissive_search_clients"
-                               value="{{ get_setting('enable_permissive_search_clients') }}">
+                               value="{{ get_setting('enable_permissive_search_clients') " }}>
 
                         <div class="form-group has-feedback">
                             <label for="create_quote_client_id">@lang('client')</label>
@@ -62,7 +62,7 @@
                                 <select name="client_id" id="create_quote_client_id" class="client-id-select form-control"
                                         autofocus="autofocus" required>
                                     @if(!empty($client))
-        <option value="{{ $client->client_id }}">{!! format_client($client, false) !!}</option>
+        <option value="{{ $client->client_id " }}>{!! format_client($client, false) !!}</option>
         @endif
     </select>
     </div>

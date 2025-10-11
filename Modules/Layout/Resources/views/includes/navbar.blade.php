@@ -79,7 +79,7 @@
                     </ul>
                 </li>
 
-                <li class="dropdown{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' }}">
+                <li class="dropdown{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' " }}>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
                         <span class="hidden-md">@lang('tasks')</span>
@@ -117,7 +117,7 @@
                                 <form class="navbar-form navbar-left" role="search" onsubmit="return false;">
                                     <div class="form-group">
                                         <input id="filter" type="text" class="search-query form-control"
-                                               placeholder="{{ $filter_placeholder }}">
+                                               placeholder="{{ $filter_placeholder " }}>
                                     </div>
                                 </form>
                             @endif
@@ -159,12 +159,12 @@
                         <a href="{{ url('users/form/' . $this->session->userdata('user_id')) }}"
                            class="tip icon" data-placement="bottom"
                            title="@php htmlspecialchars($this->session->userdata('user_name'));
-if ($this->session->userdata('user_company'))
+@if($this->session->userdata('user_company'))
 { (  htmlsc($this->session->userdata(user_company))  )}
 @endif ">
                             <i class="fa fa-user"></i>
                             <span class="visible-xs">&nbsp;@php htmlspecialchars($this->session->userdata('user_name'));
-if ($this->session->userdata('user_company'))
+@if($this->session->userdata('user_company'))
 { (  htmlsc($this->session->userdata(user_company))  )}
 @endif </span>
                         </a>

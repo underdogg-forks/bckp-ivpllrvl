@@ -22,10 +22,10 @@
 
     <link rel="stylesheet" href="{{ _theme_asset('css/welcome.css') }}" type="text/css">
     <!--[if lt IE 9]>
-    <script src="{{ _core_asset('js/legacy.min.js') }}"></script>
+    <script src="{{ _core_asset('js/legacy.min.js') " }}></script>
     <![endif]-->
 
-    <script src="{{ _core_asset('js/dependencies.min.js') }}"></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') " }}></script>
 
 </head>
 <body>

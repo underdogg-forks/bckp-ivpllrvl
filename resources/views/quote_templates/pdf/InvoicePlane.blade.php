@@ -23,35 +23,35 @@ $colspan = $show_item_discounts ? 5 : 4; <!DOCTYPE html>
         @if($quote->client_vat_id)
 {<div>  trans(vat_id_short)  :   htmlsc($quote->client_vat_id)  </div>}
 @endif
-if ($quote->client_tax_code)
+@if($quote->client_tax_code)
 {<div>  trans(tax_code_short)  :   htmlsc($quote->client_tax_code)  </div>}
 @endif
-if ($quote->client_address_1)
+@if($quote->client_address_1)
 {<div>  htmlsc($quote->client_address_1)  </div>}
 @endif
-if ($quote->client_address_2)
+@if($quote->client_address_2)
 {<div>  htmlsc($quote->client_address_2)  </div>}
 @endif
-if ($quote->client_city || $quote->client_state || $quote->client_zip)
+@if($quote->client_city || $quote->client_state || $quote->client_zip)
 {<div>;
-    if ($quote->client_city)
+    @if($quote->client_city)
 {htmlsc($quote->client_city)   InvoicePlanephp}
 @endif
-    if ($quote->client_state)
+    @if($quote->client_state)
 {htmlsc($quote->client_state)   InvoicePlanephp}
 @endif
-    if ($quote->client_zip)
+    @if($quote->client_zip)
 {htmlsc($quote->client_zip)}
 @endif
     echo </div>}
 @endif
-if ($quote->client_country)
+@if($quote->client_country)
 {<div>  get_country_name(trans(cldr), htmlsc($quote->client_country))  </div>}
 @endif
 
 echo '<br>';
 
-if ($quote->client_phone)
+@if($quote->client_phone)
 {<div>  trans(phone_abbr)  :   htmlsc($quote->client_phone)  </div>}
 @endif
 
@@ -61,38 +61,38 @@ if ($quote->client_phone)
         @if($quote->user_vat_id)
 {<div>  trans(vat_id_short)  :   htmlsc($quote->user_vat_id)  </div>}
 @endif
-if ($quote->user_tax_code)
+@if($quote->user_tax_code)
 {<div>  trans(tax_code_short)  :   htmlsc($quote->user_tax_code)  </div>}
 @endif
-if ($quote->user_address_1)
+@if($quote->user_address_1)
 {<div>  htmlsc($quote->user_address_1)  </div>}
 @endif
-if ($quote->user_address_2)
+@if($quote->user_address_2)
 {<div>  htmlsc($quote->user_address_2)  </div>}
 @endif
-if ($quote->user_city || $quote->user_state || $quote->user_zip)
+@if($quote->user_city || $quote->user_state || $quote->user_zip)
 {<div>;
-    if ($quote->user_city)
+    @if($quote->user_city)
 {htmlsc($quote->user_city)   InvoicePlanephp}
 @endif
-    if ($quote->user_state)
+    @if($quote->user_state)
 {htmlsc($quote->user_state)   InvoicePlanephp}
 @endif
-    if ($quote->user_zip)
+    @if($quote->user_zip)
 {htmlsc($quote->user_zip)}
 @endif
     echo </div>}
 @endif
-if ($quote->user_country)
+@if($quote->user_country)
 {<div>  get_country_name(trans(cldr), htmlsc($quote->user_country))  </div>}
 @endif
 
 echo '<br/>';
 
-if ($quote->user_phone)
+@if($quote->user_phone)
 {<div>  trans(phone_abbr)  :   htmlsc($quote->user_phone)  </div>}
 @endif
-if ($quote->user_fax)
+@if($quote->user_fax)
 {<div>  trans(fax_abbr)  :   htmlsc($quote->user_fax)  </div>}
 @endif
     </div>
@@ -164,7 +164,7 @@ if ($quote->user_fax)
 
         </tbody>
         @php // Fix for mpdf: table head of items printed on 2nd page
-if ($add_table_and_head_for_sums) {
+@if($add_table_and_head_for_sums) {
     $colspan .= '" style="width:543px'; // little hackish
     </table>
 
@@ -173,7 +173,7 @@ if ($add_table_and_head_for_sums) {
         <tr>
             <th colspan="{{ $colspan ?>">&nbsp;</th>
             <th class="text-right">
-                @lang('total') }}
+                @lang('total')
             </th>
         </tr>
         </thead>
@@ -187,7 +187,7 @@ if ($add_table_and_head_for_sums) {
         <tr>
             <td class=" text-right
             " colspan="{{ $colspan ">
-                @lang('subtotal') }}
+                @lang('subtotal')
             </td>
             <td class="text-right">{{ format_currency($quote->quote_item_subtotal) }}</td>
         </tr>
@@ -196,7 +196,7 @@ if ($add_table_and_head_for_sums) {
 
         <tr>
             <td class="text-right" colspan="{{ $colspan ">
-                @lang('item_tax') }}
+                @lang('item_tax')
             </td>
             <td class=" text-right
             ">
@@ -222,7 +222,7 @@ if ($add_table_and_head_for_sums) {
 
         <tr>
             <td class="text-right" colspan="{{ $colspan ">
-                <b>@lang('total') }}</b>
+                <b>@lang('total')</b>
             </td>
             <td class=" text-right
             ">

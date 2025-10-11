@@ -15,7 +15,7 @@
                 @if($database['message'] && $_POST)
                     <div class="alert alert-danger">
                         <b>@php
-        @lang('failure') }}</b><br>
+        @lang('failure')</b><br>
                         {{ $database['message'] }}
                     </div>
                 @endif
@@ -28,7 +28,7 @@
             @lang('hostname')
         </label>
         <input type="text" name="db_hostname" id="db_hostname" class="form-control"
-               value="{{ $this->input->post('db_hostname') ? $this->input->post('db_hostname') : 'localhost' }}">
+               value="{{ $this->input->post('db_hostname') ? $this->input->post('db_hostname') : 'localhost' " }}>
         <span class="help-block">@lang('setup_db_hostname_info')</span>
     </div>
 
@@ -37,7 +37,7 @@
             @lang('port')
         </label>
         <input type="text" name="db_port" id="db_port" class="form-control"
-               value="{{ $this->input->post('db_port') ? $this->input->post('db_port') : 3306 }}">
+               value="{{ $this->input->post('db_port') ? $this->input->post('db_port') : 3306 " }}>
         <span class="help-block">@lang('setup_db_port_info')</span>
     </div>
 
@@ -46,7 +46,7 @@
             @lang('username')
         </label>
         <input type="text" name="db_username" id="db_username" class="form-control"
-               value="{{ $this->input->post('db_username') }}">
+               value="{{ $this->input->post('db_username') " }}>
         <span class="help-block">@lang('setup_db_username_info')</span>
     </div>
 
@@ -55,7 +55,7 @@
             @lang('password')
         </label>
         <input type="password" name="db_password" id="db_password" class="form-control"
-               value="{{ $this->input->post('db_password') }}">
+               value="{{ $this->input->post('db_password') " }}>
         <span class="help-block">@lang('setup_db_password_info')</span>
     </div>
 
@@ -64,7 +64,7 @@
             @lang('database')
         </label>
         <input type="text" name="db_database" id="db_database" class="form-control"
-               value="{{ $this->input->post('db_database') }}">
+               value="{{ $this->input->post('db_database') " }}>
         <span class="help-block">@lang('setup_db_database_info')</span>
     </div>
     @endif

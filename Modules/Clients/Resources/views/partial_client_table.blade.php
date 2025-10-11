@@ -17,7 +17,7 @@
         <tbody>
         @php $class_checks = ['fa fa-lg fa-check-square-o text-success', 'fa fa-lg fa-edit text-warning'];
 // e-invoice
-foreach ($records as $client) {
+@foreach($records as $client) {
 
         <tr>
             <td>
@@ -29,9 +29,9 @@ foreach ($records as $client) {
             <td>{!! $client->client_einvoicing_version !!}</td>
             <td>
                 @if($client->client_einvoicing_active == 1)
-                <i class="{{ $class_checks[0] }}"></i>
+                <i class="{{ $class_checks[0] " }}></i>
                 @elseif($client->client_einvoicing_version != '')
-                <i class="{{ $class_checks[1] }}"></i>
+                <i class="{{ $class_checks[1] " }}></i>
                 @endif
             </td>
             @endif
@@ -44,24 +44,24 @@ foreach ($records as $client) {
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ url('clients/view/' . $client->client_id) }}">
+                            <a href="{{ url('clients/view/' . $client->client_id) " }}>
                                 <i class="fa fa-eye fa-margin"></i> @lang('view')
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('clients/form/' . $client->client_id) }}">
+                            <a href="{{ url('clients/form/' . $client->client_id) " }}>
                                 <i class="fa fa-edit fa-margin"></i> @lang('edit')
                             </a>
                         </li>
                         <li>
                             <a href="#" class="client-create-quote"
-                               data-client-id="{{ $client->client_id }}">
+                               data-client-id="{{ $client->client_id " }}>
                                 <i class="fa fa-file fa-margin"></i> @lang('create_quote')
                             </a>
                         </li>
                         <li>
                             <a href="#" class="client-create-invoice"
-                               data-client-id="{{ $client->client_id }}">
+                               data-client-id="{{ $client->client_id " }}>
                                 <i class="fa fa-file-text fa-margin"></i> @lang('create_invoice')
                             </a>
                         </li>

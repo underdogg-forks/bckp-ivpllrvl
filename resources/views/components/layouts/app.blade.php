@@ -14,7 +14,7 @@
                     button.setAttribute('aria-pressed', String(appearance === button.value))
                 })
             }
-            if (appearance === 'system') {
+            @if(appearance === 'system') {
                 let media = window.matchMedia('(prefers-color-scheme: dark)')
                 window.localStorage.removeItem('appearance')
                 media.matches ? setDark() : setLight()
@@ -25,7 +25,7 @@
                 window.localStorage.setItem('appearance', 'light')
                 setLight()
             }
-            if (document.readyState === 'complete') {
+            @if(document.readyState === 'complete') {
                 setButtons(appearance)
             } else {
                 document.addEventListener("DOMContentLoaded", () => setButtons(appearance))
@@ -44,7 +44,7 @@
         localStorage.setItem('sidebarOpen', this.sidebarOpen);
     },
     temporarilyOpenSidebar() {
-        if (!this.sidebarOpen) {
+        @if(!this.sidebarOpen) {
             this.sidebarOpen = true;
             localStorage.setItem('sidebarOpen', true);
         }

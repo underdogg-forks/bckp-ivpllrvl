@@ -33,7 +33,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ url('custom_values/field/' . $custom_value->custom_field_id) }}">
+                                <a href="{{ url('custom_values/field/' . $custom_value->custom_field_id) " }}>
                                     <i class="fa fa-edit fa-margin"></i> @lang('edit') (@lang('values'))
                                 </a>
                             </li>

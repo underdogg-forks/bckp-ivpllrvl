@@ -30,7 +30,7 @@
                     <tr>
                         <td>{{ date_from_mysql($payment->payment_date) }}</td>
                         <td>
-                            <a href="{{ url('guest/invoices/view/' . $payment->invoice_id) }}">
+                            <a href="{{ url('guest/invoices/view/' . $payment->invoice_id) " }}>
                                 {{ $payment->invoice_number }}
                             </a>
                         </td>

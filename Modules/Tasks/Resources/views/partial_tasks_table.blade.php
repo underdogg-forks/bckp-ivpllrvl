@@ -19,13 +19,13 @@
 
         <tr>
             <td>
-                        <span class="label {{ $label_class }}">
+                        <span class="label {{ $label_class " }}>
                             {{ $task_statuses[$task->task_status]['label'] ?? '' }}
                         </span>
             </td>
-            <td><a href="{{ url('tasks/form/' . $task->task_id) }}"><i class="fa fa-edit"></i> {!! $task->task_name !!}</a></td>
+            <td><a href="{{ url('tasks/form/' . $task->task_id) " }}><i class="fa fa-edit"></i> {!! $task->task_name !!}</a></td>
             <td>
-                <div class="{{ $task->is_overdue ? 'text-danger' : '' }}">
+                <div class="{{ $task->is_overdue ? 'text-danger' : '' " }}>
                     {{ date_from_mysql($task->task_finish_date) }}
                 </div>
             </td>

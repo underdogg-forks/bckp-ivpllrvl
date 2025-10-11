@@ -29,7 +29,7 @@
             },
             function (data) {
                 var response = json_parse(data, {{ (int) IP_DEBUG }});
-                if (response.success === 1) {
+                @if(response.success === 1) {
                     window.location = "{{ url('invoices/view') }}/{{ $invoice_id }}";
                 } else {
                     // The validation was not successful
@@ -68,7 +68,7 @@
                 <label for="recur_frequency">@lang('every')</label>
                 <select name="recur_frequency" id="recur_frequency" class="form-control simple-select">
                     @foreach($recur_frequencies as $key => $lang)
-                    <option value="{{ $key }}">
+                    <option value="{{ $key " }}>
                     @php
                         _trans($lang) }}
                                             </option>@endforeach

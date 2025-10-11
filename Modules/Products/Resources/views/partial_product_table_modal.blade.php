@@ -13,7 +13,7 @@
         <tr class="product">
             <td class="text-left">
                 <input type="checkbox" name="product_ids[]"
-                       value="{{ $product->product_id }}">
+                       value="{{ $product->product_id " }}>
             </td>
             <td nowrap class="text-left">
                 <b>{!! $product->product_sku !!}</b>
