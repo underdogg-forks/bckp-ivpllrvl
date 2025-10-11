@@ -64,14 +64,18 @@ class UserCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $user_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array    = ['user_id' => $user_id, 'user_custom_fieldid' => $key, 'user_custom_fieldvalue' => $value];
-                $user_custom = $this->where('user_id', $user_id)->where('user_custom_fieldid', $key)->get();
-                if ($user_custom->numRows()) {
-                    $user_custom_id = $user_custom->row()->user_custom_id;
-                }
-                parent::save($user_custom_id, $db_array);
+                \Modules\Users\Models\UserCustom::query()->updateOrCreate(
+                    [
+                        'user_id' => $user_id,
+                        'user_custom_fieldid' => $key
+                    ],
+                    [
+                        'user_id' => $user_id,
+                        'user_custom_fieldid' => $key,
+                        'user_custom_fieldvalue' => $value
+                    ]
+                );
             }
 
             return true;

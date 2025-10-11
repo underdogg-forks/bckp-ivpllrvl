@@ -57,15 +57,18 @@ class ClientCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $client_custom_id      = null;
-            $db_array['client_id'] = $client_id;
             foreach ($form_data as $key => $value) {
-                $db_array      = ['client_id' => $client_id, 'client_custom_fieldid' => $key, 'client_custom_fieldvalue' => $value];
-                $client_custom = $this->where('client_id', $client_id)->where('client_custom_fieldid', $key)->get();
-                if ($client_custom->numRows()) {
-                    $client_custom_id = $client_custom->row()->client_custom_id;
-                }
-                parent::save($client_custom_id, $db_array);
+                \Modules\Clients\Models\ClientCustom::query()->updateOrCreate(
+                    [
+                        'client_id' => $client_id,
+                        'client_custom_fieldid' => $key
+                    ],
+                    [
+                        'client_id' => $client_id,
+                        'client_custom_fieldid' => $key,
+                        'client_custom_fieldvalue' => $value
+                    ]
+                );
             }
 
             return true;

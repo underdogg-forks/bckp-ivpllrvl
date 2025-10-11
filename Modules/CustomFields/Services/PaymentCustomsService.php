@@ -57,14 +57,18 @@ class PaymentCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $payment_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array       = ['payment_id' => $payment_id, 'payment_custom_fieldid' => $key, 'payment_custom_fieldvalue' => $value];
-                $payment_custom = $this->where('payment_id', $payment_id)->where('payment_custom_fieldid', $key)->get();
-                if ($payment_custom->numRows()) {
-                    $payment_custom_id = $payment_custom->row()->payment_custom_id;
-                }
-                parent::save($payment_custom_id, $db_array);
+                \Modules\Payments\Models\PaymentCustom::query()->updateOrCreate(
+                    [
+                        'payment_id' => $payment_id,
+                        'payment_custom_fieldid' => $key
+                    ],
+                    [
+                        'payment_id' => $payment_id,
+                        'payment_custom_fieldid' => $key,
+                        'payment_custom_fieldvalue' => $value
+                    ]
+                );
             }
 
             return true;

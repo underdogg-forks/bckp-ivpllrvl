@@ -57,14 +57,18 @@ class QuoteCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $quote_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array     = ['quote_id' => $quote_id, 'quote_custom_fieldid' => $key, 'quote_custom_fieldvalue' => $value];
-                $quote_custom = $this->where('quote_id', $quote_id)->where('quote_custom_fieldid', $key)->get();
-                if ($quote_custom->numRows()) {
-                    $quote_custom_id = $quote_custom->row()->quote_custom_id;
-                }
-                parent::save($quote_custom_id, $db_array);
+                \Modules\Quotes\Models\QuoteCustom::query()->updateOrCreate(
+                    [
+                        'quote_id' => $quote_id,
+                        'quote_custom_fieldid' => $key
+                    ],
+                    [
+                        'quote_id' => $quote_id,
+                        'quote_custom_fieldid' => $key,
+                        'quote_custom_fieldvalue' => $value
+                    ]
+                );
             }
 
             return true;
