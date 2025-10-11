@@ -10,6 +10,8 @@ class Product extends BaseModel
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
+    protected $table = 'ip_products';
+
     public $timestamps = false;
 
     protected $casts = [];

@@ -10,6 +10,8 @@ class Session extends BaseModel
     /** @use HasFactory<\Database\Factories\SessionFactory> */
     use HasFactory;
 
+    protected $table = 'ip_sessions';
+
     public $timestamps = false;
 
     protected $casts = [];

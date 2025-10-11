@@ -10,6 +10,8 @@ class Upload extends BaseModel
     /** @use HasFactory<\Database\Factories\UploadFactory> */
     use HasFactory;
 
+    protected $table = 'ip_uploads';
+
     public $timestamps = false;
 
     protected $casts = [];

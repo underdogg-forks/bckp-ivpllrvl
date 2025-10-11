@@ -10,6 +10,8 @@ class PaymentLog extends BaseModel
     /** @use HasFactory<\Database\Factories\PaymentLogFactory> */
     use HasFactory;
 
+    protected $table = 'ip_merchant_responses';
+
     public $timestamps = false;
 
     protected $casts = [];

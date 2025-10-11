@@ -10,6 +10,8 @@ class Family extends BaseModel
     /** @use HasFactory<\Database\Factories\FamilyFactory> */
     use HasFactory;
 
+    protected $table = 'ip_families';
+
     public $timestamps = false;
 
     protected $casts = [];

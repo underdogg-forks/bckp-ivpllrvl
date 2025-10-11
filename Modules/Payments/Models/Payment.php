@@ -10,6 +10,8 @@ class Payment extends BaseModel
     /** @use HasFactory<\Database\Factories\PaymentFactory> */
     use HasFactory;
 
+    protected $table = 'ip_payments';
+
     public $timestamps = false;
 
     protected $casts = [];
