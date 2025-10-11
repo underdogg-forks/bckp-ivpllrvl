@@ -4,6 +4,8 @@ namespace Modules\Tasks\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Invoices\Models\Item;
+use Modules\Tasks\Models\Task;
 
 #[AllowDynamicProperties]
 class TasksService extends BaseService
@@ -119,7 +121,11 @@ class TasksService extends BaseService
         if ( ! $task_id) {
             return;
         }
-        $invoice_item = $this->db->select('ip_invoice_items.invoice_id')->from('ip_invoice_items')->where('ip_invoice_items.item_task_id', $task_id)->get()->result();
+        $invoice_item = Item::query()
+            ->select('invoice_id')
+            ->where('item_task_id', $task_id)
+            ->first();
+            
         if (empty($invoice_item) || ! isset($invoice_item->invoice_id)) {
             return;
         }
@@ -140,13 +146,27 @@ class TasksService extends BaseService
             return $result;
         }
         // GetController tasks without any project
-        $query = $this->db->select($this->table . '.*')->from($this->table)->where($this->table . '.project_id', 0)->where($this->table . '.task_status', 3)->orderBy($this->table . '.task_finish_date', 'ASC')->orderBy($this->table . '.task_name', 'ASC')->get();
-        foreach ($query->result() as $row) {
+        $tasks = Task::query()
+            ->where('project_id', 0)
+            ->where('task_status', 3)
+            ->orderBy('task_finish_date', 'ASC')
+            ->orderBy('task_name', 'ASC')
+            ->get();
+        foreach ($tasks as $row) {
             $result[] = $row;
         }
         // GetController tasks for this invoice
-        $query = $this->db->select($this->table . '.*, ip_projects.project_name')->from($this->table)->join('ip_projects', 'ip_projects.project_id = ' . $this->table . '.project_id')->join('ip_invoices', 'ip_invoices.client_id = ip_projects.client_id')->where('ip_invoices.invoice_id', $invoice_id)->where($this->table . '.task_status', 3)->orderBy($this->table . '.task_finish_date', 'ASC')->orderBy('ip_projects.project_name', 'ASC')->orderBy($this->table . '.task_name', 'ASC')->get();
-        foreach ($query->result() as $row) {
+        $tasks = Task::query()
+            ->select('ip_tasks.*', 'ip_projects.project_name')
+            ->join('ip_projects', 'ip_projects.project_id', '=', 'ip_tasks.project_id')
+            ->join('ip_invoices', 'ip_invoices.client_id', '=', 'ip_projects.client_id')
+            ->where('ip_invoices.invoice_id', $invoice_id)
+            ->where('ip_tasks.task_status', 3)
+            ->orderBy('ip_tasks.task_finish_date', 'ASC')
+            ->orderBy('ip_projects.project_name', 'ASC')
+            ->orderBy('ip_tasks.task_name', 'ASC')
+            ->get();
+        foreach ($tasks as $row) {
             $result[] = $row;
         }
 
@@ -163,8 +183,11 @@ class TasksService extends BaseService
         if ( ! $invoice_id) {
             return;
         }
-        $query = $this->db->select($this->table . '.*')->from($this->table)->join('ip_invoice_items', 'ip_invoice_items.item_task_id = ' . $this->table . '.task_id')->where('ip_invoice_items.invoice_id', $invoice_id)->get();
-        foreach ($query->result() as $task) {
+        $tasks = Task::query()
+            ->join('ip_invoice_items', 'ip_invoice_items.item_task_id', '=', 'ip_tasks.task_id')
+            ->where('ip_invoice_items.invoice_id', $invoice_id)
+            ->get();
+        foreach ($tasks as $task) {
             $this->updateStatus(3, $task->task_id);
         }
     }
@@ -202,8 +225,8 @@ class TasksService extends BaseService
         if ( ! $project_id) {
             return;
         }
-        $query = $this->db->select($this->table . '.*')->from($this->table)->where($this->table . '.project_id', $project_id)->get();
-        foreach ($query->result() as $task) {
+        $tasks = Task::query()->where('project_id', $project_id)->get();
+        foreach ($tasks as $task) {
             parent::save($task->task_id, ['project_id' => null]);
         }
     }
