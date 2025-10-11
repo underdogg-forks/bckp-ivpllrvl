@@ -16,6 +16,10 @@ class TaxRatesControllerTest extends TestCase
     #[Test]
     public function it_displays_tax_rates_list()
     {
+        // Arrange: authenticate user
+        $user = \Modules\Users\Models\User::factory()->create();
+        $this->actingAs($user);
+
         // Arrange: create tax rates
         $taxRate = \Modules\TaxRates\Models\TaxRate::factory()->create();
 
