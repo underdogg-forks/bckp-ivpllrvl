@@ -10,6 +10,8 @@ class Setting extends BaseModel
     /** @use HasFactory<\Database\Factories\SettingFactory> */
     use HasFactory;
 
+    protected $table = 'ip_settings';
+
     public $timestamps = false;
 
     protected $casts = [];

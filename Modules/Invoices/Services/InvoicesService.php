@@ -6,8 +6,10 @@ use AllowDynamicProperties;
 use Illuminate\Support\Str;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Services\BaseService;
+use Modules\CustomFields\Models\InvoiceCustom;
 use Modules\CustomFields\Services\InvoiceCustomService;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
+use Modules\Invoices\Models\Invoice;
 use Modules\Payments\Services\PaymentsService;
 
 #[AllowDynamicProperties]
@@ -120,17 +122,22 @@ class InvoicesService extends BaseService
         $invoice_id    = parent::save(null, $db_array);
         $inv           = $this->where('ip_invoices.invoice_id', $invoice_id)->get()->row();
         $invoice_group = $inv->invoice_group_id;
-        $db_array = ['invoice_id' => $invoice_id];
-        $this->db->insert('ip_invoice_amounts', $db_array);
+        
+        \Modules\Invoices\Models\InvoiceAmount::query()->create(['invoice_id' => $invoice_id]);
+        
         if ($include_invoice_tax_rates && get_setting('default_invoice_tax_rate')) {
-            $db_array = ['invoice_id' => $invoice_id, 'tax_rate_id' => get_setting('default_invoice_tax_rate'), 'include_item_tax' => get_setting('default_include_item_tax', 0), 'invoice_tax_rate_amount' => 0];
-            $this->db->insert('ip_invoice_tax_rates', $db_array);
+            \Modules\Invoices\Models\InvoiceTaxRate::query()->create([
+                'invoice_id' => $invoice_id,
+                'tax_rate_id' => get_setting('default_invoice_tax_rate'),
+                'include_item_tax' => get_setting('default_include_item_tax', 0),
+                'invoice_tax_rate_amount' => 0
+            ]);
         }
+        
         if ($invoice_group !== '0') {
             $invgroup = $this->invoiceGroupsService->where('invoice_group_id', $invoice_group)->get()->row();
             if (preg_match('/sumex/i', $invgroup->invoice_group_name)) {
-                $db_array = ['sumex_invoice' => $invoice_id];
-                $this->db->insert('ip_invoice_sumex', $db_array);
+                \Modules\Invoices\Models\InvoiceSumex::query()->create(['sumex_invoice' => $invoice_id]);
             }
         }
         return $invoice_id;
@@ -155,8 +162,8 @@ class InvoicesService extends BaseService
             'items_subtotal' => $this->itemsService->getItemsSubtotal($source_id),
         ];
         unset($invoice);
-        $this->where('invoice_id', $target_id)->update('ip_invoices', ['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
-        $invoice_items = $this->itemsService->where('invoice_id', $source_id)->get()->result();
+        Invoice::query()->where('invoice_id', $target_id)->update(['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
+        $invoice_items = $this->itemsService->getByInvoiceId($source_id);
         foreach ($invoice_items as $invoice_item) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -177,7 +184,7 @@ class InvoicesService extends BaseService
                 $this->itemsService->save(null, $db_array, $global_discount);
             }
         }
-        $invoice_tax_rates = $this->invoiceTaxRatesService->where('invoice_id', $source_id)->get()->result();
+        $invoice_tax_rates = $this->invoiceTaxRatesService->getByInvoiceId($source_id);
         foreach ($invoice_tax_rates as $invoice_tax_rate) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -187,7 +194,7 @@ class InvoicesService extends BaseService
             ];
             $this->invoiceTaxRatesService->save(null, $db_array);
         }
-        $custom_fields = $this->invoiceCustomService->where('invoice_id', $source_id)->get()->result();
+        $custom_fields = InvoiceCustom::query()->join('ip_custom_fields', 'ip_invoice_custom.invoice_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')->where('ip_invoice_custom.invoice_id', $source_id)->get();
         $form_data     = [];
         foreach ($custom_fields as $field) {
             $form_data[$field->invoice_custom_fieldid] = $field->invoice_custom_fieldvalue;
@@ -213,9 +220,9 @@ class InvoicesService extends BaseService
             'item'    => 0.0,
             'items_subtotal' => $this->itemsService->getItemsSubtotal($source_id),
         ];
-        $this->where('invoice_id', $target_id)->update('ip_invoices', ['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
+        Invoice::query()->where('invoice_id', $target_id)->update(['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
         unset($invoice);
-        $invoice_items = $this->itemsService->where('invoice_id', $source_id)->get()->result();
+        $invoice_items = $this->itemsService->getByInvoiceId($source_id);
         foreach ($invoice_items as $invoice_item) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -234,7 +241,7 @@ class InvoicesService extends BaseService
             ];
             $this->itemsService->save(null, $db_array, $global_discount);
         }
-        $invoice_tax_rates = $this->invoiceTaxRatesService->where('invoice_id', $source_id)->get()->result();
+        $invoice_tax_rates = $this->invoiceTaxRatesService->getByInvoiceId($source_id);
         foreach ($invoice_tax_rates as $invoice_tax_rate) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -244,7 +251,7 @@ class InvoicesService extends BaseService
             ];
             $this->invoiceTaxRatesService->save(null, $db_array);
         }
-        $custom_fields = $this->invoiceCustomService->where('invoice_id', $source_id)->get()->result();
+        $custom_fields = InvoiceCustom::query()->join('ip_custom_fields', 'ip_invoice_custom.invoice_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')->where('ip_invoice_custom.invoice_id', $source_id)->get();
         $form_data     = [];
         foreach ($custom_fields as $field) {
             $form_data[$field->invoice_custom_fieldid] = $field->invoice_custom_fieldvalue;
@@ -292,16 +299,15 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * Attach payments matching the invoice's ID to the given invoice object.
+     * Attach matching payments to the given invoice object.
      *
      * @param object $invoice Invoice object containing an `invoice_id` property.
-     * @return object The same invoice object with a `payments` property set to an array of payment records when payments exist, or `null` when none are found.
+     * @return object The invoice object with a `payments` property: an Eloquent Collection of payment records if any exist, `null` otherwise.
      */
     public function getPayments($invoice)
     {
-        $this->db->where('invoice_id', $invoice->invoice_id);
-        $payment_results   = $this->db->get('ip_payments');
-        $invoice->payments = $payment_results->numRows() > 0 ? $payment_results->result() : null;
+        $payments = Payment::query()->where('invoice_id', $invoice->invoice_id)->get();
+        $invoice->payments = $payments->isNotEmpty() ? $payments : null;
         return $invoice;
     }
 
@@ -518,65 +524,71 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName markViewed
+     * Mark an invoice as viewed and optionally mark it read-only.
      *
-     * @originalFile Invoice.php
+     * If the invoice exists and its status is "sent" (2), updates the status to
+     * "viewed" (3). If the read-only feature is enabled and the read-only toggle
+     * setting equals 3, also sets the invoice to read-only. Persists changes only
+     * when there are updates to save.
+     *
+     * @param int|string $invoice_id The ID of the invoice to update.
      */
     public function markViewed($invoice_id)
     {
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice)) {
-            $up = false;
+            $update_data = [];
+            
             if ($invoice->invoice_status_id == 2) {
-                $up = true;
-                $this->db->set('invoice_status_id', 3);
+                $update_data['invoice_status_id'] = 3;
             }
             // Set the invoice to read-only if feature is not disabled and setting is view
             if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 3) {
-                $up = true;
-                $this->db->set('is_read_only', 1);
+                $update_data['is_read_only'] = 1;
             }
             // Save?
-            if ($up) {
-                $this->db->where('invoice_id', $invoice_id);
-                $this->db->update('ip_invoices');
+            if (!empty($update_data)) {
+                Invoice::query()->where('invoice_id', $invoice_id)->update($update_data);
             }
         }
     }
 
     /**
-     * @originalName markSent
+     * Mark an invoice as sent and apply related state updates.
      *
-     * @originalFile Invoice.php
+     * If the invoice is currently a draft (status 1), updates its due date and changes its status to sent (2).
+     * If read-only behavior is enabled via configuration and the `read_only_toggle` setting equals 2, marks the invoice as read-only.
+     *
+     * @param int $invoice_id The ID of the invoice to mark as sent.
      */
     public function markSent($invoice_id)
     {
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice)) {
-            $up = false;
+            $update_data = [];
+            
             if ($invoice->invoice_status_id == 1) {
                 // Set new due date and save
                 $this->updateInvoiceDueDate($invoice_id);
-                $up = true;
-                $this->db->set('invoice_status_id', 2);
+                $update_data['invoice_status_id'] = 2;
             }
             // Set the invoice to read-only if feature is not disabled and setting is sent
             if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 2) {
-                $up = true;
-                $this->db->set('is_read_only', 1);
+                $update_data['is_read_only'] = 1;
             }
             // Save?
-            if ($up) {
-                $this->db->where('invoice_id', $invoice_id);
-                $this->db->update('ip_invoices');
+            if (!empty($update_data)) {
+                Invoice::query()->where('invoice_id', $invoice_id)->update($update_data);
             }
         }
     }
 
     /**
-     * @originalName generateInvoiceNumberIfApplicable
+     * Generate and persist an invoice number for a draft invoice when invoice-number generation for drafts is disabled.
      *
-     * @originalFile Invoice.php
+     * Checks the invoice by ID and, if it is a draft with no number and the setting `generate_invoice_number_for_draft` is disabled, obtains a new invoice number for the invoice's group and updates the invoice record.
+     *
+     * @param int $invoice_id The ID of the invoice to potentially update.
      */
     public function generateInvoiceNumberIfApplicable($invoice_id)
     {
@@ -585,25 +597,24 @@ class InvoicesService extends BaseService
         if ( ! empty($invoice) && ($invoice->invoice_status_id == 1 && $invoice->invoice_number == '') && get_setting('generate_invoice_number_for_draft') == 0) {
             $invoice_number = $this->getInvoiceNumber($invoice->invoice_group_id);
             // Set new invoice number and save
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->set('invoice_number', $invoice_number);
-            $this->db->update('ip_invoices');
+            Invoice::query()->where('invoice_id', $invoice_id)->update(['invoice_number' => $invoice_number]);
         }
     }
 
     /**
-     * @originalName updateInvoiceDueDate
+     * Update an invoice's due date based on the current date when allowed by invoice state and settings.
      *
-     * @originalFile Invoice.php
+     * If the invoice exists, is not marked read-only, and the "no_update_invoice_due_date_mail" setting is disabled,
+     * the invoice's due date will be recalculated and persisted.
+     *
+     * @param int $invoice_id The ID of the invoice to update.
      */
     public function updateInvoiceDueDate($invoice_id)
     {
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice) && $invoice->is_read_only != 1 && get_setting('no_update_invoice_due_date_mail') == 0) {
             $current_date = date_to_mysql(date(date_format_setting()));
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->set('invoice_date_due', $this->getDateDue($current_date));
-            $this->db->update('ip_invoices');
+            Invoice::query()->where('invoice_id', $invoice_id)->update(['invoice_date_due' => $this->getDateDue($current_date)]);
         }
     }
 }

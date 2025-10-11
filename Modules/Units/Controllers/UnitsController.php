@@ -6,6 +6,7 @@ use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
 use Modules\Units\Models\Unit;
+use Modules\Units\Services\UnitsService;
 
 #[AllowDynamicProperties]
 class UnitsController extends AdminController
@@ -48,21 +49,13 @@ class UnitsController extends AdminController
             'is_update'      => 'nullable|boolean',
         ]);
         if (empty($id) && $data['is_update'] == 0) {
-            $exists = Unit::query()->where('unit_name', $data['unit_name'])->exists();
+            $exists = (new UnitsService())->exists($data['unit_name']);
             if ($exists) {
                 return redirect()->route('units.form')->with('alert_error', trans('unit_already_exists'));
             }
         }
         if ($request->isMethod('post')) {
-            if (empty($id)) {
-                Unit::create($data);
-            } else {
-                $unit = Unit::find($id);
-                if ( ! $unit) {
-                    abort(404);
-                }
-                $unit->update($data);
-            }
+            (new UnitsService())->save($data, $id);
 
             return redirect()->route('units');
         }
@@ -81,10 +74,7 @@ class UnitsController extends AdminController
      */
     public function delete($id): \Illuminate\Http\RedirectResponse
     {
-        $unit = Unit::find($id);
-        if ($unit) {
-            $unit->delete();
-        }
+        (new UnitsService())->delete($id);
 
         return redirect()->route('units');
     }

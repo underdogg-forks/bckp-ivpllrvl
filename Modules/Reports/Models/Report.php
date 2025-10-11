@@ -10,6 +10,8 @@ class Report extends BaseModel
     /** @use HasFactory<\Database\Factories\ReportFactory> */
     use HasFactory;
 
+    protected $table = 'ip_reports';
+
     public $timestamps = false;
 
     protected $casts = [];

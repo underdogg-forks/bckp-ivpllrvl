@@ -10,6 +10,8 @@ class Task extends BaseModel
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
 
+    protected $table = 'ip_tasks';
+
     public $timestamps = false;
 
     protected $casts = [];

@@ -24,9 +24,9 @@ class TaxRatesService extends BaseService
     }
 
     /**
-     * Get a TaxRate query ordered by tax_rate_percent.
+     * Create a TaxRate query builder ordered by tax_rate_percent.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder A query builder for TaxRate records ordered by `tax_rate_percent`.
      */
     public function defaultOrderBy(): \Illuminate\Database\Eloquent\Builder
     {
@@ -34,12 +34,25 @@ class TaxRatesService extends BaseService
     }
 
     /**
-     * @originalName validationRules
+     * Get validation metadata for tax rate fields.
      *
-     * @originalFile TaxRate.php
+     * Maps the keys 'tax_rate_name' and 'tax_rate_percent' to an array containing
+     * 'field' (field name), 'label' (translated label), and 'rules' (validation rules).
+     *
+     * @return array<string, array{field:string, label:string, rules:string}> Mapping for 'tax_rate_name' and 'tax_rate_percent'.
      */
     public function validationRules()
     {
         return ['tax_rate_name' => ['field' => 'tax_rate_name', 'label' => trans('tax_rate_name'), 'rules' => 'required'], 'tax_rate_percent' => ['field' => 'tax_rate_percent', 'label' => trans('tax_rate_percent'), 'rules' => 'required']];
+    }
+
+    /**
+     * Retrieve all tax rate records.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<\Modules\TaxRates\Models\TaxRate> Collection of TaxRate models.
+     */
+    public function getAll()
+    {
+        return \Modules\TaxRates\Models\TaxRate::query()->get();
     }
 }

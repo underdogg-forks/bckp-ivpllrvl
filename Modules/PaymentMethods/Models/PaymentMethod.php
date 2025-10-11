@@ -10,6 +10,8 @@ class PaymentMethod extends BaseModel
     /** @use HasFactory<\Database\Factories\PaymentMethodFactory> */
     use HasFactory;
 
+    protected $table = 'ip_payment_methods';
+
     public $timestamps = false;
 
     protected $casts = [];

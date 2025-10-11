@@ -12,7 +12,7 @@ use Modules\Invoices\Services\InvoiceCustomService;
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Invoices\Services\InvoiceTaxRatesService;
 use Modules\Invoices\Services\ItemsService;
-use Modules\Payments\Services\PaymentMethodsService;
+use Modules\PaymentMethods\Services\PaymentMethodsService;
 use Modules\Tasks\Services\TasksService;
 use Modules\TaxRates\Services\TaxRatesService;
 use Modules\Units\Services\UnitsService;
@@ -181,10 +181,10 @@ class InvoicesController extends AdminController
             'invoice_id' => $invoice_id,
             'einvoice' => $einvoice,
             'change_user' => $change_user,
-            'tax_rates' => $this->taxRatesService->get()->result(),
-            'invoice_tax_rates' => $this->invoiceTaxRatesService->where('invoice_id', $invoice_id)->get()->result(),
-            'units' => $this->unitsService->get()->result(),
-            'payment_methods' => $this->paymentMethodsService->get()->result(),
+            'tax_rates' => $this->taxRatesService->getAll(),
+            'invoice_tax_rates' => $this->invoiceTaxRatesService->getByInvoiceId($invoice_id),
+            'units' => $this->unitsService->getAll(),
+            'payment_methods' => $this->paymentMethodsService->getAll(),
             'custom_fields' => $custom_fields,
             'custom_values' => $custom_values,
             'custom_js_vars' => [
@@ -221,12 +221,12 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * Generate a PDF for the given invoice and output it according to the specified mode.
+     * Generate a PDF for the specified invoice and emit it according to the chosen mode.
      *
-     * If the "mark_invoices_sent_pdf" setting is enabled, this may assign an invoice number if needed and mark the invoice as sent before generating the PDF.
+     * If the `mark_invoices_sent_pdf` setting is enabled, this may assign an invoice number when necessary and mark the invoice as sent prior to PDF generation.
      *
-     * @param int|string $invoice_id The ID of the invoice to generate a PDF for.
-     * @param bool $stream When true, output the PDF directly (stream to the client); when false, return or save the generated PDF.
+     * @param int|string $invoice_id ID of the invoice to generate the PDF for.
+     * @param bool $stream If `true`, send the PDF directly to the client; if `false`, produce the PDF without streaming.
      * @param string|null $invoice_template Optional template identifier to use for PDF generation.
      */
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
@@ -239,14 +239,15 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * Generate and send the electronic invoice XML for a given invoice.
+     * Generate the electronic invoice XML and send it as the HTTP response with Content-Type `text/xml`.
      *
-     * Loads the invoice and its items, determines the e-invoice configuration, builds a temporary XML file,
-     * sets the response body to the XML with Content-Type `text/xml`, and deletes the temporary file.
+     * Loads the invoice and its items, determines the e-invoice configuration and XML generator (optionally via
+     * a config file in app/Helpers/XMLconfigs/), generates a temporary XML file, writes its contents to the response,
+     * and removes the temporary file.
      *
-     * If the invoice does not exist or the e-invoice configuration lacks a user, the request is aborted with 404.
+     * If the invoice cannot be found or the e-invoice configuration lacks a user, the request is aborted with a 404 response.
      *
-     * @param int|string $invoice_id The identifier of the invoice to generate XML for.
+     * @param int|string $invoice_id The invoice identifier.
      */
     public function generateXml($invoice_id): void
     {
@@ -254,7 +255,7 @@ class InvoicesController extends AdminController
         if ( ! $invoice) {
             abort(404);
         }
-        $items = $this->itemsService->where('invoice_id', $invoice_id)->get()->result();
+        $items = $this->itemsService->getByInvoiceId($invoice_id);
         $einvoice = get_einvoice_usage($invoice, $items, false);
         if ( ! $einvoice->user) {
             abort(404);
@@ -297,7 +298,7 @@ class InvoicesController extends AdminController
     {
         $sumex = new \Modules\Core\Libraries\Sumex([
             'invoice' => $this->invoicesService->getById($invoice_id),
-            'items' => $this->itemsService->where('invoice_id', $invoice_id)->get()->result(),
+            'items' => $this->itemsService->getByInvoiceId($invoice_id),
             'options' => ['copy' => '1', 'storno' => '0'],
         ]);
         response()->header('Content-Type', 'application/pdf')->setContent($sumex->pdf());

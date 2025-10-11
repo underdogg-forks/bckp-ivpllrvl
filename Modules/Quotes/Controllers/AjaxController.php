@@ -6,15 +6,14 @@ use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
-use Modules\CustomFields\Services\QuoteCustomService;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
-use Modules\Quotes\Services\QuoteAmountsService;
 use Modules\Quotes\Services\QuoteItemsService;
 use Modules\Quotes\Services\QuotesService;
 use Modules\Quotes\Services\QuoteTaxRatesService;
 use Modules\TaxRates\Services\TaxRatesService;
-use Modules\Units\Services\UnitsService;
 use Modules\Users\Services\UsersService;
+use Modules\Quotes\Services\QuoteAmountsService;
+use Modules\Units\Services\UnitsService;
 
 #[AllowDynamicProperties]
 class AjaxController extends AdminController
@@ -181,9 +180,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Retrieve a quote item identified by the POST field 'item_id' and output it as JSON.
+     * Outputs the quote item identified by POST parameter 'item_id' as JSON.
      *
-     * Reads 'item_id' from the HTTP POST payload, fetches the corresponding quote item, writes the item as a JSON response, and terminates execution.
+     * Fetches the quote item by its ID and sends a JSON-encoded representation to the client, then exits.
      */
     public function getItem()
     {
@@ -192,14 +191,19 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Prepare and render the modal for copying a quote.
+     * Loads data required to copy an existing quote and renders the "copy quote" modal view.
      *
-     * Provides the view with invoice groups, tax rates, the requested quote and quote_id, and the specified client.
+     * Prepares invoice groups, tax rates, the source quote, and the specified client, then loads
+     * the view 'quotes/modal_copy_quote' with that data.
+     *
+     * Expects the following POST fields:
+     * - 'quote_id': ID of the quote to copy.
+     * - 'client_id': ID of the client to preselect in the modal.
      */
     public function modalCopyQuote()
     {
         $this->load->module('layout');
-        $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'quote' => (new QuotesService())->where('ip_quotes.quote_id', $this->input->post('quote_id'))->get()->row(), 'client' => (new ClientsService())->getById($this->input->post('client_id'))];
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'tax_rates' => (new TaxRatesService())->getAll(), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'quote' => (new QuotesService())->getById($this->input->post('quote_id')), 'client' => (new ClientsService())->getById($this->input->post('client_id'))];
         $this->layout->loadView('quotes/modal_copy_quote', $data);
     }
 
@@ -252,7 +256,7 @@ class AjaxController extends AdminController
     {
         // GetController the user ID
         $user_id = $this->security->xss_clean($this->input->post('user_id'));
-        $user    = (new UsersService())->where('ip_users.user_id', $user_id)->get()->row();
+        $user    = (new UsersService())->getById($user_id);
         if ( ! empty($user)) {
             $quote_id = $this->input->post('quote_id');
             $db_array = ['user_id' => $user_id];
@@ -293,7 +297,7 @@ class AjaxController extends AdminController
     {
         // GetController the client ID
         $client_id = $this->security->xss_clean($this->input->post('client_id'));
-        $client    = (new ClientsService())->where('ip_clients.client_id', $client_id)->get()->row();
+        $client    = (new ClientsService())->getById($client_id);
         if ( ! empty($client)) {
             $quote_id = $this->input->post('quote_id');
             $db_array = ['client_id' => $client_id];
@@ -308,15 +312,20 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Prepare and render the "create quote" modal populated with necessary lookup data.
+     * Render the modal used to create a new quote for a client.
      *
-     * Loads invoice groups, tax rates, the specified client (if provided), and recent clients,
-     * then renders the quotes/modal_create_quote view with that data.
+     * Prepares view data keys:
+     * - `invoice_groups`: all invoice groups
+     * - `tax_rates`: all tax rates
+     * - `client`: client identified by the POST field `client_id`
+     * - `clients`: recent clients
+     *
+     * Loads the view `quotes/modal_create_quote` with the prepared data.
      */
     public function modalCreateQuote()
     {
         $this->load->module('layout');
-        $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'tax_rates' => (new TaxRatesService())->get()->result(), 'client' => (new ClientsService())->getById($this->input->post('client_id')), 'clients' => (new ClientsService())->getLatest()];
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'tax_rates' => (new TaxRatesService())->getAll(), 'client' => (new ClientsService())->getById($this->input->post('client_id')), 'clients' => (new ClientsService())->getLatest()];
         $this->layout->loadView('quotes/modal_create_quote', $data);
     }
 
@@ -351,7 +360,7 @@ class AjaxController extends AdminController
      */
     public function modalQuoteToInvoice($quote_id)
     {
-        $data = ['invoice_groups' => (new InvoiceGroupsService())->get()->result(), 'quote_id' => $this->security->xss_clean($quote_id), 'quote' => (new QuotesService())->where('ip_quotes.quote_id', $quote_id)->get()->row()];
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'quote_id' => $this->security->xss_clean($quote_id), 'quote' => (new QuotesService())->getById($quote_id)];
         $this->load->view('quotes/modal_quote_to_invoice', $data);
     }
 
@@ -389,7 +398,7 @@ class AjaxController extends AdminController
             ];
             unset($quote);
             // Free memory
-            $quote_items = (new QuoteItemsService())->where('quote_id', $this->input->post('quote_id'))->get()->result();
+            $quote_items = (new QuoteItemsService())->getByQuoteId($this->input->post('quote_id'));
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
@@ -399,7 +408,7 @@ class AjaxController extends AdminController
                 $db_array = ['invoice_id' => $invoice_id, 'item_tax_rate_id' => $quote_item->item_tax_rate_id, 'item_product_id' => $quote_item->item_product_id, 'item_name' => $quote_item->item_name, 'item_description' => $quote_item->item_description, 'item_quantity' => $quote_item->item_quantity, 'item_price' => $quote_item->item_price, 'item_product_unit_id' => $quote_item->item_product_unit_id, 'item_product_unit' => $quote_item->item_product_unit, 'item_discount_amount' => $quote_item->item_discount_amount, 'item_order' => $quote_item->item_order];
                 (new ItemsService())->save(null, $db_array, $global_discount);
             }
-            $quote_tax_rates = (new QuoteTaxRatesService())->where('quote_id', $this->input->post('quote_id'))->get()->result();
+            $quote_tax_rates = (new QuoteTaxRatesService())->getByQuoteId($this->input->post('quote_id'));
             foreach ($quote_tax_rates as $quote_tax_rate) {
                 $db_array = ['invoice_id' => $invoice_id, 'tax_rate_id' => $quote_tax_rate->tax_rate_id, 'include_item_tax' => $quote_tax_rate->include_item_tax, 'invoice_tax_rate_amount' => $quote_tax_rate->quote_tax_rate_amount];
                 (new InvoiceTaxRatesService())->save(null, $db_array);

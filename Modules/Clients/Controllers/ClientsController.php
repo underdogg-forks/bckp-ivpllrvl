@@ -5,6 +5,7 @@ namespace Modules\Clients\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Clients\Models\Client;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 
 #[AllowDynamicProperties]
@@ -86,9 +87,14 @@ class ClientsController extends AdminController
     }
 
     /**
-     * @originalName view
+     * Display the client detail view for a given client.
      *
-     * @originalFile ClientsController.php
+     * Aborts with a 404 response if the client cannot be found.
+     *
+     * @param int|string $client_id The ID of the client to display.
+     * @param string $activeTab The tab to mark active in the view (defaults to 'detail').
+     * @param int $page Optional page index for tabbed subviews or pagination.
+     * @return \Illuminate\Contracts\View\View The rendered 'clients.view' with the client and active tab.
      */
     public function view(Request $request, $client_id, $activeTab = 'detail', $page = 0): \Illuminate\Contracts\View\View
     {
@@ -105,13 +111,14 @@ class ClientsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete the specified client and redirect to the clients index.
      *
-     * @originalFile ClientsController.php
+     * @param int $client_id The identifier of the client to delete.
+     * @return \Illuminate\Http\RedirectResponse A redirect response to the clients index route.
      */
     public function delete($client_id): \Illuminate\Http\RedirectResponse
     {
-        Client::destroy($client_id);
+        (new ClientsService())->delete($client_id);
 
         return redirect()->route('clients.index');
     }

@@ -10,6 +10,8 @@ class InvoiceItem extends BaseModel
     /** @use HasFactory<\Database\Factories\ItemFactory> */
     use HasFactory;
 
+    protected $table = 'ip_invoice_items';
+
     public $timestamps = false;
 
     protected $casts = [];

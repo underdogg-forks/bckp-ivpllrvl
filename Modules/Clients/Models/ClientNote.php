@@ -10,6 +10,8 @@ class ClientNote extends BaseModel
     /** @use HasFactory<\Database\Factories\ClientNoteFactory> */
     use HasFactory;
 
+    protected $table = 'ip_client_notes';
+
     public $timestamps = false;
 
     protected $casts = [];

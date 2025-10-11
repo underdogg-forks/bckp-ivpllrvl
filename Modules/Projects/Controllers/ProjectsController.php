@@ -20,7 +20,7 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * Display paginated list of projects and render the projects index view.
+     * @originalName index
      *
      * @param int $page The page number to display (zero-based).
      * @return string Rendered view for the projects index populated with projects and filter settings.
@@ -58,7 +58,46 @@ class ProjectsController extends AdminController
             show_404();
         }
 
-        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => (new ClientsService())->where('client_active', 1)->get()->result()]);
+// File: Modules/Projects/Controllers/ProjectsController.php
+
+use Modules\Clients\Services\ClientsService;
+use Modules\Projects\Services\ProjectsService;
+use Modules\Tasks\Services\TasksService;
+
+class ProjectsController extends BaseController
+{
+    /**
+     * Assigns service dependencies to the controller and loads the projects model.
+     *
+     * Loads the `mdl_projects` model into the controller so project-related model methods are available.
+     */
+    public function __construct(
+        private ClientsService $clientsService,
+        private ProjectsService $projectsService,
+        private TasksService $tasksService
+    ) {
+        parent::__construct();
+        $this->load->model('mdl_projects');
+    }
+
+    /**
+     * Renders the project creation/edit form populated with the specified project and active clients.
+     *
+     * @param int $id The project identifier to edit.
+     * @return string The rendered HTML content of the projects form.
+     */
+
+    public function form(int $id)
+    {
+        // …
+        return view('projects.form', [
+            'project' => $this->projectsService->getById($id),
+            'clients' => $this->clientsService->getActive()
+        ]);
+    }
+
+    // …
+}
     }
 
     /**

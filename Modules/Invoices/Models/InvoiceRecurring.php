@@ -10,6 +10,8 @@ class InvoiceRecurring extends BaseModel
     /** @use HasFactory<\Database\Factories\InvoiceRecurringFactory> */
     use HasFactory;
 
+    protected $table = 'ip_invoices_recurring';
+
     public $timestamps = false;
 
     protected $casts = [];

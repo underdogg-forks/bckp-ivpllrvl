@@ -4,6 +4,7 @@ namespace Modules\CustomFields\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\CustomFields\Models\PaymentCustom;
 
 #[AllowDynamicProperties]
 class PaymentCustomsService extends BaseService
@@ -45,9 +46,13 @@ class PaymentCustomsService extends BaseService
     }
 
     /**
-     * @originalName saveCustom
+     * Save custom field values for a payment after validating provided data.
      *
-     * @originalFile PaymentCustom.php
+     * Validates the given data and, when validation passes, persists each custom field value found in the instance's `_formdata` for the specified payment. If no `_formdata` is present, the method does nothing and succeeds.
+     *
+     * @param int|string $payment_id The payment identifier to associate custom field values with.
+     * @param array $db_array Data used for validation.
+     * @return mixed `true` if the values were validated and saved or no form data existed; otherwise the validation result describing errors. 
      */
     public function saveCustom($payment_id, $db_array)
     {
@@ -57,14 +62,18 @@ class PaymentCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $payment_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array       = ['payment_id' => $payment_id, 'payment_custom_fieldid' => $key, 'payment_custom_fieldvalue' => $value];
-                $payment_custom = $this->where('payment_id', $payment_id)->where('payment_custom_fieldid', $key)->get();
-                if ($payment_custom->numRows()) {
-                    $payment_custom_id = $payment_custom->row()->payment_custom_id;
-                }
-                parent::save($payment_custom_id, $db_array);
+                \Modules\Payments\Models\PaymentCustom::query()->updateOrCreate(
+                    [
+                        'payment_id' => $payment_id,
+                        'payment_custom_fieldid' => $key
+                    ],
+                    [
+                        'payment_id' => $payment_id,
+                        'payment_custom_fieldid' => $key,
+                        'payment_custom_fieldvalue' => $value
+                    ]
+                );
             }
 
             return true;
@@ -86,12 +95,20 @@ class PaymentCustomsService extends BaseService
     }
 
     /**
-     * @originalName getByPayid
+     * Retrieve custom field values for a specific payment joined with their field definitions.
      *
-     * @originalFile PaymentCustom.php
+     * @param int $payment_id The payment identifier to filter custom fields by.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of payment custom records joined with their corresponding custom field definitions, ordered by custom_field_table, custom_field_order, then custom_field_label.
      */
     public function getByPayid($payment_id)
     {
-        return $this->where('ip_payment_custom.payment_id', $payment_id)->get()->result();
+        return PaymentCustom::query()
+            ->select('ip_payment_custom.*', 'ip_custom_fields.*')
+            ->join('ip_custom_fields', 'ip_payment_custom.payment_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')
+            ->where('ip_payment_custom.payment_id', $payment_id)
+            ->orderBy('custom_field_table')
+            ->orderBy('custom_field_order')
+            ->orderBy('custom_field_label')
+            ->get();
     }
 }

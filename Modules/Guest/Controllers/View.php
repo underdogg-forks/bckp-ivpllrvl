@@ -41,7 +41,7 @@ class View extends BaseGuestController
         if (Session::get('user_type') != 1 && $invoice->invoice_status_id == 2) {
             (new InvoicesService())->markViewed($invoice->invoice_id);
         }
-        $payment_method = (new PaymentMethodsService())->where('payment_method_id', $invoice->payment_method)->get()->row();
+        $payment_method = (new PaymentMethodsService())->getById($invoice->payment_method);
         if ($invoice->payment_method == 0) {
             $payment_method = null;
         }
@@ -54,8 +54,8 @@ class View extends BaseGuestController
         $is_overdue  = $invoice->invoice_balance > 0 && strtotime($invoice->invoice_date_due) < time();
         $data        = [
             'invoice' => $invoice,
-            'items' => (new ItemsService())->where('invoice_id', $invoice->invoice_id)->get()->result(),
-            'invoice_tax_rates' => (new InvoiceTaxRatesService())->where('invoice_id', $invoice->invoice_id)->get()->result(),
+            'items' => (new ItemsService())->getByInvoiceId($invoice->invoice_id),
+            'invoice_tax_rates' => (new InvoiceTaxRatesService())->getByInvoiceId($invoice->invoice_id),
             'invoice_url_key' => $invoice_url_key,
             'flash_message' => Session::get('flash_message'),
             'payment_method' => $payment_method,
@@ -92,16 +92,16 @@ class View extends BaseGuestController
     }
 
     /**
-         * Generate the SUMEX PDF for the invoice identified by its public URL key.
-         *
-         * Locates a guest-visible invoice by the provided URL key and generates its SUMEX PDF.
-         * If an invoice is found but its `sumex_id` is null, a 404 response is shown. If no
-         * matching invoice is found, the method returns without producing output.
-         *
-         * @param string $invoice_url_key Public URL key of the invoice to locate.
-         * @param bool $stream Present for signature compatibility; not used by this implementation.
-         * @param string|null $invoice_template Optional PDF template name to use; if null the `pdf_invoice_template` setting is used.
-         */
+     * Generate the Sumex PDF for a guest-visible invoice identified by its URL key.
+     *
+     * If the invoice does not exist or the invoice has no Sumex identifier, a 404 response is shown.
+     * If no invoice template is provided, the configured `pdf_invoice_template` setting is used.
+     *
+     * @param string $invoice_url_key The public URL key that identifies the invoice.
+     * @param bool $stream (Compatibility) Stream flag; kept for compatibility but not used by this implementation.
+     * @param string|null $invoice_template Optional PDF template name to use; when null the configured template is applied.
+     * @return void
+     */
     public function generateSumexPdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
         $invoice = (new InvoicesService())->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
@@ -119,11 +119,7 @@ class View extends BaseGuestController
     }
 
     /**
-     * Render the public quote page identified by a URL key.
-     *
-     * Loads the publicly visible quote, marks it as viewed for non-admin users when appropriate,
-     * collects items, tax rates, custom fields, attachments, and an expiration flag, then renders
-     * the configured public quote template.
+     * Render the public quote page for the quote identified by its URL key.
      *
      * @param string $quote_url_key The public URL key that identifies the quote.
      * @return \Illuminate\View\View The rendered view for the public quote template.
@@ -150,8 +146,8 @@ class View extends BaseGuestController
         $is_expired  = strtotime($quote->quote_date_expires) < time();
         $data        = [
             'quote' => $quote,
-            'items' => (new QuoteItemsService())->where('quote_id', $quote->quote_id)->get()->result(),
-            'quote_tax_rates' => (new QuoteTaxRatesService())->where('quote_id', $quote->quote_id)->get()->result(),
+            'items' => (new QuoteItemsService())->getByQuoteId($quote->quote_id),
+            'quote_tax_rates' => (new QuoteTaxRatesService())->getByQuoteId($quote->quote_id),
             'quote_url_key' => $quote_url_key,
             'flash_message' => Session::get('flash_message'),
             'is_expired' => $is_expired,

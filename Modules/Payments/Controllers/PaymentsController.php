@@ -4,6 +4,7 @@ namespace Modules\Payments\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\PaymentMethods\Services\PaymentMethodsService;
 use Modules\Payments\Services\PaymentLogsService;
 use Illuminate\Http\Request;
 
@@ -35,12 +36,9 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * Prepare and process the payment form and render the online payment logs view.
+     * @originalName form
      *
-     * Handles cancel and submit actions, persists payment and custom field values when saved, and populates form values, open invoices, payment methods, custom fields, and custom values for the view.
-     *
-     * @param int|null $id Payment ID to edit, or null to create a new payment.
-     * @return string Rendered HTML content of the payments online logs view.
+     * @originalFile PaymentsController.php
      */
     public function form($id = null)
     {
@@ -99,12 +97,7 @@ class PaymentsController extends AdminController
             $invoice_payment_methods['invoice' . $open_invoice->invoice_id] = $open_invoice->payment_method;
         }
 
-        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => (new PaymentMethodsService())->get()->result(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
-        if ($id) {
-            $this->layout->set('payment', (new PaymentsService())->where('ip_payments.payment_id', $id)->get()->row());
-        }
-        $this->layout->buffer('content', 'payments/form');
-        $this->layout->render();
+        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => (new PaymentMethodsService())->getAll(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
     }
 
     /**
