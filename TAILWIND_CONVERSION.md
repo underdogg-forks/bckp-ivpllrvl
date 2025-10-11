@@ -143,7 +143,9 @@ This document provides examples of converting Bootstrap classes to Tailwind CSS 
 
 ## Example File Conversion
 
-### Before: Modules/UserClients/Resources/views/field.blade.php
+This is a **hypothetical example** showing how to convert a Module file from Bootstrap to Tailwind CSS. The "Before" code represents the current state of similar files in the codebase that still need conversion.
+
+### Before: Current Bootstrap Pattern (Example from Modules/UserClients/Resources/views/field.blade.php)
 
 ```blade
 <div id="headerbar">

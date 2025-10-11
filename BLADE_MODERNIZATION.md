@@ -39,10 +39,15 @@ This project modernized 199 blade files across the Laravel application, converti
 - `resources/views/invoice_templates/public/InvoicePlane_Web.blade.php` - Major restructuring
 - PDF template files - Converted PHP includes to Blade directives
 
-### 3. File Renaming ✅
-Fixed incorrectly named files:
+### File Renaming ✅
+Fixed incorrectly named files with triple .blade extensions:
 - `alerts.blade.blade.blade.php` → `alerts.blade.php`
 - `setup.blade.blade.blade.php` → `setup.blade.php`
+- `layout.blade.blade.blade.php` → `layout.blade.php`
+- `layout_guest.blade.blade.blade.php` → `layout_guest.blade.php`
+- `header_buttons.blade.blade.blade.php` → `header_buttons.blade.php`
+- And 4 other partial files in Modules/Layout/Resources/views/
+- **Total: 11 files renamed**
 
 ### 4. Dark Mode & Tailwind CSS ⚠️
 **Status: Partially Complete**
