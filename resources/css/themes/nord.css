@@ -16,7 +16,7 @@
     --color-gray-lightest: #E5E9F0;  /* Snow Storm - nord5 */
     
     /* Brand colors - Nord Aurora & Frost */
-    --color-brand-primary: #4C566A;  /* Polar Night - nord3 */
+    --color-brand-primary: #88C0D0;  /* Frost - nord8 (changed from gray) */
     --color-brand-success: #8FBCBB;  /* Frost - nord7 */
     --color-brand-info: #88C0D0;     /* Frost - nord8 */
     --color-brand-warning: #EBCB8B;  /* Aurora - nord13 */
@@ -30,8 +30,33 @@
     --color-dark-danger: #450a0a;
     
     /* Scaffolding */
-    --color-body-bg: #4C566A;        /* Polar Night base */
-    --color-text: #D8DEE9;           /* Snow Storm */
-    --color-link: #D8DEE9;           /* Snow Storm */
-    --color-link-hover: #ECEFF4;     /* Snow Storm lighter */
+    --color-body-bg: #ECEFF4;        /* Snow Storm - light background */
+    --color-text: #2E3440;           /* Polar Night - dark text */
+    --color-link: #88C0D0;           /* Frost blue */
+    --color-link-hover: #81A1C1;     /* Frost blue darker */
+    
+    /* UI Component colors - semantic mapping for Nord */
+    --color-btn-primary-bg: #88C0D0;      /* Frost blue */
+    --color-btn-primary-bg-hover: #81A1C1; /* Frost blue darker */
+    --color-btn-primary-text: #2E3440;    /* Polar Night text */
+    --color-btn-primary-border: transparent;
+    --color-btn-primary-focus-ring: #88C0D0;
+    
+    --color-btn-default-bg: #ECEFF4;      /* Snow Storm */
+    --color-btn-default-bg-hover: #D8DEE9; /* Snow Storm darker */
+    --color-btn-default-text: #2E3440;    /* Polar Night */
+    --color-btn-default-border: #D8DEE9;
+    --color-btn-default-focus-ring: #88C0D0;
+    
+    /* Card/Panel colors */
+    --color-card-bg: #ECEFF4;
+    --color-card-border: #D8DEE9;
+    --color-card-text: #2E3440;
+    
+    /* Table colors */
+    --color-table-bg: #ECEFF4;
+    --color-table-hover-bg: #E5E9F0;
+    --color-table-border: #D8DEE9;
+    --color-table-header-bg: #E5E9F0;
+    --color-table-header-text: #2E3440;
 }

@@ -15,7 +15,7 @@
     --color-gray-lightest: #E5E9F0;
     
     /* Brand colors */
-    --color-brand-primary: #4C566A;
+    --color-brand-primary: #88C0D0;  /* Frost blue */
     --color-brand-success: #8FBCBB;
     --color-brand-info: #88C0D0;
     --color-brand-warning: #EBCB8B;
@@ -26,4 +26,29 @@
     --color-text: #ECEFF4;           /* Lightest Snow Storm */
     --color-link: #88C0D0;           /* Frost blue */
     --color-link-hover: #8FBCBB;     /* Frost cyan */
+    
+    /* UI Component colors - semantic mapping for Nord Dark */
+    --color-btn-primary-bg: #88C0D0;      /* Frost blue */
+    --color-btn-primary-bg-hover: #81A1C1; /* Frost blue darker */
+    --color-btn-primary-text: #2E3440;    /* Dark text on bright button */
+    --color-btn-primary-border: transparent;
+    --color-btn-primary-focus-ring: #88C0D0;
+    
+    --color-btn-default-bg: #3B4252;      /* Polar Night lighter */
+    --color-btn-default-bg-hover: #4C566A; /* Polar Night lightest */
+    --color-btn-default-text: #ECEFF4;    /* Snow Storm */
+    --color-btn-default-border: #4C566A;
+    --color-btn-default-focus-ring: #88C0D0;
+    
+    /* Card/Panel colors */
+    --color-card-bg: #3B4252;
+    --color-card-border: #4C566A;
+    --color-card-text: #ECEFF4;
+    
+    /* Table colors */
+    --color-table-bg: #3B4252;
+    --color-table-hover-bg: #434C5E;
+    --color-table-border: #4C566A;
+    --color-table-header-bg: #2E3440;
+    --color-table-header-text: #D8DEE9;
 }

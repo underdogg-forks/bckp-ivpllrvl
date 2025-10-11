@@ -26,6 +26,31 @@
     --color-text: #333333;
     --color-link: #2C8EDD;
     --color-link-hover: #17629b;
+    
+    /* UI Component colors - semantic mapping */
+    --color-btn-primary-bg: #2C8EDD;
+    --color-btn-primary-bg-hover: #1e6bb8;
+    --color-btn-primary-text: #ffffff;
+    --color-btn-primary-border: transparent;
+    --color-btn-primary-focus-ring: #2C8EDD;
+    
+    --color-btn-default-bg: #ffffff;
+    --color-btn-default-bg-hover: #f9fafb;
+    --color-btn-default-text: #374151;
+    --color-btn-default-border: #d1d5db;
+    --color-btn-default-focus-ring: #2C8EDD;
+    
+    /* Card/Panel colors */
+    --color-card-bg: #ffffff;
+    --color-card-border: #e5e7eb;
+    --color-card-text: #111827;
+    
+    /* Table colors */
+    --color-table-bg: #ffffff;
+    --color-table-hover-bg: #f9fafb;
+    --color-table-border: #e5e7eb;
+    --color-table-header-bg: #f9fafb;
+    --color-table-header-text: #374151;
 }
 
 /* Dark mode overrides for default theme */
@@ -48,4 +73,29 @@
     --color-text: #e5e5e5;
     --color-link: #42a5f5;
     --color-link-hover: #81d4fa;
+    
+    /* UI Component colors - dark mode */
+    --color-btn-primary-bg: #42a5f5;
+    --color-btn-primary-bg-hover: #1e88e5;
+    --color-btn-primary-text: #ffffff;
+    --color-btn-primary-border: transparent;
+    --color-btn-primary-focus-ring: #42a5f5;
+    
+    --color-btn-default-bg: #374151;
+    --color-btn-default-bg-hover: #4b5563;
+    --color-btn-default-text: #e5e7eb;
+    --color-btn-default-border: #4b5563;
+    --color-btn-default-focus-ring: #42a5f5;
+    
+    /* Card/Panel colors - dark mode */
+    --color-card-bg: #1f2937;
+    --color-card-border: #374151;
+    --color-card-text: #f3f4f6;
+    
+    /* Table colors - dark mode */
+    --color-table-bg: #1f2937;
+    --color-table-hover-bg: #374151;
+    --color-table-border: #374151;
+    --color-table-header-bg: #111827;
+    --color-table-header-text: #e5e7eb;
 }

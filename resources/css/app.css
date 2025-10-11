@@ -42,6 +42,36 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer components {
+    /* Button - Primary (active/selected state) */
+    .btn-primary {
+        background-color: var(--color-btn-primary-bg);
+        color: var(--color-btn-primary-text);
+        border-color: var(--color-btn-primary-border);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--color-btn-primary-bg-hover);
+    }
+    
+    .btn-primary:focus {
+        --tw-ring-color: var(--color-btn-primary-focus-ring);
+    }
+    
+    /* Button - Default (inactive/unselected state) */
+    .btn-default {
+        background-color: var(--color-btn-default-bg);
+        color: var(--color-btn-default-text);
+        border-color: var(--color-btn-default-border);
+    }
+    
+    .btn-default:hover {
+        background-color: var(--color-btn-default-bg-hover);
+    }
+    
+    .btn-default:focus {
+        --tw-ring-color: var(--color-btn-default-focus-ring);
+    }
+    
     /* Theme color utilities using CSS variables */
     .bg-brand-primary {
         background-color: var(--color-brand-primary);
