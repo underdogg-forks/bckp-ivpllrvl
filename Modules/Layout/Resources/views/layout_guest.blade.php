@@ -38,7 +38,7 @@
     <script src="{{ _core_asset('js/dependencies.min.js') " }}></script>
 
 </head>
-<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : '' " }}>
+<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : ''" }}>
 
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="container-fluid">
@@ -63,7 +63,7 @@
                     <a href="{{ url('sessions/logout') }}"
                        class="tip icon logout" data-placement="bottom"
                        title="@lang('logout')">
-                        <span class="visible-xs">&nbsp;@lang('logout')</span>
+                        <span class="block sm:hidden">&nbsp;@lang('logout')</span>
                         <i class="fa fa-power-off"></i>
                     </a>
                 </li>
@@ -74,7 +74,7 @@
 
 <div id="main-area">
 
-    <div class="sidebar hidden-xs{{ get_setting('disable_sidebar') == 1 ? ' hidden' : '' " }}>
+    <div class="sidebar hidden sm:block {{ get_setting('disable_sidebar') == 1 ? ' hidden' : ''" }}>
         <ul>
             <li>
                 <a href="{{ url('guest') }}" title="@lang('dashboard')" class="tip"

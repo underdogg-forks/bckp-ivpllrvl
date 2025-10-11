@@ -25,15 +25,14 @@
     });
 </script>
 
-<div class="row{{ $xml_templates ? '' : ' hidden';
-?>">
-    <div class="col-xs-12 col-md-6">
+<div class="flex flex-wrap -mx-4 {{ $xml_templates ? '' : ' hidden'; ?>">
+    <div class="w-full px-4 md:w-1/2">
 
-        <div class="form-group">
+        <div class="mb-4">
             <label for="client_start_einvoicing">
                 @lang('einvoicing_start')
             </label>
-            <select name="client_start_einvoicing" class="form-control simple-select"
+            <select name="client_start_einvoicing" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                 id="client_start_einvoicing" data-minimum-results-for-search="Infinity">
                 @php $active = $this->mdl_clients->form_value('client_einvoicing_version') == '' ? '0' : '1';
                 <option value="0" @php check_select($active, '0')>
@@ -49,20 +48,20 @@ $client_einvoicing_version = $this->mdl_clients->form_value('client_einvoicing_v
 // Check logged user e-invoice fields (show_table 0 = ok, 1 = no)
 @if($req_einvoicing->users[$_SESSION['user_id']]->show_table > 0) {
     $disabled = ' disabled="disabled"' }}
-            <p class=" help-block">@lang('einvoicing_start_hint')</p>
+            <p class="help-block">@lang('einvoicing_start_hint')</p>
 @endif
 </div>
 
 </div>
 
 <div class="toggle_einvoicing">
-    <div class="col-xs-12 col-md-6">
+    <div class="w-full px-4 md:w-1/2">
 
-        <div class="form-group">
+        <div class="mb-4">
             <label for="client_einvoicing_version">{{ 'UBL / CII ' . trans('version') }}</label>
 
             <select name="client_einvoicing_version" id="client_einvoicing_version"
-                    class="form-control simple-select"{{ $disabled }}>
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"{{ $disabled }}>
                 <option value="">@lang('none')</option>
                 @foreach($xml_templates as $xml_key => $xml_template)
                 <option value="{{ $xml_key }}" @php
@@ -96,10 +95,10 @@ $lang = explode(' ', strtr($base, ['_1' => '']));
 
         <!-- Check if mandatory eInvoicing fields are empty -->
     <div
-        class="col-xs-12 col-md-6 einvoice-user-check-lists collapse{{ $open ? ' in" aria-expanded="true' : '" aria-expanded="false' " }}>
-        <div class="form-group" data-toggle="tooltip" data-placement="top" title="{!! $user->user_name !!}">
-            <div class="table-responsive">
-                <table class="table table-hover table-condensed table-bordered no-margin">
+        class="w-full px-4 md:w-1/2 einvoice-user-check-lists collapse{{ $open ? ' in" aria-expanded="true' : '" aria-expanded="false' " }}>
+        <div class="mb-4" data-toggle="tooltip" data-placement="top" title="{!! $user->user_name !!}">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-condensed table-bordered no-margin">
                     <thead class="text-center">
                     <tr>
                         <th>@lang('required_fields')</th>
@@ -125,8 +124,8 @@ $lang = explode(' ', strtr($base, ['_1' => '']));
                             // Show it in Errors (1)
                             @if($user->{$tr_show_key}) {
                                 // Prepare some stuff
-                                $c_icon = '<i class="' . $class_checks[$req_einvoicing->clients[$client_id]->{$key}] . '"></i>';
-                                $u_icon = '<i class="' . $class_checks[$user->{$key}] . '"></i>';
+                                $c_icon = '<i class="' . $class_checks[$req_einvoicing->clients[$client_id]->{$key}]"></i>';
+                                $u_icon = '<i class="' . $class_checks[$user->{$key}]"></i>';
 
                     <tr>
                         <td>@php

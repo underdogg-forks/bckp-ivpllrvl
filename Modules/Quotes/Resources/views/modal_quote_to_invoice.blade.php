@@ -55,7 +55,7 @@
     <form class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
-            <h4 class="panel-title">@lang('quote_to_invoice')</h4>
+            <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">@lang('quote_to_invoice')</h4>
         </div>
         <div class="modal-body">
 
@@ -64,32 +64,32 @@
             <input type="hidden" name="user_id" id="user_id"
                    value="{{ $quote->user_id " }}>
 
-            <div class="form-group has-feedback">
+            <div class="mb-4 has-feedback">
                 <label for="invoice_date_created">
                     @lang('invoice_date')
                 </label>
 
                 <div class="input-group">
                     <input name="invoice_date_created" id="invoice_date_created"
-                           class="form-control datepicker">
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker">
                     <span class="input-group-addon">
                         <i class="fa fa-calendar fa-fw"></i>
                     </span>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="invoice_password">@lang('invoice_password')</label>
-                <input type="text" name="invoice_password" id="invoice_password" class="form-control"
+                <input type="text" name="invoice_password" id="invoice_password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ get_setting('invoice_pre_password') == '' ? '' : get_setting('invoice_pre_password') }}"
                        autocomplete="off">
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="invoice_group_id">
                     @lang('invoice_group')
                 </label>
-                <select name="invoice_group_id" id="invoice_group_id" class="form-control simple-select">
+                <select name="invoice_group_id" id="invoice_group_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                     @foreach($invoice_groups as $invoice_group)
                     <option value="{{ $invoice_group->invoice_group_id }}"
                     @php
@@ -101,11 +101,11 @@
         </div>
 
         <div class="modal-footer">
-            <div class="btn-group">
-                <button class="btn btn-success" id="quote_to_invoice_confirm" type="button">
+            <div class="inline-flex rounded-md shadow-sm">
+                <button class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" id="quote_to_invoice_confirm" type="button">
                     <i class="fa fa-check"></i> @lang('submit')
                 </button>
-                <button class="btn btn-danger" type="button" data-dismiss="modal">
+                <button class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i> @lang('cancel')
                 </button>
             </div>

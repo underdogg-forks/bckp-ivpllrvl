@@ -1,6 +1,6 @@
 
 <div class="container">
-    <div id="paypal-buttons" class="col-xs-12 col-md-8 col-md-offset-2"></div>
+    <div id="paypal-buttons" class="w-full px-4 col-md-8 col-md-offset-2"></div>
 </div>
 <script>
     $.ajax({

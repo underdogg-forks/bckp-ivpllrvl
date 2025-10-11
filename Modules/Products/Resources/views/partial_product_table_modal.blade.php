@@ -1,6 +1,6 @@
 
-<div class="table-responsive">
-    <table id="products_table" class="table table-hover table-bordered table-striped">
+<div class="overflow-x-auto">
+    <table id="products_table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-bordered table-striped">
         <tr>
             <th>&nbsp;</th>
             <th>@lang('product_sku')</th>

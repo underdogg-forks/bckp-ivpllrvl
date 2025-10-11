@@ -1,5 +1,5 @@
 $itsCompany = $this->mdl_users->form_value('user_company') || $this->mdl_users->form_value('user_vat_id');
-$qr_code_info = get_setting('qr_code') ? '<span class="pull-right"><i class="fa fa-qrcode"  data-toggle="tooltip" data-placement="bottom" title="' . trans('user_qr_code_hint') . '"></i></span>' : '';
+$qr_code_info = get_setting('qr_code') ? '<span class="float-right"><i class="fa fa-qrcode"  data-toggle="tooltip" data-placement="bottom" title="' . trans('user_qr_code_hint') . '"></i></span>' : '';
 // eInvoicing enabled?
 $einvoicingTip = $einvoicing ? ' data-toggle="tooltip" data-placement="bottom" title="e-' . trans('invoicing') . ' (' : '';
 // tootip base
@@ -49,64 +49,64 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
     </div>
 
     <div id="content">
-        <div class="row">
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="flex flex-wrap -mx-4">
+            <div class="w-full px-4 md:w-1/2 col-md-offset-3">
 
                 {{ $this->layout->loadView('layout/alerts') }}
 
                 <div id="userInfo">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">@lang('account_information')</div>
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('account_information')</div>
 
-                        <div class="panel-body">
-                            <div class="form-group">
+                        <div class="p-6">
+                            <div class="mb-4">
                                 <label for="user_name">@lang('name')</label>
-                                <input type="text" name="user_name" id="user_name" class="form-control"
+                                <input type="text" name="user_name" id="user_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                        value="{{ $this->mdl_users->form_value('user_name', true) " }}>
                             </div>
 
-                            <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
+                            <div class="mb-4"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
                                 <label for="user_company">@lang('company') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>{{ $qr_code_info }}
-                                <input type="text" name="user_company" id="user_company" class="form-control"
+                                <input type="text" name="user_company" id="user_company" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                        value="{{ $this->mdl_users->form_value('user_company', true) " }}>
                             </div>
 
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="user_email">@lang('email_address')</label>
-                                <input type="text" name="user_email" id="user_email" class="form-control"
+                                <input type="text" name="user_email" id="user_email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                        value="{{ $this->mdl_users->form_value('user_email', true) }}" required>
                             </div>
 
 @if(!$id)
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="user_password">
                                     @lang('password')
                                 </label>
-                                <input type="password" name="user_password" id="user_password" class="form-control" required>
+                                <input type="password" name="user_password" id="user_password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" required>
                             </div>
 
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="user_password">
                                     @lang('verify_password')
                                 </label>
-                                <input type="password" name="user_passwordv" id="user_passwordv" class="form-control" required>
+                                <input type="password" name="user_passwordv" id="user_passwordv" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" required>
                             </div>
 @php
 } else {
     // Edit user
 
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <a href="{{ url('users/change_password/' . $id) }}"
-                                   class="btn btn-default">
+                                   class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                                     @lang('change_password')
                                 </a>
                             </div>
 @endif
 
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="user_language">@lang('lang')</label>
-                                <select name="user_language" id="user_language" class="form-control simple-select" required>
+                                <select name="user_language" id="user_language" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" required>
                                     <option value="system">
                                         {{ __('use_system_language') }}
                                     </option>
@@ -121,9 +121,9 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                                 </select>
                             </div>
 
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="user_type">@lang('user_type')</label>
-                                <select name="user_type" id="user_type" class="form-control simple-select" required>
+                                <select name="user_type" id="user_type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" required>
 @php $user_type = $this->mdl_users->form_value('user_type');
 @foreach($user_types as $key => $type) {
 
@@ -139,43 +139,43 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                     </div>
 
                     <div id="administrator_fields">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">@lang('address')</div>
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('address')</div>
 
-                            <div class="panel-body">
-                                <div class="form-group"{{ $einvoicingReq }}>
+                            <div class="p-6">
+                                <div class="mb-4"{{ $einvoicingReq }}>
                                     <label for="user_address_1">@lang('street_address')</label>
-                                    <input type="text" name="user_address_1" id="user_address_1" class="form-control"
+                                    <input type="text" name="user_address_1" id="user_address_1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_address_1', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingOpt }}>
+                                <div class="mb-4"{{ $einvoicingOpt }}>
                                     <label for="user_address_2">@lang('street_address_2')</label>
-                                    <input type="text" name="user_address_2" id="user_address_2" class="form-control"
+                                    <input type="text" name="user_address_2" id="user_address_2" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_address_2', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingReq }}>
+                                <div class="mb-4"{{ $einvoicingReq }}>
                                     <label for="user_city">@lang('city')</label>
-                                    <input type="text" name="user_city" id="user_city" class="form-control"
+                                    <input type="text" name="user_city" id="user_city" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_city', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingOpt }}>
+                                <div class="mb-4"{{ $einvoicingOpt }}>
                                     <label for="user_state">@lang('state')</label>
-                                    <input type="text" name="user_state" id="user_state" class="form-control"
+                                    <input type="text" name="user_state" id="user_state" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_state', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingReq }}>
+                                <div class="mb-4"{{ $einvoicingReq }}>
                                     <label for="user_zip">@lang('zip_code')</label>
-                                    <input type="text" name="user_zip" id="user_zip" class="form-control"
+                                    <input type="text" name="user_zip" id="user_zip" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_zip', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingReq }}>
+                                <div class="mb-4"{{ $einvoicingReq }}>
                                     <label for="user_country">@lang('country')</label>
-                                    <select name="user_country" id="user_country" class="form-control">
+                                    <select name="user_country" id="user_country" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                                         <option value="">@lang('none')</option>
 @foreach($countries as $cldr => $country)
                                         <option value="{{ $cldr }}"
@@ -193,19 +193,19 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                             </div>
                         </div>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">@lang('tax_information')</div>
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('tax_information')</div>
 
-                            <div class="panel-body">
-                                <div class="form-group"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
+                            <div class="p-6">
+                                <div class="mb-4"{{ $itsCompany ? $einvoicingB2B : $einvoicingOpt }}>
                                     <label for="user_vat_id">@lang('vat_id') (@php _trans($itsCompany ? 'required_field' : 'optional'))</label>
-                                    <input type="text" name="user_vat_id" id="user_vat_id" class="form-control"
+                                    <input type="text" name="user_vat_id" id="user_vat_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_vat_id', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingReq }}>
+                                <div class="mb-4"{{ $einvoicingReq }}>
                                     <label for="user_tax_code">@lang('tax_code')</label>
-                                    <input type="text" name="user_tax_code" id="user_tax_code" class="form-control"
+                                    <input type="text" name="user_tax_code" id="user_tax_code" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_tax_code', true) " }}>
                                 </div>
 
@@ -219,41 +219,41 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                         </div>
 
                         <!-- eInvoicing -->
-                        <div class="panel panel-default">
-                            <div class="panel-heading">@lang('bank_information')</div>
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('bank_information')</div>
 
-                            <div class="panel-body">
-                                <div class="form-group"{{ $einvoicingOpt }}>
+                            <div class="p-6">
+                                <div class="mb-4"{{ $einvoicingOpt }}>
                                     <label for="user_bank">@lang('bank')</label>
-                                    <input type="text" name="user_bank" id="user_bank" class="form-control"
+                                    <input type="text" name="user_bank" id="user_bank" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_bank', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingReq }}>{{ $qr_code_info }}
+                                <div class="mb-4"{{ $einvoicingReq }}>{{ $qr_code_info }}
                                     <label for="user_iban">{{ 'IBAN' }}</label>
-                                    <input type="text" name="user_iban" id="user_iban" class="form-control"
+                                    <input type="text" name="user_iban" id="user_iban" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_iban', true) " }}>
                                 </div>
 
-                                <div class="form-group"{{ $einvoicingOpt }}>{{ $qr_code_info }}
+                                <div class="mb-4"{{ $einvoicingOpt }}>{{ $qr_code_info }}
                                     <label for="user_bic">{{ 'BIC' }}</label>
                                     <input type="text" name="user_bic" id="user_bic"
-                                           class="form-control"
+                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_bic', true) " }}>
                                 </div>
 
-                                <div class="form-group">{{ $qr_code_info }}
+                                <div class="mb-4">{{ $qr_code_info }}
                                     <label for="user_remittance_text">@lang('user_remittance_text')</label>
-                                    <input type="text" name="user_remittance_text" id="user_remittance_text" class="form-control taggable"
+                                    <input type="text" name="user_remittance_text" id="user_remittance_text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors taggable"
                                            placeholder="{{{invoice_number}}} {{{invoice_date_due}}}"
                                            value="{{ $this->mdl_users->form_value('user_remittance_text', true) " }}>
                                 </div>
 
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
+                                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                                         @lang('qr_code_settings_remittance_text_tags')
                                     </div>
-                                    <div class="panel-body">
+                                    <div class="p-6">
                                         @include('email_templates.template-tags-invoices')
                                     </div>
                                 </div>
@@ -261,26 +261,26 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                         </div>
 
 @if($this->mdl_settings->setting('sumex') == '1')
-                        <div class="panel panel-default">
-                            <div class="panel-heading">@lang('sumex_information')</div>
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('sumex_information')</div>
 
-                            <div class="panel-body">
+                            <div class="p-6">
 
-                                <div class="form-group">
+                                <div class="mb-4">
                                     <label for="user_subscribernumber">@lang('user_subscriber_number')</label>
-                                    <input type="text" name="user_subscribernumber" id="user_subscribernumber" class="form-control"
+                                    <input type="text" name="user_subscribernumber" id="user_subscribernumber" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_subscribernumber', true) " }}>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="mb-4">
                                     <label for="user_gln">@lang('gln')</label>
-                                    <input type="text" name="user_gln" id="user_gln" class="form-control"
+                                    <input type="text" name="user_gln" id="user_gln" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_gln', true) " }}>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="mb-4">
                                     <label for="user_rcc">@lang('sumex_rcc')</label>
-                                    <input type="text" name="user_rcc" id="user_rcc" class="form-control"
+                                    <input type="text" name="user_rcc" id="user_rcc" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_rcc', true) " }}>
                                 </div>
                             </div>
@@ -290,38 +290,38 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
 @php
 }
 // Endif sumex
-                        <div class="panel panel-default">
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
 
-                            <div class="panel-heading">@lang('contact_information')</div>
+                            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('contact_information')</div>
 
-                            <div class="panel-body">
-                                <div class="form-group">
+                            <div class="p-6">
+                                <div class="mb-4">
                                     <label for="user_invoicing_con>tact">@lang('contact') (@lang('invoicing'))</label>
-                                    <input type="text" name="user_invoicing_contact" id="user_invoicing_contact" class="form-control"
+                                    <input type="text" name="user_invoicing_contact" id="user_invoicing_contact" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_invoicing_contact', true) " }}>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="mb-4">
                                     <label for="user_phone">@lang('phone_number')</label>
-                                    <input type="text" name="user_phone" id="user_phone" class="form-control"
+                                    <input type="text" name="user_phone" id="user_phone" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_phone', true) " }}>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="mb-4">
                                     <label for="user_fax">@lang('fax_number')</label>
-                                    <input type="text" name="user_fax" id="user_fax" class="form-control"
+                                    <input type="text" name="user_fax" id="user_fax" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_fax', true) " }}>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="mb-4">
                                     <label for="user_mobile">@lang('mobile_number')</label>
-                                    <input type="text" name="user_mobile" id="user_mobile" class="form-control"
+                                    <input type="text" name="user_mobile" id="user_mobile" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_mobile', true) " }}>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="mb-4">
                                     <label for="user_web">@lang('web_address')</label>
-                                    <input type="text" name="user_web" id="user_web" class="form-control"
+                                    <input type="text" name="user_web" id="user_web" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{{ $this->mdl_users->form_value('user_web', true) " }}>
                                 </div>
 @php $default_custom = false;
@@ -339,15 +339,15 @@ $einvoicingOpt = $einvoicing ? $einvoicingTip . trans('optional') . ')"' : '';
                         </div>
 
 @if($default_custom)
-                        <div class="row">
-                            <div class="col-xs-12">
+                        <div class="flex flex-wrap -mx-4">
+                            <div class="w-full px-4">
 
                                 <hr>
 
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">@lang('custom_fields')</div>
-                                    <div class="panel-body">
-                                        <div class="row">
+                                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('custom_fields')</div>
+                                    <div class="p-6">
+                                        <div class="flex flex-wrap -mx-4">
 @php
     $classes = ['control-label', 'controls', '', 'form-group col-xs-12 col-sm-6'];
     @foreach($custom_fields['ip_user_custom'] as $custom_field) {

@@ -19,16 +19,16 @@ $invoice_mode ??= 'default'; // from template - overdue / paid.php
 switch ($invoice_mode) {
     case 'overdue':
         $text_class         = 'text-red';
-        $text_class_date    = ' class="' . $text_class . '"';
-        $text_class_balance = ' class="' . $text_class . '"';
+        $text_class_date    = ' class="' . $text_class"';
+        $text_class_balance = ' class="' . $text_class"';
         $watermark          = '<watermarktext content="' . trans('overdue') . '" alpha="0.2" />';
         $stamp              = '<span class="stamp overdue">' . trans('overdue') . '</span>'; // * if watermark ok == no stamp (todo?)
         break;
     case 'paid':
         $show_qrcode = false;
         $text_class  = 'text-green';
-        // $text_class_date    = ' class="' . $text_class . '"';
-        $text_class_balance = ' class="' . $text_class . '"';
+        // $text_class_date    = ' class="' . $text_class"';
+        $text_class_balance = ' class="' . $text_class"';
         $watermark          = '<watermarktext content="' . trans('paid') . '" alpha="0.2" />';
         $stamp              = '<span class="stamp paid">' . trans('paid') . '</span>'; // * if watermark ok == no stamp (todo?)
         break;
@@ -44,7 +44,7 @@ switch ($invoice_mode) {
     <link rel="stylesheet" href="{{ _core_asset('css/custom-pdf.css') }}" type="text/css">
 </head>
 <body>
-<header class="clearfix">
+<header class="clear-both">
 
     <div id="logo">
         {{ invoice_logo_pdf() }}
@@ -136,7 +136,7 @@ echo '<br>';
 
 <main>
 
-    <div class="invoice-details clearfix">
+    <div class="invoice-details clear-both">
         <table class="large">
             <tr>
                 <td rowspan="{{ $payment_method ? 5 : 4 "
@@ -169,13 +169,13 @@ echo '<br>';
         </table>
     </div>
 
-    <h1 class="invoice-title {{ $text_class ">@lang('invoice')  {!! $invoice->invoice_number !!}</h1>
+    <h1 class="invoice-title {{ $text_class">@lang('invoice')  {!! $invoice->invoice_number !!}</h1>
 
     <table class="item-table">
         <thead>
         <tr>
             <th class="item-name">@lang('item')</th>
-            <th class=" item-desc">@php @lang('description')</th>
+            <th class="item-desc">@php @lang('description')</th>
     <th class="item-amount text-right">@lang('qty')</th>
     <th class="item-price text-right">@lang('price')</th>
     @if($show_item_discounts)
@@ -232,20 +232,17 @@ echo '<br>';
         @php
             } // fi add_table_head_for_totals
 
-        <tbody class=" invoice-sums
-        ">
+        <tbody class="invoice-sums">
 
         @if( ! $legacy_calculation) {
     discount_global_print_in_pdf($invoice, $show_item_discounts); // in Helpers/pdf_helper
 }
 
         <tr>
-            <td class=" text-right
-        " colspan="{{ $colspan ">
+            <td class="text-right" colspan="{{ $colspan ">
                 @lang('subtotal')
         </td>
-        <td class=" text-right
-            ">{{ format_currency($invoice->invoice_item_subtotal) }}</td>
+        <td class="text-right">{{ format_currency($invoice->invoice_item_subtotal) }}</td>
         </tr>
 
         @if($invoice->invoice_item_tax_total > 0)
@@ -254,8 +251,7 @@ echo '<br>';
             <td class="text-right" colspan="{{ $colspan ">
                 @lang('item_tax')
             </td>
-            <td class=" text-right
-            ">
+            <td class="text-right">
             {{ format_currency($invoice->invoice_item_tax_total) }}
             </td>
         </tr>@endforeach
@@ -265,8 +261,7 @@ echo '<br>';
             <td class="text-right" colspan="{{ $colspan ">
                 {!! $invoice_tax_rate->invoice_tax_rate_name) . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%)' }}
             </td>
-            <td class=" text-right
-            ">
+            <td class="text-right">
             {{ format_currency($invoice_tax_rate->invoice_tax_rate_amount !!}
             </td>
         </tr>
@@ -280,8 +275,7 @@ echo '<br>';
             <td class="text-right" colspan="{{ $colspan ">
                 <b>@lang('total')</b>
             </td>
-            <td class=" text-right
-            ">
+            <td class="text-right">
             <b>{{ format_currency($invoice->invoice_total) }}</b>
             </td>
         </tr>
@@ -289,8 +283,7 @@ echo '<br>';
             <td class="text-right" colspan="{{ $colspan ">
                 @lang('paid')
             </td>
-            <td class=" text-right
-            ">
+            <td class="text-right">
             {{ format_currency($invoice->invoice_paid) }}
             </td>
         </tr>
@@ -298,8 +291,7 @@ echo '<br>';
             <td class="text-right" colspan="{{ $colspan ">
                 <b>@lang('balance')</b>
             </td>
-            <td class=" text-right
-            {{ $text_class ">
+            <td class="text-right {{ $text_class">
                            <b>{{ format_currency($invoice->invoice_balance) }}</b>
             </td>
         </tr>

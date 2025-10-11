@@ -1,7 +1,7 @@
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('payments')</h1>
 
-    <div class="headerbar-item pull-right">
+    <div class="headerbar-item float-right">
         {{ pager(site_url('guest/payments/index'), 'mdl_payments') }}
     </div>
 
@@ -12,8 +12,8 @@
     @include('layout.alerts')
 
     <div id="filter_results">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 
                 <thead>
                 <tr>
