@@ -10,7 +10,7 @@
         function applyTheme() {
             const userPref = localStorage.getItem('darkMode');
             const systemPref = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            @if(userPref === 'true' || (userPref === null && systemPref)) {
+            if (userPref === 'true' || (userPref === null && systemPref)) {
                 document.documentElement.classList.add('dark');
             } else {
                 document.documentElement.classList.remove('dark');
@@ -20,7 +20,7 @@
         applyTheme();
         // Listen for system theme changes
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            @if(!('darkMode' in localStorage)) {
+            if (!('darkMode' in localStorage)) {
                 applyTheme();
             }
         });

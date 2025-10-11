@@ -27,12 +27,12 @@
                 @if(isset($_SESSION['user_id'], $_SESSION['user_type'])) {
                 ?>
                 <a href="{{ url($_SESSION['user_type'] > 1 ? 'guest' : '') }}"
-                   class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" title="@lang('dashboard')">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors" title="@lang('dashboard')">
                     <i class="fa fa-dashboard"></i> @lang('dashboard')
                 </a>
                 @php }
                 <a href="{{ url('guest/view/generate_' . ($invoice->sumex_id == null ? 'invoice' : 'sumex') . '_pdf/' . $invoice_url_key) }}"
-                   class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                   class="inline-flex items-center gap-2 px-4 py-2 btn-primary border border-transparent rounded-md text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors">
                     <i class="fa fa-print"></i> @lang('download_pdf')
                 </a>
                 @if(get_setting('enable_online_payments') == 1 && $invoice->invoice_balance > 0)
@@ -319,7 +319,7 @@
                                     <td>{{ $attachment['name'] }}</td>
                                     <td>
                                         <a href="{{ url('guest/get/attachment/' . $attachment['fullname']) }}"
-                                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors px-3 py-1.5">
+                                           class="inline-flex items-center gap-2 px-4 py-2 btn-primary border border-transparent rounded-md text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors px-3 py-1.5">
                                             <i class="fa fa-download"></i> @lang('download')
                                         </a>
                                     </td>
