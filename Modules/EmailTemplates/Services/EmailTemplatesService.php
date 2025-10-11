@@ -4,6 +4,7 @@ namespace Modules\EmailTemplates\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\EmailTemplates\Models\EmailTemplate;
 
 #[AllowDynamicProperties]
 class EmailTemplatesService extends BaseService
@@ -49,6 +50,6 @@ class EmailTemplatesService extends BaseService
      */
     public function getAll()
     {
-        return \Modules\EmailTemplates\Models\EmailTemplate::query()->get();
+        return EmailTemplate::query()->get();
     }
 }
