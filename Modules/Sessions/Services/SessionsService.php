@@ -4,6 +4,7 @@ namespace Modules\Sessions\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Users\Models\User;
 
 #[AllowDynamicProperties]
 class SessionsService extends BaseService
@@ -15,10 +16,9 @@ class SessionsService extends BaseService
      */
     public function auth($email, $password)
     {
-        $this->db->where('user_email', $email);
-        $query = $this->db->get('ip_users');
-        if ($query->numRows()) {
-            $user = $query->row();
+        $user = User::query()->where('user_email', $email)->first();
+        
+        if ($user) {
             $this->load->library('crypt');
             /*
              * Password hashing changed after 1.2.0
@@ -37,10 +37,9 @@ class SessionsService extends BaseService
                     $salt     = $this->crypt->salt();
                     $hash     = $this->crypt->generate_password($password, $salt);
                     $db_array = ['user_psalt' => $salt, 'user_password' => $hash];
-                    $this->db->where('user_id', $user->user_id);
-                    $this->db->update('ip_users', $db_array);
-                    $this->db->where('user_email', $email);
-                    $user = $this->db->get('ip_users')->row();
+                    
+                    User::query()->where('user_id', $user->user_id)->update($db_array);
+                    $user = User::query()->where('user_email', $email)->first();
                 } else {
                     // The password didn't verify against original md5
                     return false;
