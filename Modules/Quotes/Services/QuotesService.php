@@ -5,6 +5,7 @@ namespace Modules\Quotes\Services;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\Quote;
+use Modules\Quotes\Models\Quote;
 use Modules\Quotes\Models\QuoteItem;
 use Modules\Quotes\Models\QuoteTaxRate;
 
@@ -356,10 +357,10 @@ class QuotesService extends BaseService
      */
     public function approveQuoteByKey($quote_url_key)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_url_key', $quote_url_key);
-        $this->db->set('quote_status_id', 4);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_url_key', $quote_url_key)
+            ->update(['quote_status_id' => 4]);
     }
 
     /**
@@ -369,10 +370,10 @@ class QuotesService extends BaseService
      */
     public function rejectQuoteByKey($quote_url_key)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_url_key', $quote_url_key);
-        $this->db->set('quote_status_id', 5);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_url_key', $quote_url_key)
+            ->update(['quote_status_id' => 5]);
     }
 
     /**
@@ -382,10 +383,10 @@ class QuotesService extends BaseService
      */
     public function approveQuoteById($quote_id)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_id', $quote_id);
-        $this->db->set('quote_status_id', 4);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_id', $quote_id)
+            ->update(['quote_status_id' => 4]);
     }
 
     /**
@@ -395,10 +396,10 @@ class QuotesService extends BaseService
      */
     public function rejectQuoteById($quote_id)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_id', $quote_id);
-        $this->db->set('quote_status_id', 5);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_id', $quote_id)
+            ->update(['quote_status_id' => 5]);
     }
 
     /**
@@ -408,13 +409,13 @@ class QuotesService extends BaseService
      */
     public function markViewed($quote_id)
     {
-        $this->db->select('quote_status_id');
-        $this->db->where('quote_id', $quote_id);
-        $quote = $this->db->get('ip_quotes');
-        if ($quote->numRows() && $quote->row()->quote_status_id == 2) {
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('quote_status_id', 3);
-            $this->db->update('ip_quotes');
+        $quote = Quote::query()
+            ->select('quote_status_id')
+            ->where('quote_id', $quote_id)
+            ->first();
+            
+        if ($quote && $quote->quote_status_id == 2) {
+            Quote::query()->where('quote_id', $quote_id)->update(['quote_status_id' => 3]);
         }
     }
 
@@ -425,13 +426,13 @@ class QuotesService extends BaseService
      */
     public function markSent($quote_id)
     {
-        $this->db->select('quote_status_id');
-        $this->db->where('quote_id', $quote_id);
-        $quote = $this->db->get('ip_quotes');
-        if ($quote->numRows() && $quote->row()->quote_status_id == 1) {
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('quote_status_id', 2);
-            $this->db->update('ip_quotes');
+        $quote = Quote::query()
+            ->select('quote_status_id')
+            ->where('quote_id', $quote_id)
+            ->first();
+            
+        if ($quote && $quote->quote_status_id == 1) {
+            Quote::query()->where('quote_id', $quote_id)->update(['quote_status_id' => 2]);
         }
     }
 
@@ -447,9 +448,7 @@ class QuotesService extends BaseService
         if ( ! empty($quote) && ($quote->quote_status_id == 1 && $quote->quote_number == '') && get_setting('generate_quote_number_for_draft') == 0) {
             $quote_number = $this->mdl_quotes->getQuoteNumber($quote->invoice_group_id);
             // Set new quote number and save
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('quote_number', $quote_number);
-            $this->db->update('ip_quotes');
+            Quote::query()->where('quote_id', $quote_id)->update(['quote_number' => $quote_number]);
         }
     }
 
