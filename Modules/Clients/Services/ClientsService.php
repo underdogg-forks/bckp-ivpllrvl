@@ -244,4 +244,14 @@ class ClientsService extends BaseService
             ->where('client_active', 1)
             ->get();
     }
+
+    /**
+     * Get all active clients
+     *
+     * @return array Collection of active clients
+     */
+    public function getActive()
+    {
+        return $this->where('client_active', 1)->get()->result();
+    }
 }

@@ -3,7 +3,7 @@
 namespace Modules\Projects\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
 use Modules\Tasks\Services\TasksService;
@@ -54,7 +54,7 @@ class ProjectsController extends AdminController
         }
         $this->load->model('clients/mdl_clients');
 
-        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => Client::query()->where('client_active', 1)->get()]);
+        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => (new ClientsService())->getActive()]);
     }
 
     /**

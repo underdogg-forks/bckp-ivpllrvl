@@ -5,10 +5,10 @@ namespace Modules\Products\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
-use Modules\Families\Models\Family;
+use Modules\Families\Services\FamiliesService;
 use Modules\Products\Services\ProductsService;
-use Modules\TaxRates\Models\TaxRate;
-use Modules\Units\Models\Unit;
+use Modules\TaxRates\Services\TaxRatesService;
+use Modules\Units\Services\UnitsService;
 
 #[AllowDynamicProperties]
 class ProductsController extends AdminController
@@ -44,9 +44,9 @@ class ProductsController extends AdminController
         if ($id && ! $request->has('btn_submit') && ! $service->prepForm($id)) {
             abort(404);
         }
-        $families  = Family::query()->get();
-        $units     = Unit::query()->get();
-        $tax_rates = TaxRate::query()->get();
+        $families  = (new FamiliesService())->getAll();
+        $units     = (new UnitsService())->getAll();
+        $tax_rates = (new TaxRatesService())->getAll();
 
         return view('products.form', [
             'families'  => $families,

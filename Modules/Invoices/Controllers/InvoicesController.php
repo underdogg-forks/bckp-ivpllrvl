@@ -7,19 +7,14 @@ use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
 use Modules\CustomFields\Services\CustomFieldsService;
 use Modules\CustomValues\Services\CustomValuesService;
-use Modules\Invoices\Models\InvoiceTaxRate;
-use Modules\Invoices\Models\Item;
 use Modules\Invoices\Services\InvoiceAmountsService;
 use Modules\Invoices\Services\InvoiceCustomService;
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Invoices\Services\InvoiceTaxRatesService;
 use Modules\Invoices\Services\ItemsService;
-use Modules\PaymentMethods\Models\PaymentMethod;
-use Modules\Payments\Services\PaymentMethodsService;
+use Modules\PaymentMethods\Services\PaymentMethodsService;
 use Modules\Tasks\Services\TasksService;
-use Modules\TaxRates\Models\TaxRate;
 use Modules\TaxRates\Services\TaxRatesService;
-use Modules\Units\Models\Unit;
 use Modules\Units\Services\UnitsService;
 
 #[AllowDynamicProperties]
@@ -186,10 +181,10 @@ class InvoicesController extends AdminController
             'invoice_id' => $invoice_id,
             'einvoice' => $einvoice,
             'change_user' => $change_user,
-            'tax_rates' => TaxRate::query()->get(),
-            'invoice_tax_rates' => InvoiceTaxRate::query()->where('invoice_id', $invoice_id)->get(),
-            'units' => Unit::query()->get(),
-            'payment_methods' => PaymentMethod::query()->get(),
+            'tax_rates' => $this->taxRatesService->getAll(),
+            'invoice_tax_rates' => $this->invoiceTaxRatesService->getByInvoiceId($invoice_id),
+            'units' => $this->unitsService->getAll(),
+            'payment_methods' => $this->paymentMethodsService->getAll(),
             'custom_fields' => $custom_fields,
             'custom_values' => $custom_values,
             'custom_js_vars' => [
@@ -259,7 +254,7 @@ class InvoicesController extends AdminController
         if ( ! $invoice) {
             abort(404);
         }
-        $items = Item::query()->where('invoice_id', $invoice_id)->get();
+        $items = $this->itemsService->getByInvoiceId($invoice_id);
         $einvoice = get_einvoice_usage($invoice, $items, false);
         if ( ! $einvoice->user) {
             abort(404);
@@ -302,7 +297,7 @@ class InvoicesController extends AdminController
     {
         $sumex = new \Modules\Core\Libraries\Sumex([
             'invoice' => $this->invoicesService->getById($invoice_id),
-            'items' => Item::query()->where('invoice_id', $invoice_id)->get(),
+            'items' => $this->itemsService->getByInvoiceId($invoice_id),
             'options' => ['copy' => '1', 'storno' => '0'],
         ]);
         response()->header('Content-Type', 'application/pdf')->setContent($sumex->pdf());
