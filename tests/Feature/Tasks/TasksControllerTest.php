@@ -60,10 +60,11 @@ class TasksControllerTest extends TestCase
         $task = \Modules\Tasks\Models\Task::factory()->create();
 
         // Act: delete the task
-        $response = $this->get(route('tasks.delete', ['id' => $task->id]));
+        $taskId = $task->getKey();
+        $response = $this->get(route('tasks.delete', ['id' => $taskId]));
 
         // Assert: redirects and task is deleted
         $response->assertRedirect(route('tasks'));
-        $this->assertDatabaseMissing('ip_tasks', ['task_id' => $task->id]);
+        $this->assertDatabaseMissing('ip_tasks', ['task_id' => $taskId]);
     }
 }
