@@ -10,9 +10,9 @@ class CustomField extends BaseModel
     /** @use HasFactory<\Database\Factories\CustomFieldFactory> */
     use HasFactory;
 
-    protected $table = 'ip_custom_fields';
-
     public $timestamps = false;
+
+    protected $table = 'ip_custom_fields';
 
     protected $casts = [];
 

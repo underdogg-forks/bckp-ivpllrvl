@@ -15,17 +15,20 @@ use Tests\TestCase;
 #[CoversClass(AjaxController::class)]
 class PaymentsAjaxControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
+
     protected Invoice $invoice;
+
     protected PaymentMethod $paymentMethod;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
-        $this->invoice = Invoice::factory()->create(['invoice_balance' => 100.00]);
+        $this->user          = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
+        $this->invoice       = Invoice::factory()->create(['invoice_balance' => 100.00]);
         $this->paymentMethod = PaymentMethod::factory()->create();
         $this->actingAs($this->user);
     }
@@ -34,10 +37,10 @@ class PaymentsAjaxControllerTest extends TestCase
     public function it_adds_payment_via_ajax_with_valid_data(): void
     {
         $paymentData = [
-            'invoice_id' => $this->invoice->invoice_id,
-            'payment_amount' => 50.00,
+            'invoice_id'        => $this->invoice->invoice_id,
+            'payment_amount'    => 50.00,
             'payment_method_id' => $this->paymentMethod->payment_method_id,
-            'payment_date' => now()->format('Y-m-d')
+            'payment_date'      => now()->format('Y-m-d'),
         ];
 
         $response = $this->post(route('payments.ajax.add'), $paymentData);
@@ -46,8 +49,8 @@ class PaymentsAjaxControllerTest extends TestCase
         $response->assertJson(['success' => 1]);
         $this->assertArrayHasKey('payment_id', $response->json());
         $this->assertDatabaseHas('ip_payments', [
-            'invoice_id' => $this->invoice->invoice_id,
-            'payment_amount' => 50.00
+            'invoice_id'     => $this->invoice->invoice_id,
+            'payment_amount' => 50.00,
         ]);
     }
 
@@ -55,7 +58,7 @@ class PaymentsAjaxControllerTest extends TestCase
     public function it_returns_validation_errors_for_invalid_payment(): void
     {
         $paymentData = [
-            'invoice_id' => null,
+            'invoice_id'     => null,
             'payment_amount' => -50.00, // Invalid amount
         ];
 
@@ -70,10 +73,10 @@ class PaymentsAjaxControllerTest extends TestCase
     public function it_displays_modal_add_payment_form(): void
     {
         $response = $this->post(route('payments.ajax.modalAddPayment'), [
-            'invoice_id' => $this->invoice->invoice_id,
-            'invoice_balance' => $this->invoice->invoice_balance,
+            'invoice_id'             => $this->invoice->invoice_id,
+            'invoice_balance'        => $this->invoice->invoice_balance,
             'invoice_payment_method' => $this->invoice->payment_method,
-            'payment_cf_exist' => 'no'
+            'payment_cf_exist'       => 'no',
         ]);
 
         $response->assertSuccessful();
@@ -86,21 +89,22 @@ class PaymentsAjaxControllerTest extends TestCase
     public function it_sanitizes_invoice_id_in_modal(): void
     {
         $response = $this->post(route('payments.ajax.modalAddPayment'), [
-            'invoice_id' => '<script>alert("xss")</script>',
-            'invoice_balance' => 100,
-            'payment_cf_exist' => 'no'
+            'invoice_id'       => '<script>alert("xss")</script>',
+            'invoice_balance'  => 100,
+            'payment_cf_exist' => 'no',
         ]);
 
         $response->assertSuccessful();
         $response->assertViewHas('invoice_id', function ($id) {
-            return !str_contains($id, '<script>');
+            return ! str_contains($id, '<script>');
         });
     }
 }
 
 class PaymentMethodsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -125,14 +129,14 @@ class PaymentMethodsControllerTest extends TestCase
     public function it_creates_new_payment_method(): void
     {
         $methodData = [
-            'payment_method_name' => 'Test Payment Method'
+            'payment_method_name' => 'Test Payment Method',
         ];
 
         $response = $this->post(route('payment_methods.form'), $methodData);
 
         $response->assertRedirect(route('payment_methods.index'));
         $this->assertDatabaseHas('ip_payment_methods', [
-            'payment_method_name' => 'Test Payment Method'
+            'payment_method_name' => 'Test Payment Method',
         ]);
     }
 
@@ -143,7 +147,7 @@ class PaymentMethodsControllerTest extends TestCase
 
         $methodData = [
             'payment_method_name' => 'Existing Method',
-            'is_update' => 0
+            'is_update'           => 0,
         ];
 
         $response = $this->post(route('payment_methods.form'), $methodData);
@@ -158,15 +162,15 @@ class PaymentMethodsControllerTest extends TestCase
         $method = PaymentMethod::factory()->create(['payment_method_name' => 'Original']);
 
         $updateData = [
-            'payment_method_name' => 'Edited Payment Method'
+            'payment_method_name' => 'Edited Payment Method',
         ];
 
         $response = $this->post(route('payment_methods.form', ['id' => $method->payment_method_id]), $updateData);
 
         $response->assertRedirect(route('payment_methods.index'));
         $this->assertDatabaseHas('ip_payment_methods', [
-            'payment_method_id' => $method->payment_method_id,
-            'payment_method_name' => 'Edited Payment Method'
+            'payment_method_id'   => $method->payment_method_id,
+            'payment_method_name' => 'Edited Payment Method',
         ]);
     }
 

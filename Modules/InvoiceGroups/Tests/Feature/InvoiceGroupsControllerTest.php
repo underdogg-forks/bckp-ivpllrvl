@@ -8,13 +8,16 @@ use Modules\InvoiceGroups\Controllers\InvoiceGroupsController;
 use Modules\InvoiceGroups\Models\InvoiceGroup;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\InvoiceGroups\route;
+
+use Tests\TestCase;
 
 #[CoversClass(InvoiceGroupsController::class)]
 class InvoiceGroupsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -66,17 +69,17 @@ class InvoiceGroupsControllerTest extends TestCase
     public function it_creates_new_invoice_group(): void
     {
         $groupData = [
-            'invoice_group_name' => 'Test Group ' . time(),
-            'invoice_group_prefix' => 'TG' . rand(100, 999),
-            'invoice_group_next_id' => 1,
-            'invoice_group_left_pad' => 0
+            'invoice_group_name'     => 'Test Group ' . time(),
+            'invoice_group_prefix'   => 'TG' . rand(100, 999),
+            'invoice_group_next_id'  => 1,
+            'invoice_group_left_pad' => 0,
         ];
 
         $response = $this->post(route('invoice_groups.form'), $groupData);
 
         $response->assertRedirect(route('invoice_groups.index'));
         $this->assertDatabaseHas('ip_invoice_groups', [
-            'invoice_group_name' => $groupData['invoice_group_name']
+            'invoice_group_name' => $groupData['invoice_group_name'],
         ]);
     }
 
@@ -84,20 +87,20 @@ class InvoiceGroupsControllerTest extends TestCase
     public function it_updates_existing_invoice_group(): void
     {
         $group = InvoiceGroup::factory()->create([
-            'invoice_group_name' => 'Original Group'
+            'invoice_group_name' => 'Original Group',
         ]);
 
         $updateData = [
-            'invoice_group_name' => 'Edited Group ' . time(),
-            'invoice_group_prefix' => 'EG' . rand(100, 999)
+            'invoice_group_name'   => 'Edited Group ' . time(),
+            'invoice_group_prefix' => 'EG' . rand(100, 999),
         ];
 
         $response = $this->post(route('invoice_groups.form', ['id' => $group->invoice_group_id]), $updateData);
 
         $response->assertRedirect(route('invoice_groups.index'));
         $this->assertDatabaseHas('ip_invoice_groups', [
-            'invoice_group_id' => $group->invoice_group_id,
-            'invoice_group_name' => $updateData['invoice_group_name']
+            'invoice_group_id'   => $group->invoice_group_id,
+            'invoice_group_name' => $updateData['invoice_group_name'],
         ]);
     }
 

@@ -78,9 +78,9 @@ class GetController extends BaseController
     /**
      * Log a translated message, set the HTTP response code, output the translated message, and terminate execution.
      *
-     * @param int    $httpCode        The HTTP status code to send in the response.
-     * @param string $messageKey      Translation key used for the response message and for log lookup.
-     * @param string $dynamicLogValue Optional additional context appended to the log entry.
+     * @param int    $httpCode        the HTTP status code to send in the response
+     * @param string $messageKey      translation key used for the response message and for log lookup
+     * @param string $dynamicLogValue optional additional context appended to the log entry
      */
     private function respondMessage(int $httpCode, string $messageKey, string $dynamicLogValue = ''): void
     {

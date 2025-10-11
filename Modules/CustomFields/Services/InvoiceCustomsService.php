@@ -47,9 +47,10 @@ class InvoiceCustomsService extends BaseService
     /**
      * Persist invoice custom field values from the service's form data after validating the provided input.
      *
-     * @param int|string $invoice_id The identifier of the invoice to which custom fields belong.
-     * @param array $db_array Data used for validation of the custom field input.
-     * @return true|mixed `true` if validation passed and values were processed (or no form data was present); otherwise the validation result returned by validate().
+     * @param int|string $invoice_id the identifier of the invoice to which custom fields belong
+     * @param array      $db_array   data used for validation of the custom field input
+     *
+     * @return true|mixed `true` if validation passed and values were processed (or no form data was present); otherwise the validation result returned by validate()
      */
     public function saveCustom($invoice_id, $db_array)
     {
@@ -62,13 +63,13 @@ class InvoiceCustomsService extends BaseService
             foreach ($form_data as $key => $value) {
                 \Modules\Invoices\Models\InvoiceCustom::query()->updateOrCreate(
                     [
-                        'invoice_id' => $invoice_id,
-                        'invoice_custom_fieldid' => $key
+                        'invoice_id'             => $invoice_id,
+                        'invoice_custom_fieldid' => $key,
                     ],
                     [
-                        'invoice_id' => $invoice_id,
-                        'invoice_custom_fieldid' => $key,
-                        'invoice_custom_fieldvalue' => $value
+                        'invoice_id'                => $invoice_id,
+                        'invoice_custom_fieldid'    => $key,
+                        'invoice_custom_fieldvalue' => $value,
                     ]
                 );
             }

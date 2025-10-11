@@ -27,11 +27,11 @@ class EmailTemplatesAjaxControllerTest extends TestCase
     {
         $template = EmailTemplate::factory()->create([
             'email_template_subject' => 'Test Subject',
-            'email_template_body' => 'Test Body'
+            'email_template_body'    => 'Test Body',
         ]);
 
         $response = $this->post(route('email_templates.ajax.getContent'), [
-            'email_template_id' => $template->email_template_id
+            'email_template_id' => $template->email_template_id,
         ]);
 
         $response->assertSuccessful();
@@ -44,7 +44,7 @@ class EmailTemplatesAjaxControllerTest extends TestCase
     public function it_returns_null_for_nonexistent_template(): void
     {
         $response = $this->post(route('email_templates.ajax.getContent'), [
-            'email_template_id' => 99999
+            'email_template_id' => 99999,
         ]);
 
         $response->assertSuccessful();
@@ -54,7 +54,8 @@ class EmailTemplatesAjaxControllerTest extends TestCase
 
 class FamiliesControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -79,14 +80,14 @@ class FamiliesControllerTest extends TestCase
     {
         $familyData = [
             'family_name' => 'Test Family',
-            'is_update' => 0
+            'is_update'   => 0,
         ];
 
         $response = $this->post(route('families.form'), $familyData);
 
         $response->assertRedirect(route('families.index'));
         $this->assertDatabaseHas('ip_families', [
-            'family_name' => 'Test Family'
+            'family_name' => 'Test Family',
         ]);
     }
 
@@ -97,7 +98,7 @@ class FamiliesControllerTest extends TestCase
 
         $familyData = [
             'family_name' => 'Existing Family',
-            'is_update' => 0
+            'is_update'   => 0,
         ];
 
         $response = $this->post(route('families.form'), $familyData);
@@ -112,15 +113,15 @@ class FamiliesControllerTest extends TestCase
         $family = Family::factory()->create(['family_name' => 'Original Family']);
 
         $updateData = [
-            'family_name' => 'Updated Family'
+            'family_name' => 'Updated Family',
         ];
 
         $response = $this->post(route('families.form', ['id' => $family->family_id]), $updateData);
 
         $response->assertRedirect(route('families.index'));
         $this->assertDatabaseHas('ip_families', [
-            'family_id' => $family->family_id,
-            'family_name' => 'Updated Family'
+            'family_id'   => $family->family_id,
+            'family_name' => 'Updated Family',
         ]);
     }
 
@@ -138,7 +139,8 @@ class FamiliesControllerTest extends TestCase
 
 class UnitsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -162,15 +164,15 @@ class UnitsControllerTest extends TestCase
     public function it_creates_new_unit(): void
     {
         $unitData = [
-            'unit_name' => 'Kilogram',
-            'unit_name_plrl' => 'Kilograms'
+            'unit_name'      => 'Kilogram',
+            'unit_name_plrl' => 'Kilograms',
         ];
 
         $response = $this->post(route('units.form'), $unitData);
 
         $response->assertRedirect(route('units.index'));
         $this->assertDatabaseHas('ip_units', [
-            'unit_name' => 'Kilogram'
+            'unit_name' => 'Kilogram',
         ]);
     }
 
@@ -180,9 +182,9 @@ class UnitsControllerTest extends TestCase
         Unit::factory()->create(['unit_name' => 'Existing Unit']);
 
         $unitData = [
-            'unit_name' => 'Existing Unit',
+            'unit_name'      => 'Existing Unit',
             'unit_name_plrl' => 'Existing Units',
-            'is_update' => 0
+            'is_update'      => 0,
         ];
 
         $response = $this->post(route('units.form'), $unitData);
@@ -197,16 +199,16 @@ class UnitsControllerTest extends TestCase
         $unit = Unit::factory()->create(['unit_name' => 'Original Unit']);
 
         $updateData = [
-            'unit_name' => 'Updated Unit',
-            'unit_name_plrl' => 'Updated Units'
+            'unit_name'      => 'Updated Unit',
+            'unit_name_plrl' => 'Updated Units',
         ];
 
         $response = $this->post(route('units.form', ['id' => $unit->unit_id]), $updateData);
 
         $response->assertRedirect(route('units.index'));
         $this->assertDatabaseHas('ip_units', [
-            'unit_id' => $unit->unit_id,
-            'unit_name' => 'Updated Unit'
+            'unit_id'   => $unit->unit_id,
+            'unit_name' => 'Updated Unit',
         ]);
     }
 

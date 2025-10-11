@@ -12,7 +12,7 @@ class RecurringController extends AdminController
     /**
      * Create a RecurringController with its dependencies.
      *
-     * @param InvoicesRecurringService $invoicesRecurringService Service used to manage recurring invoices.
+     * @param InvoicesRecurringService $invoicesRecurringService service used to manage recurring invoices
      */
     public function __construct(public InvoicesRecurringService $invoicesRecurringService)
     {
@@ -24,13 +24,14 @@ class RecurringController extends AdminController
      *
      * Passes pagination results and related view data to the recurring invoices view.
      *
-     * @param int $page Page index for pagination (defaults to 0).
-     * @return string Rendered view for the recurring invoices list containing:
+     * @param int $page page index for pagination (defaults to 0)
+     *
+     * @return string rendered view for the recurring invoices list containing:
      *                - `filter_display`: whether to show the filter controls,
      *                - `filter_placeholder`: translated placeholder for the filter,
      *                - `filter_method`: JS filter method name,
      *                - `recur_frequencies`: available recurrence frequencies,
-     *                - `recurring_invoices`: paginated recurring invoice results.
+     *                - `recurring_invoices`: paginated recurring invoice results
      */
     public function index($page = 0)
     {
@@ -43,8 +44,9 @@ class RecurringController extends AdminController
     /**
      * Stop a recurring invoice and redirect to the recurring invoices index.
      *
-     * @param int|string $invoice_recurring_id The ID of the recurring invoice to stop.
-     * @return \Illuminate\Http\RedirectResponse A redirect response to the recurring invoices index route.
+     * @param int|string $invoice_recurring_id the ID of the recurring invoice to stop
+     *
+     * @return \Illuminate\Http\RedirectResponse a redirect response to the recurring invoices index route
      */
     public function stop($invoice_recurring_id)
     {
@@ -56,7 +58,7 @@ class RecurringController extends AdminController
     /**
      * Deletes a recurring invoice and redirects to the recurring invoices index.
      *
-     * @param int|string $invoice_recurring_id The ID of the recurring invoice to delete.
+     * @param int|string $invoice_recurring_id the ID of the recurring invoice to delete
      */
     public function delete($invoice_recurring_id)
     {

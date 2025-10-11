@@ -28,19 +28,19 @@ class TasksServiceTest extends TestCase
     {
         // Arrange
         Task::create([
-            'task_name' => 'Design Homepage',
+            'task_name'        => 'Design Homepage',
             'task_description' => 'Create wireframes',
-            'task_status' => 1,
+            'task_status'      => 1,
         ]);
         Task::create([
-            'task_name' => 'Build API',
+            'task_name'        => 'Build API',
             'task_description' => 'Design endpoints',
-            'task_status' => 1,
+            'task_status'      => 1,
         ]);
         Task::create([
-            'task_name' => 'Testing',
+            'task_name'        => 'Testing',
             'task_description' => 'Write tests',
-            'task_status' => 1,
+            'task_status'      => 1,
         ]);
 
         // Act
@@ -65,9 +65,9 @@ class TasksServiceTest extends TestCase
     {
         // Arrange
         $task = Task::create([
-            'task_name' => 'Test Task',
+            'task_name'        => 'Test Task',
             'task_description' => 'Description',
-            'task_status' => 1,
+            'task_status'      => 1,
         ]);
 
         // Act
@@ -93,34 +93,34 @@ class TasksServiceTest extends TestCase
     {
         // Arrange: Create tasks with no project (project_id = 0) and status 3 (completed)
         Task::create([
-            'task_name' => 'Task 1',
+            'task_name'        => 'Task 1',
             'task_description' => 'Description 1',
-            'task_status' => 3,
-            'project_id' => 0,
+            'task_status'      => 3,
+            'project_id'       => 0,
             'task_finish_date' => now()->subDays(2),
         ]);
         Task::create([
-            'task_name' => 'Task 2',
+            'task_name'        => 'Task 2',
             'task_description' => 'Description 2',
-            'task_status' => 3,
-            'project_id' => 0,
+            'task_status'      => 3,
+            'project_id'       => 0,
             'task_finish_date' => now()->subDay(),
         ]);
         // Task with different status should not be included
         Task::create([
-            'task_name' => 'Task 3',
+            'task_name'        => 'Task 3',
             'task_description' => 'Description 3',
-            'task_status' => 1,
-            'project_id' => 0,
+            'task_status'      => 1,
+            'project_id'       => 0,
         ]);
 
         // Create invoice
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
         $invoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 1,
         ]);
 
@@ -137,9 +137,9 @@ class TasksServiceTest extends TestCase
     {
         // Arrange
         $task = Task::create([
-            'task_name' => 'Test Task',
+            'task_name'        => 'Test Task',
             'task_description' => 'Description',
-            'task_status' => 1,
+            'task_status'      => 1,
         ]);
 
         // Act
@@ -158,10 +158,10 @@ class TasksServiceTest extends TestCase
             'project_name' => 'Test Project',
         ]);
         $task = Task::create([
-            'task_name' => 'Test Task',
+            'task_name'        => 'Test Task',
             'task_description' => 'Description',
-            'task_status' => 1,
-            'project_id' => $project->project_id,
+            'task_status'      => 1,
+            'project_id'       => $project->project_id,
         ]);
 
         // Act
@@ -180,16 +180,16 @@ class TasksServiceTest extends TestCase
             'project_name' => 'Test Project',
         ]);
         $task1 = Task::create([
-            'task_name' => 'Task 1',
+            'task_name'        => 'Task 1',
             'task_description' => 'Description 1',
-            'task_status' => 1,
-            'project_id' => $project->project_id,
+            'task_status'      => 1,
+            'project_id'       => $project->project_id,
         ]);
         $task2 = Task::create([
-            'task_name' => 'Task 2',
+            'task_name'        => 'Task 2',
             'task_description' => 'Description 2',
-            'task_status' => 1,
-            'project_id' => $project->project_id,
+            'task_status'      => 1,
+            'project_id'       => $project->project_id,
         ]);
 
         // Act

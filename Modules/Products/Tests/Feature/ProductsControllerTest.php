@@ -11,26 +11,32 @@ use Modules\Products\Models\Product;
 use Modules\TaxRates\Models\TaxRate;
 use Modules\Units\Models\Unit;
 use PHPUnit\Framework\Attributes\CoversClass;
+
+use function Tests\Feature\Products\route;
+
 use Tests\Feature\Products\Test;
 use Tests\TestCase;
-use function Tests\Feature\Products\route;
 
 #[CoversClass(ProductsController::class)]
 class ProductsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
+
     protected Family $family;
+
     protected Unit $unit;
+
     protected TaxRate $taxRate;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
-        $this->family = Family::factory()->create();
-        $this->unit = Unit::factory()->create();
+        $this->user    = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
+        $this->family  = Family::factory()->create();
+        $this->unit    = Unit::factory()->create();
         $this->taxRate = TaxRate::factory()->create();
         $this->actingAs($this->user);
     }
@@ -85,20 +91,20 @@ class ProductsControllerTest extends TestCase
     public function it_creates_new_product(): void
     {
         $productData = [
-            'product_sku' => '123-ABC',
-            'product_name' => 'Test Product',
+            'product_sku'         => '123-ABC',
+            'product_name'        => 'Test Product',
             'product_description' => 'A test product.',
-            'product_price' => 100.00,
-            'tax_rate_id' => $this->taxRate->tax_rate_id,
-            'family_id' => $this->family->family_id,
-            'unit_id' => $this->unit->unit_id
+            'product_price'       => 100.00,
+            'tax_rate_id'         => $this->taxRate->tax_rate_id,
+            'family_id'           => $this->family->family_id,
+            'unit_id'             => $this->unit->unit_id,
         ];
 
         $response = $this->post(route('products.form'), $productData);
 
         $response->assertRedirect(route('products.index'));
         $this->assertDatabaseHas('ip_products', [
-            'product_sku' => '123-ABC',
+            'product_sku'  => '123-ABC',
             'product_name' => 'Test Product',
         ]);
     }
@@ -107,23 +113,23 @@ class ProductsControllerTest extends TestCase
     public function it_updates_existing_product(): void
     {
         $product = Product::factory()->create([
-            'product_name' => 'Original Product'
+            'product_name' => 'Original Product',
         ]);
 
         $updateData = [
-            'product_sku' => '123-DEF',
-            'product_name' => 'Edited Product',
+            'product_sku'         => '123-DEF',
+            'product_name'        => 'Edited Product',
             'product_description' => 'An edited test product.',
-            'product_price' => 120.00
+            'product_price'       => 120.00,
         ];
 
         $response = $this->post(route('products.form', ['id' => $product->product_id]), $updateData);
 
         $response->assertRedirect(route('products.index'));
         $this->assertDatabaseHas('ip_products', [
-            'product_id' => $product->product_id,
-            'product_name' => 'Edited Product',
-            'product_price' => 120.00
+            'product_id'    => $product->product_id,
+            'product_name'  => 'Edited Product',
+            'product_price' => 120.00,
         ]);
     }
 
@@ -170,15 +176,17 @@ class ProductsControllerTest extends TestCase
 
 class ProductsAjaxControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
+
     protected Family $family;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
+        $this->user   = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
         $this->family = Family::factory()->create();
         $this->actingAs($this->user);
     }
@@ -204,7 +212,7 @@ class ProductsAjaxControllerTest extends TestCase
         Product::factory()->create(['product_name' => 'Gadget Gamma']);
 
         $response = $this->post(route('products.ajax.modalProductLookups'), [
-            'filter_product' => 'Widget'
+            'filter_product' => 'Widget',
         ]);
 
         $response->assertSuccessful();
@@ -223,7 +231,7 @@ class ProductsAjaxControllerTest extends TestCase
         Product::factory()->count(3)->create(['family_id' => $familyB->family_id]);
 
         $response = $this->post(route('products.ajax.modalProductLookups'), [
-            'filter_family' => $familyA->family_id
+            'filter_family' => $familyA->family_id,
         ]);
 
         $response->assertSuccessful();
@@ -239,20 +247,20 @@ class ProductsAjaxControllerTest extends TestCase
 
         Product::factory()->create([
             'product_name' => 'Widget Alpha',
-            'family_id' => $familyA->family_id
+            'family_id'    => $familyA->family_id,
         ]);
         Product::factory()->create([
             'product_name' => 'Widget Beta',
-            'family_id' => $familyA->family_id
+            'family_id'    => $familyA->family_id,
         ]);
         Product::factory()->create([
             'product_name' => 'Gadget Alpha',
-            'family_id' => $familyA->family_id
+            'family_id'    => $familyA->family_id,
         ]);
 
         $response = $this->post(route('products.ajax.modalProductLookups'), [
             'filter_product' => 'Widget',
-            'filter_family' => $familyA->family_id
+            'filter_family'  => $familyA->family_id,
         ]);
 
         $response->assertSuccessful();
@@ -265,7 +273,7 @@ class ProductsAjaxControllerTest extends TestCase
     public function it_resets_product_table_when_requested(): void
     {
         $response = $this->post(route('products.ajax.modalProductLookups'), [
-            'reset_table' => true
+            'reset_table' => true,
         ]);
 
         $response->assertSuccessful();
@@ -275,11 +283,11 @@ class ProductsAjaxControllerTest extends TestCase
     #[Test]
     public function it_processes_product_selections(): void
     {
-        $products = Product::factory()->count(3)->create(['product_price' => 100.00]);
+        $products   = Product::factory()->count(3)->create(['product_price' => 100.00]);
         $productIds = $products->pluck('product_id')->toArray();
 
         $response = $this->post(route('products.ajax.processProductSelections'), [
-            'product_ids' => $productIds
+            'product_ids' => $productIds,
         ]);
 
         $response->assertSuccessful();
@@ -294,7 +302,7 @@ class ProductsAjaxControllerTest extends TestCase
         $product = Product::factory()->create(['product_price' => 99.9]);
 
         $response = $this->post(route('products.ajax.processProductSelections'), [
-            'product_ids' => [$product->product_id]
+            'product_ids' => [$product->product_id],
         ]);
 
         $data = $response->json();
@@ -305,7 +313,7 @@ class ProductsAjaxControllerTest extends TestCase
     public function it_returns_empty_array_for_no_product_ids(): void
     {
         $response = $this->post(route('products.ajax.processProductSelections'), [
-            'product_ids' => []
+            'product_ids' => [],
         ]);
 
         $response->assertSuccessful();

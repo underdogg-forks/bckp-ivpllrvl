@@ -10,9 +10,9 @@ class Unit extends BaseModel
     /** @use HasFactory<\Database\Factories\UnitFactory> */
     use HasFactory;
 
-    protected $table = 'ip_units';
-
     public $timestamps = false;
+
+    protected $table = 'ip_units';
 
     protected $casts = [];
 

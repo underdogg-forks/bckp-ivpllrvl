@@ -2,12 +2,12 @@
 
 namespace Modules\Sessions\Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Clients\Models\Client;
+use Modules\Invoices\Models\Invoice;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Modules\Invoices\Models\Invoice;
-use Modules\Clients\Models\Client;
-use App\Models\User;
 
 class SecurityTest extends TestCase
 {
@@ -46,17 +46,17 @@ class SecurityTest extends TestCase
         $client = Client::factory()->create();
 
         $maliciousData = [
-            'client_id' => $client->client_id,
-            'invoice_notes' => '<script>alert("XSS")</script>',
+            'client_id'            => $client->client_id,
+            'invoice_notes'        => '<script>alert("XSS")</script>',
             'invoice_date_created' => now()->format('Y-m-d'),
-            'invoice_date_due' => now()->addDays(30)->format('Y-m-d')
+            'invoice_date_due'     => now()->addDays(30)->format('Y-m-d'),
         ];
 
         $response = $this->post(route('invoices.form'), $maliciousData);
 
         // Input should be filtered
         $this->assertDatabaseMissing('ip_invoices', [
-            'invoice_notes' => '<script>alert("XSS")</script>'
+            'invoice_notes' => '<script>alert("XSS")</script>',
         ]);
     }
 
@@ -80,10 +80,10 @@ class SecurityTest extends TestCase
         $this->actingAs($this->user);
 
         $response = $this->post(route('clients.form'), [
-            'client_name' => 'Test Client',
-            'client_email' => 'test@example.com'
+            'client_name'  => 'Test Client',
+            'client_email' => 'test@example.com',
         ], [
-            'X-CSRF-TOKEN' => 'invalid-token'
+            'X-CSRF-TOKEN' => 'invalid-token',
         ]);
 
         $response->assertStatus(419); // CSRF token mismatch
@@ -131,23 +131,23 @@ class SecurityTest extends TestCase
     public function it_rate_limits_login_attempts(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'    => 'test@example.com',
             'user_password' => bcrypt('password'),
-            'user_active' => 1
+            'user_active'   => 1,
         ]);
 
         // Attempt multiple failed logins
         for ($i = 0; $i < 11; $i++) {
             $this->post(route('sessions.login'), [
                 'btn_login' => true,
-                'email' => 'test@example.com',
-                'password' => 'wrongpassword'
+                'email'     => 'test@example.com',
+                'password'  => 'wrongpassword',
             ]);
         }
 
         // Account should be locked
         $this->assertDatabaseHas('ip_login_log', [
-            'login_name' => 'test@example.com'
+            'login_name' => 'test@example.com',
         ]);
     }
 
@@ -157,8 +157,8 @@ class SecurityTest extends TestCase
         $this->actingAs($this->user);
 
         $response = $this->post(route('clients.form'), [
-            'client_name' => 'Test Client',
-            'client_email' => 'not-an-email'
+            'client_name'  => 'Test Client',
+            'client_email' => 'not-an-email',
         ]);
 
         $response->assertSessionHasErrors('client_email');
@@ -170,15 +170,15 @@ class SecurityTest extends TestCase
         $this->actingAs($this->user);
 
         $response = $this->post(route('clients.form'), [
-            'client_name' => 'Test Client',
+            'client_name'  => 'Test Client',
             'client_email' => 'test@example.com',
-            'user_type' => 1, // Attempt to set privileged field
-            'user_active' => 1
+            'user_type'    => 1, // Attempt to set privileged field
+            'user_active'  => 1,
         ]);
 
         // user_type should not be assignable through client form
         $this->assertDatabaseMissing('ip_clients', [
-            'user_type' => 1
+            'user_type' => 1,
         ]);
     }
 }

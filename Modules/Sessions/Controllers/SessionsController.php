@@ -27,7 +27,7 @@ class SessionsController extends BaseController
      * on successful authentication according to user type, and returns the login
      * view when rendering the form.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View A redirect response after form processing or the login view when displaying the form.
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View a redirect response after form processing or the login view when displaying the form
      */
     public function login()
     {
@@ -55,20 +55,22 @@ class SessionsController extends BaseController
                 redirect()->route('sessions/login');
             }
         }
+
         return view('session_login', $view_data);
     }
 
     /**
-         * Validate user credentials while enforcing login-attempt throttling.
-         *
-         * Attempts authentication only if the recorded failed attempts for the given
-         * email are below the configured threshold; on success the failed-attempt
-         * log for the email is cleared, on failure a failed-attempt is recorded.
-         *
-         * @param string $email_address The user's email address used to identify the account.
-         * @param string $password The plaintext password to verify for the account.
-         * @return bool `true` if authentication succeeds and the failure log is reset, `false` otherwise.
-         */
+     * Validate user credentials while enforcing login-attempt throttling.
+     *
+     * Attempts authentication only if the recorded failed attempts for the given
+     * email are below the configured threshold; on success the failed-attempt
+     * log for the email is cleared, on failure a failed-attempt is recorded.
+     *
+     * @param string $email_address the user's email address used to identify the account
+     * @param string $password      the plaintext password to verify for the account
+     *
+     * @return bool `true` if authentication succeeds and the failure log is reset, `false` otherwise
+     */
     public function authenticate($email_address, $password): bool
     {
         //check if user is banned
@@ -105,8 +107,9 @@ class SessionsController extends BaseController
      * - If the new-password form is submitted: validate input and token, update the user's password, clear the reset token and login failures, and redirect to the login page.
      * - If the password-reset request form is submitted: validate the email, throttle abuse, generate and store a reset token, send the reset email, and redirect to the login page.
      *
-     * @param string|null $token The password reset token supplied via the URL, or null when not using a token.
-     * @return mixed A view response for rendering the appropriate password reset page or a redirect response after processing.
+     * @param string|null $token the password reset token supplied via the URL, or null when not using a token
+     *
+     * @return mixed a view response for rendering the appropriate password reset page or a redirect response after processing
      */
     public function passwordreset($token = null)
     {

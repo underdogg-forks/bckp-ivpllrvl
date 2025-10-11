@@ -26,21 +26,23 @@ use Stripe\StripeClient;
 class StripeController extends BaseController
 {
     protected StripeClient $stripe;
+
     protected InvoicesService $invoicesService;
+
     protected PaymentsService $paymentsService;
 
     /**
      * Construct the controller, assign required services, and initialize the Stripe client using the decoded API key from settings.
      *
-     * @param InvoicesService $invoicesService Service for retrieving and managing invoices.
-     * @param PaymentsService $paymentsService Service for recording and managing payments.
+     * @param InvoicesService $invoicesService service for retrieving and managing invoices
+     * @param PaymentsService $paymentsService service for recording and managing payments
      */
     public function __construct(InvoicesService $invoicesService, PaymentsService $paymentsService)
     {
         parent::__construct();
         $this->invoicesService = $invoicesService;
         $this->paymentsService = $paymentsService;
-        $this->stripe = new StripeClient($this->crypt->decode(get_setting('gateway_stripe_apiKey')));
+        $this->stripe          = new StripeClient($this->crypt->decode(get_setting('gateway_stripe_apiKey')));
     }
 
     /**
@@ -48,7 +50,7 @@ class StripeController extends BaseController
      *
      * If the invoice has a zero or negative balance the user is redirected to the invoice view with an error alert.
      *
-     * @param string $invoice_url_key The public URL key that identifies the invoice.
+     * @param string $invoice_url_key the public URL key that identifies the invoice
      */
     public function createCheckoutSession($invoice_url_key)
     {
@@ -75,8 +77,9 @@ class StripeController extends BaseController
      * Retrieves the Stripe session by ID, records a payment when the session indicates success,
      * creates a MerchantResponse record, flashes a user-facing alert, and redirects to the invoice view.
      *
-     * @param string $checkout_session_id The Stripe Checkout Session ID.
-     * @return \Illuminate\Http\RedirectResponse Redirect to the invoice view page for the related invoice.
+     * @param string $checkout_session_id the Stripe Checkout Session ID
+     *
+     * @return \Illuminate\Http\RedirectResponse redirect to the invoice view page for the related invoice
      */
     public function callback(string $checkout_session_id)
     {
@@ -86,14 +89,14 @@ class StripeController extends BaseController
             $invoice_key = $session->client_reference_id;
             // Retrieve the invoice
             $invoice = $this->invoicesService->where('invoice_url_key', $invoice_key)->first();
-            $paid = $session->payment_status === $session::PAYMENT_STATUS_PAID;
+            $paid    = $session->payment_status === $session::PAYMENT_STATUS_PAID;
             if ($paid) {
                 $this->paymentsService->savePayment([
-                    'invoice_id' => $invoice->invoice_id,
-                    'payment_date' => date('Y-m-d'),
-                    'payment_amount' => $session->amount_total / 100,
+                    'invoice_id'        => $invoice->invoice_id,
+                    'payment_date'      => date('Y-m-d'),
+                    'payment_amount'    => $session->amount_total / 100,
                     'payment_method_id' => get_setting('gateway_stripe_payment_method'),
-                    'payment_note' => trans('online_payment_intent_id') . ': ' . $session->payment_intent,
+                    'payment_note'      => trans('online_payment_intent_id') . ': ' . $session->payment_intent,
                 ]);
             }
             $response = $paid
@@ -109,7 +112,7 @@ class StripeController extends BaseController
             Log::error(str_replace('<br>', ' ', $response . ' user_msg: ' . $user_msg));
         } finally {
             $paid = is_bool($paid) ? ($paid ? 'success' : 'info') : $paid;
-            $ok = $session->status !== null;
+            $ok   = $session->status !== null;
             MerchantResponse::create([
                 'invoice_id'                   => $invoice->invoice_id,
                 'merchant_response_successful' => (int) $ok,
@@ -119,6 +122,7 @@ class StripeController extends BaseController
                 'merchant_response_reference'  => $ok ? 'intent_id: ' . $session->payment_intent : 'none',
             ]);
             Session::flash('alert_' . $paid, $user_msg);
+
             return Redirect::to(URL::route('guest.invoice.view', ['invoice' => $invoice->invoice_url_key]));
         }
     }

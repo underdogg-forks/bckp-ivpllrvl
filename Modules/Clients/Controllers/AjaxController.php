@@ -22,7 +22,7 @@ class AjaxController extends AdminController
      */
     public function nameQuery(): void
     {
-        $response = [];
+        $response                = [];
         $query                   = $this->input->get('query');
         $permissiveSearchClients = $this->input->get('permissive_search_clients');
         if (empty($query)) {
@@ -30,9 +30,9 @@ class AjaxController extends AdminController
             exit;
         }
         $moreClientsQuery = $permissiveSearchClients ? '%' : '';
-        $escapedQuery = $this->db->escape_str($query);
-        $escapedQuery = str_replace('%', '', $escapedQuery);
-        $clients      = (new ClientsService())->where('client_active', 1)->having("client_name LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_surname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_fullname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->orderBy('client_name')->get()->result();
+        $escapedQuery     = $this->db->escape_str($query);
+        $escapedQuery     = str_replace('%', '', $escapedQuery);
+        $clients          = (new ClientsService())->where('client_active', 1)->having("client_name LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_surname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_fullname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->orderBy('client_name')->get()->result();
         foreach ($clients as $client) {
             $response[] = ['id' => $client->client_id, 'text' => htmlsc(format_client($client, false))];
         }
@@ -113,6 +113,7 @@ class AjaxController extends AdminController
      * Fetches the client's notes and passes them to the view for rendering.
      *
      * @originalName loadClientNotes
+     *
      * @originalFile AjaxController.php
      */
     public function loadClientNotes(): void

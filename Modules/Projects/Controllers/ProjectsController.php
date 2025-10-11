@@ -3,7 +3,6 @@
 namespace Modules\Projects\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
 use Modules\Tasks\Services\TasksService;
@@ -14,21 +13,24 @@ class ProjectsController extends AdminController
     /**
      * Initialize the ProjectsController and perform the parent controller setup.
      */
-    public function __construct()
-    {
+    public function __construct(
+        private ProjectsService $projectsService,
+        private TasksService $tasksService
+    ) {
         parent::__construct();
     }
 
     /**
      * @originalName index
      *
-     * @param int $page The page number to display (zero-based).
-     * @return string Rendered view for the projects index populated with projects and filter settings.
+     * @param int $page the page number to display (zero-based)
+     *
+     * @return string rendered view for the projects index populated with projects and filter settings
      */
     public function index($page = 0)
     {
-        (new ProjectsService())->paginate(site_url('projects/index'), $page);
-        $projects = (new ProjectsService())->result();
+        $this->projectsService->paginate(site_url('projects/index'), $page);
+        $projects = $this->projectsService->result();
 
         return view('projects.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_projects'), 'filter_method' => 'filter_projects', 'projects' => $projects]);
     }
@@ -38,7 +40,8 @@ class ProjectsController extends AdminController
      *
      * Processes form submission, validates and saves project data, and renders the project form populated with the project and active clients when not redirected.
      *
-     * @param int|null $id The project identifier to edit, or null to create a new project.
+     * @param int|null $id the project identifier to edit, or null to create a new project
+     *
      * @return string The rendered HTML of the project form view.
      *
      * Note: this method may redirect to the projects list on cancel or after a successful save, and will trigger a 404 response if the provided `$id` cannot be prepared for editing.
@@ -50,54 +53,13 @@ class ProjectsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ((new ProjectsService())->runValidation()) {
-            (new ProjectsService())->save($id);
+        if ($this->projectsService->runValidation()) {
+            $this->projectsService->save($id);
             redirect()->route('projects');
         }
         if ($id && ! $this->input->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
             show_404();
         }
-
-// File: Modules/Projects/Controllers/ProjectsController.php
-
-use Modules\Clients\Services\ClientsService;
-use Modules\Projects\Services\ProjectsService;
-use Modules\Tasks\Services\TasksService;
-
-class ProjectsController extends BaseController
-{
-    /**
-     * Assigns service dependencies to the controller and loads the projects model.
-     *
-     * Loads the `mdl_projects` model into the controller so project-related model methods are available.
-     */
-    public function __construct(
-        private ClientsService $clientsService,
-        private ProjectsService $projectsService,
-        private TasksService $tasksService
-    ) {
-        parent::__construct();
-        $this->load->model('mdl_projects');
-    }
-
-    /**
-     * Renders the project creation/edit form populated with the specified project and active clients.
-     *
-     * @param int $id The project identifier to edit.
-     * @return string The rendered HTML content of the projects form.
-     */
-
-    public function form(int $id)
-    {
-        // …
-        return view('projects.form', [
-            'project' => $this->projectsService->getById($id),
-            'clients' => $this->clientsService->getActive()
-        ]);
-    }
-
-    // …
-}
     }
 
     /**
@@ -105,15 +67,16 @@ class ProjectsController extends BaseController
      *
      * Triggers a 404 response if the specified project does not exist. If the cancel button is submitted, redirects to the projects list.
      *
-     * @param int|string $project_id Identifier of the project to display.
-     * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|string The rendered project view response or a redirect response when cancelled.
+     * @param int|string $project_id identifier of the project to display
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|string the rendered project view response or a redirect response when cancelled
      */
     public function view($project_id)
     {
         if ($this->input->post('btn_cancel')) {
             redirect()->route('projects');
         }
-        $project = (new ProjectsService())->getById($project_id);
+        $project = $this->projectsService->getById($project_id);
         if ( ! $project) {
             show_404();
         }
@@ -122,16 +85,16 @@ class ProjectsController extends BaseController
     }
 
     /**
-         * Delete the specified project and disassociate it from related tasks, then redirect to the projects list.
-         *
-         * Removes the project identified by `$id`, updates any tasks that referenced the project so they no longer do, and redirects the user to the projects index route.
-         *
-         * @param int|string $id The ID of the project to delete.
-         */
+     * Delete the specified project and disassociate it from related tasks, then redirect to the projects list.
+     *
+     * Removes the project identified by `$id`, updates any tasks that referenced the project so they no longer do, and redirects the user to the projects index route.
+     *
+     * @param int|string $id the ID of the project to delete
+     */
     public function delete($id)
     {
-        (new TasksService())->updateOnProjectDelete($id);
-        (new ProjectsService())->delete($id);
+        $this->tasksService->updateOnProjectDelete($id);
+        $this->projectsService->delete($id);
         redirect()->route('projects');
     }
 }

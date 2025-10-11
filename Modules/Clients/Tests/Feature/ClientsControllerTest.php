@@ -14,7 +14,8 @@ use Tests\TestCase;
 #[CoversClass(ClientsController::class)]
 class ClientsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -39,7 +40,7 @@ class ClientsControllerTest extends TestCase
     public function it_displays_active_clients()
     {
         // Arrange: create active and inactive clients
-        $activeClient = Client::factory()->create(['active' => 1]);
+        $activeClient   = Client::factory()->create(['active' => 1]);
         $inactiveClient = Client::factory()->create(['active' => 0]);
 
         // Act: visit active clients page
@@ -49,7 +50,7 @@ class ClientsControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('clients.index');
         $response->assertViewHas('records', function ($clients) use ($activeClient, $inactiveClient) {
-            return $clients->contains($activeClient) && !$clients->contains($inactiveClient);
+            return $clients->contains($activeClient) && ! $clients->contains($inactiveClient);
         });
         $response->assertSee($activeClient->name);
         $response->assertDontSee($inactiveClient->name);
@@ -59,7 +60,7 @@ class ClientsControllerTest extends TestCase
     public function it_displays_inactive_clients()
     {
         // Arrange: create active and inactive clients
-        $activeClient = Client::factory()->create(['active' => 1]);
+        $activeClient   = Client::factory()->create(['active' => 1]);
         $inactiveClient = Client::factory()->create(['active' => 0]);
 
         // Act: visit inactive clients page
@@ -69,7 +70,7 @@ class ClientsControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('clients.index');
         $response->assertViewHas('records', function ($clients) use ($activeClient, $inactiveClient) {
-            return !$clients->contains($activeClient) && $clients->contains($inactiveClient);
+            return ! $clients->contains($activeClient) && $clients->contains($inactiveClient);
         });
         $response->assertSee($inactiveClient->name);
         $response->assertDontSee($activeClient->name);
@@ -79,7 +80,7 @@ class ClientsControllerTest extends TestCase
     public function it_displays_all_clients()
     {
         // Arrange: create active and inactive clients
-        $activeClient = Client::factory()->create(['active' => 1]);
+        $activeClient   = Client::factory()->create(['active' => 1]);
         $inactiveClient = Client::factory()->create(['active' => 0]);
 
         // Act: visit all clients page

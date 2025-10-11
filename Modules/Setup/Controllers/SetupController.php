@@ -445,11 +445,11 @@ class SetupController extends MXController
     }
 
     /**
-         * Append the LEGACY_CALCULATION setting to the IPCONFIG file.
-         *
-         * Reads the contents of IPCONFIG_FILE, appends a newline and the line
-         * `LEGACY_CALCULATION=false`, and writes the updated content back to the file.
-         */
+     * Append the LEGACY_CALCULATION setting to the IPCONFIG file.
+     *
+     * Reads the contents of IPCONFIG_FILE, appends a newline and the line
+     * `LEGACY_CALCULATION=false`, and writes the updated content back to the file.
+     */
     private function writeCalculationConfig()
     {
         $config = file_get_contents(IPCONFIG_FILE);

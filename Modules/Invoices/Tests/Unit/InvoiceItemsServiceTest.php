@@ -15,14 +15,16 @@ class InvoiceItemsServiceTest extends TestCase
     use RefreshDatabase;
 
     private ItemsService $service;
+
     private $itemAmountsService;
+
     private $invoiceAmountsService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->itemAmountsService = $this->createMock(ItemAmountsService::class);
+        $this->itemAmountsService    = $this->createMock(ItemAmountsService::class);
         $this->invoiceAmountsService = $this->createMock(InvoiceAmountsService::class);
 
         $this->service = new ItemsService(

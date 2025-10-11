@@ -66,7 +66,7 @@ class QuoteTaxRatesService extends BaseService
     /**
      * Retrieve all quote tax rate records with their associated tax rate relation.
      *
-     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteTaxRate models with the `taxRate` relationship loaded.
+     * @return \Illuminate\Database\Eloquent\Collection collection of QuoteTaxRate models with the `taxRate` relationship loaded
      */
     public function getWithTaxRate(): \Illuminate\Database\Eloquent\Collection
     {
@@ -80,7 +80,8 @@ class QuoteTaxRatesService extends BaseService
      *                    - `quote_tax_rate_id` (optional): ID of an existing record to update.
      *                    - `quote_id` (optional): when present, causes quote amounts to be recalculated.
      *                    - other QuoteTaxRate model attributes to be saved.
-     * @return QuoteTaxRate The created or updated QuoteTaxRate instance.
+     *
+     * @return QuoteTaxRate the created or updated QuoteTaxRate instance
      */
     public function saveTaxRate(array $data): QuoteTaxRate
     {
@@ -99,8 +100,9 @@ class QuoteTaxRatesService extends BaseService
     /**
      * Retrieve all quote tax rate records associated with the specified quote.
      *
-     * @param int $quote_id The quote ID to filter tax rates by.
-     * @return \Illuminate\Database\Eloquent\Collection A collection of QuoteTaxRate models for the given quote.
+     * @param int $quote_id the quote ID to filter tax rates by
+     *
+     * @return \Illuminate\Database\Eloquent\Collection a collection of QuoteTaxRate models for the given quote
      */
     public function getByQuoteId($quote_id)
     {

@@ -10,9 +10,9 @@ class Template extends BaseModel
     /** @use HasFactory<\Database\Factories\TemplateFactory> */
     use HasFactory;
 
-    protected $table = 'ip_invoice_templates';
-
     public $timestamps = false;
+
+    protected $table = 'ip_invoice_templates';
 
     protected $casts = [];
 

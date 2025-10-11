@@ -6,13 +6,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Dashboard\Controllers\DashboardController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Dashboard\route;
+
+use Tests\TestCase;
 
 #[CoversClass(DashboardController::class)]
 class DashboardControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -27,10 +30,10 @@ class DashboardControllerTest extends TestCase
     public function it_displays_dashboard_with_overview_data()
     {
         // Arrange: create sample data
-        $client = \Modules\Clients\Models\Client::factory()->create();
+        $client  = \Modules\Clients\Models\Client::factory()->create();
         $invoice = \Modules\Invoices\Models\Invoice::factory()->create([
             'client_id' => $client->id,
-            'total' => 1000,
+            'total'     => 1000,
         ]);
 
         // Act: visit dashboard
@@ -102,7 +105,7 @@ class DashboardControllerTest extends TestCase
     {
         Invoice::factory()->count(3)->create([
             'invoice_status_id' => 2,
-            'invoice_date_due' => now()->subDays(10)
+            'invoice_date_due'  => now()->subDays(10),
         ]);
 
         $response = $this->get(route('dashboard.index'));
@@ -136,13 +139,12 @@ class DashboardControllerTest extends TestCase
         $response->assertViewHas('task_statuses');
     }
 
-
     #[Test]
     public function it_uses_custom_invoice_overview_period_setting(): void
     {
         Setting::factory()->create([
-            'setting_key' => 'invoice_overview_period',
-            'setting_value' => 'this-month'
+            'setting_key'   => 'invoice_overview_period',
+            'setting_value' => 'this-month',
         ]);
 
         $response = $this->get(route('dashboard.index'));
@@ -155,8 +157,8 @@ class DashboardControllerTest extends TestCase
     public function it_uses_custom_quote_overview_period_setting(): void
     {
         Setting::factory()->create([
-            'setting_key' => 'quote_overview_period',
-            'setting_value' => 'this-quarter'
+            'setting_key'   => 'quote_overview_period',
+            'setting_value' => 'this-quarter',
         ]);
 
         $response = $this->get(route('dashboard.index'));

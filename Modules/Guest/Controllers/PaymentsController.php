@@ -23,7 +23,7 @@ class PaymentsController extends BaseGuestController
      * Sets layout data for payments and filter UI, buffers the guest payments view, and renders
      * the guest layout for the specified page of results.
      *
-     * @param int $page The page number to display for pagination.
+     * @param int $page the page number to display for pagination
      */
     public function index($page = 0)
     {

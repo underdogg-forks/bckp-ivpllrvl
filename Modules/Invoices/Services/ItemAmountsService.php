@@ -12,7 +12,7 @@ class ItemAmountsService extends BaseService
     /**
      * Create a new ItemAmountsService with the provided ItemsService dependency.
      *
-     * @param ItemsService $itemsService Service used to retrieve and manage invoice items.
+     * @param ItemsService $itemsService service used to retrieve and manage invoice items
      */
     public function __construct(public ItemsService $itemsService)
     {
@@ -24,7 +24,7 @@ class ItemAmountsService extends BaseService
      *
      * The computed values are persisted to the item's amount record and the per-item portion of a global discount is added to `$global_discount['item']`.
      *
-     * @param int $item_id The invoice item identifier.
+     * @param int $item_id the invoice item identifier
      * @param array & $global_discount Reference to the global discount data. The array is modified by this method by incrementing the `item` key. Expected keys:
      *                                - 'amount' (float): total global discount amount,
      *                                - 'items_subtotal' (float): sum of item subtotals used for proportional distribution,
@@ -58,7 +58,7 @@ class ItemAmountsService extends BaseService
             $item_total          = $item_subtotal - $item_discount - $item_discount_total + $item_tax_total;
         }
         $db_array = ['item_id' => $item_id, 'item_subtotal' => $item_subtotal, 'item_tax_total' => $item_tax_total, 'item_discount' => $item_discount_total, 'item_total' => $item_total];
-        
+
         ItemAmount::query()->updateOrCreate(
             ['item_id' => $item_id],
             $db_array

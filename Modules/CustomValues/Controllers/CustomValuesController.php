@@ -125,8 +125,9 @@ class CustomValuesController extends AdminController
      *
      * If deletion fails because the value is in use, a flash alert is set describing the failure.
      *
-     * @param int|string $id The identifier of the custom value to delete.
-     * @return \CodeIgniter\HTTP\RedirectResponse|\Illuminate\Http\RedirectResponse Redirect to the custom values index or to the field page when `custom_field_id` is present in the request.
+     * @param int|string $id the identifier of the custom value to delete
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|\Illuminate\Http\RedirectResponse redirect to the custom values index or to the field page when `custom_field_id` is present in the request
      */
     public function delete($id)
     {

@@ -19,7 +19,7 @@ class AjaxController extends AdminController
      * of the specified type whose name, company, or invoicing contact matches the query.
      * When 'permissive_search_users' is truthy, matching allows the query to appear in the middle of fields.
      *
-     * @param int $type The user_type filter to apply (default: 1).
+     * @param int $type the user_type filter to apply (default: 1)
      */
     public function nameQuery($type = 1)
     {
@@ -94,7 +94,7 @@ class AjaxController extends AdminController
     {
         $user_id   = $this->input->post('user_id');
         $client_id = $this->input->post('client_id');
-        $client = (new ClientsService())->getById($client_id);
+        $client    = (new ClientsService())->getById($client_id);
         if ($client) {
             $client_id = $client->client_id;
             // Is this a new user or an existing user?
@@ -120,6 +120,7 @@ class AjaxController extends AdminController
      * Otherwise, loads client associations for the posted `user_id` and passes them to the partial view with `id` set to that `user_id`.
      *
      * @originalName loadUserClientTable
+     *
      * @originalFile AjaxController.php
      */
     public function loadUserClientTable()
@@ -140,7 +141,7 @@ class AjaxController extends AdminController
      * otherwise returns clients not already assigned to the specified user. Renders the 'users/modal_user_client' view
      * with keys 'user_id' and 'clients'.
      *
-     * @param int|null $user_id The user ID whose assigned clients should be excluded from the selection; if null, session 'user_clients' determines excluded clients.
+     * @param int|null $user_id the user ID whose assigned clients should be excluded from the selection; if null, session 'user_clients' determines excluded clients
      */
     public function modalAddUserClient($user_id = null)
     {

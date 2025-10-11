@@ -71,13 +71,14 @@ class UserClientsService extends BaseService
      * Assign all unassigned clients to users using Eloquent.
      *
      * @param array $users_id
+     *
      * @return void
      */
     public function setAllClientsUser(array $users_id): void
     {
         foreach ($users_id as $user_id) {
             $assignedClientIds = UserClient::query()->where('user_id', $user_id)->pluck('client_id')->toArray();
-            $clients = Client::query()->whereNotIn('client_id', $assignedClientIds)->get();
+            $clients           = Client::query()->whereNotIn('client_id', $assignedClientIds)->get();
             foreach ($clients as $client) {
                 UserClient::query()->create(['user_id' => $user_id, 'client_id' => $client->client_id]);
             }

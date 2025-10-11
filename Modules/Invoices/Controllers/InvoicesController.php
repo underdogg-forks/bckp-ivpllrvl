@@ -23,17 +23,17 @@ class InvoicesController extends AdminController
     /**
      * Construct the InvoicesController with its required service dependencies.
      *
-     * @param InvoicesService $invoicesService Service for managing invoice records and queries.
-     * @param ItemsService $itemsService Service for managing invoice line items.
-     * @param InvoiceTaxRatesService $invoiceTaxRatesService Service for invoice-specific tax rate operations.
-     * @param InvoiceAmountsService $invoiceAmountsService Service for calculating and updating invoice totals and amounts.
-     * @param InvoiceCustomService $invoiceCustomService Service for invoice custom field definitions and retrieval.
-     * @param CustomFieldsService $customFieldsService Service for global custom field management.
-     * @param CustomValuesService $customValuesService Service for handling custom field values.
-     * @param TasksService $tasksService Service for task operations (e.g., updating tasks when invoices change).
-     * @param PaymentMethodsService $paymentMethodsService Service for available payment method data.
-     * @param UnitsService $unitsService Service for unit (quantity/measurement) data used on items.
-     * @param TaxRatesService $taxRatesService Service for global tax rate data.
+     * @param InvoicesService        $invoicesService        service for managing invoice records and queries
+     * @param ItemsService           $itemsService           service for managing invoice line items
+     * @param InvoiceTaxRatesService $invoiceTaxRatesService service for invoice-specific tax rate operations
+     * @param InvoiceAmountsService  $invoiceAmountsService  service for calculating and updating invoice totals and amounts
+     * @param InvoiceCustomService   $invoiceCustomService   service for invoice custom field definitions and retrieval
+     * @param CustomFieldsService    $customFieldsService    service for global custom field management
+     * @param CustomValuesService    $customValuesService    service for handling custom field values
+     * @param TasksService           $tasksService           Service for task operations (e.g., updating tasks when invoices change).
+     * @param PaymentMethodsService  $paymentMethodsService  service for available payment method data
+     * @param UnitsService           $unitsService           service for unit (quantity/measurement) data used on items
+     * @param TaxRatesService        $taxRatesService        service for global tax rate data
      */
     public function __construct(
         public InvoicesService $invoicesService,
@@ -65,9 +65,10 @@ class InvoicesController extends AdminController
     /**
      * Display a paginated list of invoices filtered by status.
      *
-     * @param string $status The invoice status to filter by (e.g., "all", "draft", "sent", "viewed", "paid", "overdue").
-     * @param int|string $page The pagination page number.
-     * @return \Illuminate\View\View Rendered view showing the invoices, filter controls, and invoice statuses.
+     * @param string     $status The invoice status to filter by (e.g., "all", "draft", "sent", "viewed", "paid", "overdue").
+     * @param int|string $page   the pagination page number
+     *
+     * @return \Illuminate\View\View rendered view showing the invoices, filter controls, and invoice statuses
      */
     public function status(string $status = 'all', $page = 0)
     {
@@ -98,7 +99,7 @@ class InvoicesController extends AdminController
     /**
      * Display the archived invoices page with filter controls.
      *
-     * @return \Illuminate\View\View The view for archived invoices, including filter UI and archive data.
+     * @return \Illuminate\View\View the view for archived invoices, including filter UI and archive data
      */
     public function archive()
     {
@@ -145,7 +146,7 @@ class InvoicesController extends AdminController
      * either `invoices.view` or `invoices.view_sumex` depending on the invoice.
      * Aborts with a 404 response if the invoice cannot be found.
      *
-     * @param int|string $invoice_id The identifier of the invoice to display.
+     * @param int|string $invoice_id the identifier of the invoice to display
      */
     public function view($invoice_id): void
     {
@@ -172,28 +173,29 @@ class InvoicesController extends AdminController
         }
         $payment_cf       = $this->customFieldsService->byTable('ip_payment_custom')->get();
         $payment_cf_exist = $payment_cf->numRows() > 0 ? 'yes' : 'no';
-        $items = $this->itemsService->where('invoice_id', $invoice_id)->get()->result();
-        $einvoice = get_einvoice_usage($invoice, $items);
-        $change_user = null;
+        $items            = $this->itemsService->where('invoice_id', $invoice_id)->get()->result();
+        $einvoice         = get_einvoice_usage($invoice, $items);
+        $change_user      = null;
+
         return view('invoices.view' . ($invoice->sumex_id ? '_sumex' : ''), [
-            'invoice' => $invoice,
-            'items' => $items,
-            'invoice_id' => $invoice_id,
-            'einvoice' => $einvoice,
-            'change_user' => $change_user,
-            'tax_rates' => $this->taxRatesService->getAll(),
+            'invoice'           => $invoice,
+            'items'             => $items,
+            'invoice_id'        => $invoice_id,
+            'einvoice'          => $einvoice,
+            'change_user'       => $change_user,
+            'tax_rates'         => $this->taxRatesService->getAll(),
             'invoice_tax_rates' => $this->invoiceTaxRatesService->getByInvoiceId($invoice_id),
-            'units' => $this->unitsService->getAll(),
-            'payment_methods' => $this->paymentMethodsService->getAll(),
-            'custom_fields' => $custom_fields,
-            'custom_values' => $custom_values,
-            'custom_js_vars' => [
-                'currency_symbol' => get_setting('currency_symbol'),
+            'units'             => $this->unitsService->getAll(),
+            'payment_methods'   => $this->paymentMethodsService->getAll(),
+            'custom_fields'     => $custom_fields,
+            'custom_values'     => $custom_values,
+            'custom_js_vars'    => [
+                'currency_symbol'           => get_setting('currency_symbol'),
                 'currency_symbol_placement' => get_setting('currency_symbol_placement'),
-                'decimal_point' => get_setting('decimal_point'),
+                'decimal_point'             => get_setting('decimal_point'),
             ],
-            'invoice_statuses' => $this->invoicesService->statuses(),
-            'payment_cf_exist' => $payment_cf_exist,
+            'invoice_statuses'   => $this->invoicesService->statuses(),
+            'payment_cf_exist'   => $payment_cf_exist,
             'legacy_calculation' => config_item('legacy_calculation'),
         ]);
     }
@@ -204,8 +206,9 @@ class InvoicesController extends AdminController
      * Deletes the invoice and updates related tasks when deletion is permitted.
      * If deletion is forbidden, sets an error flash message indicating deletion is not allowed.
      *
-     * @param int|string $invoice_id The ID of the invoice to delete.
-     * @return \Illuminate\Http\RedirectResponse Redirects to the invoices index route.
+     * @param int|string $invoice_id the ID of the invoice to delete
+     *
+     * @return \Illuminate\Http\RedirectResponse redirects to the invoices index route
      */
     public function delete($invoice_id): void
     {
@@ -217,6 +220,7 @@ class InvoicesController extends AdminController
         } else {
             session()->flash('alert_error', trans('invoice_deletion_forbidden'));
         }
+
         return redirect()->route('invoices.index');
     }
 
@@ -225,9 +229,9 @@ class InvoicesController extends AdminController
      *
      * If the `mark_invoices_sent_pdf` setting is enabled, this may assign an invoice number when necessary and mark the invoice as sent prior to PDF generation.
      *
-     * @param int|string $invoice_id ID of the invoice to generate the PDF for.
-     * @param bool $stream If `true`, send the PDF directly to the client; if `false`, produce the PDF without streaming.
-     * @param string|null $invoice_template Optional template identifier to use for PDF generation.
+     * @param int|string  $invoice_id       ID of the invoice to generate the PDF for
+     * @param bool        $stream           if `true`, send the PDF directly to the client; if `false`, produce the PDF without streaming
+     * @param string|null $invoice_template optional template identifier to use for PDF generation
      */
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
     {
@@ -247,7 +251,7 @@ class InvoicesController extends AdminController
      *
      * If the invoice cannot be found or the e-invoice configuration lacks a user, the request is aborted with a 404 response.
      *
-     * @param int|string $invoice_id The invoice identifier.
+     * @param int|string $invoice_id the invoice identifier
      */
     public function generateXml($invoice_id): void
     {
@@ -255,12 +259,12 @@ class InvoicesController extends AdminController
         if ( ! $invoice) {
             abort(404);
         }
-        $items = $this->itemsService->getByInvoiceId($invoice_id);
+        $items    = $this->itemsService->getByInvoiceId($invoice_id);
         $einvoice = get_einvoice_usage($invoice, $items, false);
         if ( ! $einvoice->user) {
             abort(404);
         }
-        $xml_id = $einvoice->name;
+        $xml_id    = $einvoice->name;
         $options   = [];
         $generator = $xml_id;
         $path      = app_path('Helpers/XMLconfigs/');
@@ -279,7 +283,7 @@ class InvoicesController extends AdminController
     /**
      * Generate a SUMEX PDF for the specified invoice.
      *
-     * @param int|string $invoice_id The ID of the invoice to generate the SUMEX PDF for.
+     * @param int|string $invoice_id the ID of the invoice to generate the SUMEX PDF for
      */
     public function generateSumexPdf($invoice_id): void
     {
@@ -292,30 +296,32 @@ class InvoicesController extends AdminController
      * Generates a Sumex document for the invoice and sets the HTTP response body
      * to the generated PDF with the appropriate PDF content type header.
      *
-     * @param int|string $invoice_id Identifier of the invoice to generate a Sumex copy for.
+     * @param int|string $invoice_id identifier of the invoice to generate a Sumex copy for
      */
     public function generateSumexCopy($invoice_id): void
     {
         $sumex = new \Modules\Core\Libraries\Sumex([
             'invoice' => $this->invoicesService->getById($invoice_id),
-            'items' => $this->itemsService->getByInvoiceId($invoice_id),
+            'items'   => $this->itemsService->getByInvoiceId($invoice_id),
             'options' => ['copy' => '1', 'storno' => '0'],
         ]);
         response()->header('Content-Type', 'application/pdf')->setContent($sumex->pdf());
     }
 
     /**
-         * Remove a specific tax rate from an invoice, recalculate the invoice totals, and redirect to the invoice view.
-         *
-         * @param string $invoice_id The ID of the invoice.
-         * @param mixed $invoice_tax_rate_id The ID of the invoice tax rate to delete.
-         * @return \Illuminate\Http\RedirectResponse Redirects to the invoice view page for the given invoice.
-         */
+     * Remove a specific tax rate from an invoice, recalculate the invoice totals, and redirect to the invoice view.
+     *
+     * @param string $invoice_id          the ID of the invoice
+     * @param mixed  $invoice_tax_rate_id the ID of the invoice tax rate to delete
+     *
+     * @return \Illuminate\Http\RedirectResponse redirects to the invoice view page for the given invoice
+     */
     public function deleteInvoiceTax(string $invoice_id, $invoice_tax_rate_id): void
     {
         $this->invoiceTaxRatesService->delete($invoice_tax_rate_id);
         $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
         $this->invoiceAmountsService->calculate($invoice_id, $global_discount);
+
         return redirect('invoices/view/' . $invoice_id);
     }
 

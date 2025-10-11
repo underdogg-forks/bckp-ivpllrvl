@@ -39,7 +39,9 @@ class FamiliesService extends BaseService
      * Returns an associative array mapping field names to their validation configuration.
      *
      * @originalName validationRules
+     *
      * @originalFile Family.php
+     *
      * @return array Associative array of validation rules; each value contains keys `'field'`, `'label'`, and `'rules'` (e.g., `'family_name'` with a translated label and the `'required'` rule).
      */
     public function validationRules()
@@ -50,7 +52,7 @@ class FamiliesService extends BaseService
     /**
      * Retrieve all family records.
      *
-     * @return \Illuminate\Database\Eloquent\Collection A collection of Family models.
+     * @return \Illuminate\Database\Eloquent\Collection a collection of Family models
      */
     public function getAll()
     {

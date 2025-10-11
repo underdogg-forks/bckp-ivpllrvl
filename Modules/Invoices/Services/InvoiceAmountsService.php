@@ -19,8 +19,8 @@ class InvoiceAmountsService extends BaseService
      * Initializes the InvoiceAmountsService with its required dependencies and sets
      * the decimal precision for tax-related calculations from the `tax_rate_decimal_places` setting.
      *
-     * @param InvoicesService $invoicesService Service for invoice operations.
-     * @param InvoiceTaxRatesService $invoiceTaxRatesService Service for invoice tax rate operations.
+     * @param InvoicesService        $invoicesService        service for invoice operations
+     * @param InvoiceTaxRatesService $invoiceTaxRatesService service for invoice tax rate operations
      */
     public function __construct(
         public InvoicesService $invoicesService,
@@ -36,8 +36,8 @@ class InvoiceAmountsService extends BaseService
      * Recomputes item subtotals and taxes, applies legacy or global discounts, updates or inserts the ip_invoice_amounts row,
      * triggers invoice tax recalculation, and sets invoice status/read-only flags when the invoice becomes fully paid.
      *
-     * @param int $invoice_id The invoice identifier.
-     * @param array $global_discount Associative array of global discount values; expects an 'item' key for the per-item global discount amount.
+     * @param int   $invoice_id      the invoice identifier
+     * @param array $global_discount associative array of global discount values; expects an 'item' key for the per-item global discount amount
      */
     public function calculate($invoice_id, $global_discount)
     {
@@ -146,7 +146,7 @@ class InvoiceAmountsService extends BaseService
      * the invoice total and balance. If legacy calculation mode is enabled, applies the invoice discount as part
      * of the total recalculation. If no invoice-level taxes are present, sets the invoice tax total to 0.00.
      *
-     * @param int $invoice_id The ID of the invoice to recalculate taxes for.
+     * @param int $invoice_id the ID of the invoice to recalculate taxes for
      */
     public function calculateInvoiceTaxes($invoice_id)
     {

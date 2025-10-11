@@ -11,7 +11,7 @@ class WelcomeController extends AdminController
     /**
      * Renders the admin welcome view.
      *
-     * @return string The rendered 'welcome' view content.
+     * @return string the rendered 'welcome' view content
      */
     public function index()
     {

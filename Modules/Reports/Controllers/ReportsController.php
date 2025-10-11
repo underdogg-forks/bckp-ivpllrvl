@@ -103,7 +103,7 @@ class ReportsController extends AdminController
      * When the request includes 'btn_submit', prepares report data (results, from_date, to_date)
      * from the request inputs for rendering or PDF generation.
      *
-     * @return \Illuminate\Contracts\View\View The view for the sales by year report.
+     * @return \Illuminate\Contracts\View\View the view for the sales by year report
      */
     public function salesByYear(Request $request): \Illuminate\Contracts\View\View
     {

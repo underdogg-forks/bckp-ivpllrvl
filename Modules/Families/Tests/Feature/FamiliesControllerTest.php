@@ -6,8 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Families\Controllers\FamiliesController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Families\route;
+
+use Tests\TestCase;
 
 #[CoversClass(FamiliesController::class)]
 class FamiliesControllerTest extends TestCase

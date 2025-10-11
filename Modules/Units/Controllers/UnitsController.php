@@ -69,8 +69,9 @@ class UnitsController extends AdminController
      *
      * If a unit with the given id exists, it is removed; otherwise no action is taken.
      *
-     * @param int|string $id The identifier of the unit to delete.
-     * @return \Illuminate\Http\RedirectResponse Redirects to the units index route.
+     * @param int|string $id the identifier of the unit to delete
+     *
+     * @return \Illuminate\Http\RedirectResponse redirects to the units index route
      */
     public function delete($id): \Illuminate\Http\RedirectResponse
     {

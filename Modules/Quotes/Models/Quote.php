@@ -10,9 +10,9 @@ class Quote extends BaseModel
     /** @use HasFactory<\Database\Factories\QuoteFactory> */
     use HasFactory;
 
-    protected $table = 'ip_quotes';
-
     public $timestamps = false;
+
+    protected $table = 'ip_quotes';
 
     protected $casts = [];
 

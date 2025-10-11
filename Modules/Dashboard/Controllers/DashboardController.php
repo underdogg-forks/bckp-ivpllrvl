@@ -25,7 +25,7 @@ class DashboardController extends AdminController
      * - `overdue_invoices` — invoices marked as overdue.
      * - `projects`, `tasks`, `task_statuses` — latest projects, latest tasks, and task statuses.
      *
-     * @return string The rendered dashboard view content.
+     * @return string the rendered dashboard view content
      */
     public function index()
     {

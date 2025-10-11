@@ -25,15 +25,15 @@ class ProductsServiceTest extends TestCase
     {
         // Arrange
         $product1 = Product::create([
-            'product_name' => 'Product 1',
+            'product_name'        => 'Product 1',
             'product_description' => 'Description 1',
         ]);
         $product2 = Product::create([
-            'product_name' => 'Product 2',
+            'product_name'        => 'Product 2',
             'product_description' => 'Description 2',
         ]);
         $product3 = Product::create([
-            'product_name' => 'Product 3',
+            'product_name'        => 'Product 3',
             'product_description' => 'Description 3',
         ]);
 
@@ -55,7 +55,7 @@ class ProductsServiceTest extends TestCase
     {
         // Arrange
         Product::create([
-            'product_name' => 'Product 1',
+            'product_name'        => 'Product 1',
             'product_description' => 'Description 1',
         ]);
 
@@ -81,7 +81,7 @@ class ProductsServiceTest extends TestCase
     {
         // Arrange
         $product = Product::create([
-            'product_name' => 'Product 1',
+            'product_name'        => 'Product 1',
             'product_description' => 'Description 1',
         ]);
 

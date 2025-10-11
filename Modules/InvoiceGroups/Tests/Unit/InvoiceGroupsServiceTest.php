@@ -53,11 +53,11 @@ class InvoiceGroupsServiceTest extends TestCase
     {
         // Arrange
         InvoiceGroup::create([
-            'invoice_group_name' => 'Group A',
+            'invoice_group_name'    => 'Group A',
             'invoice_group_next_id' => 100,
         ]);
         InvoiceGroup::create([
-            'invoice_group_name' => 'Group B',
+            'invoice_group_name'    => 'Group B',
             'invoice_group_next_id' => 50,
         ]);
 

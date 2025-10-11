@@ -23,7 +23,7 @@ class EmailTemplatesController extends AdminController
      * in the layout under the key `email_templates`, buffers the `email_templates/index`
      * view as the content, and renders the layout.
      *
-     * @param int $page Page number to display (defaults to 0).
+     * @param int $page page number to display (defaults to 0)
      */
     public function index($page = 0)
     {
@@ -42,8 +42,9 @@ class EmailTemplatesController extends AdminController
      * templates for the view. May redirect to the email templates list or back to the form, or trigger
      * a 404 response when an edit ID cannot be prepared.
      *
-     * @param int|null $id The ID of the email template to edit, or null to create a new template.
-     * @return string The rendered form view HTML.
+     * @param int|null $id the ID of the email template to edit, or null to create a new template
+     *
+     * @return string the rendered form view HTML
      */
     public function form($id = null)
     {
@@ -79,7 +80,8 @@ class EmailTemplatesController extends AdminController
     /**
      * Delete an email template and redirect to the email templates list.
      *
-     * @param int|string $id The identifier of the email template to remove.
+     * @param int|string $id the identifier of the email template to remove
+     *
      * @return void
      */
     public function delete($id)

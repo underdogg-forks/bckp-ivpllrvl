@@ -9,8 +9,10 @@ use Modules\Projects\Models\Project;
 use Modules\Tasks\Models\Task;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Projects\route;
+
+use Tests\TestCase;
 
 #[CoversClass(ProjectsController::class)]
 class ProjectsControllerTest extends TestCase
@@ -48,10 +50,10 @@ class ProjectsControllerTest extends TestCase
     public function it_creates_new_project(): void
     {
         $projectData = [
-            'client_id' => $this->client->client_id,
-            'project_name' => 'Test Project',
-            'project_status' => 'draft',
-            'project_due_date' => now()->addDays(30)->format('Y-m-d')
+            'client_id'        => $this->client->client_id,
+            'project_name'     => 'Test Project',
+            'project_status'   => 'draft',
+            'project_due_date' => now()->addDays(30)->format('Y-m-d'),
         ];
 
         $response = $this->post(route('projects.form'), $projectData);
@@ -59,7 +61,7 @@ class ProjectsControllerTest extends TestCase
         $response->assertRedirect(route('projects.index'));
         $this->assertDatabaseHas('ip_projects', [
             'project_name' => 'Test Project',
-            'client_id' => $this->client->client_id,
+            'client_id'    => $this->client->client_id,
         ]);
     }
 
@@ -119,23 +121,23 @@ class ProjectsControllerTest extends TestCase
     public function it_updates_existing_project(): void
     {
         $project = Project::factory()->create([
-            'client_id' => $this->client->client_id,
-            'project_name' => 'Original Name'
+            'client_id'    => $this->client->client_id,
+            'project_name' => 'Original Name',
         ]);
 
         $updateData = [
-            'project_name' => 'Edited Project',
-            'project_status' => 'in_progress',
-            'project_due_date' => now()->addDays(45)->format('Y-m-d')
+            'project_name'     => 'Edited Project',
+            'project_status'   => 'in_progress',
+            'project_due_date' => now()->addDays(45)->format('Y-m-d'),
         ];
 
         $response = $this->post(route('projects.form', ['id' => $project->project_id]), $updateData);
 
         $response->assertRedirect(route('projects.index'));
         $this->assertDatabaseHas('ip_projects', [
-            'project_id' => $project->project_id,
-            'project_name' => 'Edited Project',
-            'project_status' => 'in_progress'
+            'project_id'     => $project->project_id,
+            'project_name'   => 'Edited Project',
+            'project_status' => 'in_progress',
         ]);
     }
 
@@ -168,7 +170,7 @@ class ProjectsControllerTest extends TestCase
     public function it_deletes_project_and_updates_related_tasks(): void
     {
         $project = Project::factory()->create();
-        $task = Task::factory()->create(['project_id' => $project->project_id]);
+        $task    = Task::factory()->create(['project_id' => $project->project_id]);
 
         $response = $this->delete(route('projects.delete', ['id' => $project->project_id]));
 

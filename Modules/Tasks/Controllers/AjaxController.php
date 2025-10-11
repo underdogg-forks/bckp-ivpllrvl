@@ -16,8 +16,9 @@ class AjaxController extends AdminController
      * Prepares view data containing the default item tax rate (0 when not set) and, if an
      * invoice ID is provided, the tasks associated with that invoice.
      *
-     * @param int|null $invoice_id The invoice ID to fetch tasks for, or null to omit tasks.
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory The rendered task lookups view.
+     * @param int|null $invoice_id the invoice ID to fetch tasks for, or null to omit tasks
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory the rendered task lookups view
      */
     public function modalTaskLookups($invoice_id = null)
     {
@@ -26,6 +27,7 @@ class AjaxController extends AdminController
         if ( ! empty($invoice_id)) {
             $data['tasks'] = (new TasksService())->getTasksToInvoice($invoice_id);
         }
+
         return view('tasks.modal_task_lookups', $data);
     }
 
@@ -35,12 +37,12 @@ class AjaxController extends AdminController
      * Reads `task_ids` from the request, retrieves matching tasks, formats each task's `task_price`,
      * and writes the resulting task collection as JSON to the response.
      *
-     * @param Request $request Request containing a `task_ids` array of task identifiers to retrieve.
+     * @param Request $request request containing a `task_ids` array of task identifiers to retrieve
      */
     public function processTaskSelections(Request $request): void
     {
         $taskIds = $request->input('task_ids', []);
-        $tasks = (new TasksService())->query()->whereIn('task_id', $taskIds)->get();
+        $tasks   = (new TasksService())->query()->whereIn('task_id', $taskIds)->get();
         foreach ($tasks as $task) {
             $task->task_price = format_amount($task->task_price);
         }

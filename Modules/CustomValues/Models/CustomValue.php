@@ -10,9 +10,9 @@ class CustomValue extends BaseModel
     /** @use HasFactory<\Database\Factories\CustomValuesFactory> */
     use HasFactory;
 
-    protected $table = 'ip_custom_values';
-
     public $timestamps = false;
+
+    protected $table = 'ip_custom_values';
 
     protected $casts = [];
 

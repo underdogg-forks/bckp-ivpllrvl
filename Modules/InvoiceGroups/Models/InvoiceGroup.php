@@ -10,9 +10,9 @@ class InvoiceGroup extends BaseModel
     /** @use HasFactory<\Database\Factories\InvoiceGroupFactory> */
     use HasFactory;
 
-    protected $table = 'ip_invoice_groups';
-
     public $timestamps = false;
+
+    protected $table = 'ip_invoice_groups';
 
     protected $casts = [];
 

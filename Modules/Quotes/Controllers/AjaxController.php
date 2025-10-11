@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Log;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
+use Modules\Quotes\Services\QuoteAmountsService;
 use Modules\Quotes\Services\QuoteItemsService;
 use Modules\Quotes\Services\QuotesService;
 use Modules\Quotes\Services\QuoteTaxRatesService;
 use Modules\TaxRates\Services\TaxRatesService;
-use Modules\Users\Services\UsersService;
-use Modules\Quotes\Services\QuoteAmountsService;
 use Modules\Units\Services\UnitsService;
+use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
 class AjaxController extends AdminController
@@ -154,14 +154,14 @@ class AjaxController extends AdminController
     }
 
     /**
-         * Delete a quote item if the referenced quote exists and return a JSON success flag.
-         *
-         * If the provided quote exists (or no item_id is supplied), attempts to delete the posted
-         * `item_id` and immediately outputs a JSON object with `success` set to `1` on successful
-         * deletion or `0` otherwise, then exits execution.
-         *
-         * @param int $quote_id The ID of the quote used to verify existence before deleting the item.
-         */
+     * Delete a quote item if the referenced quote exists and return a JSON success flag.
+     *
+     * If the provided quote exists (or no item_id is supplied), attempts to delete the posted
+     * `item_id` and immediately outputs a JSON object with `success` set to `1` on successful
+     * deletion or `0` otherwise, then exits execution.
+     *
+     * @param int $quote_id the ID of the quote used to verify existence before deleting the item
+     */
     public function deleteItem($quote_id)
     {
         $success = 0;
@@ -291,7 +291,7 @@ class AjaxController extends AdminController
      * Validates that the posted client exists and, if so, updates the quote's client_id in the database using the posted quote_id.
      *
      * @return string
-     *   JSON-encoded response: `{ "success": 1, "quote_id": "<cleaned_quote_id>" }` on success; `{ "success": 0, "validation_errors": { ... } }` if the client is invalid.
+     *                JSON-encoded response: `{ "success": 1, "quote_id": "<cleaned_quote_id>" }` on success; `{ "success": 0, "validation_errors": { ... } }` if the client is invalid.
      */
     public function changeClient()
     {
@@ -356,7 +356,7 @@ class AjaxController extends AdminController
      * - `quote_id`: sanitized quote identifier
      * - `quote`: the quote record
      *
-     * @param int|string $quote_id The ID of the quote to convert.
+     * @param int|string $quote_id the ID of the quote to convert
      */
     public function modalQuoteToInvoice($quote_id)
     {

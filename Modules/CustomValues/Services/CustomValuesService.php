@@ -53,10 +53,10 @@ class CustomValuesService extends BaseService
     public function saveCustom(int $fid): void
     {
         $fieldCustom = CustomField::query()->find($fid);
-        if (! $fieldCustom) {
+        if ( ! $fieldCustom) {
             return;
         }
-        $dbArray = $this->dbArray();
+        $dbArray                        = $this->dbArray();
         $dbArray['custom_values_field'] = $fid;
         CustomValue::query()->create($dbArray);
     }
@@ -88,29 +88,30 @@ class CustomValuesService extends BaseService
      */
     public function used(?int $id): bool
     {
-        if (! $id) {
+        if ( ! $id) {
             return false;
         }
         $customValue = CustomValue::query()->find($id);
-        if (! $customValue) {
+        if ( ! $customValue) {
             return false;
         }
         $customField = CustomField::query()->find($customValue->custom_values_field);
-        if (! $customField) {
+        if ( ! $customField) {
             return false;
         }
-        $table = $customField->custom_field_table;
-        $type = $customField->custom_field_type;
-        $base = strtr($table, ['ip_' => '']) . '_fieldvalue';
+        $table      = $customField->custom_field_table;
+        $type       = $customField->custom_field_type;
+        $base       = strtr($table, ['ip_' => '']) . '_fieldvalue';
         $modelClass = $this->getModelClassForTable($table);
-        if (! $modelClass) {
+        if ( ! $modelClass) {
             return false;
         }
         if ($type === 'SINGLE-CHOICE') {
             return $modelClass::query()->where($base, $id)->exists();
         }
-        return $modelClass::query()->where($base, 'LIKE', "%$id,%")
-            ->orWhere($base, 'LIKE', "%,$id%")
+
+        return $modelClass::query()->where($base, 'LIKE', "%{$id},%")
+            ->orWhere($base, 'LIKE', "%,{$id}%")
             ->orWhere($base, $id)
             ->exists();
     }
@@ -119,15 +120,18 @@ class CustomValuesService extends BaseService
      * Delete a custom value if not used, log orphan handling.
      *
      * @param int $id
+     *
      * @return bool
      */
     public function delete($id): bool
     {
-        if (! $this->used($id)) {
+        if ( ! $this->used($id)) {
             CustomValue::query()->where('custom_values_id', $id)->delete();
             Log::info('Orphan custom value deleted', ['custom_values_id' => $id]);
+
             return true;
         }
+
         return false;
     }
 
@@ -135,6 +139,7 @@ class CustomValuesService extends BaseService
      * Delete all custom values for a field using Eloquent.
      *
      * @param int $id
+     *
      * @return void
      */
     public function deleteAllFid(int $id): void
@@ -147,6 +152,7 @@ class CustomValuesService extends BaseService
      * Get custom values by field id using Eloquent.
      *
      * @param int $id
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByFid(int $id)
@@ -158,6 +164,7 @@ class CustomValuesService extends BaseService
      * Get custom values by column using Eloquent.
      *
      * @param int $id
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByColumn(int $id)
@@ -169,6 +176,7 @@ class CustomValuesService extends BaseService
      * Get custom value by id using Eloquent.
      *
      * @param int $id
+     *
      * @return CustomValue|null
      */
     public function getById(int $id): ?CustomValue
@@ -180,14 +188,16 @@ class CustomValuesService extends BaseService
      * Get custom values by multiple ids using Eloquent.
      *
      * @param array|int|string $ids
+     *
      * @return \Illuminate\Database\Eloquent\Collection|null
      */
     public function getByIds($ids)
     {
         if (empty($ids)) {
-            return null;
+            return;
         }
         $ids = is_array($ids) ? $ids : explode(',', $ids);
+
         return CustomValue::query()->whereIn('custom_values_id', $ids)->get();
     }
 
@@ -196,6 +206,7 @@ class CustomValuesService extends BaseService
      *
      * @param int $fid
      * @param int $id
+     *
      * @return bool
      */
     public function columnHasValue(int $fid, int $id): bool
@@ -214,24 +225,6 @@ class CustomValuesService extends BaseService
     public function grouped()
     {
         return CustomValue::query()->with('customField')->get();
-    }
-
-    /**
-     * Helper to get model class for a table name.
-     *
-     * @param string $table
-     * @return string|null
-     */
-    protected function getModelClassForTable(string $table): ?string
-    {
-        $map = [
-            'ip_client_custom' => \Modules\Clients\Models\ClientCustom::class,
-            'ip_invoice_custom' => \Modules\Invoices\Models\InvoiceCustom::class,
-            'ip_payment_custom' => \Modules\Payments\Models\PaymentCustom::class,
-            'ip_quote_custom' => \Modules\Quotes\Models\QuoteCustom::class,
-            'ip_user_custom' => \Modules\Users\Models\UserCustom::class,
-        ];
-        return $map[$table] ?? null;
     }
 
     /**
@@ -272,5 +265,25 @@ class CustomValuesService extends BaseService
     public function defaultGroupBy()
     {
         //$this->db->group_by('ip_custom_values.custom_values_field');
+    }
+
+    /**
+     * Helper to get model class for a table name.
+     *
+     * @param string $table
+     *
+     * @return string|null
+     */
+    protected function getModelClassForTable(string $table): ?string
+    {
+        $map = [
+            'ip_client_custom'  => \Modules\Clients\Models\ClientCustom::class,
+            'ip_invoice_custom' => \Modules\Invoices\Models\InvoiceCustom::class,
+            'ip_payment_custom' => \Modules\Payments\Models\PaymentCustom::class,
+            'ip_quote_custom'   => \Modules\Quotes\Models\QuoteCustom::class,
+            'ip_user_custom'    => \Modules\Users\Models\UserCustom::class,
+        ];
+
+        return $map[$table] ?? null;
     }
 }

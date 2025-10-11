@@ -90,31 +90,36 @@ class ReportsService extends BaseService
         foreach ($clients as $client) {
             $range_1 = $client->invoices->filter(function ($invoice) {
                 $due = \Carbon\Carbon::parse($invoice->invoice_date_due);
+
                 return $due->lte(now()->subDays(1)) && $due->gte(now()->subDays(15));
-            })->sum(fn($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
+            })->sum(fn ($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
             $range_2 = $client->invoices->filter(function ($invoice) {
                 $due = \Carbon\Carbon::parse($invoice->invoice_date_due);
+
                 return $due->lte(now()->subDays(16)) && $due->gte(now()->subDays(30));
-            })->sum(fn($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
+            })->sum(fn ($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
             $range_3 = $client->invoices->filter(function ($invoice) {
                 $due = \Carbon\Carbon::parse($invoice->invoice_date_due);
+
                 return $due->lte(now()->subDays(31));
-            })->sum(fn($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
+            })->sum(fn ($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
             $total_balance = $client->invoices->filter(function ($invoice) {
                 $due = \Carbon\Carbon::parse($invoice->invoice_date_due);
+
                 return $due->lte(now()->subDays(1));
-            })->sum(fn($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
+            })->sum(fn ($invoice) => $invoice->invoiceAmount->invoice_balance ?? 0);
             if ($range_1 > 0 || $range_2 > 0 || $range_3 > 0 || $total_balance > 0) {
                 $result->push([
-                    'client_name' => $client->client_name,
+                    'client_name'    => $client->client_name,
                     'client_surname' => $client->client_surname,
-                    'range_1' => $range_1,
-                    'range_2' => $range_2,
-                    'range_3' => $range_3,
-                    'total_balance' => $total_balance,
+                    'range_1'        => $range_1,
+                    'range_2'        => $range_2,
+                    'range_3'        => $range_3,
+                    'total_balance'  => $total_balance,
                 ]);
             }
         }
+
         return $result;
     }
 
@@ -123,18 +128,20 @@ class ReportsService extends BaseService
      *
      * @param string|null $from_date
      * @param string|null $to_date
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function invoicesPerClient(?string $from_date = null, ?string $to_date = null): \Illuminate\Database\Eloquent\Collection
     {
         $from_date = $from_date ? \Carbon\Carbon::parse($from_date)->format('Y-m-d') : null;
-        $to_date = $to_date ? \Carbon\Carbon::parse($to_date)->format('Y-m-d') : null;
-        $query = Client::query()->with(['invoices.invoiceAmount']);
+        $to_date   = $to_date ? \Carbon\Carbon::parse($to_date)->format('Y-m-d') : null;
+        $query     = Client::query()->with(['invoices.invoiceAmount']);
         if ($from_date && $to_date) {
             $query->whereHas('invoices', function ($q) use ($from_date, $to_date) {
                 $q->whereBetween('invoice_date_created', [$from_date, $to_date]);
             });
         }
+
         return $query->get();
     }
 
@@ -146,9 +153,9 @@ class ReportsService extends BaseService
     public function salesByYear(?string $from_date = null, ?string $to_date = null, ?int $minQuantity = null, ?int $maxQuantity = null, bool $taxChecked = false): \Illuminate\Support\Collection
     {
         $from_date = $from_date ? \Carbon\Carbon::parse($from_date)->format('Y-m-d') : now()->format('Y-m-d');
-        $to_date = $to_date ? \Carbon\Carbon::parse($to_date)->format('Y-m-d') : now()->format('Y-m-d');
-        $clients = Client::query()->with(['invoices.invoiceAmount'])->get();
-        $result = collect();
+        $to_date   = $to_date ? \Carbon\Carbon::parse($to_date)->format('Y-m-d') : now()->format('Y-m-d');
+        $clients   = Client::query()->with(['invoices.invoiceAmount'])->get();
+        $result    = collect();
         foreach ($clients as $client) {
             $payments = collect();
             foreach ($client->invoices as $invoice) {
@@ -156,8 +163,8 @@ class ReportsService extends BaseService
                 if ($created->between($from_date, $to_date)) {
                     $amount = $taxChecked ? ($invoice->invoiceAmount->invoice_total ?? 0) : ($invoice->invoiceAmount->invoice_item_subtotal ?? 0);
                     $payments->push([
-                        'year' => $created->year,
-                        'month' => $created->month,
+                        'year'   => $created->year,
+                        'month'  => $created->month,
                         'amount' => $amount,
                     ]);
                 }
@@ -168,17 +175,18 @@ class ReportsService extends BaseService
                 });
             });
             $total_payment = $payments->sum('amount');
-            if ((is_null($minQuantity) || $total_payment >= $minQuantity) && (is_null($maxQuantity) || $total_payment <= $maxQuantity)) {
+            if ((null === $minQuantity || $total_payment >= $minQuantity) && (null === $maxQuantity || $total_payment <= $maxQuantity)) {
                 $result->push([
-                    'client_id' => $client->client_id,
-                    'client_name' => $client->client_name,
-                    'client_surname' => $client->client_surname,
-                    'VAT_ID' => $client->client_vat_id,
-                    'total_payment' => $total_payment,
+                    'client_id'              => $client->client_id,
+                    'client_name'            => $client->client_name,
+                    'client_surname'         => $client->client_surname,
+                    'VAT_ID'                 => $client->client_vat_id,
+                    'total_payment'          => $total_payment,
                     'payments_by_year_month' => $grouped,
                 ]);
             }
         }
+
         return $result->sortBy('client_name')->values();
     }
 }

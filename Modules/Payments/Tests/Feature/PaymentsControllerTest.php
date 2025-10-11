@@ -2,34 +2,36 @@
 
 namespace Modules\Payments\Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\CustomFields\Models\CustomField;
+use Modules\Invoices\Models\Invoice;
 use Modules\PaymentMethods\Models\PaymentMethod;
 use Modules\Payments\Controllers\PaymentsController;
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\TestCase;
 use Modules\Payments\Models\Payment;
 use Modules\Payments\Models\PaymentLog;
-use Modules\Payments\Models\PaymentCustom;
-use Modules\Invoices\Models\Invoice;
-use Modules\CustomFields\Models\CustomField;
-use App\Models\User;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 #[CoversClass(PaymentsController::class)]
 class PaymentsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
+
     protected Invoice $invoice;
+
     protected PaymentMethod $paymentMethod;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
-        $this->invoice = Invoice::factory()->create(['invoice_balance' => 100.00]);
+        $this->user          = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
+        $this->invoice       = Invoice::factory()->create(['invoice_balance' => 100.00]);
         $this->paymentMethod = PaymentMethod::factory()->create();
         $this->actingAs($this->user);
     }
@@ -47,18 +49,18 @@ class PaymentsControllerTest extends TestCase
     public function it_creates_new_payment_with_valid_data(): void
     {
         $paymentData = [
-            'invoice_id' => $this->invoice->invoice_id,
-            'payment_date' => now()->format('Y-m-d'),
-            'payment_amount' => 50.00,
+            'invoice_id'        => $this->invoice->invoice_id,
+            'payment_date'      => now()->format('Y-m-d'),
+            'payment_amount'    => 50.00,
             'payment_method_id' => $this->paymentMethod->payment_method_id,
-            'payment_note' => 'Test payment note.'
+            'payment_note'      => 'Test payment note.',
         ];
 
         $response = $this->post(route('payments.form'), $paymentData);
 
         $response->assertRedirect(route('payments.index'));
         $this->assertDatabaseHas('ip_payments', [
-            'invoice_id' => $this->invoice->invoice_id,
+            'invoice_id'     => $this->invoice->invoice_id,
             'payment_amount' => 50.00,
         ]);
     }
@@ -67,16 +69,16 @@ class PaymentsControllerTest extends TestCase
     public function it_creates_payment_with_minimum_required_fields(): void
     {
         $paymentData = [
-            'invoice_id' => $this->invoice->invoice_id,
-            'payment_amount' => 25.50,
-            'payment_method_id' => $this->paymentMethod->payment_method_id
+            'invoice_id'        => $this->invoice->invoice_id,
+            'payment_amount'    => 25.50,
+            'payment_method_id' => $this->paymentMethod->payment_method_id,
         ];
 
         $response = $this->post(route('payments.form'), $paymentData);
 
         $response->assertRedirect(route('payments.index'));
         $this->assertDatabaseHas('ip_payments', [
-            'invoice_id' => $this->invoice->invoice_id,
+            'invoice_id'     => $this->invoice->invoice_id,
             'payment_amount' => 25.50,
         ]);
     }
@@ -85,11 +87,11 @@ class PaymentsControllerTest extends TestCase
     public function it_creates_payment_with_note(): void
     {
         $paymentData = [
-            'invoice_id' => $this->invoice->invoice_id,
-            'payment_date' => now()->format('Y-m-d'),
-            'payment_amount' => 100.00,
+            'invoice_id'        => $this->invoice->invoice_id,
+            'payment_date'      => now()->format('Y-m-d'),
+            'payment_amount'    => 100.00,
             'payment_method_id' => $this->paymentMethod->payment_method_id,
-            'payment_note' => $this->faker->sentence()
+            'payment_note'      => $this->faker->sentence(),
         ];
 
         $response = $this->post(route('payments.form'), $paymentData);
@@ -104,22 +106,22 @@ class PaymentsControllerTest extends TestCase
     public function it_updates_existing_payment(): void
     {
         $payment = Payment::factory()->create([
-            'invoice_id' => $this->invoice->invoice_id,
-            'payment_amount' => 50.00
+            'invoice_id'     => $this->invoice->invoice_id,
+            'payment_amount' => 50.00,
         ]);
 
         $updateData = [
             'payment_amount' => 75.00,
-            'payment_note' => 'Updated payment note'
+            'payment_note'   => 'Updated payment note',
         ];
 
         $response = $this->post(route('payments.form', ['id' => $payment->payment_id]), $updateData);
 
         $response->assertRedirect(route('payments.index'));
         $this->assertDatabaseHas('ip_payments', [
-            'payment_id' => $payment->payment_id,
+            'payment_id'     => $payment->payment_id,
             'payment_amount' => 75.00,
-            'payment_note' => 'Updated payment note'
+            'payment_note'   => 'Updated payment note',
         ]);
     }
 
@@ -178,24 +180,24 @@ class PaymentsControllerTest extends TestCase
     public function it_saves_payment_custom_fields(): void
     {
         $customField = CustomField::factory()->create([
-            'custom_field_table' => 'ip_payment_custom'
+            'custom_field_table' => 'ip_payment_custom',
         ]);
 
         $paymentData = [
-            'invoice_id' => $this->invoice->invoice_id,
-            'payment_amount' => 100.00,
+            'invoice_id'        => $this->invoice->invoice_id,
+            'payment_amount'    => 100.00,
             'payment_method_id' => $this->paymentMethod->payment_method_id,
-            'custom' => [
-                $customField->custom_field_id => 'Custom value'
-            ]
+            'custom'            => [
+                $customField->custom_field_id => 'Custom value',
+            ],
         ];
 
         $response = $this->post(route('payments.form'), $paymentData);
 
         $response->assertRedirect(route('payments.index'));
         $this->assertDatabaseHas('ip_payment_custom', [
-            'payment_custom_fieldid' => $customField->custom_field_id,
-            'payment_custom_fieldvalue' => 'Custom value'
+            'payment_custom_fieldid'    => $customField->custom_field_id,
+            'payment_custom_fieldvalue' => 'Custom value',
         ]);
     }
 
@@ -235,7 +237,7 @@ class PaymentsControllerTest extends TestCase
 
         $response = $this->get(route('payments.onlineLogs', [
             'date_from' => now()->subDays(6)->format('Y-m-d'),
-            'date_to' => now()->format('Y-m-d')
+            'date_to'   => now()->format('Y-m-d'),
         ]));
 
         $response->assertSuccessful();

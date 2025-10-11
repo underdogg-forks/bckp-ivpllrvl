@@ -6,8 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\TaxRates\Controllers\TaxRatesController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\TaxRates\route;
+
+use Tests\TestCase;
 
 #[CoversClass(TaxRatesController::class)]
 class TaxRatesControllerTest extends TestCase
@@ -37,16 +39,16 @@ class TaxRatesControllerTest extends TestCase
     public function it_creates_new_tax_rate(): void
     {
         $taxRateData = [
-            'tax_rate_name' => 'VAT',
-            'tax_rate_percent' => '21.00'
+            'tax_rate_name'    => 'VAT',
+            'tax_rate_percent' => '21.00',
         ];
 
         $response = $this->post(route('tax_rates.form'), $taxRateData);
 
         $response->assertRedirect(route('tax_rates.index'));
         $this->assertDatabaseHas('ip_tax_rates', [
-            'tax_rate_name' => 'VAT',
-            'tax_rate_percent' => 21.00
+            'tax_rate_name'    => 'VAT',
+            'tax_rate_percent' => 21.00,
         ]);
     }
 
@@ -63,9 +65,9 @@ class TaxRatesControllerTest extends TestCase
          * }
          */
         $response = $this->post(route('tax_rates.formStore'), [
-            'tax_rate_name' => 'VAT',
+            'tax_rate_name'    => 'VAT',
             'tax_rate_percent' => '20.00',
-            'btn_submit' => true,
+            'btn_submit'       => true,
         ]);
 
         // Assert: redirects to tax rates index
@@ -76,16 +78,16 @@ class TaxRatesControllerTest extends TestCase
     public function it_standardizes_tax_rate_percent_on_creation(): void
     {
         $taxRateData = [
-            'tax_rate_name' => 'Sales Tax',
-            'tax_rate_percent' => '15,50' // European format
+            'tax_rate_name'    => 'Sales Tax',
+            'tax_rate_percent' => '15,50', // European format
         ];
 
         $response = $this->post(route('tax_rates.form'), $taxRateData);
 
         $response->assertRedirect(route('tax_rates.index'));
         $this->assertDatabaseHas('ip_tax_rates', [
-            'tax_rate_name' => 'Sales Tax',
-            'tax_rate_percent' => 15.50
+            'tax_rate_name'    => 'Sales Tax',
+            'tax_rate_percent' => 15.50,
         ]);
     }
 
@@ -93,22 +95,22 @@ class TaxRatesControllerTest extends TestCase
     public function it_updates_existing_tax_rate(): void
     {
         $taxRate = TaxRate::factory()->create([
-            'tax_rate_name' => 'Original Tax',
-            'tax_rate_percent' => 10.00
+            'tax_rate_name'    => 'Original Tax',
+            'tax_rate_percent' => 10.00,
         ]);
 
         $updateData = [
-            'tax_rate_name' => 'Updated Tax',
-            'tax_rate_percent' => '19.00'
+            'tax_rate_name'    => 'Updated Tax',
+            'tax_rate_percent' => '19.00',
         ];
 
         $response = $this->post(route('tax_rates.form', ['id' => $taxRate->tax_rate_id]), $updateData);
 
         $response->assertRedirect(route('tax_rates.index'));
         $this->assertDatabaseHas('ip_tax_rates', [
-            'tax_rate_id' => $taxRate->tax_rate_id,
-            'tax_rate_name' => 'Updated Tax',
-            'tax_rate_percent' => 19.00
+            'tax_rate_id'      => $taxRate->tax_rate_id,
+            'tax_rate_name'    => 'Updated Tax',
+            'tax_rate_percent' => 19.00,
         ]);
     }
 
@@ -150,8 +152,8 @@ class TaxRatesControllerTest extends TestCase
     public function it_validates_tax_rate_percent_is_numeric(): void
     {
         $taxRateData = [
-            'tax_rate_name' => 'Invalid Tax',
-            'tax_rate_percent' => 'not-a-number'
+            'tax_rate_name'    => 'Invalid Tax',
+            'tax_rate_percent' => 'not-a-number',
         ];
 
         $response = $this->post(route('tax_rates.form'), $taxRateData);

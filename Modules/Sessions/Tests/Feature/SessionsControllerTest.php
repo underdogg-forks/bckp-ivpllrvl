@@ -3,19 +3,20 @@
 namespace Modules\Sessions\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Modules\Sessions\Controllers\SessionsController;
+use Modules\Users\Models\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Modules\Users\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 
 #[CoversClass(SessionsController::class)]
 class SessionsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     #[Test]
     public function it_redirects_index_to_login(): void
@@ -39,16 +40,16 @@ class SessionsControllerTest extends TestCase
     public function it_authenticates_user_with_valid_credentials(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'    => 'test@example.com',
             'user_password' => Hash::make('password123'),
-            'user_active' => 1,
-            'user_type' => 1
+            'user_active'   => 1,
+            'user_type'     => 1,
         ]);
 
         $response = $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'test@example.com',
-            'password' => 'password123'
+            'email'     => 'test@example.com',
+            'password'  => 'password123',
         ]);
 
         $response->assertRedirect(route('dashboard'));
@@ -59,16 +60,16 @@ class SessionsControllerTest extends TestCase
     public function it_redirects_guest_users_to_guest_area(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'guest@example.com',
+            'user_email'    => 'guest@example.com',
             'user_password' => Hash::make('password123'),
-            'user_active' => 1,
-            'user_type' => 2 // Guest user
+            'user_active'   => 1,
+            'user_type'     => 2, // Guest user
         ]);
 
         $response = $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'guest@example.com',
-            'password' => 'password123'
+            'email'     => 'guest@example.com',
+            'password'  => 'password123',
         ]);
 
         $response->assertRedirect(route('guest'));
@@ -78,15 +79,15 @@ class SessionsControllerTest extends TestCase
     public function it_rejects_authentication_with_invalid_credentials(): void
     {
         User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'    => 'test@example.com',
             'user_password' => Hash::make('password123'),
-            'user_active' => 1
+            'user_active'   => 1,
         ]);
 
         $response = $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'test@example.com',
-            'password' => 'wrongpassword'
+            'email'     => 'test@example.com',
+            'password'  => 'wrongpassword',
         ]);
 
         $response->assertRedirect(route('sessions.login'));
@@ -99,8 +100,8 @@ class SessionsControllerTest extends TestCase
     {
         $response = $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'nonexistent@example.com',
-            'password' => 'password123'
+            'email'     => 'nonexistent@example.com',
+            'password'  => 'password123',
         ]);
 
         $response->assertRedirect(route('sessions.login'));
@@ -112,15 +113,15 @@ class SessionsControllerTest extends TestCase
     public function it_rejects_authentication_for_inactive_user(): void
     {
         User::factory()->create([
-            'user_email' => 'inactive@example.com',
+            'user_email'    => 'inactive@example.com',
             'user_password' => Hash::make('password123'),
-            'user_active' => 0
+            'user_active'   => 0,
         ]);
 
         $response = $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'inactive@example.com',
-            'password' => 'password123'
+            'email'     => 'inactive@example.com',
+            'password'  => 'password123',
         ]);
 
         $response->assertRedirect(route('sessions.login'));
@@ -132,25 +133,25 @@ class SessionsControllerTest extends TestCase
     public function it_throttles_login_attempts_after_multiple_failures(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'    => 'test@example.com',
             'user_password' => Hash::make('password123'),
-            'user_active' => 1
+            'user_active'   => 1,
         ]);
 
         // Attempt 10 failed logins
         for ($i = 0; $i < 10; $i++) {
             $this->post(route('sessions.login'), [
                 'btn_login' => true,
-                'email' => 'test@example.com',
-                'password' => 'wrongpassword'
+                'email'     => 'test@example.com',
+                'password'  => 'wrongpassword',
             ]);
         }
 
         // 11th attempt should be blocked
         $response = $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'test@example.com',
-            'password' => 'password123'
+            'email'     => 'test@example.com',
+            'password'  => 'password123',
         ]);
 
         $this->assertDatabaseHas('ip_login_log', [
@@ -186,13 +187,13 @@ class SessionsControllerTest extends TestCase
         Mail::fake();
 
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
-            'user_active' => 1
+            'user_email'  => 'test@example.com',
+            'user_active' => 1,
         ]);
 
         $response = $this->post(route('sessions.passwordreset'), [
             'btn_reset' => true,
-            'email' => 'test@example.com'
+            'email'     => 'test@example.com',
         ]);
 
         $response->assertRedirect(route('sessions.login'));
@@ -207,7 +208,7 @@ class SessionsControllerTest extends TestCase
     {
         $response = $this->post(route('sessions.passwordreset'), [
             'btn_reset' => true,
-            'email' => 'invalid-email'
+            'email'     => 'invalid-email',
         ]);
 
         $response->assertRedirect('/');
@@ -217,15 +218,15 @@ class SessionsControllerTest extends TestCase
     public function it_throttles_password_reset_attempts(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
-            'user_active' => 1
+            'user_email'  => 'test@example.com',
+            'user_active' => 1,
         ]);
 
         // Attempt 10 password resets
         for ($i = 0; $i < 10; $i++) {
             $this->post(route('sessions.passwordreset'), [
                 'btn_reset' => true,
-                'email' => 'test@example.com'
+                'email'     => 'test@example.com',
             ]);
         }
 
@@ -238,9 +239,9 @@ class SessionsControllerTest extends TestCase
     public function it_displays_new_password_form_with_valid_token(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'               => 'test@example.com',
             'user_passwordreset_token' => 'valid_token_123',
-            'user_active' => 1
+            'user_active'              => 1,
         ]);
 
         $response = $this->get(route('sessions.passwordreset', ['token' => 'valid_token_123']));
@@ -272,16 +273,16 @@ class SessionsControllerTest extends TestCase
     public function it_updates_password_with_valid_token(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'               => 'test@example.com',
             'user_passwordreset_token' => 'valid_token_123',
-            'user_active' => 1
+            'user_active'              => 1,
         ]);
 
         $response = $this->post(route('sessions.passwordreset'), [
             'btn_new_password' => true,
-            'token' => 'valid_token_123',
-            'user_id' => $user->user_id,
-            'new_password' => 'newpassword123'
+            'token'            => 'valid_token_123',
+            'user_id'          => $user->user_id,
+            'new_password'     => 'newpassword123',
         ]);
 
         $response->assertRedirect(route('sessions.login'));
@@ -295,16 +296,16 @@ class SessionsControllerTest extends TestCase
     public function it_rejects_password_update_with_mismatched_token(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'               => 'test@example.com',
             'user_passwordreset_token' => 'valid_token_123',
-            'user_active' => 1
+            'user_active'              => 1,
         ]);
 
         $response = $this->post(route('sessions.passwordreset'), [
             'btn_new_password' => true,
-            'token' => 'wrong_token',
-            'user_id' => $user->user_id,
-            'new_password' => 'newpassword123'
+            'token'            => 'wrong_token',
+            'user_id'          => $user->user_id,
+            'new_password'     => 'newpassword123',
         ]);
 
         $response->assertRedirect();
@@ -318,16 +319,16 @@ class SessionsControllerTest extends TestCase
     public function it_rejects_empty_password_in_reset(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'               => 'test@example.com',
             'user_passwordreset_token' => 'valid_token_123',
-            'user_active' => 1
+            'user_active'              => 1,
         ]);
 
         $response = $this->post(route('sessions.passwordreset'), [
             'btn_new_password' => true,
-            'token' => 'valid_token_123',
-            'user_id' => $user->user_id,
-            'new_password' => ''
+            'token'            => 'valid_token_123',
+            'user_id'          => $user->user_id,
+            'new_password'     => '',
         ]);
 
         $response->assertRedirect();
@@ -338,30 +339,30 @@ class SessionsControllerTest extends TestCase
     public function it_clears_login_failures_after_successful_authentication(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'    => 'test@example.com',
             'user_password' => Hash::make('password123'),
-            'user_active' => 1,
-            'user_type' => 1
+            'user_active'   => 1,
+            'user_type'     => 1,
         ]);
 
         // Create some failed attempts
         for ($i = 0; $i < 3; $i++) {
             $this->post(route('sessions.login'), [
                 'btn_login' => true,
-                'email' => 'test@example.com',
-                'password' => 'wrongpassword'
+                'email'     => 'test@example.com',
+                'password'  => 'wrongpassword',
             ]);
         }
 
         // Successful login
         $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'test@example.com',
-            'password' => 'password123'
+            'email'     => 'test@example.com',
+            'password'  => 'password123',
         ]);
 
         $this->assertDatabaseMissing('ip_login_log', [
-            'login_name' => 'test@example.com'
+            'login_name' => 'test@example.com',
         ]);
     }
 
@@ -369,23 +370,23 @@ class SessionsControllerTest extends TestCase
     public function it_unlocks_account_after_12_hours(): void
     {
         $user = User::factory()->create([
-            'user_email' => 'test@example.com',
+            'user_email'    => 'test@example.com',
             'user_password' => Hash::make('password123'),
-            'user_active' => 1,
-            'user_type' => 1
+            'user_active'   => 1,
+            'user_type'     => 1,
         ]);
 
         // Create login log with old timestamp
         DB::table('ip_login_log')->insert([
-            'login_name' => 'test@example.com',
-            'log_count' => 11,
-            'log_create_timestamp' => now()->subHours(13)->toDateTimeString()
+            'login_name'           => 'test@example.com',
+            'log_count'            => 11,
+            'log_create_timestamp' => now()->subHours(13)->toDateTimeString(),
         ]);
 
         $response = $this->post(route('sessions.login'), [
             'btn_login' => true,
-            'email' => 'test@example.com',
-            'password' => 'password123'
+            'email'     => 'test@example.com',
+            'password'  => 'password123',
         ]);
 
         $response->assertRedirect(route('dashboard'));

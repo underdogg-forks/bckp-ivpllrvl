@@ -37,8 +37,8 @@ class InvoicesController extends BaseGuestController
      * Loads invoices for the current guest's clients according to the given status,
      * paginates the results, and renders the guest invoices index layout.
      *
-     * @param string $status The invoice status filter: 'open' (default), 'all', 'paid', or 'overdue'.
-     * @param int $page The pagination page number (zero-based).
+     * @param string $status the invoice status filter: 'open' (default), 'all', 'paid', or 'overdue'
+     * @param int    $page   the pagination page number (zero-based)
      */
     public function status(string $status = 'open', $page = 0): void
     {
@@ -72,7 +72,7 @@ class InvoicesController extends BaseGuestController
      * (items, invoice tax rates, uploads and relevant settings), buffers the invoice view, and renders the guest layout.
      * Shows a 404 response if the invoice cannot be found.
      *
-     * @param int|string $invoice_id The invoice identifier to load and display.
+     * @param int|string $invoice_id the invoice identifier to load and display
      */
     public function view($invoice_id): void
     {
@@ -110,9 +110,9 @@ class InvoicesController extends BaseGuestController
      * The invoice is marked as viewed before PDF generation. When `$stream` is true the
      * generated PDF is streamed to the client; when false the PDF is produced but not streamed.
      *
-     * @param int|string $invoice_id The invoice identifier.
-     * @param bool $stream Whether to stream the PDF to the client (`true`) or not (`false`).
-     * @param string|null $invoice_template Optional invoice template identifier to use.
+     * @param int|string  $invoice_id       the invoice identifier
+     * @param bool        $stream           whether to stream the PDF to the client (`true`) or not (`false`)
+     * @param string|null $invoice_template optional invoice template identifier to use
      */
     public function generateSumexPdf($invoice_id, $stream = true, $invoice_template = null): void
     {

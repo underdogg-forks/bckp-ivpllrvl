@@ -47,15 +47,16 @@ class ProductsService extends BaseService
      * Filter products by SKU, name, or description using Eloquent.
      *
      * @param string $match
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function byProduct(string $match): \Illuminate\Database\Eloquent\Builder
     {
         return Product::query()
             ->where(function ($query) use ($match) {
-                $query->where('product_sku', 'like', "%$match%")
-                    ->orWhere('product_name', 'like', "%$match%")
-                    ->orWhere('product_description', 'like', "%$match%");
+                $query->where('product_sku', 'like', "%{$match}%")
+                    ->orWhere('product_name', 'like', "%{$match}%")
+                    ->orWhere('product_description', 'like', "%{$match}%");
             });
     }
 
@@ -63,6 +64,7 @@ class ProductsService extends BaseService
      * Filter products by family using Eloquent.
      *
      * @param int $familyId
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function byFamily(int $familyId): \Illuminate\Database\Eloquent\Builder
@@ -113,6 +115,7 @@ class ProductsService extends BaseService
      * Get products by array of IDs.
      *
      * @param array $ids
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByIds(array $ids)

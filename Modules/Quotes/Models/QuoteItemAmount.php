@@ -10,9 +10,9 @@ class QuoteItemAmount extends BaseModel
     /** @use HasFactory<\Database\Factories\QuoteItemAmountFactory> */
     use HasFactory;
 
-    protected $table = 'ip_quote_item_amounts';
-
     public $timestamps = false;
+
+    protected $table = 'ip_quote_item_amounts';
 
     protected $casts = [];
 

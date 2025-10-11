@@ -24,12 +24,12 @@ class InvoicesService extends BaseService
     /**
      * Construct the InvoicesService with its required service dependencies and initialize the base service.
      *
-     * @param InvoiceGroupsService $invoiceGroupsService Service for invoice group operations (e.g., generating invoice numbers).
-     * @param ItemsService $itemsService Service for creating, copying, and managing invoice items.
-     * @param InvoiceTaxRatesService $invoiceTaxRatesService Service for managing invoice tax rates.
-     * @param InvoiceCustomService $invoiceCustomService Service for handling invoice custom field values.
-     * @param ClientsService $clientsService Service for client-related operations.
-     * @param PaymentsService $paymentsService Service for retrieving and managing payments.
+     * @param InvoiceGroupsService   $invoiceGroupsService   Service for invoice group operations (e.g., generating invoice numbers).
+     * @param ItemsService           $itemsService           service for creating, copying, and managing invoice items
+     * @param InvoiceTaxRatesService $invoiceTaxRatesService service for managing invoice tax rates
+     * @param InvoiceCustomService   $invoiceCustomService   service for handling invoice custom field values
+     * @param ClientsService         $clientsService         service for client-related operations
+     * @param PaymentsService        $paymentsService        service for retrieving and managing payments
      */
     public function __construct(
         public InvoiceGroupsService $invoiceGroupsService,
@@ -113,33 +113,35 @@ class InvoicesService extends BaseService
      * rate row is created for the new invoice. If the invoice's group name contains "sumex" (case-insensitive),
      * a Sumex entry is created for the new invoice.
      *
-     * @param array|null $db_array Associative array of invoice fields to save.
-     * @param bool $include_invoice_tax_rates Whether to insert the configured default invoice tax rate for the new invoice.
-     * @return int The ID of the newly created invoice.
+     * @param array|null $db_array                  associative array of invoice fields to save
+     * @param bool       $include_invoice_tax_rates whether to insert the configured default invoice tax rate for the new invoice
+     *
+     * @return int the ID of the newly created invoice
      */
     public function create($db_array = null, $include_invoice_tax_rates = true)
     {
         $invoice_id    = parent::save(null, $db_array);
         $inv           = $this->where('ip_invoices.invoice_id', $invoice_id)->get()->row();
         $invoice_group = $inv->invoice_group_id;
-        
+
         \Modules\Invoices\Models\InvoiceAmount::query()->create(['invoice_id' => $invoice_id]);
-        
+
         if ($include_invoice_tax_rates && get_setting('default_invoice_tax_rate')) {
             \Modules\Invoices\Models\InvoiceTaxRate::query()->create([
-                'invoice_id' => $invoice_id,
-                'tax_rate_id' => get_setting('default_invoice_tax_rate'),
-                'include_item_tax' => get_setting('default_include_item_tax', 0),
-                'invoice_tax_rate_amount' => 0
+                'invoice_id'              => $invoice_id,
+                'tax_rate_id'             => get_setting('default_invoice_tax_rate'),
+                'include_item_tax'        => get_setting('default_include_item_tax', 0),
+                'invoice_tax_rate_amount' => 0,
             ]);
         }
-        
+
         if ($invoice_group !== '0') {
             $invgroup = $this->invoiceGroupsService->where('invoice_group_id', $invoice_group)->get()->row();
             if (preg_match('/sumex/i', $invgroup->invoice_group_name)) {
                 \Modules\Invoices\Models\InvoiceSumex::query()->create(['sumex_invoice' => $invoice_id]);
             }
         }
+
         return $invoice_id;
     }
 
@@ -148,17 +150,17 @@ class InvoicesService extends BaseService
      *
      * The target invoice will be updated with the source invoice's global discount and receive copies of the source's items, invoice tax rates, and custom field values.
      *
-     * @param int  $source_id                 ID of the invoice to copy from.
-     * @param int  $target_id                 ID of the invoice to copy to.
-     * @param bool $copy_recurring_items_only If true, only items marked as recurring will be copied; otherwise all items are copied.
+     * @param int  $source_id                 ID of the invoice to copy from
+     * @param int  $target_id                 ID of the invoice to copy to
+     * @param bool $copy_recurring_items_only if true, only items marked as recurring will be copied; otherwise all items are copied
      */
     public function copyInvoice($source_id, $target_id, $copy_recurring_items_only = false): void
     {
-        $invoice = $this->getById($source_id);
+        $invoice         = $this->getById($source_id);
         $global_discount = [
-            'amount'  => $invoice->invoice_discount_amount,
-            'percent' => $invoice->invoice_discount_percent,
-            'item'    => 0.0,
+            'amount'         => $invoice->invoice_discount_amount,
+            'percent'        => $invoice->invoice_discount_percent,
+            'item'           => 0.0,
             'items_subtotal' => $this->itemsService->getItemsSubtotal($source_id),
         ];
         unset($invoice);
@@ -166,18 +168,18 @@ class InvoicesService extends BaseService
         $invoice_items = $this->itemsService->getByInvoiceId($source_id);
         foreach ($invoice_items as $invoice_item) {
             $db_array = [
-                'invoice_id' => $target_id,
-                'item_tax_rate_id' => $invoice_item->item_tax_rate_id,
-                'item_product_id' => $invoice_item->item_product_id,
-                'item_task_id' => $invoice_item->item_task_id,
-                'item_name' => $invoice_item->item_name,
-                'item_description' => $invoice_item->item_description,
-                'item_quantity' => $invoice_item->item_quantity,
-                'item_price' => $invoice_item->item_price,
+                'invoice_id'           => $target_id,
+                'item_tax_rate_id'     => $invoice_item->item_tax_rate_id,
+                'item_product_id'      => $invoice_item->item_product_id,
+                'item_task_id'         => $invoice_item->item_task_id,
+                'item_name'            => $invoice_item->item_name,
+                'item_description'     => $invoice_item->item_description,
+                'item_quantity'        => $invoice_item->item_quantity,
+                'item_price'           => $invoice_item->item_price,
                 'item_discount_amount' => $invoice_item->item_discount_amount,
-                'item_order' => $invoice_item->item_order,
-                'item_is_recurring' => $invoice_item->item_is_recurring,
-                'item_product_unit' => $invoice_item->item_product_unit,
+                'item_order'           => $invoice_item->item_order,
+                'item_is_recurring'    => $invoice_item->item_is_recurring,
+                'item_product_unit'    => $invoice_item->item_product_unit,
                 'item_product_unit_id' => $invoice_item->item_product_unit_id,
             ];
             if ( ! $copy_recurring_items_only || $invoice_item->item_is_recurring) {
@@ -187,9 +189,9 @@ class InvoicesService extends BaseService
         $invoice_tax_rates = $this->invoiceTaxRatesService->getByInvoiceId($source_id);
         foreach ($invoice_tax_rates as $invoice_tax_rate) {
             $db_array = [
-                'invoice_id' => $target_id,
-                'tax_rate_id' => $invoice_tax_rate->tax_rate_id,
-                'include_item_tax' => $invoice_tax_rate->include_item_tax,
+                'invoice_id'              => $target_id,
+                'tax_rate_id'             => $invoice_tax_rate->tax_rate_id,
+                'include_item_tax'        => $invoice_tax_rate->include_item_tax,
                 'invoice_tax_rate_amount' => $invoice_tax_rate->invoice_tax_rate_amount,
             ];
             $this->invoiceTaxRatesService->save(null, $db_array);
@@ -208,16 +210,16 @@ class InvoicesService extends BaseService
      * Copies the source invoice's global discount to the target, duplicates each item with the quantity negated,
      * duplicates each invoice tax rate with the tax amount negated, and copies custom field values to the target.
      *
-     * @param int $source_id The invoice ID to copy from.
-     * @param int $target_id The invoice ID to copy into (credit invoice).
+     * @param int $source_id the invoice ID to copy from
+     * @param int $target_id the invoice ID to copy into (credit invoice)
      */
     public function copyCreditInvoice($source_id, $target_id)
     {
-        $invoice = $this->getById($source_id);
+        $invoice         = $this->getById($source_id);
         $global_discount = [
-            'amount'  => $invoice->invoice_discount_amount,
-            'percent' => $invoice->invoice_discount_percent,
-            'item'    => 0.0,
+            'amount'         => $invoice->invoice_discount_amount,
+            'percent'        => $invoice->invoice_discount_percent,
+            'item'           => 0.0,
             'items_subtotal' => $this->itemsService->getItemsSubtotal($source_id),
         ];
         Invoice::query()->where('invoice_id', $target_id)->update(['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
@@ -225,18 +227,18 @@ class InvoicesService extends BaseService
         $invoice_items = $this->itemsService->getByInvoiceId($source_id);
         foreach ($invoice_items as $invoice_item) {
             $db_array = [
-                'invoice_id' => $target_id,
-                'item_tax_rate_id' => $invoice_item->item_tax_rate_id,
-                'item_product_id' => $invoice_item->item_product_id,
-                'item_task_id' => $invoice_item->item_task_id,
-                'item_name' => $invoice_item->item_name,
-                'item_description' => $invoice_item->item_description,
-                'item_quantity' => $invoice_item->item_quantity * -1,
-                'item_price' => $invoice_item->item_price,
+                'invoice_id'           => $target_id,
+                'item_tax_rate_id'     => $invoice_item->item_tax_rate_id,
+                'item_product_id'      => $invoice_item->item_product_id,
+                'item_task_id'         => $invoice_item->item_task_id,
+                'item_name'            => $invoice_item->item_name,
+                'item_description'     => $invoice_item->item_description,
+                'item_quantity'        => $invoice_item->item_quantity * -1,
+                'item_price'           => $invoice_item->item_price,
                 'item_discount_amount' => $invoice_item->item_discount_amount,
-                'item_order' => $invoice_item->item_order,
-                'item_is_recurring' => $invoice_item->item_is_recurring,
-                'item_product_unit' => $invoice_item->item_product_unit,
+                'item_order'           => $invoice_item->item_order,
+                'item_is_recurring'    => $invoice_item->item_is_recurring,
+                'item_product_unit'    => $invoice_item->item_product_unit,
                 'item_product_unit_id' => $invoice_item->item_product_unit_id,
             ];
             $this->itemsService->save(null, $db_array, $global_discount);
@@ -244,9 +246,9 @@ class InvoicesService extends BaseService
         $invoice_tax_rates = $this->invoiceTaxRatesService->getByInvoiceId($source_id);
         foreach ($invoice_tax_rates as $invoice_tax_rate) {
             $db_array = [
-                'invoice_id' => $target_id,
-                'tax_rate_id' => $invoice_tax_rate->tax_rate_id,
-                'include_item_tax' => $invoice_tax_rate->include_item_tax,
+                'invoice_id'              => $target_id,
+                'tax_rate_id'             => $invoice_tax_rate->tax_rate_id,
+                'include_item_tax'        => $invoice_tax_rate->include_item_tax,
                 'invoice_tax_rate_amount' => -$invoice_tax_rate->invoice_tax_rate_amount,
             ];
             $this->invoiceTaxRatesService->save(null, $db_array);
@@ -268,17 +270,17 @@ class InvoicesService extends BaseService
      * and adding a URL key.
      *
      * @return array Associative array of invoice fields prepared for database storage. Contains at least:
-     *              - `invoice_date_created` (MySQL-formatted date string)
-     *              - `invoice_date_due` (due date as Y-m-d)
-     *              - `invoice_terms`
-     *              - `invoice_status_id`
-     *              - `invoice_number`
-     *              - `payment_method`
-     *              - `invoice_url_key`
+     *               - `invoice_date_created` (MySQL-formatted date string)
+     *               - `invoice_date_due` (due date as Y-m-d)
+     *               - `invoice_terms`
+     *               - `invoice_status_id`
+     *               - `invoice_number`
+     *               - `payment_method`
+     *               - `invoice_url_key`
      */
     public function dbArray()
     {
-        $db_array = parent::dbArray();
+        $db_array                         = parent::dbArray();
         $db_array['invoice_date_created'] = date_to_mysql($db_array['invoice_date_created']);
         $db_array['invoice_date_due']     = $this->getDateDue($db_array['invoice_date_created']);
         $db_array['invoice_terms']        = get_setting('default_invoice_terms');
@@ -293,21 +295,24 @@ class InvoicesService extends BaseService
         } else {
             $db_array['invoice_number'] = '';
         }
-        $db_array['payment_method'] = empty($db_array['payment_method']) ? 0 : $db_array['payment_method'];
+        $db_array['payment_method']  = empty($db_array['payment_method']) ? 0 : $db_array['payment_method'];
         $db_array['invoice_url_key'] = $this->getUrlKey();
+
         return $db_array;
     }
 
     /**
      * Attach matching payments to the given invoice object.
      *
-     * @param object $invoice Invoice object containing an `invoice_id` property.
-     * @return object The invoice object with a `payments` property: an Eloquent Collection of payment records if any exist, `null` otherwise.
+     * @param object $invoice invoice object containing an `invoice_id` property
+     *
+     * @return object the invoice object with a `payments` property: an Eloquent Collection of payment records if any exist, `null` otherwise
      */
     public function getPayments($invoice)
     {
-        $payments = Payment::query()->where('invoice_id', $invoice->invoice_id)->get();
+        $payments          = Payment::query()->where('invoice_id', $invoice->invoice_id)->get();
         $invoice->payments = $payments->isNotEmpty() ? $payments : null;
+
         return $invoice;
     }
 
@@ -327,8 +332,9 @@ class InvoicesService extends BaseService
     /**
      * Generate the next invoice number for the specified invoice group.
      *
-     * @param int $invoice_group_id The ID of the invoice group to use when generating the number.
-     * @return string The newly generated invoice number.
+     * @param int $invoice_group_id the ID of the invoice group to use when generating the number
+     *
+     * @return string the newly generated invoice number
      */
     public function getInvoiceNumber($invoice_group_id)
     {
@@ -338,7 +344,7 @@ class InvoicesService extends BaseService
     /**
      * Generate a random 32-character URL key.
      *
-     * @return string A 32-character random string suitable for use as a URL key.
+     * @return string a 32-character random string suitable for use as a URL key
      */
     public function getUrlKey()
     {
@@ -370,11 +376,12 @@ class InvoicesService extends BaseService
     }
 
     /**
-         * Retrieve custom field values for an invoice.
-         *
-         * @param int|string $id Invoice ID.
-         * @return array The invoice's custom field values, keyed by custom field ID.
-         */
+     * Retrieve custom field values for an invoice.
+     *
+     * @param int|string $id invoice ID
+     *
+     * @return array the invoice's custom field values, keyed by custom field ID
+     */
     public function getCustomValues($id)
     {
         return $this->invoiceCustomService->get_by_invid($id);
@@ -403,7 +410,7 @@ class InvoicesService extends BaseService
     /**
      * Delete an invoice and remove any orphaned related records.
      *
-     * @param int|string $invoice_id The ID of the invoice to delete.
+     * @param int|string $invoice_id the ID of the invoice to delete
      */
     public function delete($invoice_id)
     {
@@ -531,14 +538,14 @@ class InvoicesService extends BaseService
      * setting equals 3, also sets the invoice to read-only. Persists changes only
      * when there are updates to save.
      *
-     * @param int|string $invoice_id The ID of the invoice to update.
+     * @param int|string $invoice_id the ID of the invoice to update
      */
     public function markViewed($invoice_id)
     {
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice)) {
             $update_data = [];
-            
+
             if ($invoice->invoice_status_id == 2) {
                 $update_data['invoice_status_id'] = 3;
             }
@@ -547,7 +554,7 @@ class InvoicesService extends BaseService
                 $update_data['is_read_only'] = 1;
             }
             // Save?
-            if (!empty($update_data)) {
+            if ( ! empty($update_data)) {
                 Invoice::query()->where('invoice_id', $invoice_id)->update($update_data);
             }
         }
@@ -559,14 +566,14 @@ class InvoicesService extends BaseService
      * If the invoice is currently a draft (status 1), updates its due date and changes its status to sent (2).
      * If read-only behavior is enabled via configuration and the `read_only_toggle` setting equals 2, marks the invoice as read-only.
      *
-     * @param int $invoice_id The ID of the invoice to mark as sent.
+     * @param int $invoice_id the ID of the invoice to mark as sent
      */
     public function markSent($invoice_id)
     {
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice)) {
             $update_data = [];
-            
+
             if ($invoice->invoice_status_id == 1) {
                 // Set new due date and save
                 $this->updateInvoiceDueDate($invoice_id);
@@ -577,7 +584,7 @@ class InvoicesService extends BaseService
                 $update_data['is_read_only'] = 1;
             }
             // Save?
-            if (!empty($update_data)) {
+            if ( ! empty($update_data)) {
                 Invoice::query()->where('invoice_id', $invoice_id)->update($update_data);
             }
         }
@@ -588,7 +595,7 @@ class InvoicesService extends BaseService
      *
      * Checks the invoice by ID and, if it is a draft with no number and the setting `generate_invoice_number_for_draft` is disabled, obtains a new invoice number for the invoice's group and updates the invoice record.
      *
-     * @param int $invoice_id The ID of the invoice to potentially update.
+     * @param int $invoice_id the ID of the invoice to potentially update
      */
     public function generateInvoiceNumberIfApplicable($invoice_id)
     {
@@ -607,7 +614,7 @@ class InvoicesService extends BaseService
      * If the invoice exists, is not marked read-only, and the "no_update_invoice_due_date_mail" setting is disabled,
      * the invoice's due date will be recalculated and persisted.
      *
-     * @param int $invoice_id The ID of the invoice to update.
+     * @param int $invoice_id the ID of the invoice to update
      */
     public function updateInvoiceDueDate($invoice_id)
     {

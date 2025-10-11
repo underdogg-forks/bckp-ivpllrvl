@@ -64,7 +64,7 @@ class InvoiceGroupsController extends AdminController
     /**
      * Delete the invoice group identified by the given ID and redirect to the invoice groups list.
      *
-     * @param int|string $id The ID of the invoice group to delete.
+     * @param int|string $id the ID of the invoice group to delete
      */
     public function delete($id)
     {

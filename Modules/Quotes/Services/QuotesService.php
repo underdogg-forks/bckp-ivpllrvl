@@ -6,8 +6,6 @@ use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\Quote;
 use Modules\Quotes\Models\Quote;
-use Modules\Quotes\Models\QuoteItem;
-use Modules\Quotes\Models\QuoteTaxRate;
 
 #[AllowDynamicProperties]
 class QuotesService extends BaseService
@@ -81,8 +79,9 @@ class QuotesService extends BaseService
     /**
      * Create a quote record and its related amount and default tax records.
      *
-     * @param array|null $db_array Optional associative array of quote attributes to set before saving.
-     * @return int The created quote's primary key (`quote_id`).
+     * @param array|null $db_array optional associative array of quote attributes to set before saving
+     *
+     * @return int the created quote's primary key (`quote_id`)
      */
     public function create(?array $db_array = null): int
     {
@@ -96,11 +95,12 @@ class QuotesService extends BaseService
         // Create default invoice tax record if applicable
         if (get_setting('default_invoice_tax_rate')) {
             $quote->quoteTaxRates()->create([
-                'tax_rate_id' => get_setting('default_invoice_tax_rate'),
-                'include_item_tax' => get_setting('default_include_item_tax'),
+                'tax_rate_id'           => get_setting('default_invoice_tax_rate'),
+                'include_item_tax'      => get_setting('default_include_item_tax'),
                 'quote_tax_rate_amount' => 0,
             ]);
         }
+
         return $quote->quote_id;
     }
 
@@ -111,8 +111,8 @@ class QuotesService extends BaseService
      * quantity, price, tax rate, product/unit references, and applies the source quote's global discount to the copied items.
      * Also copies the source quote's tax rate entries and any custom fields (excluding primary key) to the target.
      *
-     * @param int $source_id The ID of the quote to copy from.
-     * @param int $target_id The ID of the quote to copy to.
+     * @param int $source_id the ID of the quote to copy from
+     * @param int $target_id the ID of the quote to copy to
      */
     public function copyQuote($source_id, $target_id)
     {
@@ -357,7 +357,7 @@ class QuotesService extends BaseService
      *
      * Updates the quote's status to approved (4) for any quote matching the given URL key that is currently in sent (2) or viewed (3) status.
      *
-     * @param string $quote_url_key The quote's public URL key.
+     * @param string $quote_url_key the quote's public URL key
      */
     public function approveQuoteByKey($quote_url_key)
     {
@@ -373,7 +373,7 @@ class QuotesService extends BaseService
      * Updates matching quotes' status to the rejected status (5) for records whose `quote_url_key` equals
      * the provided key and whose current `quote_status_id` is 2 (sent) or 3 (viewed).
      *
-     * @param string $quote_url_key The public URL key of the quote.
+     * @param string $quote_url_key the public URL key of the quote
      */
     public function rejectQuoteByKey($quote_url_key)
     {
@@ -388,7 +388,7 @@ class QuotesService extends BaseService
      *
      * Updates the quote's status to approved for the given quote id only when the quote is in status 2 (sent) or 3 (viewed).
      *
-     * @param int $quote_id The ID of the quote to approve.
+     * @param int $quote_id the ID of the quote to approve
      */
     public function approveQuoteById($quote_id)
     {
@@ -401,7 +401,7 @@ class QuotesService extends BaseService
     /**
      * Mark the specified quote as rejected when its current status is "sent" or "viewed".
      *
-     * @param int $quote_id The ID of the quote to reject.
+     * @param int $quote_id the ID of the quote to reject
      */
     public function rejectQuoteById($quote_id)
     {
@@ -416,7 +416,7 @@ class QuotesService extends BaseService
      *
      * If the quote exists and its status is "sent", this updates the status to "viewed".
      *
-     * @param int $quote_id The ID of the quote to mark as viewed.
+     * @param int $quote_id the ID of the quote to mark as viewed
      */
     public function markViewed($quote_id)
     {
@@ -424,7 +424,7 @@ class QuotesService extends BaseService
             ->select('quote_status_id')
             ->where('quote_id', $quote_id)
             ->first();
-            
+
         if ($quote && $quote->quote_status_id == 2) {
             Quote::query()->where('quote_id', $quote_id)->update(['quote_status_id' => 3]);
         }
@@ -435,7 +435,7 @@ class QuotesService extends BaseService
      *
      * Updates the quote's `quote_status_id` to 2 if the quote exists and its current `quote_status_id` is 1.
      *
-     * @param int $quote_id The ID of the quote to mark as sent.
+     * @param int $quote_id the ID of the quote to mark as sent
      */
     public function markSent($quote_id)
     {
@@ -443,7 +443,7 @@ class QuotesService extends BaseService
             ->select('quote_status_id')
             ->where('quote_id', $quote_id)
             ->first();
-            
+
         if ($quote && $quote->quote_status_id == 1) {
             Quote::query()->where('quote_id', $quote_id)->update(['quote_status_id' => 2]);
         }
@@ -456,7 +456,7 @@ class QuotesService extends BaseService
      * and the `generate_quote_number_for_draft` setting is 0, generates a new quote number for the
      * quote's invoice group and updates the quote record with that number.
      *
-     * @param int $quote_id The ID of the quote to evaluate and potentially update.
+     * @param int $quote_id the ID of the quote to evaluate and potentially update
      */
     public function generateQuoteNumberIfApplicable($quote_id)
     {
@@ -472,7 +472,7 @@ class QuotesService extends BaseService
     /**
      * Retrieve all quotes with their related user, client, quoteAmount, and invoice models, ordered by creation date, quote number, and quote id in descending order.
      *
-     * @return \Illuminate\Database\Eloquent\Collection Collection of Quote models with the specified relations loaded.
+     * @return \Illuminate\Database\Eloquent\Collection collection of Quote models with the specified relations loaded
      */
     public function getQuotesWithRelations(): \Illuminate\Database\Eloquent\Collection
     {

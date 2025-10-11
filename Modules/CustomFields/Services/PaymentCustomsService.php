@@ -50,9 +50,10 @@ class PaymentCustomsService extends BaseService
      *
      * Validates the given data and, when validation passes, persists each custom field value found in the instance's `_formdata` for the specified payment. If no `_formdata` is present, the method does nothing and succeeds.
      *
-     * @param int|string $payment_id The payment identifier to associate custom field values with.
-     * @param array $db_array Data used for validation.
-     * @return mixed `true` if the values were validated and saved or no form data existed; otherwise the validation result describing errors. 
+     * @param int|string $payment_id the payment identifier to associate custom field values with
+     * @param array      $db_array   data used for validation
+     *
+     * @return mixed `true` if the values were validated and saved or no form data existed; otherwise the validation result describing errors
      */
     public function saveCustom($payment_id, $db_array)
     {
@@ -65,13 +66,13 @@ class PaymentCustomsService extends BaseService
             foreach ($form_data as $key => $value) {
                 \Modules\Payments\Models\PaymentCustom::query()->updateOrCreate(
                     [
-                        'payment_id' => $payment_id,
-                        'payment_custom_fieldid' => $key
+                        'payment_id'             => $payment_id,
+                        'payment_custom_fieldid' => $key,
                     ],
                     [
-                        'payment_id' => $payment_id,
-                        'payment_custom_fieldid' => $key,
-                        'payment_custom_fieldvalue' => $value
+                        'payment_id'                => $payment_id,
+                        'payment_custom_fieldid'    => $key,
+                        'payment_custom_fieldvalue' => $value,
                     ]
                 );
             }
@@ -97,8 +98,9 @@ class PaymentCustomsService extends BaseService
     /**
      * Retrieve custom field values for a specific payment joined with their field definitions.
      *
-     * @param int $payment_id The payment identifier to filter custom fields by.
-     * @return \Illuminate\Database\Eloquent\Collection Collection of payment custom records joined with their corresponding custom field definitions, ordered by custom_field_table, custom_field_order, then custom_field_label.
+     * @param int $payment_id the payment identifier to filter custom fields by
+     *
+     * @return \Illuminate\Database\Eloquent\Collection collection of payment custom records joined with their corresponding custom field definitions, ordered by custom_field_table, custom_field_order, then custom_field_label
      */
     public function getByPayid($payment_id)
     {

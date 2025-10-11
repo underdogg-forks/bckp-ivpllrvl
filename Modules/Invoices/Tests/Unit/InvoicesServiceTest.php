@@ -27,25 +27,25 @@ class InvoicesServiceTest extends TestCase
     {
         // Arrange
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
 
         $invoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 1,
         ]);
 
         Payment::create([
-            'invoice_id' => $invoice->invoice_id,
+            'invoice_id'     => $invoice->invoice_id,
             'payment_amount' => 100.00,
-            'payment_date' => now(),
+            'payment_date'   => now(),
         ]);
 
         Payment::create([
-            'invoice_id' => $invoice->invoice_id,
+            'invoice_id'     => $invoice->invoice_id,
             'payment_amount' => 50.00,
-            'payment_date' => now(),
+            'payment_date'   => now(),
         ]);
 
         // Act
@@ -61,12 +61,12 @@ class InvoicesServiceTest extends TestCase
     {
         // Arrange
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
 
         $invoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 1,
         ]);
 
@@ -82,12 +82,12 @@ class InvoicesServiceTest extends TestCase
     {
         // Arrange
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
 
         $invoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 2, // Sent status
         ]);
 
@@ -104,12 +104,12 @@ class InvoicesServiceTest extends TestCase
     {
         // Arrange
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
 
         $invoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 1, // Draft status
         ]);
 
@@ -126,27 +126,27 @@ class InvoicesServiceTest extends TestCase
     {
         // Arrange
         $client1 = Client::create([
-            'client_name' => 'Client 1',
+            'client_name'   => 'Client 1',
             'client_active' => 1,
         ]);
 
         $client2 = Client::create([
-            'client_name' => 'Client 2',
+            'client_name'   => 'Client 2',
             'client_active' => 1,
         ]);
 
         Invoice::create([
-            'client_id' => $client1->client_id,
+            'client_id'         => $client1->client_id,
             'invoice_status_id' => 1,
         ]);
 
         Invoice::create([
-            'client_id' => $client1->client_id,
+            'client_id'         => $client1->client_id,
             'invoice_status_id' => 1,
         ]);
 
         Invoice::create([
-            'client_id' => $client2->client_id,
+            'client_id'         => $client2->client_id,
             'invoice_status_id' => 1,
         ]);
 

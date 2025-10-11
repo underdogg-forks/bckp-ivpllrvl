@@ -34,8 +34,8 @@ class CustomFieldsController extends AdminController
      *
      * When $name is not 'all' and exists, only fields for that table are shown. The view is provided with filter controls, the paginated custom fields, available custom tables, custom value fields, and position options.
      *
-     * @param string $name The custom table name to filter by, or 'all' to show all tables.
-     * @param int $page The pagination page number to display.
+     * @param string $name the custom table name to filter by, or 'all' to show all tables
+     * @param int    $page the pagination page number to display
      */
     public function table(string $name = 'all', $page = 0): void
     {
@@ -79,7 +79,7 @@ class CustomFieldsController extends AdminController
      *
      * If the field cannot be deleted, a flash message is set to inform the user that the field is in use.
      *
-     * @param int|string $id The custom field identifier to delete.
+     * @param int|string $id the custom field identifier to delete
      */
     public function delete($id)
     {

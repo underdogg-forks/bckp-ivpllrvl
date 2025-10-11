@@ -2,34 +2,37 @@
 
 namespace Modules\Mailer\Tests\Feature;
 
+use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
+use Modules\Clients\Models\Client;
+use Modules\EmailTemplates\Models\EmailTemplate;
+use Modules\Invoices\Models\Invoice;
 use Modules\Mailer\Controllers\MailerController;
+use Modules\Quotes\Models\Quote;
+use Modules\Upload\Models\Upload;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Modules\Invoices\Models\Invoice;
-use Modules\Quotes\Models\Quote;
-use Modules\Clients\Models\Client;
-use Modules\EmailTemplates\Models\EmailTemplate;
-use Modules\Upload\Models\Upload;
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Config;
 
 #[CoversClass(MailerController::class)]
 
 class MailerControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
+
     protected Client $client;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
+        $this->user   = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
         $this->client = Client::factory()->create(['client_email' => 'client@example.com']);
         $this->actingAs($this->user);
 
@@ -40,7 +43,7 @@ class MailerControllerTest extends TestCase
     #[Test]
     public function it_displays_invoice_mail_composer(): void
     {
-        $invoice = Invoice::factory()->create(['client_id' => $this->client->client_id]);
+        $invoice       = Invoice::factory()->create(['client_id' => $this->client->client_id]);
         $emailTemplate = EmailTemplate::factory()->create(['email_template_type' => 'invoice']);
 
         $response = $this->get(route('mailer.invoice', ['invoice_id' => $invoice->invoice_id]));
@@ -55,7 +58,7 @@ class MailerControllerTest extends TestCase
     #[Test]
     public function it_displays_quote_mail_composer(): void
     {
-        $quote = Quote::factory()->create(['client_id' => $this->client->client_id]);
+        $quote         = Quote::factory()->create(['client_id' => $this->client->client_id]);
         $emailTemplate = EmailTemplate::factory()->create(['email_template_type' => 'quote']);
 
         $response = $this->get(route('mailer.quote', ['quote_id' => $quote->quote_id]));
@@ -85,19 +88,19 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id,
-            'invoice_number' => 'INV-001'
+            'client_id'      => $this->client->client_id,
+            'invoice_number' => 'INV-001',
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => 'Please find attached your invoice.',
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => 'Please find attached your invoice.',
             'pdf_template' => 'default',
-            'cc' => '',
-            'bcc' => ''
+            'cc'           => '',
+            'bcc'          => '',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -116,19 +119,19 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id,
-            'invoice_number' => 'INV-002'
+            'client_id'      => $this->client->client_id,
+            'invoice_number' => 'INV-002',
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => 'Invoice email body',
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => 'Invoice email body',
             'pdf_template' => 'default',
-            'cc' => 'cc@example.com',
-            'bcc' => 'bcc@example.com'
+            'cc'           => 'cc@example.com',
+            'bcc'          => 'bcc@example.com',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -146,17 +149,17 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id,
-            'invoice_number' => 'INV-003'
+            'client_id'      => $this->client->client_id,
+            'invoice_number' => 'INV-003',
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => "Line 1\nLine 2\nLine 3", // Plain text with newlines
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => "Line 1\nLine 2\nLine 3", // Plain text with newlines
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -175,21 +178,21 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id,
-            'invoice_number' => 'INV-004'
+            'client_id'      => $this->client->client_id,
+            'invoice_number' => 'INV-004',
         ]);
 
         Upload::factory()->count(2)->create([
-            'invoice_id' => $invoice->invoice_id
+            'invoice_id' => $invoice->invoice_id,
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => 'Invoice with attachments',
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => 'Invoice with attachments',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -203,18 +206,18 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id,
-            'invoice_number' => null,
-            'invoice_status_id' => 1
+            'client_id'         => $this->client->client_id,
+            'invoice_number'    => null,
+            'invoice_status_id' => 1,
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => 'Invoice email',
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => 'Invoice email',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -229,17 +232,17 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id,
-            'invoice_status_id' => 1
+            'client_id'         => $this->client->client_id,
+            'invoice_status_id' => 1,
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => 'Invoice email',
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => 'Invoice email',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -254,7 +257,7 @@ class MailerControllerTest extends TestCase
         $invoice = Invoice::factory()->create();
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), [
-            'btn_cancel' => true
+            'btn_cancel' => true,
         ]);
 
         $response->assertRedirect(route('invoices.view', ['invoice_id' => $invoice->invoice_id]));
@@ -264,19 +267,19 @@ class MailerControllerTest extends TestCase
     public function it_redirects_to_mailer_form_on_failed_email_send(): void
     {
         Mail::fake();
-        Mail::shouldReceive('send')->andThrow(new \Exception('Mail server error'));
+        Mail::shouldReceive('send')->andThrow(new Exception('Mail server error'));
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id
+            'client_id' => $this->client->client_id,
         ]);
 
         $emailData = [
-            'to_email' => 'invalid-email',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => 'Invoice email',
-            'pdf_template' => 'default'
+            'to_email'     => 'invalid-email',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => 'Invoice email',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -290,19 +293,19 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $quote = Quote::factory()->create([
-            'client_id' => $this->client->client_id,
-            'quote_number' => 'QUO-001'
+            'client_id'    => $this->client->client_id,
+            'quote_number' => 'QUO-001',
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Quote',
-            'body' => 'Please find attached your quote.',
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Quote',
+            'body'         => 'Please find attached your quote.',
             'pdf_template' => 'default',
-            'cc' => '',
-            'bcc' => ''
+            'cc'           => '',
+            'bcc'          => '',
         ];
 
         $response = $this->post(route('mailer.sendQuote', ['quote_id' => $quote->quote_id]), $emailData);
@@ -321,18 +324,18 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $quote = Quote::factory()->create([
-            'client_id' => $this->client->client_id,
-            'quote_number' => null,
-            'quote_status_id' => 1
+            'client_id'       => $this->client->client_id,
+            'quote_number'    => null,
+            'quote_status_id' => 1,
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Quote',
-            'body' => 'Quote email',
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Quote',
+            'body'         => 'Quote email',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendQuote', ['quote_id' => $quote->quote_id]), $emailData);
@@ -347,17 +350,17 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $quote = Quote::factory()->create([
-            'client_id' => $this->client->client_id,
-            'quote_status_id' => 1
+            'client_id'       => $this->client->client_id,
+            'quote_status_id' => 1,
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Quote',
-            'body' => 'Quote email',
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Quote',
+            'body'         => 'Quote email',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendQuote', ['quote_id' => $quote->quote_id]), $emailData);
@@ -372,7 +375,7 @@ class MailerControllerTest extends TestCase
         $quote = Quote::factory()->create();
 
         $response = $this->post(route('mailer.sendQuote', ['quote_id' => $quote->quote_id]), [
-            'btn_cancel' => true
+            'btn_cancel' => true,
         ]);
 
         $response->assertRedirect(route('quotes.view', ['quote_id' => $quote->quote_id]));
@@ -384,21 +387,21 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $quote = Quote::factory()->create([
-            'client_id' => $this->client->client_id,
-            'quote_number' => 'QUO-002'
+            'client_id'    => $this->client->client_id,
+            'quote_number' => 'QUO-002',
         ]);
 
         Upload::factory()->count(2)->create([
-            'quote_id' => $quote->quote_id
+            'quote_id' => $quote->quote_id,
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Quote',
-            'body' => 'Quote with attachments',
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Quote',
+            'body'         => 'Quote with attachments',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendQuote', ['quote_id' => $quote->quote_id]), $emailData);
@@ -412,16 +415,16 @@ class MailerControllerTest extends TestCase
         Mail::fake();
 
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id
+            'client_id' => $this->client->client_id,
         ]);
 
         $emailData = [
-            'to_email' => 'client@example.com',
-            'from_email' => 'sender@example.com',
-            'from_name' => 'Test Sender',
-            'subject' => 'Your Invoice',
-            'body' => '<p>Invoice &amp; details</p>',
-            'pdf_template' => 'default'
+            'to_email'     => 'client@example.com',
+            'from_email'   => 'sender@example.com',
+            'from_name'    => 'Test Sender',
+            'subject'      => 'Your Invoice',
+            'body'         => '<p>Invoice &amp; details</p>',
+            'pdf_template' => 'default',
         ];
 
         $response = $this->post(route('mailer.sendInvoice', ['invoice_id' => $invoice->invoice_id]), $emailData);
@@ -430,7 +433,7 @@ class MailerControllerTest extends TestCase
 
         // HTML entities should be decoded
         Mail::assertSent(function ($mail) {
-            return str_contains($mail->body, '&') && !str_contains($mail->body, '&amp;');
+            return str_contains($mail->body, '&') && ! str_contains($mail->body, '&amp;');
         });
     }
 }

@@ -10,9 +10,9 @@ class EmailTemplate extends BaseModel
     /** @use HasFactory<\Database\Factories\EmailTemplateFactory> */
     use HasFactory;
 
-    protected $table = 'ip_email_templates';
-
     public $timestamps = false;
+
+    protected $table = 'ip_email_templates';
 
     protected $casts = [];
 

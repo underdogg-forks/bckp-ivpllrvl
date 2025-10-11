@@ -10,9 +10,9 @@ class InvoiceTaxRate extends BaseModel
     /** @use HasFactory<\Database\Factories\InvoiceTaxRateFactory> */
     use HasFactory;
 
-    protected $table = 'ip_invoice_tax_rates';
-
     public $timestamps = false;
+
+    protected $table = 'ip_invoice_tax_rates';
 
     protected $casts = [];
 

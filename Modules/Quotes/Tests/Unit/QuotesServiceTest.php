@@ -26,12 +26,12 @@ class QuotesServiceTest extends TestCase
     {
         // Arrange
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
 
         $quote = Quote::create([
-            'client_id' => $client->client_id,
+            'client_id'       => $client->client_id,
             'quote_status_id' => 2, // Sent status
         ]);
 
@@ -48,12 +48,12 @@ class QuotesServiceTest extends TestCase
     {
         // Arrange
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
 
         $quote = Quote::create([
-            'client_id' => $client->client_id,
+            'client_id'       => $client->client_id,
             'quote_status_id' => 1, // Draft status
         ]);
 
@@ -70,27 +70,27 @@ class QuotesServiceTest extends TestCase
     {
         // Arrange
         $client1 = Client::create([
-            'client_name' => 'Client 1',
+            'client_name'   => 'Client 1',
             'client_active' => 1,
         ]);
 
         $client2 = Client::create([
-            'client_name' => 'Client 2',
+            'client_name'   => 'Client 2',
             'client_active' => 1,
         ]);
 
         Quote::create([
-            'client_id' => $client1->client_id,
+            'client_id'       => $client1->client_id,
             'quote_status_id' => 1,
         ]);
 
         Quote::create([
-            'client_id' => $client1->client_id,
+            'client_id'       => $client1->client_id,
             'quote_status_id' => 1,
         ]);
 
         Quote::create([
-            'client_id' => $client2->client_id,
+            'client_id'       => $client2->client_id,
             'quote_status_id' => 1,
         ]);
 

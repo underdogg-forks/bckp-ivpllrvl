@@ -11,7 +11,8 @@ class TemplatesService extends BaseService
     /**
      * Retrieve available invoice template names for the given template type.
      *
-     * @param string $type Template category to load; supported values are `'pdf'` and `'public'`.
+     * @param string $type template category to load; supported values are `'pdf'` and `'public'`
+     *
      * @return string[] Array of template basenames with the `.php` extension removed.
      */
     public function getInvoiceTemplates($type = 'pdf')
@@ -23,13 +24,15 @@ class TemplatesService extends BaseService
         } else {
             $templates = [];
         }
+
         return $this->removeExtension($templates);
     }
 
     /**
      * Retrieve available quote template names for the specified template type.
      *
-     * @param string $type The template type to list: 'pdf' for PDF templates or 'public' for public templates.
+     * @param string $type the template type to list: 'pdf' for PDF templates or 'public' for public templates
+     *
      * @return string[] An array of template filenames with the '.php' extension removed.
      */
     public function getQuoteTemplates($type = 'pdf')
@@ -41,7 +44,18 @@ class TemplatesService extends BaseService
         } else {
             $templates = [];
         }
+
         return $this->removeExtension($templates);
+    }
+
+    /**
+     * Get all templates.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAll()
+    {
+        return \Modules\Invoices\Models\Template::query()->get();
     }
 
     /**
@@ -56,15 +70,5 @@ class TemplatesService extends BaseService
         }
 
         return $files;
-    }
-
-    /**
-     * Get all templates.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAll()
-    {
-        return \Modules\Invoices\Models\Template::query()->get();
     }
 }

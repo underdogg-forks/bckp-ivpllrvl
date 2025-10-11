@@ -23,22 +23,23 @@ use Modules\Users\Services\UsersService;
 class AjaxController extends AdminController
 {
     public $ajax_controller = true;
-    / **
+
+    /**
      * Create the AjaxController with its required service dependencies and initialize the parent controller.
      *
-     * @param InvoicesService $invoicesService Handles invoice CRUD, validation, and related business logic.
-     * @param InvoiceSumexService $invoiceSumexService Manages Sumex-specific invoice data and persistence.
-     * @param InvoiceTaxRatesService $invoiceTaxRatesService Validates and saves invoice tax rate records.
-     * @param ItemsService $itemsService Handles invoice item creation, updates, deletion, and retrieval.
-     * @param InvoiceAmountsService $invoiceAmountsService Calculates and updates invoice totals and amounts.
-     * @param InvoiceCustomService $invoiceCustomService Persists invoice custom field values.
-     * @param TasksService $tasksService Manages task updates related to invoice items.
-     * @param UnitsService $unitsService Provides unit lookups and normalization for invoice items.
-     * @param ClientsService $clientsService Retrieves and manages client data for invoices.
-     * @param UsersService $usersService Retrieves and manages user data for invoices.
-     * @param InvoiceGroupsService $invoiceGroupsService Provides invoice group lookup and defaults.
-     * @param TaxRatesService $taxRatesService Provides tax rate lookup and utilities.
-     * @param InvoicesRecurringService $invoicesRecurringService Manages recurring invoice creation and schedules.
+     * @param InvoicesService          $invoicesService          handles invoice CRUD, validation, and related business logic
+     * @param InvoiceSumexService      $invoiceSumexService      manages Sumex-specific invoice data and persistence
+     * @param InvoiceTaxRatesService   $invoiceTaxRatesService   validates and saves invoice tax rate records
+     * @param ItemsService             $itemsService             handles invoice item creation, updates, deletion, and retrieval
+     * @param InvoiceAmountsService    $invoiceAmountsService    calculates and updates invoice totals and amounts
+     * @param InvoiceCustomService     $invoiceCustomService     persists invoice custom field values
+     * @param TasksService             $tasksService             manages task updates related to invoice items
+     * @param UnitsService             $unitsService             provides unit lookups and normalization for invoice items
+     * @param ClientsService           $clientsService           retrieves and manages client data for invoices
+     * @param UsersService             $usersService             retrieves and manages user data for invoices
+     * @param InvoiceGroupsService     $invoiceGroupsService     provides invoice group lookup and defaults
+     * @param TaxRatesService          $taxRatesService          provides tax rate lookup and utilities
+     * @param InvoicesRecurringService $invoicesRecurringService manages recurring invoice creation and schedules
      */
     public function __construct(
         public InvoicesService $invoicesService,
@@ -224,7 +225,7 @@ class AjaxController extends AdminController
      * marks the linked task (if any) as completed (status 3). Sends a JSON response
      * containing `success` (1 on success, 0 on failure) and terminates execution.
      *
-     * @param int|string $invoice_id Invoice identifier used to verify the invoice exists.
+     * @param int|string $invoice_id invoice identifier used to verify the invoice exists
      */
     public function deleteItem($invoice_id)
     {
@@ -248,11 +249,11 @@ class AjaxController extends AdminController
     }
 
     /**
-         * Fetches the invoice item identified by the POSTed `item_id` and outputs it as JSON.
-         *
-         * Reads `item_id` from POST input (sanitized), retrieves the corresponding item via the items service,
-         * and echoes the item encoded as JSON.
-         */
+     * Fetches the invoice item identified by the POSTed `item_id` and outputs it as JSON.
+     *
+     * Reads `item_id` from POST input (sanitized), retrieves the corresponding item via the items service,
+     * and echoes the item encoded as JSON.
+     */
     public function getItem()
     {
         $item = $this->itemsService->getById($this->security->xss_clean($this->input->post('item_id', true)));
@@ -264,17 +265,18 @@ class AjaxController extends AdminController
      *
      * Gathers invoice groups, tax rates, the specified invoice, and client based on POST inputs and returns the rendered modal view.
      *
-     * @return string Rendered HTML of the copy-invoice modal.
+     * @return string rendered HTML of the copy-invoice modal
      */
     public function modalCopyInvoice()
     {
         $data = [
             'invoice_groups' => $this->invoiceGroupsService->getAll(),
-            'tax_rates' => $this->taxRatesService->getAll(),
-            'invoice_id' => $this->input->post('invoice_id'),
-            'invoice' => $this->invoicesService->getById($this->input->post('invoice_id')),
-            'client' => $this->clientsService->getById($this->input->post('client_id')),
+            'tax_rates'      => $this->taxRatesService->getAll(),
+            'invoice_id'     => $this->input->post('invoice_id'),
+            'invoice'        => $this->invoicesService->getById($this->input->post('invoice_id')),
+            'client'         => $this->clientsService->getById($this->input->post('client_id')),
         ];
+
         return view('invoices.modal_copy_invoice', $data);
     }
 
@@ -309,15 +311,16 @@ class AjaxController extends AdminController
     /**
      * Render the modal for changing the user associated with an invoice.
      *
-     * @return string Rendered HTML for the change-user modal.
+     * @return string rendered HTML for the change-user modal
      */
     public function modalChangeUser()
     {
         $data = [
-            'user_id' => $this->input->post('user_id'),
+            'user_id'    => $this->input->post('user_id'),
             'invoice_id' => $this->input->post('invoice_id'),
-            'users' => $this->usersService->getLatest(),
+            'users'      => $this->usersService->getLatest(),
         ];
+
         return view('layout.ajax.modal_change_user_client', $data);
     }
 
@@ -350,15 +353,16 @@ class AjaxController extends AdminController
      *
      * Passes these variables to the view: `client_id`, `invoice_id`, and `clients` (a list of recent clients).
      *
-     * @return string The rendered modal view HTML.
+     * @return string the rendered modal view HTML
      */
     public function modalChangeClient()
     {
         $data = [
-            'client_id' => $this->input->post('client_id'),
+            'client_id'  => $this->input->post('client_id'),
             'invoice_id' => $this->input->post('invoice_id'),
-            'clients' => $this->clientsService->getLatest(),
+            'clients'    => $this->clientsService->getLatest(),
         ];
+
         return view('layout.ajax.modal_change_user_client', $data);
     }
 
@@ -390,16 +394,17 @@ class AjaxController extends AdminController
     /**
      * Render the create-invoice modal populated with invoice groups, tax rates, the specified client, and recent clients.
      *
-     * @return string The rendered modal HTML containing `invoice_groups`, `tax_rates`, `client`, and `clients` in the view context.
+     * @return string the rendered modal HTML containing `invoice_groups`, `tax_rates`, `client`, and `clients` in the view context
      */
     public function modalCreateInvoice()
     {
         $data = [
             'invoice_groups' => $this->invoiceGroupsService->getAll(),
-            'tax_rates' => $this->taxRatesService->getAll(),
-            'client' => $this->clientsService->getById($this->input->post('client_id')),
-            'clients' => $this->clientsService->getLatest(),
+            'tax_rates'      => $this->taxRatesService->getAll(),
+            'client'         => $this->clientsService->getById($this->input->post('client_id')),
+            'clients'        => $this->clientsService->getLatest(),
         ];
+
         return view('invoices.modal_create_invoice', $data);
     }
 
@@ -446,14 +451,15 @@ class AjaxController extends AdminController
      *
      * Loads the requested invoice ID and available recurrence frequencies and returns the rendered modal view.
      *
-     * @return string Rendered HTML of the create-recurring-invoice modal.
+     * @return string rendered HTML of the create-recurring-invoice modal
      */
     public function modalCreateRecurring()
     {
         $data = [
-            'invoice_id' => $this->input->post('invoice_id'),
+            'invoice_id'        => $this->input->post('invoice_id'),
             'recur_frequencies' => $this->invoicesRecurringService->recur_frequencies,
         ];
+
         return view('invoices.modal_create_recurring', $data);
     }
 
@@ -478,16 +484,17 @@ class AjaxController extends AdminController
      * - `invoice_id`: ID from POST input,
      * - `invoice`: the source invoice row.
      *
-     * @return string Rendered HTML for the create-credit modal.
+     * @return string rendered HTML for the create-credit modal
      */
     public function modalCreateCredit()
     {
         $data = [
             'invoice_groups' => $this->invoiceGroupsService->getAll(),
-            'tax_rates' => $this->taxRatesService->getAll(),
-            'invoice_id' => $this->input->post('invoice_id'),
-            'invoice' => $this->invoicesService->getById($this->input->post('invoice_id')),
+            'tax_rates'      => $this->taxRatesService->getAll(),
+            'invoice_id'     => $this->input->post('invoice_id'),
+            'invoice'        => $this->invoicesService->getById($this->input->post('invoice_id')),
         ];
+
         return view('invoices.modal_create_credit', $data);
     }
 

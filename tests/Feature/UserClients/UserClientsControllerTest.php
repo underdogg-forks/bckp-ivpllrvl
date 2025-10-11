@@ -63,10 +63,10 @@ class UserClientsControllerTest extends TestCase
     public function it_deletes_user_client_and_redirects()
     {
         // Arrange: create user and user client
-        $user = \Modules\Users\Models\User::factory()->create();
-        $client = \Modules\Clients\Models\Client::factory()->create();
+        $user       = \Modules\Users\Models\User::factory()->create();
+        $client     = \Modules\Clients\Models\Client::factory()->create();
         $userClient = \Modules\UserClients\Models\UserClient::factory()->create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'client_id' => $client->id,
         ]);
 

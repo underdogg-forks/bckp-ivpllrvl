@@ -41,8 +41,9 @@ class QuotesController extends BaseGuestController
      * status, enables the invoice column when status is 'rejected', and renders
      * the guest quotes index within the guest layout.
      *
-     * @param string $status The filter to apply: 'all', 'viewed', 'approved', 'rejected', or 'open'.
-     * @param int $page The pagination page number to display.
+     * @param string $status the filter to apply: 'all', 'viewed', 'approved', 'rejected', or 'open'
+     * @param int    $page   the pagination page number to display
+     *
      * @return void
      */
     public function status(string $status = 'open', $page = 0)
@@ -82,7 +83,7 @@ class QuotesController extends BaseGuestController
      * Marks the quote as viewed and makes the quote, its items, and its tax rates available to the view.
      * If the quote is not accessible to the current guest, a 404 response is shown.
      *
-     * @param int|string $quote_id The identifier of the quote to display.
+     * @param int|string $quote_id the identifier of the quote to display
      */
     public function view($quote_id)
     {
@@ -105,9 +106,9 @@ class QuotesController extends BaseGuestController
      * Marks the quote as viewed. If the quote is not accessible to the current guest, sends a 404 response.
      * Otherwise generates the quote PDF and either streams it to the client or produces it without streaming.
      *
-     * @param int|string $quote_id The quote identifier.
-     * @param bool $stream True to stream the PDF to the client, false to generate without streaming.
-     * @param string|null $quote_template Optional template identifier to use when generating the PDF.
+     * @param int|string  $quote_id       the quote identifier
+     * @param bool        $stream         true to stream the PDF to the client, false to generate without streaming
+     * @param string|null $quote_template optional template identifier to use when generating the PDF
      */
     public function generatePdf($quote_id, $stream = true, $quote_template = null)
     {
@@ -123,7 +124,7 @@ class QuotesController extends BaseGuestController
     /**
      * Approve a quote, notify its recipients of the approval, and redirect to the guest quotes list.
      *
-     * @param string $quote_id The quote identifier to approve.
+     * @param string $quote_id the quote identifier to approve
      */
     public function approve(string $quote_id)
     {
@@ -135,7 +136,7 @@ class QuotesController extends BaseGuestController
     /**
      * Mark a quote as rejected, notify recipients of the rejection, and redirect to the guest quotes listing.
      *
-     * @param string $quote_id The quote's unique identifier.
+     * @param string $quote_id the quote's unique identifier
      */
     public function reject(string $quote_id)
     {

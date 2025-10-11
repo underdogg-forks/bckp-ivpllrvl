@@ -6,13 +6,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Tasks\Controllers\TasksController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Tasks\route;
+
+use Tests\TestCase;
 
 #[CoversClass(TasksController::class)]
 class TasksControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -70,7 +73,7 @@ class TasksControllerTest extends TestCase
         $task = \Modules\Tasks\Models\Task::factory()->create();
 
         // Act: delete the task
-        $taskId = $task->getKey();
+        $taskId   = $task->getKey();
         $response = $this->get(route('tasks.delete', ['id' => $taskId]));
 
         // Assert: redirects and task is deleted
@@ -103,11 +106,11 @@ class TasksControllerTest extends TestCase
     #[Test]
     public function it_processes_task_selections(): void
     {
-        $tasks = Task::factory()->count(3)->create(['task_price' => 50.00]);
+        $tasks   = Task::factory()->count(3)->create(['task_price' => 50.00]);
         $taskIds = $tasks->pluck('task_id')->toArray();
 
         $response = $this->post(route('tasks.ajax.processSelections'), [
-            'task_ids' => $taskIds
+            'task_ids' => $taskIds,
         ]);
 
         $response->assertSuccessful();
@@ -122,11 +125,11 @@ class TasksControllerTest extends TestCase
         $task = Task::factory()->create(['task_price' => 123.456]);
 
         $response = $this->post(route('tasks.ajax.processSelections'), [
-            'task_ids' => [$task->task_id]
+            'task_ids' => [$task->task_id],
         ]);
 
         $data = $response->json();
-// Price should be formatted
+        // Price should be formatted
         $this->assertMatchesRegularExpression('/^\d+\.\d{2}$/', $data[0]['task_price']);
     }
 
@@ -134,7 +137,7 @@ class TasksControllerTest extends TestCase
     public function it_returns_empty_array_for_no_task_ids(): void
     {
         $response = $this->post(route('tasks.ajax.processSelections'), [
-            'task_ids' => []
+            'task_ids' => [],
         ]);
 
         $response->assertSuccessful();

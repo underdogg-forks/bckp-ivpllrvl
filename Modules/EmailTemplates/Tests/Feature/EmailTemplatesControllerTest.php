@@ -2,8 +2,8 @@
 
 namespace Modules\EmailTemplates\Tests\Feature;
 
-use Modules\EmailTemplates\Controllers\EmailTemplatesController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\EmailTemplates\Controllers\EmailTemplatesController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -11,7 +11,8 @@ use Tests\TestCase;
 #[CoversClass(EmailTemplatesController::class)]
 class EmailTemplatesControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -35,18 +36,18 @@ class EmailTemplatesControllerTest extends TestCase
     public function it_creates_new_email_template(): void
     {
         $templateData = [
-            'email_template_title' => 'Test Template',
+            'email_template_title'   => 'Test Template',
             'email_template_subject' => 'Test Subject',
-            'email_template_body' => 'Test body content',
-            'email_template_type' => 'invoice',
-            'is_update' => 0
+            'email_template_body'    => 'Test body content',
+            'email_template_type'    => 'invoice',
+            'is_update'              => 0,
         ];
 
         $response = $this->post(route('email_templates.form'), $templateData);
 
         $response->assertRedirect(route('email_templates.index'));
         $this->assertDatabaseHas('ip_email_templates', [
-            'email_template_title' => 'Test Template'
+            'email_template_title' => 'Test Template',
         ]);
     }
 
@@ -56,10 +57,10 @@ class EmailTemplatesControllerTest extends TestCase
         EmailTemplate::factory()->create(['email_template_title' => 'Existing Template']);
 
         $templateData = [
-            'email_template_title' => 'Existing Template',
+            'email_template_title'   => 'Existing Template',
             'email_template_subject' => 'Subject',
-            'email_template_body' => 'Body',
-            'is_update' => 0
+            'email_template_body'    => 'Body',
+            'is_update'              => 0,
         ];
 
         $response = $this->post(route('email_templates.form'), $templateData);
@@ -72,21 +73,21 @@ class EmailTemplatesControllerTest extends TestCase
     public function it_updates_existing_email_template(): void
     {
         $template = EmailTemplate::factory()->create([
-            'email_template_title' => 'Original Template'
+            'email_template_title' => 'Original Template',
         ]);
 
         $updateData = [
-            'email_template_title' => 'Updated Template',
+            'email_template_title'   => 'Updated Template',
             'email_template_subject' => 'Updated Subject',
-            'email_template_body' => 'Updated body'
+            'email_template_body'    => 'Updated body',
         ];
 
         $response = $this->post(route('email_templates.form', ['id' => $template->email_template_id]), $updateData);
 
         $response->assertRedirect(route('email_templates.index'));
         $this->assertDatabaseHas('ip_email_templates', [
-            'email_template_id' => $template->email_template_id,
-            'email_template_title' => 'Updated Template'
+            'email_template_id'    => $template->email_template_id,
+            'email_template_title' => 'Updated Template',
         ]);
     }
 

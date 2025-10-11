@@ -26,7 +26,8 @@ class ImportController extends AdminController
      * import collection to the layout as `imports`, buffers the import index view,
      * and renders the layout.
      *
-     * @param int $page The page index for pagination (default 0).
+     * @param int $page the page index for pagination (default 0)
+     *
      * @return void
      */
     public function index($page = 0)
@@ -99,7 +100,7 @@ class ImportController extends AdminController
     /**
      * Delete the import record identified by the given ID and redirect to the import index.
      *
-     * @param int $id The ID of the import to delete.
+     * @param int $id the ID of the import to delete
      */
     public function delete($id)
     {

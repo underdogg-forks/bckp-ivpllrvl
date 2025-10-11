@@ -15,7 +15,7 @@ class CronController extends BaseController
      *
      * If the provided cron key does not match the system setting, an error is logged, an HTTP 500 error is shown, and execution is terminated.
      *
-     * @param string|null $cron_key The cron key used to authorize this operation; if null, the system setting will be used for comparison.
+     * @param string|null $cron_key the cron key used to authorize this operation; if null, the system setting will be used for comparison
      */
     public function recur($cron_key = null)
     {

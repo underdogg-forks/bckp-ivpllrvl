@@ -26,8 +26,9 @@ class TasksController extends AdminController
      * and task statuses, and returns the rendered tasks index view including
      * filter configuration.
      *
-     * @param int $page The page number to display (zero-based).
-     * @return string|\CodeIgniter\HTTP\Response The rendered tasks index view.
+     * @param int $page the page number to display (zero-based)
+     *
+     * @return string|\CodeIgniter\HTTP\Response the rendered tasks index view
      */
     public function index($page = 0)
     {
@@ -44,8 +45,9 @@ class TasksController extends AdminController
      * saves the task and redirects to the tasks list. When opening the form for an existing task, a missing
      * task triggers a 404.
      *
-     * @param int|null $id The task ID to edit, or null to create a new task.
-     * @return string The rendered task form view HTML.
+     * @param int|null $id the task ID to edit, or null to create a new task
+     *
+     * @return string the rendered task form view HTML
      */
     public function form($id = null)
     {
@@ -69,10 +71,10 @@ class TasksController extends AdminController
     }
 
     /**
-         * Delete the task identified by the given id and redirect to the tasks list.
-         *
-         * @param int|string $id The identifier of the task to delete.
-         */
+     * Delete the task identified by the given id and redirect to the tasks list.
+     *
+     * @param int|string $id the identifier of the task to delete
+     */
     public function delete($id)
     {
         (new TasksService())->delete($id);

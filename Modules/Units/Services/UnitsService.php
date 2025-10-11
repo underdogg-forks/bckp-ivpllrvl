@@ -5,6 +5,7 @@ namespace Modules\Units\Services;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Units\Models\Unit;
+use RuntimeException;
 
 #[AllowDynamicProperties]
 class UnitsService extends BaseService
@@ -36,19 +37,21 @@ class UnitsService extends BaseService
     /**
      * Selects the singular or plural label for a unit identified by ID based on the provided quantity.
      *
-     * @param int $unit_id The unit's primary identifier.
-     * @param int $quantity The quantity used to decide form; values less than -1 or greater than 1 use the plural form.
-     * @return string|null The unit's name in the appropriate form, or `null` if no unit exists with the given ID.
+     * @param int $unit_id  the unit's primary identifier
+     * @param int $quantity the quantity used to decide form; values less than -1 or greater than 1 use the plural form
+     *
+     * @return string|null the unit's name in the appropriate form, or `null` if no unit exists with the given ID
      */
     public function getName(int $unit_id, int $quantity): ?string
     {
         $unit = Unit::query()->find($unit_id);
-        if (! $unit) {
+        if ( ! $unit) {
             return null;
         }
         if ($quantity < -1 || $quantity > 1) {
             return $unit->unit_name_plrl;
         }
+
         return $unit->unit_name;
     }
 
@@ -69,7 +72,7 @@ class UnitsService extends BaseService
     /**
      * Retrieve all Unit records.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Modules\Units\Models\Unit> Collection of Unit models.
+     * @return \Illuminate\Database\Eloquent\Collection<\Modules\Units\Models\Unit> collection of Unit models
      */
     public function getAll()
     {
@@ -80,6 +83,7 @@ class UnitsService extends BaseService
      * Check if a unit exists by name.
      *
      * @param string $unit_name
+     *
      * @return bool
      */
     public function exists(string $unit_name): bool
@@ -90,8 +94,9 @@ class UnitsService extends BaseService
     /**
      * Create or update a unit.
      *
-     * @param array $data
+     * @param array    $data
      * @param int|null $id
+     *
      * @return Unit
      */
     public function save(array $data, ?int $id = null): Unit
@@ -99,13 +104,13 @@ class UnitsService extends BaseService
         if (empty($id)) {
             return Unit::create($data);
         }
-        
+
         $unit = Unit::find($id);
-        if (!$unit) {
-            throw new \RuntimeException('Unit not found');
+        if ( ! $unit) {
+            throw new RuntimeException('Unit not found');
         }
         $unit->update($data);
-        
+
         return $unit;
     }
 
@@ -113,6 +118,7 @@ class UnitsService extends BaseService
      * Delete a unit by ID.
      *
      * @param int $id
+     *
      * @return bool
      */
     public function delete(int $id): bool
@@ -121,7 +127,7 @@ class UnitsService extends BaseService
         if ($unit) {
             return $unit->delete();
         }
-        
+
         return false;
     }
 }

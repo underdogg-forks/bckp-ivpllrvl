@@ -71,7 +71,7 @@ class AjaxControllerTest extends TestCase
     {
         // Arrange: create client and note
         $client = \Modules\Clients\Models\Client::factory()->create();
-        $note = \Modules\Clients\Models\ClientNote::factory()->create(['client_id' => $client->id]);
+        $note   = \Modules\Clients\Models\ClientNote::factory()->create(['client_id' => $client->id]);
 
         // Act: delete note
         $response = $this->json('POST', route('clients.ajax.deleteNote', ['note_id' => $note->id]));
@@ -97,14 +97,14 @@ class AjaxControllerTest extends TestCase
         // Act: save note
         $response = $this->json('POST', route('clients.ajax.saveNote'), [
             'client_id' => $client->id,
-            'note' => 'This is a test note',
+            'note'      => 'This is a test note',
         ]);
 
         // Assert: note is saved
         $response->assertStatus(200);
         $this->assertDatabaseHas('ip_client_notes', [
             'client_id' => $client->id,
-            'note' => 'This is a test note',
+            'note'      => 'This is a test note',
         ]);
     }
 
@@ -113,7 +113,7 @@ class AjaxControllerTest extends TestCase
     {
         // Arrange: create client and notes
         $client = \Modules\Clients\Models\Client::factory()->create();
-        $note = \Modules\Clients\Models\ClientNote::factory()->create(['client_id' => $client->id]);
+        $note   = \Modules\Clients\Models\ClientNote::factory()->create(['client_id' => $client->id]);
 
         // Act: load notes
         $response = $this->get(route('clients.ajax.loadNotes', ['client_id' => $client->id]));

@@ -50,14 +50,15 @@ class PaymentsService extends BaseService
     /**
      * Validate payment amount using Eloquent.
      *
-     * @param float $amount
-     * @param int $invoice_id
+     * @param float    $amount
+     * @param int      $invoice_id
      * @param int|null $payment_id
+     *
      * @return bool
      */
     public function validatePaymentAmount(float $amount, int $invoice_id, ?int $payment_id = null): bool
     {
-        $amount = (float) standardize_amount($amount);
+        $amount  = (float) standardize_amount($amount);
         $invoice = InvoiceAmount::query()->where('invoice_id', $invoice_id)->first();
         if ($invoice === null) {
             return false;
@@ -69,6 +70,7 @@ class PaymentsService extends BaseService
                 $invoice_balance += (float) $payment->payment_amount;
             }
         }
+
         return $amount <= $invoice_balance;
     }
 
@@ -78,9 +80,10 @@ class PaymentsService extends BaseService
      * Recomputes the invoice's amounts using any global discount after saving the payment,
      * and updates the invoice status to paid when the paid amount is greater than or equal to the invoice total.
      *
-     * @param int|null $id The payment id to update, or null to create a new payment.
-     * @param array|null $db_array The database field values for the payment; if null, the service will build them.
-     * @return int|false The id of the saved payment on success, or `false` if the related invoice amounts could not be loaded. 
+     * @param int|null   $id       the payment id to update, or null to create a new payment
+     * @param array|null $db_array the database field values for the payment; if null, the service will build them
+     *
+     * @return int|false the id of the saved payment on success, or `false` if the related invoice amounts could not be loaded
      */
     public function save($id = null, $db_array = null)
     {
@@ -129,14 +132,14 @@ class PaymentsService extends BaseService
      * Removes the payment identified by $id, recalculates the invoice amounts using the invoice's global discount,
      * resets the invoice status to "sent" (2) if it was previously "paid" (4), and removes any orphaned records.
      *
-     * @param int|null $id The ID of the payment to delete.
+     * @param int|null $id the ID of the payment to delete
      */
     public function delete($id = null)
     {
         // GetController the invoice id before deleting payment
-        $payment = Payment::query()->select('invoice_id')->where('payment_id', $id)->first();
+        $payment    = Payment::query()->select('invoice_id')->where('payment_id', $id)->first();
         $invoice_id = $payment->invoice_id;
-        
+
         // Delete the payment
         parent::delete($id);
         $this->load->model('invoices/mdl_invoice_amounts');

@@ -27,19 +27,19 @@ class CustomFieldsServiceTest extends TestCase
         CustomField::create([
             'custom_field_table' => 'ip_clients',
             'custom_field_label' => 'Client Custom Field',
-            'custom_field_type' => 'TEXT',
+            'custom_field_type'  => 'TEXT',
         ]);
 
         CustomField::create([
             'custom_field_table' => 'ip_clients',
             'custom_field_label' => 'Another Client Field',
-            'custom_field_type' => 'TEXT',
+            'custom_field_type'  => 'TEXT',
         ]);
 
         CustomField::create([
             'custom_field_table' => 'ip_invoices',
             'custom_field_label' => 'Invoice Custom Field',
-            'custom_field_type' => 'TEXT',
+            'custom_field_type'  => 'TEXT',
         ]);
 
         // Act

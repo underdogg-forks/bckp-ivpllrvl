@@ -3,10 +3,10 @@
 namespace Modules\Payments\Controllers;
 
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
 use Modules\PaymentMethods\Services\PaymentMethodsService;
 use Modules\Payments\Services\PaymentLogsService;
-use Illuminate\Http\Request;
 
 #[AllowDynamicProperties]
 class PaymentsController extends AdminController
@@ -24,8 +24,9 @@ class PaymentsController extends AdminController
      *
      * Renders the payments index view with the paginated payments and filter UI configuration.
      *
-     * @param int $page Page number for pagination.
-     * @return \Illuminate\View\View The payments index view populated with payments and filter settings.
+     * @param int $page page number for pagination
+     *
+     * @return \Illuminate\View\View the payments index view populated with payments and filter settings
      */
     public function index($page = 0)
     {
@@ -111,23 +112,25 @@ class PaymentsController extends AdminController
         $payment_logs = $service->result();
 
         return view('payments.online_logs', [
-            'filter_display' => true,
+            'filter_display'     => true,
             'filter_placeholder' => trans('filter_online_logs'),
-            'filter_method' => 'filter_online_logs',
-            'payment_logs' => $payment_logs,
-            'filters' => $filters,
+            'filter_method'      => 'filter_online_logs',
+            'payment_logs'       => $payment_logs,
+            'filters'            => $filters,
         ]);
     }
 
     /**
      * Delete the specified payment.
      *
-     * @param int $id The ID of the payment to delete.
-     * @return \Illuminate\Http\RedirectResponse A redirect response to the payments index route.
+     * @param int $id the ID of the payment to delete
+     *
+     * @return \Illuminate\Http\RedirectResponse a redirect response to the payments index route
      */
     public function delete(int $id): \Illuminate\Http\RedirectResponse
     {
         app(PaymentsService::class)->delete($id);
+
         return redirect()->route('payments');
     }
 }

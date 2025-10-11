@@ -41,9 +41,10 @@ class VersionsService extends BaseService
     public function getCurrentVersion(): ?string
     {
         $current_version = Version::query()->orderByDesc('version_date_applied')->orderByDesc('version_file')->first();
-        if (! $current_version) {
+        if ( ! $current_version) {
             return null;
         }
+
         return str_replace('.sql', '', mb_substr($current_version->version_file, mb_strpos($current_version->version_file, '_') + 1));
     }
 }

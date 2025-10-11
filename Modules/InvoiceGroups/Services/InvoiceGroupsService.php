@@ -3,7 +3,6 @@
 namespace Modules\InvoiceGroups\Services;
 
 use AllowDynamicProperties;
-use DB;
 use Modules\Core\Services\BaseService;
 use Modules\InvoiceGroups\Models\InvoiceGroup;
 
@@ -65,7 +64,7 @@ class InvoiceGroupsService extends BaseService
      *
      * If no invoice group exists with the given ID, the method performs no action.
      *
-     * @param int $invoice_group_id The ID of the invoice group whose `invoice_group_next_id` will be incremented.
+     * @param int $invoice_group_id the ID of the invoice group whose `invoice_group_next_id` will be incremented
      */
     public function setNextInvoiceNumber(int $invoice_group_id): void
     {
@@ -73,6 +72,16 @@ class InvoiceGroupsService extends BaseService
         if ($invoiceGroup) {
             $invoiceGroup->increment('invoice_group_next_id');
         }
+    }
+
+    /**
+     * Retrieve all invoice group records.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection a collection of InvoiceGroup models
+     */
+    public function getAll()
+    {
+        return \Modules\InvoiceGroups\Models\InvoiceGroup::query()->get();
     }
 
     /**
@@ -87,10 +96,11 @@ class InvoiceGroupsService extends BaseService
      *
      * Any other token is replaced with an empty string.
      *
-     * @param string $identifier_format Template string containing tokens to replace.
-     * @param string $next_id Value used for the `id` token.
-     * @param int $left_pad Width to left-pad the `id` value with zeros.
-     * @return string The identifier with all supported tokens substituted.
+     * @param string $identifier_format template string containing tokens to replace
+     * @param string $next_id           value used for the `id` token
+     * @param int    $left_pad          width to left-pad the `id` value with zeros
+     *
+     * @return string the identifier with all supported tokens substituted
      */
     private function parseIdentifierFormat($identifier_format, string $next_id, int $left_pad)
     {
@@ -120,15 +130,5 @@ class InvoiceGroupsService extends BaseService
         }
 
         return $identifier_format;
-    }
-
-    /**
-     * Retrieve all invoice group records.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection A collection of InvoiceGroup models.
-     */
-    public function getAll()
-    {
-        return \Modules\InvoiceGroups\Models\InvoiceGroup::query()->get();
     }
 }

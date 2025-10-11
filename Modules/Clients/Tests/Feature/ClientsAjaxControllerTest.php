@@ -2,7 +2,6 @@
 
 namespace Modules\Clients\Tests\Feature;
 
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Clients\Controllers\AjaxController;
@@ -13,7 +12,8 @@ use Tests\TestCase;
 #[CoversClass(AjaxController::class)]
 class ClientsAjaxControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -54,8 +54,8 @@ class ClientsAjaxControllerTest extends TestCase
         Client::factory()->create(['client_surname' => 'Johnson', 'client_active' => 1]);
 
         $response = $this->get(route('clients.ajax.nameQuery', [
-            'query' => 'ohn',
-            'permissive_search_clients' => 1
+            'query'                     => 'ohn',
+            'permissive_search_clients' => 1,
         ]));
 
         $data = $response->json();
@@ -83,7 +83,7 @@ class ClientsAjaxControllerTest extends TestCase
         $response = $this->get(route('clients.ajax.nameQuery', ['query' => '100%']));
 
         $response->assertSuccessful();
-// Should not cause SQL error
+        // Should not cause SQL error
     }
 
     /** @test */
@@ -111,7 +111,7 @@ class ClientsAjaxControllerTest extends TestCase
     {
         $response = $this->get(route('clients.ajax.savePreference', ['permissive_search_clients' => '2']));
 
-// Should exit without saving
+        // Should exit without saving
         $this->assertNotEquals('2', get_setting('enable_permissive_search_clients'));
     }
 
@@ -119,10 +119,10 @@ class ClientsAjaxControllerTest extends TestCase
     public function it_successfully_deletes_client_note()
     {
         $client = Client::factory()->create();
-        $note = ClientNote::factory()->create(['client_id' => $client->client_id]);
+        $note   = ClientNote::factory()->create(['client_id' => $client->client_id]);
 
         $response = $this->post(route('clients.ajax.deleteNote'), [
-            'client_note_id' => $note->client_note_id
+            'client_note_id' => $note->client_note_id,
         ]);
 
         $response->assertJson(['success' => 1]);
@@ -133,7 +133,7 @@ class ClientsAjaxControllerTest extends TestCase
     public function it_returns_success_false_when_deleting_nonexistent_note()
     {
         $response = $this->post(route('clients.ajax.deleteNote'), [
-            'client_note_id' => 99999
+            'client_note_id' => 99999,
         ]);
 
         $response->assertJson(['success' => 0]);
@@ -145,15 +145,15 @@ class ClientsAjaxControllerTest extends TestCase
         $client = Client::factory()->create();
 
         $response = $this->post(route('clients.ajax.saveNote'), [
-            'client_id' => $client->client_id,
+            'client_id'           => $client->client_id,
             'client_note_content' => 'Test note content',
-            csrf_token() => csrf_token()
+            csrf_token()          => csrf_token(),
         ]);
 
         $response->assertJson(['success' => 1]);
         $this->assertDatabaseHas('ip_client_notes', [
-            'client_id' => $client->client_id,
-            'client_note_content' => 'Test note content'
+            'client_id'           => $client->client_id,
+            'client_note_content' => 'Test note content',
         ]);
     }
 
@@ -161,9 +161,9 @@ class ClientsAjaxControllerTest extends TestCase
     public function it_returns_validation_errors_when_saving_invalid_note()
     {
         $response = $this->post(route('clients.ajax.saveNote'), [
-            'client_id' => null,
+            'client_id'           => null,
             'client_note_content' => '',
-            csrf_token() => csrf_token()
+            csrf_token()          => csrf_token(),
         ]);
 
         $response->assertJson(['success' => 0]);
@@ -176,9 +176,9 @@ class ClientsAjaxControllerTest extends TestCase
         $client = Client::factory()->create();
 
         $response = $this->post(route('clients.ajax.saveNote'), [
-            'client_id' => $client->client_id,
+            'client_id'           => $client->client_id,
             'client_note_content' => 'Test',
-            csrf_token() => csrf_token()
+            csrf_token()          => csrf_token(),
         ]);
 
         $data = $response->json();
@@ -189,14 +189,14 @@ class ClientsAjaxControllerTest extends TestCase
     /** @test */
     public function it_loads_all_notes_for_specific_client()
     {
-        $client = Client::factory()->create();
+        $client      = Client::factory()->create();
         $otherClient = Client::factory()->create();
 
         ClientNote::factory()->count(3)->create(['client_id' => $client->client_id]);
         ClientNote::factory()->count(2)->create(['client_id' => $otherClient->client_id]);
 
         $response = $this->post(route('clients.ajax.loadNotes'), [
-            'client_id' => $client->client_id
+            'client_id' => $client->client_id,
         ]);
 
         $response->assertSuccessful();

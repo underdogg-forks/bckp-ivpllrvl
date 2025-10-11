@@ -91,9 +91,10 @@ class ClientsController extends AdminController
      *
      * Aborts with a 404 response if the client cannot be found.
      *
-     * @param int|string $client_id The ID of the client to display.
-     * @param string $activeTab The tab to mark active in the view (defaults to 'detail').
-     * @param int $page Optional page index for tabbed subviews or pagination.
+     * @param int|string $client_id the ID of the client to display
+     * @param string     $activeTab the tab to mark active in the view (defaults to 'detail')
+     * @param int        $page      optional page index for tabbed subviews or pagination
+     *
      * @return \Illuminate\Contracts\View\View The rendered 'clients.view' with the client and active tab.
      */
     public function view(Request $request, $client_id, $activeTab = 'detail', $page = 0): \Illuminate\Contracts\View\View
@@ -113,8 +114,9 @@ class ClientsController extends AdminController
     /**
      * Delete the specified client and redirect to the clients index.
      *
-     * @param int $client_id The identifier of the client to delete.
-     * @return \Illuminate\Http\RedirectResponse A redirect response to the clients index route.
+     * @param int $client_id the identifier of the client to delete
+     *
+     * @return \Illuminate\Http\RedirectResponse a redirect response to the clients index route
      */
     public function delete($client_id): \Illuminate\Http\RedirectResponse
     {
@@ -139,9 +141,10 @@ class ClientsController extends AdminController
      * This is currently a no-op that returns the provided client unchanged; intended to
      * validate or adjust the client's e-invoicing state when implemented.
      *
-     * @param mixed $client The client entity to check or update (typically a Client model instance).
+     * @param mixed $client         the client entity to check or update (typically a Client model instance)
      * @param mixed $req_einvoicing The requested e-invoicing setting (e.g., boolean, null, or config identifier).
-     * @return mixed The (possibly updated) client entity.
+     *
+     * @return mixed the (possibly updated) client entity
      */
     private function checkClientEinvoiceActive($client, $req_einvoicing)
     {

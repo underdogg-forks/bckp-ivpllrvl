@@ -2,21 +2,22 @@
 
 namespace Modules\Reports\Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\Clients\Models\Client;
+use Modules\Invoices\Models\Invoice;
+use Modules\Payments\Models\Payment;
 use Modules\Reports\Controllers\ReportsController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Modules\Invoices\Models\Invoice;
-use Modules\Payments\Models\Payment;
-use Modules\Clients\Models\Client;
-use App\Models\User;
 
 #[CoversClass(ReportsController::class)]
 class ReportsControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -57,16 +58,16 @@ class ReportsControllerTest extends TestCase
         // Arrange
         $client = Client::factory()->create();
         Invoice::factory()->count(3)->create([
-            'client_id' => $client->client_id,
-            'invoice_status_id' => 4, // Paid
-            'invoice_date_created' => now()->subDays(10)
+            'client_id'            => $client->client_id,
+            'invoice_status_id'    => 4, // Paid
+            'invoice_date_created' => now()->subDays(10),
         ]);
 
         // Act
         $response = $this->post(route('reports.salesByClient'), [
             'btn_submit' => true,
-            'from_date' => now()->subDays(30)->format('Y-m-d'),
-            'to_date' => now()->format('Y-m-d')
+            'from_date'  => now()->subDays(30)->format('Y-m-d'),
+            'to_date'    => now()->format('Y-m-d'),
         ]);
 
         // Assert
@@ -90,14 +91,14 @@ class ReportsControllerTest extends TestCase
     {
         $invoice = Invoice::factory()->create();
         Payment::factory()->count(3)->create([
-            'invoice_id' => $invoice->invoice_id,
-            'payment_date' => now()->subDays(5)
+            'invoice_id'   => $invoice->invoice_id,
+            'payment_date' => now()->subDays(5),
         ]);
 
         $response = $this->post(route('reports.paymentHistory'), [
             'btn_submit' => true,
-            'from_date' => now()->subDays(30)->format('Y-m-d'),
-            'to_date' => now()->format('Y-m-d')
+            'from_date'  => now()->subDays(30)->format('Y-m-d'),
+            'to_date'    => now()->format('Y-m-d'),
         ]);
 
         $response->assertSuccessful();
@@ -109,21 +110,21 @@ class ReportsControllerTest extends TestCase
     {
         // Arrange: create clients and invoices
         Invoice::factory()->create([
-            'invoice_date_due' => now()->subDays(10),
-            'invoice_status_id' => 2 // Sent
+            'invoice_date_due'  => now()->subDays(10),
+            'invoice_status_id' => 2, // Sent
         ]);
         Invoice::factory()->create([
-            'invoice_date_due' => now()->subDays(40),
-            'invoice_status_id' => 2
+            'invoice_date_due'  => now()->subDays(40),
+            'invoice_status_id' => 2,
         ]);
         Invoice::factory()->create([
-            'invoice_date_due' => now()->subDays(70),
-            'invoice_status_id' => 2
+            'invoice_date_due'  => now()->subDays(70),
+            'invoice_status_id' => 2,
         ]);
 
         // Act: submit the report form
         $response = $this->post(route('reports.invoiceAging'), [
-            'btn_submit' => true
+            'btn_submit' => true,
         ]);
 
         // Assert: report contains client and invoice data
@@ -160,16 +161,16 @@ class ReportsControllerTest extends TestCase
     {
         Invoice::factory()->count(10)->create([
             'invoice_date_created' => now()->subMonths(6),
-            'invoice_status_id' => 4
+            'invoice_status_id'    => 4,
         ]);
 
         $response = $this->post(route('reports.salesByYear'), [
-            'btn_submit' => true,
-            'from_date' => now()->subYear()->format('Y-m-d'),
-            'to_date' => now()->format('Y-m-d'),
+            'btn_submit'  => true,
+            'from_date'   => now()->subYear()->format('Y-m-d'),
+            'to_date'     => now()->format('Y-m-d'),
             'minQuantity' => 0,
             'maxQuantity' => 1000,
-            'checkboxTax' => true
+            'checkboxTax' => true,
         ]);
 
         $response->assertSuccessful();
@@ -182,11 +183,11 @@ class ReportsControllerTest extends TestCase
     public function it_filters_sales_report_by_quantity_range(): void
     {
         $response = $this->post(route('reports.salesByYear'), [
-            'btn_submit' => true,
-            'from_date' => now()->subYear()->format('Y-m-d'),
-            'to_date' => now()->format('Y-m-d'),
+            'btn_submit'  => true,
+            'from_date'   => now()->subYear()->format('Y-m-d'),
+            'to_date'     => now()->format('Y-m-d'),
             'minQuantity' => 10,
-            'maxQuantity' => 100
+            'maxQuantity' => 100,
         ]);
 
         $response->assertSuccessful();

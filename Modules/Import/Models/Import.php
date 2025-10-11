@@ -10,9 +10,9 @@ class Import extends BaseModel
     /** @use HasFactory<\Database\Factories\ImportFactory> */
     use HasFactory;
 
-    protected $table = 'ip_imports';
-
     public $timestamps = false;
+
+    protected $table = 'ip_imports';
 
     protected $casts = [];
 

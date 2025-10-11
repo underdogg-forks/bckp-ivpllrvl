@@ -39,7 +39,7 @@ class PaymentMethodsService extends BaseService
      *
      * @return array{
      *     payment_method_name: array{field: string, label: string, rules: string}
-     * } Mapping of field keys to their validation configuration.
+     * } Mapping of field keys to their validation configuration
      */
     public function validationRules()
     {
@@ -49,7 +49,7 @@ class PaymentMethodsService extends BaseService
     /**
      * Retrieve all payment methods.
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Modules\PaymentMethods\Models\PaymentMethod[] Collection of PaymentMethod models.
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\PaymentMethods\Models\PaymentMethod[] collection of PaymentMethod models
      */
     public function getAll()
     {

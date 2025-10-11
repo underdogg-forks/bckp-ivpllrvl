@@ -30,16 +30,16 @@ class ProjectsServiceTest extends TestCase
         ]);
 
         Task::create([
-            'task_name' => 'Task 1',
+            'task_name'        => 'Task 1',
             'task_description' => 'Description 1',
-            'task_status' => 1,
-            'project_id' => $project->project_id,
+            'task_status'      => 1,
+            'project_id'       => $project->project_id,
         ]);
         Task::create([
-            'task_name' => 'Task 2',
+            'task_name'        => 'Task 2',
             'task_description' => 'Description 2',
-            'task_status' => 2,
-            'project_id' => $project->project_id,
+            'task_status'      => 2,
+            'project_id'       => $project->project_id,
         ]);
 
         // Create a task for a different project
@@ -47,10 +47,10 @@ class ProjectsServiceTest extends TestCase
             'project_name' => 'Other Project',
         ]);
         Task::create([
-            'task_name' => 'Other Task',
+            'task_name'        => 'Other Task',
             'task_description' => 'Other Description',
-            'task_status' => 1,
-            'project_id' => $otherProject->project_id,
+            'task_status'      => 1,
+            'project_id'       => $otherProject->project_id,
         ]);
 
         // Act

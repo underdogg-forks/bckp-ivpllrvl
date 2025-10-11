@@ -19,8 +19,8 @@ class ItemsService extends BaseService
     /**
      * Construct the ItemsService and register its item and invoice amount services.
      *
-     * @param ItemAmountsService $itemAmountsService Service responsible for calculating and managing amounts for individual invoice items.
-     * @param InvoiceAmountsService $invoiceAmountsService Service responsible for calculating and managing invoice-level amounts and global discounts.
+     * @param ItemAmountsService    $itemAmountsService    service responsible for calculating and managing amounts for individual invoice items
+     * @param InvoiceAmountsService $invoiceAmountsService service responsible for calculating and managing invoice-level amounts and global discounts
      */
     public function __construct(
         public ItemAmountsService $itemAmountsService,
@@ -79,10 +79,11 @@ class ItemsService extends BaseService
      * Saves the item record and recalculates the item's amounts; if `invoice_id` is present in
      * `$db_array` (object or array), recalculates the corresponding invoice amounts as well.
      *
-     * @param int|null $id The item ID to update, or null to create a new item.
-     * @param array|object|null $db_array Data used to save the item; may contain `invoice_id`.
-     * @param array &$global_discount Reference to a global discount array that may be read/updated during recalculation.
-     * @return int The saved item ID.
+     * @param int|null          $id               the item ID to update, or null to create a new item
+     * @param array|object|null $db_array         data used to save the item; may contain `invoice_id`
+     * @param array             &$global_discount Reference to a global discount array that may be read/updated during recalculation
+     *
+     * @return int the saved item ID
      */
     public function save($id = null, $db_array = null, &$global_discount = [])
     {
@@ -102,26 +103,27 @@ class ItemsService extends BaseService
      *
      * Deletes the specified invoice item and its associated item-amount records, updates the invoice-level global discount from the invoice amounts service, and recalculates the invoice totals.
      *
-     * @param int $item_id The ID of the invoice item to delete.
-     * @return bool `true` if the item existed and was deleted, `false` if no matching item was found.
+     * @param int $item_id the ID of the invoice item to delete
+     *
+     * @return bool `true` if the item existed and was deleted, `false` if no matching item was found
      */
     public function delete($item_id): bool
     {
         // Get item using Eloquent
         $item = Item::query()->where('item_id', $item_id)->first();
-        
-        if (!$item) {
+
+        if ( ! $item) {
             return false;
         }
-        
+
         $invoice_id = $item->invoice_id;
-        
+
         // Delete the item itself using parent delete
         parent::delete($item_id);
-        
+
         // Delete the item amounts using Eloquent
         ItemAmount::query()->where('item_id', $item_id)->delete();
-        
+
         $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
         // Recalculate invoice amounts
         $this->invoiceAmountsService->calculate($invoice_id, $global_discount);
@@ -130,18 +132,19 @@ class ItemsService extends BaseService
     }
 
     /**
-         * Calculate the sum of `item_subtotal` for all items belonging to the specified invoice.
-         *
-         * @param int|string $invoice_id The invoice identifier.
-         * @return float The summed `item_subtotal` value for the invoice; returns `0` if there are no matching items.
-         */
+     * Calculate the sum of `item_subtotal` for all items belonging to the specified invoice.
+     *
+     * @param int|string $invoice_id the invoice identifier
+     *
+     * @return float the summed `item_subtotal` value for the invoice; returns `0` if there are no matching items
+     */
     public function getItemsSubtotal($invoice_id)
     {
         $result = \Illuminate\Support\Facades\DB::table('ip_invoice_item_amounts')
-            ->whereIn('item_id', function($query) use ($invoice_id) {
+            ->whereIn('item_id', function ($query) use ($invoice_id) {
                 $query->select('item_id')
-                      ->from('ip_invoice_items')
-                      ->where('invoice_id', $invoice_id);
+                    ->from('ip_invoice_items')
+                    ->where('invoice_id', $invoice_id);
             })
             ->sum('item_subtotal');
 
@@ -151,8 +154,9 @@ class ItemsService extends BaseService
     /**
      * Retrieve all item records belonging to the specified invoice.
      *
-     * @param int $invoice_id ID of the invoice to fetch items for.
-     * @return \Illuminate\Database\Eloquent\Collection Collection of Item models for the invoice.
+     * @param int $invoice_id ID of the invoice to fetch items for
+     *
+     * @return \Illuminate\Database\Eloquent\Collection collection of Item models for the invoice
      */
     public function getByInvoiceId($invoice_id)
     {

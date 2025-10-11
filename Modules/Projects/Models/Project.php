@@ -10,9 +10,9 @@ class Project extends BaseModel
     /** @use HasFactory<\Database\Factories\ProjectFactory> */
     use HasFactory;
 
-    protected $table = 'ip_projects';
-
     public $timestamps = false;
+
+    protected $table = 'ip_projects';
 
     protected $casts = [];
 

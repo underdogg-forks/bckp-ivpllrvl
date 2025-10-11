@@ -10,9 +10,9 @@ class Version extends BaseModel
     /** @use HasFactory<\Database\Factories\VersionFactory> */
     use HasFactory;
 
-    protected $table = 'ip_versions';
-
     public $timestamps = false;
+
+    protected $table = 'ip_versions';
 
     protected $casts = [];
 

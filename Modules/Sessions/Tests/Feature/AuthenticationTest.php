@@ -4,8 +4,10 @@ namespace Modules\Sessions\Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+
 use function Tests\Feature\Auth\route;
+
+use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {

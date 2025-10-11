@@ -25,11 +25,11 @@ class TaxRatesServiceTest extends TestCase
     {
         // Arrange
         TaxRate::create([
-            'tax_rate_name' => 'VAT 20%',
+            'tax_rate_name'    => 'VAT 20%',
             'tax_rate_percent' => 20.00,
         ]);
         TaxRate::create([
-            'tax_rate_name' => 'VAT 10%',
+            'tax_rate_name'    => 'VAT 10%',
             'tax_rate_percent' => 10.00,
         ]);
 

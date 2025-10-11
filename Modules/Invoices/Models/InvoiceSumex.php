@@ -10,9 +10,9 @@ class InvoiceSumex extends BaseModel
     /** @use HasFactory<\Database\Factories\InvoiceSumexFactory> */
     use HasFactory;
 
-    protected $table = 'ip_invoice_sumex';
-
     public $timestamps = false;
+
+    protected $table = 'ip_invoice_sumex';
 
     protected $casts = [];
 

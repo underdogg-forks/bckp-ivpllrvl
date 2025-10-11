@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Edge case and boundary condition tests for service methods
+ * Edge case and boundary condition tests for service methods.
  */
 class EdgeCasesTest extends TestCase
 {
@@ -25,14 +25,14 @@ class EdgeCasesTest extends TestCase
     {
         // Arrange
         $service = new UnitsService();
-        $unit = Unit::create(['unit_name' => 'Item', 'unit_name_plrl' => 'Items']);
+        $unit    = Unit::create(['unit_name' => 'Item', 'unit_name_plrl' => 'Items']);
 
         // Act & Assert: Very large positive number
         $this->assertEquals('Items', $service->getName($unit->unit_id, PHP_INT_MAX));
-        
+
         // Act & Assert: Very large negative number
         $this->assertEquals('Items', $service->getName($unit->unit_id, PHP_INT_MIN));
-        
+
         // Act & Assert: Boundary values
         $this->assertEquals('Item', $service->getName($unit->unit_id, 1));
         $this->assertEquals('Items', $service->getName($unit->unit_id, 2));
@@ -46,14 +46,14 @@ class EdgeCasesTest extends TestCase
         // Arrange
         $service = new TasksService();
         $project = Project::create(['project_name' => 'Test Project']);
-        
+
         // Create multiple tasks
         for ($i = 1; $i <= 10; $i++) {
             Task::create([
-                'task_name' => "Task {$i}",
+                'task_name'        => "Task {$i}",
                 'task_description' => "Description {$i}",
-                'task_status' => 1,
-                'project_id' => $project->project_id,
+                'task_status'      => 1,
+                'project_id'       => $project->project_id,
             ]);
         }
 
@@ -72,32 +72,32 @@ class EdgeCasesTest extends TestCase
     {
         // Arrange
         $service = new TasksService();
-        $client = Client::create(['client_name' => 'Test Client', 'client_active' => 1]);
+        $client  = Client::create(['client_name' => 'Test Client', 'client_active' => 1]);
         $invoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 1,
         ]);
 
         // Create tasks with different finish dates
         Task::create([
-            'task_name' => 'Latest Task',
+            'task_name'        => 'Latest Task',
             'task_description' => 'Description',
-            'task_status' => 3,
-            'project_id' => 0,
+            'task_status'      => 3,
+            'project_id'       => 0,
             'task_finish_date' => now(),
         ]);
         Task::create([
-            'task_name' => 'Earliest Task',
+            'task_name'        => 'Earliest Task',
             'task_description' => 'Description',
-            'task_status' => 3,
-            'project_id' => 0,
+            'task_status'      => 3,
+            'project_id'       => 0,
             'task_finish_date' => now()->subDays(5),
         ]);
         Task::create([
-            'task_name' => 'Middle Task',
+            'task_name'        => 'Middle Task',
             'task_description' => 'Description',
-            'task_status' => 3,
-            'project_id' => 0,
+            'task_status'      => 3,
+            'project_id'       => 0,
             'task_finish_date' => now()->subDays(2),
         ]);
 
@@ -116,8 +116,8 @@ class EdgeCasesTest extends TestCase
     {
         // Arrange
         $service = new UnitsService();
-        $unit = Unit::create([
-            'unit_name' => 'Original Name',
+        $unit    = Unit::create([
+            'unit_name'      => 'Original Name',
             'unit_name_plrl' => 'Original Plural',
         ]);
         $originalId = $unit->unit_id;
@@ -128,7 +128,7 @@ class EdgeCasesTest extends TestCase
         // Assert: ID should remain the same, name should update
         $this->assertEquals($originalId, $updated->unit_id);
         $this->assertEquals('Updated Name', $updated->unit_name);
-        
+
         // Refresh and verify persistence
         $updated->refresh();
         $this->assertEquals('Updated Name', $updated->unit_name);
@@ -141,15 +141,15 @@ class EdgeCasesTest extends TestCase
         $service = new TasksService();
         $project = Project::create(['project_name' => 'Test Project']);
         Task::create([
-            'task_name' => 'Task 1',
+            'task_name'        => 'Task 1',
             'task_description' => 'Description',
-            'task_status' => 1,
-            'project_id' => $project->project_id,
+            'task_status'      => 1,
+            'project_id'       => $project->project_id,
         ]);
 
         // Act: Try with numeric ID
         $result1 = $service->getTasks($project->project_id);
-        
+
         // Act: Try with string ID
         $result2 = $service->getTasks((string) $project->project_id);
 
@@ -190,7 +190,7 @@ class EdgeCasesTest extends TestCase
     {
         // Arrange
         $service = new UnitsService();
-        $unit = Unit::create(['unit_name' => 'Item', 'unit_name_plrl' => 'Items']);
+        $unit    = Unit::create(['unit_name' => 'Item', 'unit_name_plrl' => 'Items']);
 
         // Act: Simulate concurrent updates
         $service->save(['unit_name' => 'Updated Item 1'], $unit->unit_id);

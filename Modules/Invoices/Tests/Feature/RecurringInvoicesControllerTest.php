@@ -8,7 +8,8 @@ use Tests\TestCase;
 #[CoversClass(RecurringController::class)]
 class RecurringInvoicesControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
 
@@ -35,13 +36,13 @@ class RecurringInvoicesControllerTest extends TestCase
         $recurringInvoice = RecurringInvoice::factory()->create(['status' => 'active']);
 
         $response = $this->post(route('invoices.recurring.stop', [
-            'invoice_recurring_id' => $recurringInvoice->invoice_recurring_id
+            'invoice_recurring_id' => $recurringInvoice->invoice_recurring_id,
         ]));
 
         $response->assertRedirect(route('invoices.recurring.index'));
         $this->assertDatabaseHas('ip_invoices_recurring', [
             'invoice_recurring_id' => $recurringInvoice->invoice_recurring_id,
-            'status' => 'stopped'
+            'status'               => 'stopped',
         ]);
     }
 
@@ -51,12 +52,12 @@ class RecurringInvoicesControllerTest extends TestCase
         $recurringInvoice = RecurringInvoice::factory()->create();
 
         $response = $this->delete(route('invoices.recurring.delete', [
-            'invoice_recurring_id' => $recurringInvoice->invoice_recurring_id
+            'invoice_recurring_id' => $recurringInvoice->invoice_recurring_id,
         ]));
 
         $response->assertRedirect(route('invoices.recurring.index'));
         $this->assertDatabaseMissing('ip_invoices_recurring', [
-            'invoice_recurring_id' => $recurringInvoice->invoice_recurring_id
+            'invoice_recurring_id' => $recurringInvoice->invoice_recurring_id,
         ]);
     }
 }

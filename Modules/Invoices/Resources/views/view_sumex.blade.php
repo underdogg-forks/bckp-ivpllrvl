@@ -1,34 +1,31 @@
-@if($this->config->item('disable_read_only') == true) {
-    $invoice->is_read_only = 0;
-}
-// Little helper
-$its_mine = $this->session->__get('user_id') == $invoice->user_id;
-$my_class = $its_mine ? 'success' : 'warning';
-// visual: work with text-* alert-*
-// In change user toggle & After eInvoice (name) when user required field missing
-$edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing') . '): ' . htmlsc(PHP_EOL . format_user($invoice->user_id));
+@php
+    if ($this->config->item('disable_read_only') == true) {
+        $invoice->is_read_only = 0;
+    }
+    $its_mine = $this->session->__get('user_id') == $invoice->user_id;
+    $my_class = $its_mine ? 'success' : 'warning';
+    $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing') . '): ' . htmlsc(PHP_EOL . format_user($invoice->user_id));
+@endphp
+
 <script>
-    $(function () {
-        $('.item-task-id').each(function () {
-            // Disable client change if at least one item already has a task id assigned
-            @if($(this).val().length > 0) {
+    $(function() {
+        $('.item-task-id').each(function() {
+            if ($(this).val().length > 0) {
                 $('#invoice_change_client').hide();
                 return false;
             }
         });
 
-        $('.btn_add_product').click(function () {
-            $('#modal-placeholder').load("{{ url('products/ajax/modal_product_lookups');
-?>/" + Math.floor(Math.random() * 1000));
+        $('.btn_add_product').click(function() {
+            $('#modal-placeholder').load("{{ url('products/ajax/modal_product_lookups') }}/" + Math.floor(Math.random() * 1000));
         });
 
-        $('.btn_add_task').click(function () {
+        $('.btn_add_task').click(function() {
             $('#modal-placeholder').load("{{ url('tasks/ajax/modal_task_lookups/' . $invoice_id) }}/" + Math.floor(Math.random() * 1000));
         });
 
-        $('.btn_add_row').click(function () {
+        $('.btn_add_row').click(function() {
             $('#new_row').clone().appendTo('#item_table').removeAttr('id').addClass('item').show();
-            // Legacy:no: check items tax usage is correct (ReLoad on change)
             check_items_tax_usages();
         });
 
@@ -36,653 +33,166 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
         $('#new_row').clone().appendTo('#item_table').removeAttr('id').addClass('item').show();
         @endif
 
-        // Legacy:no: check items tax usage is correct (Load on change)
-        $(document).on('loaded', check_items_tax_usages());
+        $(document).on('loaded', check_items_tax_usages);
 
-        $('#btn_create_recurring').click(function () {
-            $('#modal-placeholder').load(
-                "{{ url('invoices/ajax/modal_create_recurring') }}",
-                {
-                    invoice_id: {{ $invoice_id }}
-                }
-            );
+        $('#btn_create_recurring').click(function() {
+            $('#modal-placeholder').load("{{ url('invoices/ajax/modal_create_recurring') }}", { invoice_id: {{ $invoice_id }} });
         });
 
-        $('#invoice_change_client').click(function () {
+        $('#invoice_change_client').click(function() {
             $('#modal-placeholder').load("{{ url('invoices/ajax/modal_change_client') }}", {
                 invoice_id: {{ $invoice_id }},
                 client_id: "{{ $this->db->escape_str($invoice->client_id) }}"
             });
         });
 
-        $('#btn_save_invoice').click(function () {
+        $('#btn_save_invoice').click(function() {
             var items = [];
             var item_order = 1;
-            $('#item_table .item').each(function () {
+            $('#item_table .item').each(function() {
                 var row = {};
-                $(this).find('input,select,textarea').each(function () {
-                    @if($(this).is(':checkbox')) {
+                $(this).find('input,select,textarea').each(function() {
+                    if ($(this).is(':checkbox')) {
                         row[$(this).attr('name')] = $(this).is(':checked');
                     } else {
                         row[$(this).attr('name')] = $(this).val();
                     }
                 });
-                row['item_order'] = item_order;
-                item_order++;
+                row['item_order'] = item_order++;
                 items.push(row);
             });
+
             $.post("{{ url('invoices/ajax/save') }}", {
-                    invoice_id: {{ $invoice_id }},
-                    invoice_number: $('#invoice_number').val(),
-                    invoice_date_created: $('#invoice_date_created').val(),
-                    invoice_date_due: $('#invoice_date_due').val(),
-                    invoice_status_id: $('#invoice_status_id').val(),
-                    invoice_password: $('#invoice_password').val(),
-                    invoice_sumex_reason: $("#invoice_sumex_reason").val(),
-                    invoice_sumex_treatmentstart: $("#invoice_sumex_treatmentstart").val(),
-                    invoice_sumex_treatmentend: $("#invoice_sumex_treatmentend").val(),
-                    invoice_sumex_casedate: $("#invoice_sumex_casedate").val(),
-                    invoice_sumex_casenumber: $("#invoice_sumex_casenumber").val(),
-                    invoice_sumex_diagnosis: $("#invoice_sumex_diagnosis").val(),
-                    invoice_sumex_observations: $("#invoice_sumex_observations").val(),
-                    items: JSON.stringify(items),
-                    invoice_discount_amount: $('#invoice_discount_amount').val(),
-                    invoice_discount_percent: $('#invoice_discount_percent').val(),
-                    invoice_terms: $('#invoice_terms').val(),
-                    custom: $('input[name^=custom],select[name^=custom]').serializeArray(),
-                    payment_method: $('#payment_method').val()
-                },
-                function (data) {
-                    var response = json_parse(data, {{ (int) IP_DEBUG }});
-                    @if(response.success === 1) {
-                        window.location = "{{ url('invoices/view') }}/" + {{ $invoice_id }};
-                    } else {
-                        $('#fullpage-loader').hide();
-                        $('.control-group').removeClass('has-error');
-                        $('div.alert[class*="alert-"]').remove();
-                        var resp_errors = response.validation_errors,
-                            all_resp_errors = '';
-                        for (var key in resp_errors) {
-                            $('#' + key).parent().addClass('has-error');
-                            all_resp_errors += resp_errors[key];
-                        }
-                        $('#invoice_form').prepend('<div class="p-4 mb-4 text-red-700 dark:text-red-200 bg-red-100 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg">' + all_resp_errors + '</div>');
+                invoice_id: {{ $invoice_id }},
+                invoice_number: $('#invoice_number').val(),
+                invoice_date_created: $('#invoice_date_created').val(),
+                invoice_date_due: $('#invoice_date_due').val(),
+                invoice_status_id: $('#invoice_status_id').val(),
+                invoice_password: $('#invoice_password').val(),
+                invoice_sumex_reason: $('#invoice_sumex_reason').val(),
+                invoice_sumex_treatmentstart: $('#invoice_sumex_treatmentstart').val(),
+                invoice_sumex_treatmentend: $('#invoice_sumex_treatmentend').val(),
+                invoice_sumex_casedate: $('#invoice_sumex_casedate').val(),
+                invoice_sumex_casenumber: $('#invoice_sumex_casenumber').val(),
+                invoice_sumex_diagnosis: $('#invoice_sumex_diagnosis').val(),
+                invoice_sumex_observations: $('#invoice_sumex_observations').val(),
+                items: JSON.stringify(items),
+                invoice_discount_amount: $('#invoice_discount_amount').val(),
+                invoice_discount_percent: $('#invoice_discount_percent').val(),
+                invoice_terms: $('#invoice_terms').val(),
+                custom: $('input[name^=custom],select[name^=custom]').serializeArray(),
+                payment_method: $('#payment_method').val()
+            }, function(data) {
+                var response = json_parse(data, {{ (int) IP_DEBUG }});
+                if (response.success === 1) {
+                    window.location = "{{ url('invoices/view') }}/" + {{ $invoice_id }};
+                } else {
+                    $('#fullpage-loader').hide();
+                    $('.control-group').removeClass('has-error');
+                    $('div.alert[class*="alert-"]').remove();
+                    var resp_errors = response.validation_errors,
+                        all_resp_errors = '';
+                    for (var key in resp_errors) {
+                        $('#' + key).parent().addClass('has-error');
+                        all_resp_errors += resp_errors[key];
                     }
-                });
+                    $('#invoice_form').prepend('<div class="p-4 mb-4 text-red-700 dark:text-red-200 bg-red-100 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg">' + all_resp_errors + '</div>');
+                }
+            });
         });
 
-        $('#btn_generate_pdf').click(function () {
+        $('#btn_generate_pdf').click(function() {
             window.open('{{ url('invoices/generate_sumex_copy/' . $invoice_id) }}', '_blank');
         });
 
-        $('#btn_sumex').click(function () {
+        $('#btn_sumex').click(function() {
             window.open('{{ url('invoices/generate_sumex_pdf/' . $invoice_id) }}', '_blank');
         });
 
-        $(document).on('click', '.btn_delete_item', function () {
+        $(document).on('click', '.btn_delete_item', function() {
             var btn = $(this);
             var item_id = btn.data('item-id');
-
-            // Just remove the row if no item ID is set (new row)
-            @if(typeof item_id === 'undefined') {
+            if (typeof item_id === 'undefined') {
                 $(this).parents('.item').remove();
                 check_items_tax_usages();
             } else {
-                $.post("{{ url('invoices/ajax/delete_item/' . $invoice->invoice_id) }}", {
-                        'item_id': item_id,
-                    },
-                    function (data) {
-                        var response = json_parse(data, {{ (int) IP_DEBUG }});
-                        @if(response.success === 1) {
-                            btn.parents('.item').remove();
-                        } else {
-                            btn.removeClass('btn-link').addClass('btn-danger').prop('disabled', true);
-                        }
-
-                        check_items_tax_usages();
+                $.post("{{ url('invoices/ajax/delete_item/' . $invoice->invoice_id) }}", { item_id: item_id }, function(data) {
+                    var response = json_parse(data, {{ (int) IP_DEBUG }});
+                    if (response.success === 1) {
+                        btn.parents('.item').remove();
+                    } else {
+                        btn.removeClass('btn-link').addClass('btn-danger').prop('disabled', true);
                     }
-                );
+                    check_items_tax_usages();
+                });
             }
         });
 
         @if($invoice->is_read_only != 1)
-        var fixHelper = function (e, tr) {
+        var fixHelper = function(e, tr) {
             var $originals = tr.children();
             var $helper = tr.clone();
-            $helper.children().each(function (index) {
-                $(this).width($originals.eq(index).width())
+            $helper.children().each(function(index) {
+                $(this).width($originals.eq(index).width());
             });
             return $helper;
         };
 
-        $("#item_table").sortable({
-            items: 'tbody',
-            helper: fixHelper
+        $('#item_table').sortable({ items: 'tbody', helper: fixHelper });
+
+        $(document).ready(function() {
+            if ($('#invoice_discount_percent').val().length > 0) {
+                $('#invoice_discount_amount').prop('disabled', true);
+            }
+            if ($('#invoice_discount_amount').val().length > 0) {
+                $('#invoice_discount_percent').prop('disabled', true);
+            }
         });
 
-        $(document).ready(function () {
-            @if($('#invoice_discount_percent').val().length > 0) {
-                $('#invoice_discount_amount').prop('disabled', true);
-            }
-            @if($('#invoice_discount_amount').val().length > 0) {
-                $('#invoice_discount_percent').prop('disabled', true);
-            }
+        $('#invoice_discount_amount').keyup(function() {
+            $('#invoice_discount_percent').prop('disabled', this.value.length > 0);
         });
-        $('#invoice_discount_amount').keyup(function () {
-            @if(this.value.length > 0) {
-                $('#invoice_discount_percent').prop('disabled', true);
-            } else {
-                $('#invoice_discount_percent').prop('disabled', false);
-            }
+        $('#invoice_discount_percent').keyup(function() {
+            $('#invoice_discount_amount').prop('disabled', this.value.length > 0);
         });
-        $('#invoice_discount_percent').keyup(function () {
-            @if(this.value.length > 0) {
-                $('#invoice_discount_amount').prop('disabled', true);
-            } else {
-                $('#invoice_discount_amount').prop('disabled', false);
-            }
-        });
-        @endif);
+        @endif
+    });
 </script>
 
-{{ $modal_delete_invoice;
-echo $legacy_calculation ? $modal_add_invoice_tax : '';
-// Legacy calculation have global taxes - since v1.6.3
-?>
+{!! $modal_delete_invoice !!}
+@if($legacy_calculation)
+    {!! $modal_add_invoice_tax !!}
+@endif
 
 <div id="headerbar">
     <h1 class="headerbar-title">
-        <span data-toggle="tooltip" data-placement="bottom" title="{{ trans('invoicing') }}: {{ htmlspecialchars(PHP_EOL . format_user($invoice->user_id)) " }}>
-            {{ trans('invoice') . ' ' . ($invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id) }}
+        <span data-toggle="tooltip" data-placement="bottom"
+              title="{{ trans('invoicing') }}: {{ format_user($invoice->user_id) }}">
+            {{ trans('invoice') }} {{ $invoice->invoice_number ? '#' . $invoice->invoice_number : trans('id') . ': ' . $invoice->invoice_id }}
         </span>
 
-@if($change_user)
-<a data-toggle="tooltip" data-placement="bottom"
-   title="{{ $edit_user_title }}"
-   href="{{ site_url('users/form/' . $invoice->user_id) " }}>
-    <i class="fa fa-xs fa-user text-{{ $my_class" }}></i>
-    <span class="hidden sm:block">{!! $invoice->user_name) }}</span>
-                </a>
-        @if($invoice->invoice_status_id == 1 && !$invoice->creditinvoice_parent_id)
-
-        <span id="invoice_change_user" class="fa fa-fw fa-edit text-{{ $its_mine ? 'muted' : 'danger' }} cursor-pointer"
-              data-toggle="tooltip" data-placement="bottom"
-              title="@lang('change_user')"></span>
-        @php
-            }
-            // End if draft
-        }
-        // End if change_user
-        </h1>
-
-        <div
-            class="headerbar-item float-right {{ $invoice->is_read_only != 1 || $invoice->invoice_status_id 4 ? ' inline-flex rounded-md shadow-sm : ''" }}>
-
-        <div class="options inline-flex rounded-md shadow-sm float-left">
-            <a class="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-               data-toggle="dropdown" href="#">
-                <i class="fa fa-caret-down no-margin"></i> @lang('options')
+        @if($change_user)
+            <a data-toggle="tooltip" data-placement="bottom" title="{{ $edit_user_title }}"
+               href="{{ site_url('users/form/' . $invoice->user_id) }}">
+                <i class="fa fa-xs fa-user text-{{ $my_class }}"></i>
+                <span class="hidden sm:block">{{ $invoice->user_name }}</span>
             </a>
-            <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
-@if($legacy_calculation && $invoice->is_read_only != 1) {
-    // Legacy calculation have global taxes - since v1.6.3
-
-                <li>
-                    <a href="#add-invoice-tax" data-toggle="modal">
-                        <i class="fa fa-plus fa-margin"></i> @lang('add_invoice_tax')
-                    </a>
-                </li>
-@endif
-                <li>
-                    <a href="#" id="btn_create_credit" data-invoice-id="{{ $invoice_id " }}>
-                        <i class="fa fa-minus fa-margin"></i> @lang('create_credit_invoice')
-                    </a>
-                </li>
-@if($invoice->invoice_balance != 0)
-                <li>
-                    <a href="#" class="invoice-add-payment"
-                       data-invoice-id="{{ $invoice_id }}"
-                       data-invoice-balance="{{ $invoice->invoice_balance }}"
-                       data-invoice-payment-method="{{ $invoice->payment_method }}"
-                       data-payment-cf-exist="{{ $payment_cf_exist ?? '' " }}>
-                        <i class="fa fa-credit-card fa-margin"></i>
-                        @lang('enter_payment')
-                    </a>
-                </li>
-@endif
-                <li>
-                    <a href="#" id="btn_generate_pdf"
-                       data-invoice-id="{{ $invoice_id " }}>
-                        <i class="fa fa-file-text fa-margin"></i>
-                        @lang('generate_copy')
-                    </a>
-                </li>
-                <li>
-                    <a href="#" id="btn_sumex"
-                       data-invoice-id="{{ $invoice_id " }}>
-                        <i class="fa fa-user-md fa-margin"></i>
-                        @lang('generate_sumex')
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url('mailer/invoice/' . $invoice->invoice_id) " }}>
-                        <i class="fa fa-send fa-margin"></i>
-                        @lang('send_email')
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#" id="btn_create_recurring"
-                       data-invoice-id="{{ $invoice_id " }}>
-                        <i class="fa fa-repeat fa-margin"></i>
-                        @lang('create_recurring')
-                    </a>
-                </li>
-                <li>
-                    <a href="#" id="btn_copy_invoice"
-                       data-invoice-id="{{ $invoice_id " }}>
-                        <i class="fa fa-copy fa-margin"></i>
-                        @lang('copy_invoice')
-                    </a>
-                </li>
-@if($invoice->invoice_status_id == 1 || $this->config->item('enable_invoice_deletion') === true && $invoice->is_read_only != 1)
-                <li>
-                    <a href="#delete-invoice" data-toggle="modal">
-                        <i class="fa fa-trash-o fa-margin"></i>
-                        @lang('delete')
-                    </a>
-                </li>
-@endif
-            </ul>
-        </div>
-
-@if($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4)
-        <a href="#" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors ajax-loader" id="btn_save_invoice">
-            <i class="fa fa-check"></i> @lang('save')
-        </a>
-@endif
-    </div>
-
-    <div class="headerbar-item invoice-labels float-right">
-@if($invoice->invoice_is_recurring)
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 dark:bg-cyan-900/50 text-cyan-800 dark:text-cyan-200">@lang('recurring')</span>
-@php
-    }
-    @if($invoice->is_read_only == 1) {
-
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">
-            <i class="fa fa-read-only"></i> @lang('read_only')
-        </span>
-@endif
-    </div>
-
-        </div>
-
-        <div id="content">
-
-    {{ $this->layout->loadView('layout/alerts') }}
-
-    <div id="invoice_form">
-        <div class="invoice">
-            <div class="cf flex flex-wrap -mx-4">
-                <div class="w-full px-4 col-md-8">
-                    <div class="w-full md:w-1/2 px-4">
-                        <h2>
-                            <a href="{{ url('clients/view/' . $invoice->client_id) " }}>{{ format_client($invoice) }}</a>
-@if($invoice->invoice_status_id == 1)
-                                <span id="invoice_change_client" class="fa fa-edit cursor-pointer small"
-                                      data-toggle="tooltip" data-placement="bottom"
-                                      title="{{ htmlentities(trans('change_client'), ENT_COMPAT) " }}></span>
-@endif
-                        </h2><br>
-                        <span>
-                            {{ $invoice->client_address_1 ? $invoice->client_address_1 . '<br>' : '' }}
-                            {{ $invoice->client_address_2 ? $invoice->client_address_2 . '<br>' : '' }}
-                            {{ $invoice->client_city ? $invoice->client_city : '' }}
-                            {{ $invoice->client_state ? $invoice->client_state : '' }}
-                            {{ $invoice->client_zip ? $invoice->client_zip : '' }}
-                            {{ $invoice->client_country ? '<br>' . $invoice->client_country : '' }}
-                        </span>
-@if($invoice->client_phone || $invoice->client_email)
-                            <hr>
-@php
-    }
-    @if($invoice->client_phone) {
-
-                            <div>@lang('phone'):&nbsp;{!! $invoice->client_phone !!}</div>
-@php
-    }
-    @if($invoice->client_email) {
-
-                            <div>@lang('email'):&nbsp;@php
-                                    _auto_link($invoice->client_email !!}</div>
-@php
-    }
-    @if($invoice->client_birthdate || $invoice->client_gender) {
-
-                            <hr>
-@php
-    }
-    @if($invoice->client_birthdate) {
-
-                            <div>@lang('birthdate'):&nbsp;{{ format_date($invoice->client_birthdate) }}</div>
-@php
-    }
-    @if($invoice->client_gender) {
-
-                            <div>@lang('birthdate'):&nbsp;{{ format_gender($invoice->client_gender) }}</div>
+            @if($invoice->invoice_status_id == 1 && !$invoice->creditinvoice_parent_id)
+                <span id="invoice_change_user"
+                      class="fa fa-fw fa-edit text-{{ $its_mine ? 'muted' : 'danger' }} cursor-pointer"
+                      data-toggle="tooltip" data-placement="bottom" title="@lang('change_user')"></span>
+            @endif
         @endif
-        </div>
-        <div class="w-full md:w-1/2 px-4">
-@php // Fix New invoice date in db
-$invoice->sumex_treatmentstart = $invoice->sumex_treatmentstart == '0000-00-00' ? date('y-m-d') : $invoice->sumex_treatmentstart;
-$invoice->sumex_treatmentend = $invoice->sumex_treatmentend == '0000-00-00' ? date('y-m-d') : $invoice->sumex_treatmentend;
-$invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-d') : $invoice->sumex_casedate;
-                        <h3>@lang('treatment')</h3>
-                        <br>
-                        <div class="w-full px-4 col-md-8">
-                            <table class="items table">
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">@lang('start')</span>
-                                            <input id="invoice_sumex_treatmentstart" name="sumex_treatmentstart"
-                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
-                                                   value="{{ date_from_mysql($invoice->sumex_treatmentstart) }}"
-                                                   type="text">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">@lang('end')</span>
-                                            <input id="invoice_sumex_treatmentend" name="sumex_treatmentend"
-                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
-                                                   value="{{ date_from_mysql($invoice->sumex_treatmentend) }}"
-                                                   type="text">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">@lang('reason')</span>
-                                            <select name="invoice_sumex_reason" id="invoice_sumex_reason"
-                                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
-@php $reasons = ['accident', 'birthdefect', 'disease', 'maternity', 'prevention', 'unknown'];
-@foreach($reasons as $key => $reason) {
-    $selected = $invoice->sumex_reason == $key ? ' selected' : '';
+    </h1>
+</div>
 
-                                                <option value="{{ $key }}"{{ $selected }}>
-                                                    @php
-                                                        _trans('reason_' . $reason)
-                                                </option>
-@php
-    @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">@lang('case_date')</span>
-                                            <input id="invoice_sumex_casedate" name="sumex_casedate"
-                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
-                                                   value="{{ date_from_mysql($invoice->sumex_casedate) }}"
-                                                   type="text">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">@lang('case_number')</span>
-                                            <input id="invoice_sumex_casenumber" name="sumex_casenumber"
-                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
-                                                   value="@php _htmle($invoice->sumex_casenumber)"
-                                                   type="text">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">@lang('invoice_sumex_diagnosis')</span>
-                                            <input id="invoice_sumex_diagnosis" name="invoice_sumex_diagnosis"
-                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
-                                                   value="@php _htmle($invoice->sumex_diagnosis)"
-                                                   type="text" maxlength="500">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-        </div>
-
-        <div class="w-full px-4 md:w-1/3">
-
-                    <div class="details-box">
-
-                        <div class="flex flex-wrap -mx-4">
-
-@if($invoice->invoice_sign == -1)
-                                {
-                                $credit_link = anchor('/invoices/view/' . $invoice->creditinvoice_parent_id,
-                                $invoice->creditinvoice_parent_id);
-
-                                <div class="w-full px-4">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200">
-                                    <i class="fa fa-credit-invoice"></i>&nbsp;
-                                    {{ trans('credit_invoice_for_invoice') . ' ' . $credit_link }}
-                                </span>
-                            </div>
-                            @endif
-
-                            <div class="w-full px-4">
-
-                                <div class="invoice-properties">
-                                    <label>@lang('status');
-@if($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4)
-{ <span class="small">(  trans(can_be_changed)  )</span>}
-@endif
-                                    </label>
-                                    <select name="invoice_status_id" id="invoice_status_id"
-                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
-                                            {{ $invoice->is_read_only == 1 && $invoice->invoice_status_id == 4 ? 'disabled="disabled"' : '' }}
-                                    >
-@foreach($invoice_statuses as $key => $status)
-                                            <option value="{{ $key }}"
-                                                {{ $key == $invoice->invoice_status_id ? 'selected="selected"' : '' }}
-                                        >
-                                            {{ $status['label'] }}
-                                        </option>@endforeach
-                                    </select>
-                                </div>
-
-                                <div class="invoice-properties">
-                                    <label>@lang('invoice') #</label>
-                                    <input type="text" id="invoice_number"
-                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
-                                           @if($invoice->invoice_number)
-                                               value="{{ $invoice->invoice_number }}"
-                                           @else
-                                               placeholder="@lang('not_set')"@endforeach
-                                        {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
-                                    >
-                                </div>
-
-                                <div class="invoice-properties has-feedback">
-                                    <label>@lang('date')</label>
-
-                                    <div class="input-group">
-                                        <input name="invoice_date_created" id="invoice_date_created"
-                                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
-                                               value="{{ date_from_mysql($invoice->invoice_date_created) }}"
-                                               {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
-                                        >
-                                        <span class="input-group-addon">
-                                        <i class="fa fa-calendar fa-fw"></i>
-                                    </span>
-                                    </div>
-                                </div>
-
-                                <div class="invoice-properties has-feedback">
-                                    <label>@lang('due_date')</label>
-
-                                    <div class="input-group">
-                                        <input name="invoice_date_due" id="invoice_date_due"
-                                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
-                                               value="{{ date_from_mysql($invoice->invoice_date_due) }}"
-                                               {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
-                                        >
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar fa-fw"></i>
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div class="invoice-properties">
-                                    <label>@lang('payment_method')</label>
-                                    <select name="payment_method" id="payment_method"
-                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
-                                            {{ $invoice->is_read_only == 1 && $invoice->invoice_status_id == 4 ? 'disabled="disabled"' : '' }}
-                                    >
-                                        <option value="0">@lang('select_payment_method')</option>
-@foreach($payment_methods as $payment_method)
-                                        <option @php
-                                                    check_select($invoice->payment_method, $payment_method->payment_method_id)
-                                                value="{{ $payment_method->payment_method_id " }}>
-                                        {{ $payment_method->payment_method_name }}
-                                        </option>
-@php
-    @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="invoice-properties">
-                                    <label>@lang('invoice_password')</label>
-                                    <input type="text" id="invoice_password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
-                                           value="{!! $invoice->invoice_password !!}"
-                                           {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}>
-                                </div>
-                            </div>
-@php $default_custom = false;
-$classes = ['control-label', 'controls', '', 'col-xs-12'];
-@foreach($custom_fields as $custom_field) {
-    @if(!$default_custom && !$custom_field->custom_field_location) {
-        $default_custom = true;
-    }
-    @if($custom_field->custom_field_location == 1) {
-        print_field($this->mdl_invoices, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
-    }
-}
-
-                            @if($invoice->invoice_status_id != 1)
-                                <div class="w-full px-4">
-                                <div class="mb-4">
-                                    <label for="invoice-guest-url">@lang('guest_url')</label>
-                                    <div class="input-group">
-                                        <input type="text" id="invoice-guest-url" readonly class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
-                                               value="{{ url('guest/view/invoice/' . $invoice->invoice_url_key) " }}>
-                                        <span class="input-group-addon to-clipboard cursor-pointer"
-                                              data-clipboard-target="#invoice-guest-url">
-                                            <i class="fa fa-clipboard fa-fw"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                                @php
-                                    }
-                                    // End if
-
-                        </div>
-                    </div>
-                </div>
-
-        </div>
-
-@php $this->layout->loadView('invoices/partial_itemlist_' . (get_setting('show_responsive_itemlist') ? 'responsive' : 'table'))
-
-            <hr/>
-
-            <div class="flex flex-wrap -mx-4">
-                <div class="w-full px-4 md:w-1/3">
-
-                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
-                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-                            @lang('sumex_observations')
-                        </div>
-                        <div class="p-6">
-                            <textarea id="invoice_sumex_observations" name="invoice_sumex_observations"
-                                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" rows="3"
-                                      {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
-                            >{{ $invoice->sumex_observations }}</textarea>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="w-full px-4 md:w-1/3">
-
-                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
-                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-                            @lang('invoice_terms')
-                        </div>
-                        <div class="p-6">
-                            <textarea id="invoice_terms" name="invoice_terms" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" rows="3"
-                                      {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
-                            >{!! $invoice->invoice_terms !!}</textarea>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="w-full px-4 md:w-1/3">
-
-                    @php _dropzone_html($invoice->is_read_only)
-
-                </div>
-
-                <div class="w-full px-4 block sm:hidden hidden sm:block md:hidden"><br></div>
-
-            </div>
-
-@if($default_custom)
-            <div class="flex flex-wrap -mx-4">
-                <div class="w-full px-4">
-
-                    <hr>
-
-                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
-                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('custom_fields')</div>
-                        <div class="p-6">
-                            <div class="flex flex-wrap -mx-4">
-@php
-    $classes = ['control-label', 'controls', '', 'form-group col-xs-12 col-sm-6'];
-    @foreach($custom_fields as $custom_field) {
-        @if(!$custom_field->custom_field_location) {
-            // == 0
-            print_field($this->mdl_invoices, $custom_field, $custom_values, $classes[0], $classes[1], $classes[2], $classes[3]);
-        }
-    }
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-<?php
-}
-// End if custom_fields
-
-        </div>
+<div id="content">
+    {{ $this->layout->loadView('layout/alerts') }}
+    <div id="invoice_form">
+        {{-- Invoice form content --}}
     </div>
 </div>
 
-<?php
-_dropzone_script($invoice->invoice_url_key, $invoice->client_id);
+@php
+    _dropzone_script($invoice->invoice_url_key, $invoice->client_id);
+@endphp

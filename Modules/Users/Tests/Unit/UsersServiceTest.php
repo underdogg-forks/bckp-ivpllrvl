@@ -25,13 +25,13 @@ class UsersServiceTest extends TestCase
     {
         // Arrange
         User::create([
-            'user_name' => 'John Doe',
-            'user_email' => 'john@example.com',
+            'user_name'     => 'John Doe',
+            'user_email'    => 'john@example.com',
             'user_password' => bcrypt('password'),
         ]);
         User::create([
-            'user_name' => 'Jane Doe',
-            'user_email' => 'jane@example.com',
+            'user_name'     => 'Jane Doe',
+            'user_email'    => 'jane@example.com',
             'user_password' => bcrypt('password'),
         ]);
 

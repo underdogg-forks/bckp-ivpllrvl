@@ -73,7 +73,8 @@ class CustomFieldsService extends BaseService
      * Retrieve all custom fields for a given custom table.
      *
      * @param string $table The internal custom field table identifier (e.g., 'ip_client_custom', 'ip_invoice_custom').
-     * @return \Modules\CustomFields\Models\CustomField[] An array of CustomField model instances matching the provided table.
+     *
+     * @return \Modules\CustomFields\Models\CustomField[] an array of CustomField model instances matching the provided table
      */
     public function getByTable($table)
     {
@@ -175,9 +176,10 @@ class CustomFieldsService extends BaseService
     /**
      * Check whether a custom field is used in its corresponding custom data table.
      *
-     * @param int|null $id The custom field ID to check.
-     * @param bool $get If true, return all matching rows as an array; if false, return the query builder.
-     * @return array|\Illuminate\Database\Query\Builder|null An array of matching rows when `$get` is true, the query builder when `$get` is false, or `null` if `$id` is not provided.
+     * @param int|null $id  the custom field ID to check
+     * @param bool     $get if true, return all matching rows as an array; if false, return the query builder
+     *
+     * @return array|\Illuminate\Database\Query\Builder|null an array of matching rows when `$get` is true, the query builder when `$get` is false, or `null` if `$id` is not provided
      */
     public function used($id = null, $get = true)
     {
@@ -186,7 +188,7 @@ class CustomFieldsService extends BaseService
         }
         $cf   = $this->getById($id);
         $base = strtr($cf->custom_field_table, ['ip_' => '']) . '_field';
-        
+
         $query = \Illuminate\Support\Facades\DB::table($cf->custom_field_table)
             ->where($base . 'id', $id)
             ->whereNotNull($base . 'value')
@@ -201,8 +203,9 @@ class CustomFieldsService extends BaseService
      * Removes any associated choice values, deletes the field's column reference from its custom data table,
      * and then removes the custom field record.
      *
-     * @param int $id The ID of the custom field to delete.
-     * @return bool `true` if the field was deleted, `false` if the field is in use and not deleted.
+     * @param int $id the ID of the custom field to delete
+     *
+     * @return bool `true` if the field was deleted, `false` if the field is in use and not deleted
      */
     public function delete($id): bool
     {

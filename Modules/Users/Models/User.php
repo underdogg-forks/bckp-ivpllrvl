@@ -13,9 +13,9 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    protected $table = 'ip_users';
-
     public $timestamps = false;
+
+    protected $table = 'ip_users';
 
     protected $casts = [
         'email_verified_at' => 'datetime',

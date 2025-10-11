@@ -69,7 +69,7 @@ class InvoicesRecurringService extends BaseService
     /**
      * Marks a recurring invoice as stopped by setting its end date to today and clearing the next recurrence date.
      *
-     * @param int|string $invoice_recurring_id The ID of the recurring invoice to stop.
+     * @param int|string $invoice_recurring_id the ID of the recurring invoice to stop
      */
     public function stop($invoice_recurring_id)
     {
@@ -95,7 +95,7 @@ class InvoicesRecurringService extends BaseService
      * Loads the recurring invoice by its ID, computes the next `recur_next_date` from the current
      * `recur_next_date` and `recur_frequency`, and persists the updated `recur_next_date`.
      *
-     * @param int|string $invoice_recurring_id The ID of the recurring invoice record to update.
+     * @param int|string $invoice_recurring_id the ID of the recurring invoice record to update
      */
     public function setNextRecurDate($invoice_recurring_id)
     {

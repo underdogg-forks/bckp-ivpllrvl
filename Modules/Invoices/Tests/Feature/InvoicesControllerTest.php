@@ -2,31 +2,34 @@
 
 namespace Modules\Invoices\Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\Clients\Models\Client;
 use Modules\Invoices\Controllers\InvoicesController;
-use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
 use Modules\Invoices\Models\Invoice;
 use Modules\Invoices\Models\InvoiceTaxRate;
-use Modules\Clients\Models\Client;
 use Modules\TaxRates\Models\TaxRate;
-use App\Models\User;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 #[CoversClass(InvoicesController::class)]
 class InvoicesControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected User $user;
+
     protected Client $client;
+
     protected InvoiceGroup $invoiceGroup;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
-        $this->client = Client::factory()->create(['client_active' => 1]);
+        $this->user         = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
+        $this->client       = Client::factory()->create(['client_active' => 1]);
         $this->invoiceGroup = InvoiceGroup::factory()->create();
         $this->actingAs($this->user);
     }
@@ -43,12 +46,12 @@ class InvoicesControllerTest extends TestCase
     public function it_displays_draft_invoices_when_filtering_by_draft_status(): void
     {
         $draftInvoices = Invoice::factory()->count(3)->create(['invoice_status_id' => 1]);
-        $sentInvoices = Invoice::factory()->count(2)->create(['invoice_status_id' => 2]);
+        $sentInvoices  = Invoice::factory()->count(2)->create(['invoice_status_id' => 2]);
 
         $response = $this->get(route('invoices.status', ['status' => 'draft']));
 
         $response->assertSuccessful();
-        $response->assertViewHas('invoices', function ($invoices) use ($draftInvoices) {
+        $response->assertViewHas('invoices', function ($invoices) {
             return $invoices->count() === 3;
         });
     }
@@ -87,12 +90,12 @@ class InvoicesControllerTest extends TestCase
         // Create overdue invoices (due date in the past, not paid)
         Invoice::factory()->count(2)->create([
             'invoice_status_id' => 2, // Sent
-            'invoice_date_due' => now()->subDays(10)
+            'invoice_date_due'  => now()->subDays(10),
         ]);
         // Create current invoices
         Invoice::factory()->count(3)->create([
             'invoice_status_id' => 2,
-            'invoice_date_due' => now()->addDays(10)
+            'invoice_date_due'  => now()->addDays(10),
         ]);
 
         $response = $this->get(route('invoices.status', ['status' => 'overdue']));
@@ -134,30 +137,30 @@ class InvoicesControllerTest extends TestCase
     public function it_creates_new_invoice_with_single_item(): void
     {
         $invoiceData = [
-            'client_id' => $this->client->client_id,
+            'client_id'            => $this->client->client_id,
             'invoice_date_created' => now()->format('Y-m-d'),
-            'invoice_date_due' => now()->addDays(30)->format('Y-m-d'),
-            'invoice_status_id' => 1,
-            'invoice_group_id' => $this->invoiceGroup->invoice_group_id,
-            'items' => [
+            'invoice_date_due'     => now()->addDays(30)->format('Y-m-d'),
+            'invoice_status_id'    => 1,
+            'invoice_group_id'     => $this->invoiceGroup->invoice_group_id,
+            'items'                => [
                 0 => [
-                    'item_name' => 'Test Service',
+                    'item_name'        => 'Test Service',
                     'item_description' => 'Test service description',
-                    'item_quantity' => 1,
-                    'item_price' => 100.00
-                ]
-            ]
+                    'item_quantity'    => 1,
+                    'item_price'       => 100.00,
+                ],
+            ],
         ];
 
         $response = $this->post(route('invoices.form'), $invoiceData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('ip_invoices', [
-            'client_id' => $this->client->client_id,
+            'client_id'         => $this->client->client_id,
             'invoice_status_id' => 1,
         ]);
         $this->assertDatabaseHas('ip_invoice_items', [
-            'item_name' => 'Test Service',
+            'item_name'  => 'Test Service',
             'item_price' => 100.00,
         ]);
     }
@@ -166,26 +169,26 @@ class InvoicesControllerTest extends TestCase
     public function it_creates_invoice_with_multiple_items(): void
     {
         $invoiceData = [
-            'client_id' => $this->client->client_id,
+            'client_id'            => $this->client->client_id,
             'invoice_date_created' => now()->format('Y-m-d'),
-            'invoice_date_due' => now()->addDays(30)->format('Y-m-d'),
-            'items' => [
+            'invoice_date_due'     => now()->addDays(30)->format('Y-m-d'),
+            'items'                => [
                 0 => [
-                    'item_name' => 'First Item',
+                    'item_name'     => 'First Item',
                     'item_quantity' => 1,
-                    'item_price' => 100.00
+                    'item_price'    => 100.00,
                 ],
                 1 => [
-                    'item_name' => 'Second Item',
+                    'item_name'     => 'Second Item',
                     'item_quantity' => 3,
-                    'item_price' => 25.00
+                    'item_price'    => 25.00,
                 ],
                 2 => [
-                    'item_name' => 'Third Item',
+                    'item_name'     => 'Third Item',
                     'item_quantity' => 1,
-                    'item_price' => 75.50
-                ]
-            ]
+                    'item_price'    => 75.50,
+                ],
+            ],
         ];
 
         $response = $this->post(route('invoices.form'), $invoiceData);
@@ -201,24 +204,24 @@ class InvoicesControllerTest extends TestCase
         $taxRate = TaxRate::factory()->create(['tax_rate_percent' => 21.00]);
 
         $invoiceData = [
-            'client_id' => $this->client->client_id,
+            'client_id'            => $this->client->client_id,
             'invoice_date_created' => now()->format('Y-m-d'),
-            'invoice_date_due' => now()->addDays(30)->format('Y-m-d'),
-            'items' => [
+            'invoice_date_due'     => now()->addDays(30)->format('Y-m-d'),
+            'items'                => [
                 0 => [
-                    'item_name' => 'Taxable Item',
-                    'item_quantity' => 1,
-                    'item_price' => 100.00,
-                    'item_tax_rate_id' => $taxRate->tax_rate_id
-                ]
-            ]
+                    'item_name'        => 'Taxable Item',
+                    'item_quantity'    => 1,
+                    'item_price'       => 100.00,
+                    'item_tax_rate_id' => $taxRate->tax_rate_id,
+                ],
+            ],
         ];
 
         $response = $this->post(route('invoices.form'), $invoiceData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('ip_invoice_items', [
-            'item_name' => 'Taxable Item',
+            'item_name'        => 'Taxable Item',
             'item_tax_rate_id' => $taxRate->tax_rate_id,
         ]);
     }
@@ -227,7 +230,7 @@ class InvoicesControllerTest extends TestCase
     public function it_views_invoice_details(): void
     {
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id
+            'client_id' => $this->client->client_id,
         ]);
         InvoiceItem::factory()->count(2)->create(['invoice_id' => $invoice->invoice_id]);
 
@@ -265,23 +268,23 @@ class InvoicesControllerTest extends TestCase
     public function it_updates_invoice_details(): void
     {
         $invoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id,
-            'invoice_status_id' => 1
+            'client_id'         => $this->client->client_id,
+            'invoice_status_id' => 1,
         ]);
 
         $updateData = [
-            'invoice_date_due' => now()->addDays(45)->format('Y-m-d'),
+            'invoice_date_due'  => now()->addDays(45)->format('Y-m-d'),
             'invoice_status_id' => 2,
-            'invoice_notes' => 'Updated invoice notes'
+            'invoice_notes'     => 'Updated invoice notes',
         ];
 
         $response = $this->post(route('invoices.form', ['id' => $invoice->invoice_id]), $updateData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('ip_invoices', [
-            'invoice_id' => $invoice->invoice_id,
+            'invoice_id'        => $invoice->invoice_id,
             'invoice_status_id' => 2,
-            'invoice_notes' => 'Updated invoice notes'
+            'invoice_notes'     => 'Updated invoice notes',
         ]);
     }
 
@@ -289,29 +292,29 @@ class InvoicesControllerTest extends TestCase
     public function it_updates_invoice_items(): void
     {
         $invoice = Invoice::factory()->create();
-        $item = InvoiceItem::factory()->create([
+        $item    = InvoiceItem::factory()->create([
             'invoice_id' => $invoice->invoice_id,
-            'item_name' => 'Original Name'
+            'item_name'  => 'Original Name',
         ]);
 
         $updateData = [
             'items' => [
                 $item->item_id => [
-                    'item_name' => 'Updated Service Name',
+                    'item_name'        => 'Updated Service Name',
                     'item_description' => 'Updated description',
-                    'item_quantity' => 2,
-                    'item_price' => 150.00
-                ]
-            ]
+                    'item_quantity'    => 2,
+                    'item_price'       => 150.00,
+                ],
+            ],
         ];
 
         $response = $this->post(route('invoices.form', ['id' => $invoice->invoice_id]), $updateData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('ip_invoice_items', [
-            'item_id' => $item->item_id,
-            'item_name' => 'Updated Service Name',
-            'item_price' => 150.00
+            'item_id'    => $item->item_id,
+            'item_name'  => 'Updated Service Name',
+            'item_price' => 150.00,
         ]);
     }
 
@@ -321,13 +324,13 @@ class InvoicesControllerTest extends TestCase
         $invoice = Invoice::factory()->create(['invoice_status_id' => 1]);
 
         $response = $this->post(route('invoices.form', ['id' => $invoice->invoice_id]), [
-            'invoice_status_id' => 2
+            'invoice_status_id' => 2,
         ]);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('ip_invoices', [
-            'invoice_id' => $invoice->invoice_id,
-            'invoice_status_id' => 2
+            'invoice_id'        => $invoice->invoice_id,
+            'invoice_status_id' => 2,
         ]);
     }
 
@@ -337,13 +340,13 @@ class InvoicesControllerTest extends TestCase
         $invoice = Invoice::factory()->create(['invoice_status_id' => 2]);
 
         $response = $this->post(route('invoices.form', ['id' => $invoice->invoice_id]), [
-            'invoice_status_id' => 4
+            'invoice_status_id' => 4,
         ]);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('ip_invoices', [
-            'invoice_id' => $invoice->invoice_id,
-            'invoice_status_id' => 4
+            'invoice_id'        => $invoice->invoice_id,
+            'invoice_status_id' => 4,
         ]);
     }
 
@@ -403,8 +406,8 @@ class InvoicesControllerTest extends TestCase
         $response = $this->get(route('invoices.generatePdf', ['invoice_id' => $invoice->invoice_id]));
 
         $this->assertDatabaseHas('ip_invoices', [
-            'invoice_id' => $invoice->invoice_id,
-            'invoice_status_id' => 2
+            'invoice_id'        => $invoice->invoice_id,
+            'invoice_status_id' => 2,
         ]);
     }
 
@@ -414,7 +417,7 @@ class InvoicesControllerTest extends TestCase
         config(['settings.mark_invoices_sent_pdf' => 1]);
         $invoice = Invoice::factory()->create([
             'invoice_status_id' => 1,
-            'invoice_number' => null
+            'invoice_number'    => null,
         ]);
 
         $response = $this->get(route('invoices.generatePdf', ['invoice_id' => $invoice->invoice_id]));
@@ -436,7 +439,7 @@ class InvoicesControllerTest extends TestCase
     public function it_downloads_archived_invoice_pdf(): void
     {
         // Create a test PDF file in the archive folder
-        $fileName = 'test_invoice_123.pdf';
+        $fileName    = 'test_invoice_123.pdf';
         $archivePath = UPLOADS_ARCHIVE_FOLDER . DIRECTORY_SEPARATOR . $fileName;
         file_put_contents($archivePath, 'test pdf content');
 
@@ -469,12 +472,12 @@ class InvoicesControllerTest extends TestCase
     public function it_copies_existing_invoice(): void
     {
         $originalInvoice = Invoice::factory()->create([
-            'client_id' => $this->client->client_id
+            'client_id' => $this->client->client_id,
         ]);
         InvoiceItem::factory()->count(2)->create(['invoice_id' => $originalInvoice->invoice_id]);
 
         $response = $this->post(route('invoices.copy', ['invoice_id' => $originalInvoice->invoice_id]), [
-            'invoice_date_created' => now()->format('Y-m-d')
+            'invoice_date_created' => now()->format('Y-m-d'),
         ]);
 
         $response->assertRedirect();
@@ -488,13 +491,13 @@ class InvoicesControllerTest extends TestCase
         $taxRate = InvoiceTaxRate::factory()->create(['invoice_id' => $invoice->invoice_id]);
 
         $response = $this->delete(route('invoices.deleteInvoiceTax', [
-            'invoice_id' => $invoice->invoice_id,
-            'invoice_tax_rate_id' => $taxRate->invoice_tax_rate_id
+            'invoice_id'          => $invoice->invoice_id,
+            'invoice_tax_rate_id' => $taxRate->invoice_tax_rate_id,
         ]));
 
         $response->assertRedirect(route('invoices.view', ['invoice_id' => $invoice->invoice_id]));
         $this->assertDatabaseMissing('ip_invoice_tax_rates', [
-            'invoice_tax_rate_id' => $taxRate->invoice_tax_rate_id
+            'invoice_tax_rate_id' => $taxRate->invoice_tax_rate_id,
         ]);
     }
 

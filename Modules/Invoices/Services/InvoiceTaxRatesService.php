@@ -15,7 +15,7 @@ class InvoiceTaxRatesService extends BaseService
     /**
      * Create a new InvoiceTaxRatesService and inject the InvoiceAmountsService dependency.
      *
-     * @param InvoiceAmountsService $invoiceAmountsService Service used to retrieve and recalculate invoice amounts and discounts.
+     * @param InvoiceAmountsService $invoiceAmountsService service used to retrieve and recalculate invoice amounts and discounts
      */
     public function __construct(public InvoiceAmountsService $invoiceAmountsService)
     {
@@ -51,7 +51,7 @@ class InvoiceTaxRatesService extends BaseService
      * When an invoice identifier is available (from $db_array['invoice_id'] or POST data), the service will
      * retrieve the invoice's global discount and recalculate invoice amounts via the injected InvoiceAmountsService.
      *
-     * @param int|null $id The invoice tax rate identifier, or null to create a new record.
+     * @param int|null   $id       the invoice tax rate identifier, or null to create a new record
      * @param array|null $db_array Associative array of database fields for the invoice tax rate. If it contains
      *                             an 'invoice_id' key that ID will be used to trigger recalculation.
      */
@@ -72,7 +72,7 @@ class InvoiceTaxRatesService extends BaseService
      *
      * Each entry contains the input field name (`field`), a translatable `label`, and the validation `rules`.
      *
-     * @return array<string, array<string, string>> Map of field names to their validation metadata.
+     * @return array<string, array<string, string>> map of field names to their validation metadata
      */
     public function validationRules()
     {
@@ -81,17 +81,19 @@ class InvoiceTaxRatesService extends BaseService
         ];
     }
 
-    / **
+    /**
      * Retrieve all tax rate records associated with a specific invoice.
      *
-     * @param int $invoice_id ID of the invoice to retrieve tax rates for.
-     * @return \Illuminate\Database\Eloquent\Collection Collection of InvoiceTaxRate models for the given invoice.
+     * @param int $invoice_id ID of the invoice to retrieve tax rates for
+     *
+     * @return \Illuminate\Database\Eloquent\Collection collection of InvoiceTaxRate models for the given invoice
      */
     /**
      * Retrieve all tax rate records for a given invoice.
      *
-     * @param int $invoice_id The invoice identifier to filter tax rates by.
-     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Invoices\Models\InvoiceTaxRate[] Collection of InvoiceTaxRate models matching the invoice.
+     * @param int $invoice_id the invoice identifier to filter tax rates by
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Invoices\Models\InvoiceTaxRate[] collection of InvoiceTaxRate models matching the invoice
      */
     public function getByInvoiceId($invoice_id)
     {

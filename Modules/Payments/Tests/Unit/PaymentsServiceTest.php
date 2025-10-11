@@ -27,37 +27,37 @@ class PaymentsServiceTest extends TestCase
     {
         // Arrange
         $client = Client::create([
-            'client_name' => 'Test Client',
+            'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
 
         $invoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 1,
         ]);
 
         Payment::create([
-            'invoice_id' => $invoice->invoice_id,
+            'invoice_id'     => $invoice->invoice_id,
             'payment_amount' => 100.00,
-            'payment_date' => now(),
+            'payment_date'   => now(),
         ]);
 
         Payment::create([
-            'invoice_id' => $invoice->invoice_id,
+            'invoice_id'     => $invoice->invoice_id,
             'payment_amount' => 50.00,
-            'payment_date' => now(),
+            'payment_date'   => now(),
         ]);
 
         // Create payment for different invoice
         $otherInvoice = Invoice::create([
-            'client_id' => $client->client_id,
+            'client_id'         => $client->client_id,
             'invoice_status_id' => 1,
         ]);
 
         Payment::create([
-            'invoice_id' => $otherInvoice->invoice_id,
+            'invoice_id'     => $otherInvoice->invoice_id,
             'payment_amount' => 200.00,
-            'payment_date' => now(),
+            'payment_date'   => now(),
         ]);
 
         // Act

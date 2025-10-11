@@ -10,9 +10,9 @@ class QuoteTaxRate extends BaseModel
     /** @use HasFactory<\Database\Factories\QuoteTaxRateFactory> */
     use HasFactory;
 
-    protected $table = 'ip_quote_tax_rates';
-
     public $timestamps = false;
+
+    protected $table = 'ip_quote_tax_rates';
 
     protected $casts = [];
 

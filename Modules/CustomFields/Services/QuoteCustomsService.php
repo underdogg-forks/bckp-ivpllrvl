@@ -45,15 +45,16 @@ class QuoteCustomsService extends BaseService
     }
 
     /**
-         * Persist custom field values for a quote.
-         *
-         * Validates the provided data and, if valid, upserts each entry from the instance's
-         * form data into the quote custom fields table for the given quote ID.
-         *
-         * @param int $quote_id The ID of the quote to associate custom field values with.
-         * @param array $db_array Data used for validation (the function reads actual values from $this->_formdata).
-         * @return mixed `true` if values were persisted or there was no form data to process; otherwise the validation result.
-         */
+     * Persist custom field values for a quote.
+     *
+     * Validates the provided data and, if valid, upserts each entry from the instance's
+     * form data into the quote custom fields table for the given quote ID.
+     *
+     * @param int   $quote_id the ID of the quote to associate custom field values with
+     * @param array $db_array data used for validation (the function reads actual values from $this->_formdata)
+     *
+     * @return mixed `true` if values were persisted or there was no form data to process; otherwise the validation result
+     */
     public function saveCustom($quote_id, $db_array)
     {
         $result = $this->validate($db_array);
@@ -65,13 +66,13 @@ class QuoteCustomsService extends BaseService
             foreach ($form_data as $key => $value) {
                 \Modules\Quotes\Models\QuoteCustom::query()->updateOrCreate(
                     [
-                        'quote_id' => $quote_id,
-                        'quote_custom_fieldid' => $key
+                        'quote_id'             => $quote_id,
+                        'quote_custom_fieldid' => $key,
                     ],
                     [
-                        'quote_id' => $quote_id,
-                        'quote_custom_fieldid' => $key,
-                        'quote_custom_fieldvalue' => $value
+                        'quote_id'                => $quote_id,
+                        'quote_custom_fieldid'    => $key,
+                        'quote_custom_fieldvalue' => $value,
                     ]
                 );
             }

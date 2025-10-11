@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Units\Models\Unit;
 use Modules\Units\Services\UnitsService;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 use Tests\TestCase;
 
 class UnitsServiceTest extends TestCase
@@ -139,7 +140,7 @@ class UnitsServiceTest extends TestCase
     {
         // Arrange
         $data = [
-            'unit_name' => 'Kilogram',
+            'unit_name'      => 'Kilogram',
             'unit_name_plrl' => 'Kilograms',
         ];
 
@@ -151,7 +152,7 @@ class UnitsServiceTest extends TestCase
         $this->assertEquals('Kilogram', $unit->unit_name);
         $this->assertEquals('Kilograms', $unit->unit_name_plrl);
         $this->assertDatabaseHas('ip_units', [
-            'unit_name' => 'Kilogram',
+            'unit_name'      => 'Kilogram',
             'unit_name_plrl' => 'Kilograms',
         ]);
     }
@@ -160,9 +161,9 @@ class UnitsServiceTest extends TestCase
     public function it_updates_existing_unit_when_id_is_provided(): void
     {
         // Arrange
-        $unit = Unit::create(['unit_name' => 'Hour', 'unit_name_plrl' => 'Hours']);
+        $unit       = Unit::create(['unit_name' => 'Hour', 'unit_name_plrl' => 'Hours']);
         $updateData = [
-            'unit_name' => 'Updated Hour',
+            'unit_name'      => 'Updated Hour',
             'unit_name_plrl' => 'Updated Hours',
         ];
 
@@ -174,7 +175,7 @@ class UnitsServiceTest extends TestCase
         $this->assertEquals('Updated Hour', $result->unit_name);
         $this->assertEquals('Updated Hours', $result->unit_name_plrl);
         $this->assertDatabaseHas('ip_units', [
-            'unit_id' => $unit->unit_id,
+            'unit_id'   => $unit->unit_id,
             'unit_name' => 'Updated Hour',
         ]);
     }
@@ -186,7 +187,7 @@ class UnitsServiceTest extends TestCase
         $data = ['unit_name' => 'Test', 'unit_name_plrl' => 'Tests'];
 
         // Assert
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unit not found');
 
         // Act

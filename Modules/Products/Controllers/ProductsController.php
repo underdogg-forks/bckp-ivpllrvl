@@ -19,7 +19,7 @@ class ProductsController extends AdminController
      * The returned view is populated with the paginated products and settings
      * controlling the filter UI (display flag, placeholder text, and filter method).
      *
-     * @return \Illuminate\Contracts\View\View The products index view with paginated products and filter configuration.
+     * @return \Illuminate\Contracts\View\View the products index view with paginated products and filter configuration
      */
     public function index(Request $request, int $page = 0): \Illuminate\Contracts\View\View
     {
@@ -42,9 +42,10 @@ class ProductsController extends AdminController
      * prepares the form for editing an existing product (or aborts with 404 if the product
      * cannot be prepared), and provides families, units, and tax rates for the view.
      *
-     * @param \Illuminate\Http\Request $request The current HTTP request.
-     * @param int|null $id Optional product ID for editing; null when creating a new product.
-     * @return \Illuminate\Contracts\View\View The products form view populated with `families`, `units`, and `tax_rates`.
+     * @param \Illuminate\Http\Request $request the current HTTP request
+     * @param int|null                 $id      optional product ID for editing; null when creating a new product
+     *
+     * @return \Illuminate\Contracts\View\View the products form view populated with `families`, `units`, and `tax_rates`
      */
     public function form(Request $request, $id = null): \Illuminate\Contracts\View\View
     {
@@ -77,8 +78,9 @@ class ProductsController extends AdminController
     /**
      * Delete the specified product and redirect to the products index.
      *
-     * @param int|string $id Identifier of the product to delete.
-     * @return \Illuminate\Http\RedirectResponse Redirect response to the products index route.
+     * @param int|string $id identifier of the product to delete
+     *
+     * @return \Illuminate\Http\RedirectResponse redirect response to the products index route
      */
     public function delete($id)
     {

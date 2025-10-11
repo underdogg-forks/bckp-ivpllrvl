@@ -26,7 +26,7 @@ class TaxRatesService extends BaseService
     /**
      * Create a TaxRate query builder ordered by tax_rate_percent.
      *
-     * @return \Illuminate\Database\Eloquent\Builder A query builder for TaxRate records ordered by `tax_rate_percent`.
+     * @return \Illuminate\Database\Eloquent\Builder a query builder for TaxRate records ordered by `tax_rate_percent`
      */
     public function defaultOrderBy(): \Illuminate\Database\Eloquent\Builder
     {
@@ -39,7 +39,7 @@ class TaxRatesService extends BaseService
      * Maps the keys 'tax_rate_name' and 'tax_rate_percent' to an array containing
      * 'field' (field name), 'label' (translated label), and 'rules' (validation rules).
      *
-     * @return array<string, array{field:string, label:string, rules:string}> Mapping for 'tax_rate_name' and 'tax_rate_percent'.
+     * @return array<string, array{field:string, label:string, rules:string}> mapping for 'tax_rate_name' and 'tax_rate_percent'
      */
     public function validationRules()
     {
@@ -49,7 +49,7 @@ class TaxRatesService extends BaseService
     /**
      * Retrieve all tax rate records.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Modules\TaxRates\Models\TaxRate> Collection of TaxRate models.
+     * @return \Illuminate\Database\Eloquent\Collection<\Modules\TaxRates\Models\TaxRate> collection of TaxRate models
      */
     public function getAll()
     {

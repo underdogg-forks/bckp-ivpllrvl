@@ -2,22 +2,22 @@
 
 namespace Modules\Users\Tests\Feature;
 
+use App\Models\User as AuthUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\Clients\Models\Client;
 use Modules\UserClients\Models\UserClient;
 use Modules\Users\Controllers\AjaxController;
+use Modules\Users\Models\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Modules\Users\Models\User;
-use Modules\Clients\Models\Client;
-use App\Models\User as AuthUser;
-use Illuminate\Support\Facades\Hash;
 
 #[CoversClass(AjaxController::class)]
 class UsersAjaxControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected AuthUser $user;
 
@@ -54,16 +54,16 @@ class UsersAjaxControllerTest extends TestCase
     public function it_searches_users_by_company_name(): void
     {
         User::factory()->create([
-            'user_name' => 'John Doe',
+            'user_name'    => 'John Doe',
             'user_company' => 'Acme Corp',
-            'user_active' => 1,
-            'user_type' => 1
+            'user_active'  => 1,
+            'user_type'    => 1,
         ]);
         User::factory()->create([
-            'user_name' => 'Jane Smith',
+            'user_name'    => 'Jane Smith',
             'user_company' => 'Acme Industries',
-            'user_active' => 1,
-            'user_type' => 1
+            'user_active'  => 1,
+            'user_type'    => 1,
         ]);
 
         $response = $this->get(route('users.ajax.nameQuery', ['type' => 1, 'query' => 'Acme']));
@@ -76,15 +76,15 @@ class UsersAjaxControllerTest extends TestCase
     public function it_searches_users_with_leading_wildcard_when_permissive_search_enabled(): void
     {
         User::factory()->create([
-            'user_name' => 'John Doe',
+            'user_name'   => 'John Doe',
             'user_active' => 1,
-            'user_type' => 1
+            'user_type'   => 1,
         ]);
 
         $response = $this->get(route('users.ajax.nameQuery', [
-            'type' => 1,
-            'query' => 'ohn',
-            'permissive_search_users' => 1
+            'type'                    => 1,
+            'query'                   => 'ohn',
+            'permissive_search_users' => 1,
         ]));
 
         $data = $response->json();
@@ -147,7 +147,7 @@ class UsersAjaxControllerTest extends TestCase
 
         $response->assertSuccessful();
         $this->assertDatabaseHas('ip_settings', [
-            'setting_key' => 'enable_permissive_search_users',
+            'setting_key'   => 'enable_permissive_search_users',
             'setting_value' => '1',
         ]);
     }
@@ -158,7 +158,7 @@ class UsersAjaxControllerTest extends TestCase
         $response = $this->get(route('users.ajax.savePreference', ['permissive_search_users' => '2']));
 
         $this->assertDatabaseMissing('ip_settings', [
-            'setting_key' => 'enable_permissive_search_users',
+            'setting_key'   => 'enable_permissive_search_users',
             'setting_value' => '2',
         ]);
     }
@@ -166,35 +166,35 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_saves_user_client_relationship_for_existing_user(): void
     {
-        $user = User::factory()->create();
+        $user   = User::factory()->create();
         $client = Client::factory()->create();
 
         $response = $this->post(route('users.ajax.saveUserClient'), [
-            'user_id' => $user->user_id,
-            'client_id' => $client->client_id
+            'user_id'   => $user->user_id,
+            'client_id' => $client->client_id,
         ]);
 
         $response->assertSuccessful();
         $this->assertDatabaseHas('ip_user_clients', [
-            'user_id' => $user->user_id,
-            'client_id' => $client->client_id
+            'user_id'   => $user->user_id,
+            'client_id' => $client->client_id,
         ]);
     }
 
     #[Test]
     public function it_does_not_duplicate_user_client_relationship(): void
     {
-        $user = User::factory()->create();
+        $user   = User::factory()->create();
         $client = Client::factory()->create();
 
         UserClient::factory()->create([
-            'user_id' => $user->user_id,
-            'client_id' => $client->client_id
+            'user_id'   => $user->user_id,
+            'client_id' => $client->client_id,
         ]);
 
         $response = $this->post(route('users.ajax.saveUserClient'), [
-            'user_id' => $user->user_id,
-            'client_id' => $client->client_id
+            'user_id'   => $user->user_id,
+            'client_id' => $client->client_id,
         ]);
 
         $response->assertSuccessful();
@@ -209,8 +209,8 @@ class UsersAjaxControllerTest extends TestCase
         $client = Client::factory()->create();
 
         $response = $this->post(route('users.ajax.saveUserClient'), [
-            'user_id' => null,
-            'client_id' => $client->client_id
+            'user_id'   => null,
+            'client_id' => $client->client_id,
         ]);
 
         $response->assertSuccessful();
@@ -220,18 +220,18 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_loads_user_client_table_for_existing_user(): void
     {
-        $user = User::factory()->create();
+        $user    = User::factory()->create();
         $clients = Client::factory()->count(3)->create();
 
         foreach ($clients as $client) {
             UserClient::factory()->create([
-                'user_id' => $user->user_id,
-                'client_id' => $client->client_id
+                'user_id'   => $user->user_id,
+                'client_id' => $client->client_id,
             ]);
         }
 
         $response = $this->post(route('users.ajax.loadUserClientTable'), [
-            'user_id' => $user->user_id
+            'user_id' => $user->user_id,
         ]);
 
         $response->assertSuccessful();
@@ -243,7 +243,7 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_loads_user_client_table_from_session_for_new_user(): void
     {
-        $clients = Client::factory()->count(2)->create();
+        $clients        = Client::factory()->count(2)->create();
         $sessionClients = $clients->pluck('client_id')->toArray();
 
         session(['user_clients' => array_combine($sessionClients, $sessionClients)]);
@@ -259,14 +259,14 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_displays_modal_add_user_client_for_existing_user(): void
     {
-        $user = User::factory()->create();
-        $assignedClients = Client::factory()->count(2)->create();
+        $user              = User::factory()->create();
+        $assignedClients   = Client::factory()->count(2)->create();
         $unassignedClients = Client::factory()->count(3)->create();
 
         foreach ($assignedClients as $client) {
             UserClient::factory()->create([
-                'user_id' => $user->user_id,
-                'client_id' => $client->client_id
+                'user_id'   => $user->user_id,
+                'client_id' => $client->client_id,
             ]);
         }
 
@@ -295,7 +295,7 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_excludes_session_clients_from_modal_for_new_user(): void
     {
-        $clients = Client::factory()->count(5)->create();
+        $clients        = Client::factory()->count(5)->create();
         $sessionClients = [$clients->first()->client_id => $clients->first()->client_id];
 
         session(['user_clients' => $sessionClients]);
@@ -312,9 +312,9 @@ class UsersAjaxControllerTest extends TestCase
     public function it_html_escapes_user_names_in_search_results(): void
     {
         User::factory()->create([
-            'user_name' => '<script>alert("xss")</script>',
+            'user_name'   => '<script>alert("xss")</script>',
             'user_active' => 1,
-            'user_type' => 1
+            'user_type'   => 1,
         ]);
 
         $response = $this->get(route('users.ajax.nameQuery', ['type' => 1, 'query' => 'script']));
