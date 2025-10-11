@@ -57,4 +57,14 @@ class TemplatesService extends BaseService
 
         return $files;
     }
+
+    /**
+     * Get all templates.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAll()
+    {
+        return \Modules\Invoices\Models\Template::query()->get();
+    }
 }

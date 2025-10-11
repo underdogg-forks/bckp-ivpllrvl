@@ -75,4 +75,53 @@ class UnitsService extends BaseService
     {
         return \Modules\Units\Models\Unit::query()->get();
     }
+
+    /**
+     * Check if a unit exists by name.
+     *
+     * @param string $unit_name
+     * @return bool
+     */
+    public function exists(string $unit_name): bool
+    {
+        return Unit::query()->where('unit_name', $unit_name)->exists();
+    }
+
+    /**
+     * Create or update a unit.
+     *
+     * @param array $data
+     * @param int|null $id
+     * @return Unit
+     */
+    public function save(array $data, ?int $id = null): Unit
+    {
+        if (empty($id)) {
+            return Unit::create($data);
+        }
+        
+        $unit = Unit::find($id);
+        if (!$unit) {
+            throw new \RuntimeException('Unit not found');
+        }
+        $unit->update($data);
+        
+        return $unit;
+    }
+
+    /**
+     * Delete a unit by ID.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
+    {
+        $unit = Unit::find($id);
+        if ($unit) {
+            return $unit->delete();
+        }
+        
+        return false;
+    }
 }
