@@ -70,9 +70,10 @@ class CustomFieldsService extends BaseService
     }
 
     /**
-     * @originalName getByTable
+     * Retrieve all custom fields for a given custom table.
      *
-     * @originalFile CustomField.php
+     * @param string $table The internal custom field table identifier (e.g., 'ip_client_custom', 'ip_invoice_custom').
+     * @return \Modules\CustomFields\Models\CustomField[] An array of CustomField model instances matching the provided table.
      */
     public function getByTable($table)
     {
@@ -172,9 +173,11 @@ class CustomFieldsService extends BaseService
     }
 
     /**
-     * @originalName used
+     * Check whether a custom field is used in its corresponding custom data table.
      *
-     * @originalFile CustomField.php
+     * @param int|null $id The custom field ID to check.
+     * @param bool $get If true, return all matching rows as an array; if false, return the query builder.
+     * @return array|\Illuminate\Database\Query\Builder|null An array of matching rows when `$get` is true, the query builder when `$get` is false, or `null` if `$id` is not provided.
      */
     public function used($id = null, $get = true)
     {
@@ -193,9 +196,13 @@ class CustomFieldsService extends BaseService
     }
 
     /**
-     * @originalName delete
+     * Delete a custom field if it is not currently used.
      *
-     * @originalFile CustomField.php
+     * Removes any associated choice values, deletes the field's column reference from its custom data table,
+     * and then removes the custom field record.
+     *
+     * @param int $id The ID of the custom field to delete.
+     * @return bool `true` if the field was deleted, `false` if the field is in use and not deleted.
      */
     public function delete($id): bool
     {

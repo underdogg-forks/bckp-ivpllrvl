@@ -31,9 +31,18 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName status
+     * Display a paginated list of guest-visible quotes filtered by status.
      *
-     * @originalFile QuotesController.php
+     * Applies a guest-visible scope, filters quotes according to the provided
+     * status ('all', 'viewed', 'approved', 'rejected', or 'open' by default),
+     * restricts results to the current guest's associated clients, and paginates
+     * the results. Prepares layout data with the retrieved quotes and active
+     * status, enables the invoice column when status is 'rejected', and renders
+     * the guest quotes index within the guest layout.
+     *
+     * @param string $status The filter to apply: 'all', 'viewed', 'approved', 'rejected', or 'open'.
+     * @param int $page The pagination page number to display.
+     * @return void
      */
     public function status(string $status = 'open', $page = 0)
     {
@@ -67,13 +76,11 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * Display a guest-accessible quote page for the given quote identifier.
+     * Display the guest-accessible page for a quote identified by the given quote ID.
      *
-     * Loads the quote if it is visible to guest users and belongs to one of the current user's clients,
-     * marks the quote as viewed, prepares related items and tax rates for the view, buffers the guest
-     * quote template, and renders the guest layout. If the quote is not found, a 404 response is shown.
+     * Loads the quote if it is visible to guests and belongs to one of the current user's clients; shows a 404 response if the quote is not found or not accessible.
      *
-     * @param int|string $quote_id The identifier of the quote to display.
+     * @param int|string $quote_id The quote identifier to display.
      */
     public function view($quote_id)
     {

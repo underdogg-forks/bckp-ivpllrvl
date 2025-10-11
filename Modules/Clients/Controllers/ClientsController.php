@@ -85,9 +85,14 @@ class ClientsController extends AdminController
     }
 
     /**
-     * @originalName view
+     * Display the client detail view for a given client.
      *
-     * @originalFile ClientsController.php
+     * Aborts with a 404 response if the client cannot be found.
+     *
+     * @param int|string $client_id The ID of the client to display.
+     * @param string $activeTab The tab to mark active in the view (defaults to 'detail').
+     * @param int $page Optional page index for tabbed subviews or pagination.
+     * @return \Illuminate\Contracts\View\View The rendered 'clients.view' with the client and active tab.
      */
     public function view(Request $request, $client_id, $activeTab = 'detail', $page = 0): \Illuminate\Contracts\View\View
     {
@@ -127,10 +132,15 @@ class ClientsController extends AdminController
     }
 
     /**
-     * @originalName checkClientEinvoiceActive
-     *
-     * @originalFile ClientsController.php
-     */
+         * Adjusts a client record based on requested e-invoicing settings.
+         *
+         * This method applies or verifies e-invoicing-related changes for the given client according
+         * to the provided request data and returns the client instance (unchanged if no updates are required).
+         *
+         * @param mixed $client The client model instance to check or modify.
+         * @param mixed $req_einvoicing E-invoicing configuration or flag provided by the request.
+         * @return mixed The client instance, potentially modified to reflect e-invoicing activation.
+         */
     private function checkClientEinvoiceActive($client, $req_einvoicing)
     {
         return $client;

@@ -46,9 +46,16 @@ class ClientCustomsService extends BaseService
     }
 
     /**
-     * @originalName saveCustom
+     * Save custom field values for a client.
      *
-     * @originalFile ClientCustom.php
+     * Validates the provided data; if validation passes, writes each value from the service's
+     * form data (`$this->_formdata`) to the client's custom fields. If no form data is present,
+     * the method completes successfully without writing. If validation fails, the validation
+     * result is returned unchanged.
+     *
+     * @param int $client_id The client identifier.
+     * @param array $db_array Data used for validation.
+     * @return mixed `true` on successful save (or when no form data is present), otherwise the validation result.
      */
     public function saveCustom($client_id, $db_array)
     {
@@ -79,10 +86,15 @@ class ClientCustomsService extends BaseService
     }
 
     /**
-     * @originalName prepForm
-     *
-     * @originalFile ClientCustom.php
-     */
+         * Populate the form with a client's custom field values.
+         *
+         * When a client ID is provided, retrieves the client's custom fields, formats each value
+         * according to its custom field type, and sets the corresponding form inputs using keys
+         * in the format `cf_{custom_field_id}`. After populating custom values, delegates to
+         * parent::prepForm($id).
+         *
+         * @param int|null $id The client ID whose custom field values should be loaded; pass null to skip loading.
+         */
     public function prepForm($id = null)
     {
         if ($id) {
@@ -128,9 +140,10 @@ class ClientCustomsService extends BaseService
     }
 
     /**
-     * @originalName getByClid
+     * Retrieve all custom field values for a client joined with their field definitions.
      *
-     * @originalFile ClientCustom.php
+     * @param int $client_id The ID of the client to retrieve custom values for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of records combining ip_client_custom and ip_custom_fields for the specified client, ordered by custom_field_table, custom_field_order, and custom_field_label.
      */
     public function getByClid($client_id)
     {

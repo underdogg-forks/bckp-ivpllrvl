@@ -328,13 +328,10 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Change the assigned user for an invoice using POSTed input.
+     * Change the user assigned to an invoice based on POSTed input.
      *
      * Reads `user_id` and `invoice_id` from POST, verifies the user exists, updates the invoice's `user_id`
-     * in the database, and immediately outputs a JSON response. On success the JSON is:
-     *     {"success":1,"invoice_id":<invoice_id>}
-     * On failure (user not found) the JSON is:
-     *     {"success":0,"validation_errors":<errors>}
+     * in the database, and outputs a JSON response indicating success or validation errors.
      */
     public function changeUser()
     {
@@ -374,7 +371,9 @@ class AjaxController extends AdminController
     /**
      * Change the client associated with an invoice.
      *
-     * Updates the invoice's client_id using `client_id` and `invoice_id` from POST data if the specified client exists; responds with JSON containing `success` and `invoice_id` on success or `success` and `validation_errors` on failure.
+     * If the POSTed `client_id` refers to an existing client, updates the invoice identified by POSTed
+     * `invoice_id` to use that client and outputs JSON containing `success` and `invoice_id`. If the
+     * client does not exist, outputs JSON containing `success` and `validation_errors`.
      */
     public function changeClient()
     {

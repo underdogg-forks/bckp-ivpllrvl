@@ -12,9 +12,11 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * @originalName add
+     * Handle an AJAX request to add a payment.
      *
-     * @originalFile AjaxController.php
+     * Processes input validation and attempts to persist a new payment, then outputs a JSON response.
+     * On success the JSON contains `success` = 1 and `payment_id` with the new payment's ID.
+     * On validation failure the JSON contains `success` = 0 and `validation_errors` with the validation error payload.
      */
     public function add()
     {

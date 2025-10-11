@@ -175,9 +175,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName getItem
+     * Outputs the quote item identified by POST parameter 'item_id' as JSON.
      *
-     * @originalFile AjaxController.php
+     * Fetches the quote item by its ID and sends a JSON-encoded representation to the client, then exits.
      */
     public function getItem()
     {
@@ -230,9 +230,10 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalChangeUser
+     * Render the modal to change the user associated with a quote.
      *
-     * @originalFile AjaxController.php
+     * Loads the latest users and renders the change-user modal view using sanitized
+     * `user_id` and `quote_id` values from the POST request.
      */
     public function modalChangeUser()
     {
@@ -243,14 +244,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Change the user associated with a quote and respond with a JSON result.
+     * Assign a different user to a quote based on POST input and output a JSON result.
      *
-     * Reads `user_id` and `quote_id` from POST input. If the specified user exists,
-     * updates the quote's `user_id` and returns JSON { "success": 1, "quote_id": <id> }.
-     * If the user does not exist, returns JSON { "success": 0, "validation_errors": ... }.
-     *
-     * @param int $user_id POSTed ID of the user to assign to the quote.
-     * @param int $quote_id POSTed ID of the quote to update.
+     * Reads `user_id` and `quote_id` from POST. If the specified user exists, updates the quote's `user_id` in the database and returns JSON with `success: 1` and the sanitized `quote_id`. If the user does not exist, returns JSON with `success: 0` and `validation_errors`.
      */
     public function changeUser()
     {
@@ -272,10 +268,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalChangeClient
-     *
-     * @originalFile AjaxController.php
-     */
+         * Load and render the modal for changing the client associated with a quote.
+         *
+         * Reads sanitized POST values `client_id` and `quote_id`, loads the latest clients,
+         * and renders the `layout/ajax/modal_change_user_client` view with that data.
+         */
     public function modalChangeClient()
     {
         $this->load->module('layout');
@@ -287,13 +284,9 @@ class AjaxController extends AdminController
     /**
      * Change the client associated with a quote by updating the quote's client_id.
      *
-     * Updates the stored quote record to reference the provided client and emits a JSON
-     * response indicating success or failure. On success the response contains
-     * `success = 1` and the sanitized `quote_id`. On failure the response contains
-     * `success = 0` and `validation_errors` from the json_error helper.
-     *
-     * @param int $client_id POST client identifier to associate with the quote.
-     * @param int $quote_id  POST quote identifier whose client will be updated.
+     * Reads client_id and quote_id from the request, updates the quote record to reference the client,
+     * and outputs a JSON response. Response: `{"success":1,"quote_id":<sanitized id>}` on success;
+     * `{"success":0,"validation_errors":<errors>}` on failure.
      */
     public function changeClient()
     {
@@ -333,10 +326,10 @@ class AjaxController extends AdminController
         $this->layout->loadView('quotes/modal_create_quote', $data);
     }
 
-    /**
-     * @originalName create
+    / **
+     * Create a new quote and output a JSON response indicating success or validation errors.
      *
-     * @originalFile AjaxController.php
+     * On success outputs `{"success":1,"quote_id":<id>}`. On validation failure outputs `{"success":0,"validation_errors":<errors>}`.
      */
     public function create()
     {
@@ -367,11 +360,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Convert a quote into a new invoice, copying quote items, quote-level tax rates, and discount values,
-     * link the created invoice to the source quote, and output a JSON response.
+     * Convert a quote into a new invoice by copying its items, quote-level tax rates, and discount values, link the created invoice to the source quote, and send a JSON response.
      *
-     * On success the method outputs JSON with `success = 1` and `invoice_id`. On validation failure it
-     * outputs JSON with `success = 0` and `validation_errors`.
+     * On success the method outputs JSON with `success` = 1 and `invoice_id`. On validation failure it outputs JSON with `success` = 0 and `validation_errors`.
      */
     public function quoteToInvoice()
     {

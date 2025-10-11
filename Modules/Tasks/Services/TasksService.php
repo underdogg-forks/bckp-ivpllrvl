@@ -59,10 +59,11 @@ class TasksService extends BaseService
     }
 
     /**
-     * @originalName byTask
-     *
-     * @originalFile Task.php
-     */
+         * Filter tasks by a text match against the task name or task description.
+         *
+         * @param string $match The substring to search for within `task_name` or `task_description`.
+         * @return $this The current query with the matching where clauses applied.
+         */
     public function byTask($match)
     {
         return $this->where('task_name', 'like', "%{$match}%")
@@ -112,9 +113,12 @@ class TasksService extends BaseService
     }
 
     /**
-     * @originalName getInvoiceForTask
+     * Retrieve the invoice associated with a given task.
      *
-     * @originalFile Task.php
+     * If the task has no associated invoice or `$task_id` is falsy, returns `null`.
+     *
+     * @param int|null $task_id The ID of the task to look up.
+     * @return object|null The invoice object for the task's invoice_id, or `null` if not found.
      */
     public function getInvoiceForTask($task_id)
     {
@@ -135,9 +139,13 @@ class TasksService extends BaseService
     }
 
     /**
-     * @originalName getTasksToInvoice
+     * Return tasks eligible to be added to the specified invoice.
      *
-     * @originalFile Task.php
+     * Retrieves completed tasks (status = 3) that are either unassigned to any project
+     * or belong to projects whose client matches the given invoice.
+     *
+     * @param int|null $invoice_id The invoice identifier to match; if null or falsy, an empty array is returned.
+     * @return array<Task> Array of Task objects. Tasks joined through a project include a `project_name` property.
      */
     public function getTasksToInvoice($invoice_id)
     {
@@ -174,9 +182,12 @@ class TasksService extends BaseService
     }
 
     /**
-     * @originalName updateOnInvoiceDelete
+     * Mark tasks associated with a deleted invoice as complete.
      *
-     * @originalFile Task.php
+     * If a valid invoice ID is provided, finds all tasks linked to that invoice
+     * and updates each task's status to 3 (complete). Does nothing for falsy IDs.
+     *
+     * @param int|null $invoice_id The ID of the deleted invoice.
      */
     public function updateOnInvoiceDelete($invoice_id)
     {
@@ -216,9 +227,12 @@ class TasksService extends BaseService
     }
 
     /**
-     * @originalName updateOnProjectDelete
+     * Clear the project association from all tasks linked to the given project.
      *
-     * @originalFile Task.php
+     * For each task whose project_id matches the provided project ID, sets its
+     * project_id to null so the task is no longer associated with that project.
+     *
+     * @param int|null $project_id The ID of the project being deleted; if falsy, no changes are made.
      */
     public function updateOnProjectDelete($project_id)
     {

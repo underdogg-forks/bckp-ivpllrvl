@@ -102,9 +102,10 @@ class QuoteItemsService extends BaseService
 
 
     /**
-     * @originalName getItemsSubtotal
+     * Calculate the total of item subtotals for a given quote.
      *
-     * @originalFile QuoteItem.php
+     * @param int $quote_id The ID of the quote whose item subtotals will be summed.
+     * @return float The sum of `item_subtotal` for all items belonging to the specified quote (0 if none).
      */
     public function getItemsSubtotal($quote_id)
     {
@@ -132,10 +133,10 @@ class QuoteItemsService extends BaseService
     }
 
     /**
-     * Retrieve all quote items belonging to the specified quote.
+     * Retrieves all quote items that belong to the specified quote.
      *
-     * @param int $quote_id The quote ID.
-     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteItem models for the given quote.
+     * @param int $quote_id ID of the quote to fetch items for.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteItem models that belong to the specified quote.
      */
     public function getByQuoteId($quote_id)
     {

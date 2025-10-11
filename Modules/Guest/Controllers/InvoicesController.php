@@ -31,9 +31,13 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName status
+     * Display a paginated list of guest-visible invoices filtered by status.
      *
-     * @originalFile InvoicesController.php
+     * Loads invoices for the current user's clients filtered by $status ('all', 'paid', 'overdue', or 'open'),
+     * paginates the results, and prepares data for the guest invoices index view.
+     *
+     * @param string $status The invoice group to display: 'all', 'paid', 'overdue', or 'open' (default).
+     * @param int $page Pagination page index.
      */
     public function status(string $status = 'open', $page = 0): void
     {
@@ -61,14 +65,14 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-         * Display a single invoice to the guest user and render the guest layout.
-         *
-         * Loads the requested invoice (restricted to the current user's clients), marks it as viewed, prepares related data
-         * (items, tax rates, uploads and relevant settings) for the view, buffers the 'guest/invoices_view' content, and
-         * renders the 'layout_guest' layout. If the invoice cannot be found, a 404 response is shown.
-         *
-         * @param int|string $invoice_id The ID of the invoice to display.
-         */
+     * Load and display a single invoice for the current guest and render the guest layout.
+     *
+     * Loads the invoice restricted to the guest's associated clients, marks it as viewed, prepares related view data
+     * (items, invoice tax rates, uploads and relevant settings), buffers the invoice view, and renders the guest layout.
+     * Shows a 404 response if the invoice cannot be found.
+     *
+     * @param int|string $invoice_id The invoice identifier to load and display.
+     */
     public function view($invoice_id): void
     {
         $invoice = (new InvoicesService())->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();
@@ -100,9 +104,15 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName generateSumexPdf
+     * Generate a Sumex-format PDF for a guest-visible invoice.
      *
-     * @originalFile InvoicesController.php
+     * If the invoice is not accessible to the current guest, a 404 response is shown.
+     * The invoice is marked as viewed before PDF generation. When `$stream` is true the
+     * generated PDF is streamed to the client; when false the PDF is produced but not streamed.
+     *
+     * @param int|string $invoice_id The invoice identifier.
+     * @param bool $stream Whether to stream the PDF to the client (`true`) or not (`false`).
+     * @param string|null $invoice_template Optional invoice template identifier to use.
      */
     public function generateSumexPdf($invoice_id, $stream = true, $invoice_template = null): void
     {

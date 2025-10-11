@@ -65,9 +65,10 @@ class ProjectsService extends BaseService
     }
 
     /**
-     * @originalName getTasks
+     * Retrieve tasks belonging to the specified project.
      *
-     * @originalFile Project.php
+     * @param int|string $project_id The project identifier.
+     * @return \Modules\Tasks\Models\Task[] An array of Task model instances for the project; empty if no valid project id is provided.
      */
     public function getTasks($project_id)
     {

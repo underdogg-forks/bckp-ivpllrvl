@@ -24,9 +24,13 @@ class InvoiceSumexService extends BaseService
     }
 
     /**
-     * @originalName save
+     * Save or update the Sumex record associated with the given invoice.
      *
-     * @originalFile InvoiceSumex.php
+     * Resolves the internal Sumex primary key for the provided invoice id (if any)
+     * and delegates the save operation to the parent service.
+     *
+     * @param int|null $id Invoice id used to locate an existing Sumex record.
+     * @param array|null $db_array Associative array of fields to save; forwarded to the parent save method.
      */
     public function save($id = null, $db_array = null)
     {

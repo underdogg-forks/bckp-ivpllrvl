@@ -88,9 +88,15 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName generateSumexPdf
+     * Generate the Sumex PDF for a guest-visible invoice identified by its URL key.
      *
-     * @originalFile View.php
+     * If the invoice does not exist or the invoice has no Sumex identifier, a 404 response is shown.
+     * If no invoice template is provided, the configured `pdf_invoice_template` setting is used.
+     *
+     * @param string $invoice_url_key The public URL key that identifies the invoice.
+     * @param bool $stream (Compatibility) Stream flag; kept for compatibility but not used by this implementation.
+     * @param string|null $invoice_template Optional PDF template name to use; when null the configured template is applied.
+     * @return void
      */
     public function generateSumexPdf($invoice_url_key, $stream = true, $invoice_template = null)
     {

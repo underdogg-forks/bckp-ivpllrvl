@@ -21,10 +21,11 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * @originalName index
-     *
-     * @originalFile PaymentsController.php
-     */
+         * Display a paginated list of payments in the admin payments index view.
+         *
+         * @param int $page Page number for pagination, starting at 0.
+         * @return string The rendered payments index view populated with payments and filter configuration.
+         */
     public function index($page = 0)
     {
         (new PaymentsService())->paginate(site_url('payments/index'), $page);
@@ -126,7 +127,10 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * Delete a payment record.
+     * Delete the payment with the given ID.
+     *
+     * @param int $id The ID of the payment to delete.
+     * @return \Illuminate\Http\RedirectResponse Redirect to the payments index route.
      */
     public function delete(int $id): \Illuminate\Http\RedirectResponse
     {
