@@ -4,6 +4,7 @@ namespace Modules\Invoices\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Invoices\Models\ItemAmount;
 
 #[AllowDynamicProperties]
 class ItemAmountsService extends BaseService
@@ -57,12 +58,10 @@ class ItemAmountsService extends BaseService
             $item_total          = $item_subtotal - $item_discount - $item_discount_total + $item_tax_total;
         }
         $db_array = ['item_id' => $item_id, 'item_subtotal' => $item_subtotal, 'item_tax_total' => $item_tax_total, 'item_discount' => $item_discount_total, 'item_total' => $item_total];
-        $this->db->where('item_id', $item_id);
-        if ($this->db->get('ip_invoice_item_amounts')->numRows()) {
-            $this->db->where('item_id', $item_id);
-            $this->db->update('ip_invoice_item_amounts', $db_array);
-        } else {
-            $this->db->insert('ip_invoice_item_amounts', $db_array);
-        }
+        
+        ItemAmount::query()->updateOrCreate(
+            ['item_id' => $item_id],
+            $db_array
+        );
     }
 }
