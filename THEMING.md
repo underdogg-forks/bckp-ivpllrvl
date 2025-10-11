@@ -8,7 +8,8 @@ Themes are now organized in separate CSS files located in `resources/css/themes/
 - `default.css` - Default theme with standard colors
 - `nord.css` - Nord theme (Polar Night variant)
 - `nord-dark.css` - Nord Dark theme (darker backgrounds)
-- `mandarin.css` - Mandarin theme (dark gray with warm accents) **NEW!**
+- `mandarin.css` - Mandarin theme (dark gray with warm accents)
+- `metro.css` - Metro theme (modern, vibrant Microsoft-inspired) **NEW!**
 
 All theme files are loaded via `vite.config.js` and compiled into separate CSS files that can be loaded on demand.
 
@@ -52,7 +53,7 @@ Darker variant of Nord with deeper backgrounds for better contrast.
 @vite(['resources/css/app.css', 'resources/css/themes/nord-dark.css'])
 ```
 
-### 4. Mandarin Theme **NEW!**
+### 4. Mandarin Theme
 A sophisticated dark theme with gray-based primary colors and warm accent colors. Perfect for a professional, subdued look.
 
 **File:** `resources/css/themes/mandarin.css`
@@ -72,6 +73,28 @@ A sophisticated dark theme with gray-based primary colors and warm accent colors
 
 **Dark Mode:**
 The mandarin theme includes an even darker variant when the `dark` class is applied, making backgrounds nearly black while maintaining the warm accent colors.
+
+### 5. Metro Theme **NEW!**
+A modern, vibrant theme inspired by Microsoft's Metro/Fluent design language. Features bold colors with a clean, flat aesthetic.
+
+**File:** `resources/css/themes/metro.css`
+
+**Colors:**
+- Primary: Metro Blue (#0078D7)
+- Success: Metro Green (#107C10)
+- Info: Metro Cyan (#00B7C3)
+- Warning: Metro Yellow (#FFB900)
+- Danger: Metro Red (#E81123)
+- Background: White (#ffffff)
+- Text: Dark gray (#333333)
+
+**Usage:**
+```blade
+@vite(['resources/css/app.css', 'resources/css/themes/metro.css'])
+```
+
+**Dark Mode:**
+The metro theme includes a dark variant with lighter accent colors and dark backgrounds for comfortable nighttime viewing.
 
 ## Dark Mode Support
 
