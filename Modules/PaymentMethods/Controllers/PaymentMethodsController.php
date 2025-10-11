@@ -10,7 +10,9 @@ use Modules\PaymentMethods\Services\PaymentMethodsService;
 class PaymentMethodsController extends AdminController
 {
     /**
-     * Payment_Methods constructor.
+     * Initialize the PaymentMethodsController.
+     *
+     * Ensures base AdminController initialization is executed.
      */
     public function __construct()
     {

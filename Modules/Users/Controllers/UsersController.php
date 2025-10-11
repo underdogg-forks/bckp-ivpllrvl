@@ -164,9 +164,10 @@ class UsersController extends AdminController
     }
 
     /**
-     * @originalName deleteUserClient
+     * Delete a user-client association and redirect back to the user's form.
      *
-     * @originalFile UsersController.php
+     * @param string $user_id The ID of the user whose form to return to after deletion.
+     * @param mixed  $user_client_id The identifier of the user-client linkage to delete.
      */
     public function deleteUserClient(string $user_id, $user_client_id)
     {

@@ -11,9 +11,10 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * @originalName getContent
+     * Outputs the email template data for the POSTed `email_template_id` as JSON.
      *
-     * @originalFile AjaxController.php
+     * Reads `email_template_id` from POST input and echoes the corresponding email
+     * template record encoded as JSON.
      */
     public function getContent()
     {

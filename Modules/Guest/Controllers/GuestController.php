@@ -9,9 +9,13 @@ use Modules\Core\Controllers\GuestController as BaseGuestController;
 class GuestController extends BaseGuestController
 {
     /**
-     * @originalName index
+     * Prepare guest dashboard data and render the guest layout.
      *
-     * @originalFile GuestController.php
+     * Prepares view data including `overdue_invoices`, `open_quotes`, `open_invoices`,
+     * and `enable_online_payments`, buffers the guest index content, and renders the
+     * guest layout.
+     *
+     * @return void
      */
     public function index()
     {

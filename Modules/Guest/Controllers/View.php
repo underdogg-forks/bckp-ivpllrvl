@@ -68,9 +68,14 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName generateInvoicePdf
+     * Generate the PDF for a public invoice identified by its URL key.
      *
-     * @originalFile View.php
+     * If the invoice exists and is publicly viewable, produces the invoice PDF using the provided template or a template selected automatically.
+     * If no matching invoice is found, the method produces no output.
+     *
+     * @param string $invoice_url_key Public URL key identifying the invoice.
+     * @param bool $stream When true, stream the PDF output to the client; when false, return or buffer the generated PDF content.
+     * @param string|null $invoice_template Optional PDF template name to use; when null a template is chosen automatically.
      */
     public function generateInvoicePdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
@@ -87,9 +92,15 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName generateSumexPdf
+     * Generate the SUMEX PDF for the invoice identified by its public URL key.
      *
-     * @originalFile View.php
+     * Locates a guest-visible invoice by the provided URL key and generates its SUMEX PDF.
+     * If the invoice exists but has no `sumex_id`, a 404 response is displayed; if no invoice
+     * matches the URL key, the method returns without output.
+     *
+     * @param string $invoice_url_key Public URL key of the invoice to locate.
+     * @param bool $stream Unused in this implementation; present for signature compatibility.
+     * @param string|null $invoice_template Optional PDF template name to use; if null the configured `pdf_invoice_template` setting is used.
      */
     public function generateSumexPdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
@@ -151,10 +162,14 @@ class View extends BaseGuestController
     }
 
     /**
-     * @originalName generateQuotePdf
-     *
-     * @originalFile View.php
-     */
+         * Generate and output the PDF for a public quote identified by its URL key.
+         *
+         * If no template is provided, the configured `pdf_quote_template` setting is used.
+         *
+         * @param string $quote_url_key The public URL key of the quote to generate.
+         * @param bool $stream Whether to stream the generated PDF to the client (`true`) or not (`false`).
+         * @param string|null $quote_template Optional PDF template name to use; when `null`, the configured template is applied.
+         */
     public function generateQuotePdf($quote_url_key, $stream = true, $quote_template = null)
     {
         $quote = (new QuotesService())->guestVisible()->where('quote_url_key', $quote_url_key)->get()->row();

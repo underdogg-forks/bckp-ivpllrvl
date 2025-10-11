@@ -10,7 +10,7 @@ use Modules\Payments\Services\PaymentsService;
 class PaymentsController extends BaseGuestController
 {
     /**
-     * PaymentsController constructor.
+     * Initialize the PaymentsController.
      */
     public function __construct()
     {

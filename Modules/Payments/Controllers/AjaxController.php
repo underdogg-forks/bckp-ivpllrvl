@@ -12,9 +12,12 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * @originalName add
+     * Handle an AJAX request to add a payment and emit a JSON response.
      *
-     * @originalFile AjaxController.php
+     * On success the response is an array with `success` = 1 and `payment_id` set to the created payment's ID.
+     * On validation failure the response is an array with `success` = 0 and `validation_errors` containing the validation error details.
+     *
+     * @return void
      */
     public function add()
     {
@@ -29,9 +32,16 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalAddPayment
+     * Renders the "Add Payment" modal populated with payment methods and POSTed invoice data.
      *
-     * @originalFile AjaxController.php
+     * Prepares the view data array with the following keys:
+     * - `payment_methods`: list of available payment methods.
+     * - `invoice_id`: sanitized POST value for invoice ID.
+     * - `invoice_balance`: POST value for invoice balance.
+     * - `invoice_payment_method`: POST value for the selected payment method.
+     * - `payment_cf_exist`: sanitized POST value indicating custom fields existence.
+     *
+     * The method then loads the 'payments/modal_add_payment' view through the layout module.
      */
     public function modalAddPayment()
     {

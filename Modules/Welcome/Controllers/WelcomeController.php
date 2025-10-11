@@ -9,9 +9,9 @@ use Modules\Core\Controllers\AdminController;
 class WelcomeController extends AdminController
 {
     /**
-     * @originalName index
+     * Render the admin welcome view.
      *
-     * @originalFile WelcomeController.php
+     * @return string The rendered 'welcome' view content.
      */
     public function index()
     {

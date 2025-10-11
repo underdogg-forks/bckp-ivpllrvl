@@ -22,9 +22,11 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * @originalName save
+     * Validate and persist a quote with its items, discounts, and custom fields, then emit a JSON success or validation error response.
      *
-     * @originalFile AjaxController.php
+     * Performs request validation, saves or updates the quote record and its items (including applying a global discount and honoring legacy calculation mode),
+     * generates a quote number when required, recalculates amounts if legacy calculation is enabled, persists custom field values, and exits after sending a JSON response
+     * that indicates success or contains validation errors.
      */
     public function save()
     {
@@ -133,9 +135,13 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName saveQuoteTaxRate
+     * Validate quote tax rates and emit a JSON response indicating success or validation errors.
      *
-     * @originalFile AjaxController.php
+     * If validation passes and the `legacy_calculation` configuration is enabled, the tax rates are saved.
+     *
+     * The JSON response has the shape:
+     * - `success`: `1` on success, `0` on validation failure.
+     * - `validation_errors`: present when `success` is `0`, containing validation error details.
      */
     public function saveQuoteTaxRate()
     {
@@ -150,10 +156,14 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName deleteItem
-     *
-     * @originalFile AjaxController.php
-     */
+         * Delete a quote item if the referenced quote exists and return a JSON success flag.
+         *
+         * If the provided quote exists (or no item_id is supplied), attempts to delete the posted
+         * `item_id` and immediately outputs a JSON object with `success` set to `1` on successful
+         * deletion or `0` otherwise, then exits execution.
+         *
+         * @param int $quote_id The ID of the quote used to verify existence before deleting the item.
+         */
     public function deleteItem($quote_id)
     {
         $success = 0;
@@ -172,9 +182,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName getItem
+     * Retrieves a quote item identified by the POST field 'item_id' and outputs it as JSON.
      *
-     * @originalFile AjaxController.php
+     * Reads 'item_id' from the HTTP POST payload, fetches the corresponding quote item via QuoteItemsService, encodes the result as JSON, and terminates execution.
      */
     public function getItem()
     {
@@ -183,9 +193,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCopyQuote
+     * Prepare and render the modal for copying a quote.
      *
-     * @originalFile AjaxController.php
+     * Provides the view with invoice groups, tax rates, the requested quote and quote_id, and the specified client.
      */
     public function modalCopyQuote()
     {
@@ -195,9 +205,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName copyQuote
+     * Copy an existing quote into a newly created quote and emit a JSON success or error response.
      *
-     * @originalFile AjaxController.php
+     * Validates the incoming request, optionally adjusts the legacy_calculation config when einvoicing
+     * is enabled, creates a new target quote, copies data from the source quote into the target,
+     * and then outputs a JSON payload with either the new `quote_id` on success or validation errors.
      */
     public function copyQuote()
     {
@@ -219,9 +231,10 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalChangeUser
+     * Prepares and renders the modal for changing the user assigned to a quote.
      *
-     * @originalFile AjaxController.php
+     * Reads `user_id` and `quote_id` from POST input (sanitized), loads the latest users list,
+     * and renders the `layout/ajax/modal_change_user_client` view with that data.
      */
     public function modalChangeUser()
     {
@@ -231,9 +244,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName changeUser
+     * Change the user assigned to a quote and emit a JSON response indicating outcome.
      *
-     * @originalFile AjaxController.php
+     * Validates that the provided user exists; if so, updates ip_quotes.user_id for the supplied
+     * quote_id and returns a JSON success object containing the sanitized quote_id. If the user
+     * is missing or invalid, returns a JSON object with validation errors.
      */
     public function changeUser()
     {
@@ -254,9 +269,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalChangeClient
+     * Load the "change client" modal for a quote.
      *
-     * @originalFile AjaxController.php
+     * Reads `client_id` and `quote_id` from POST (sanitized) and supplies them along with the latest clients list to the modal view.
      */
     public function modalChangeClient()
     {
@@ -266,10 +281,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName changeClient
+     * Change the client associated with a quote.
      *
-     * @originalFile AjaxController.php
-     */
+     * Validates that the posted client exists and, if so, updates the quote's client_id in the database using the posted quote_id.
+     *
+     * @return string JSON-encoded response: `{ "success": 1, "quote_id": "<cleaned_quote_id>" }` on success; `{ "success": 0, "validation_errors": { ... } }` if the client is invalid. */
     public function changeClient()
     {
         // GetController the client ID
@@ -289,9 +305,10 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalCreateQuote
+     * Prepare and render the "create quote" modal populated with necessary lookup data.
      *
-     * @originalFile AjaxController.php
+     * Loads invoice groups, tax rates, the specified client (if provided), and recent clients,
+     * then renders the quotes/modal_create_quote view with that data.
      */
     public function modalCreateQuote()
     {
@@ -301,9 +318,10 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName create
+     * Create a new quote from the current request and output a JSON response.
      *
-     * @originalFile AjaxController.php
+     * On success, outputs JSON with `success` set to `1` and the created `quote_id`.
+     * On validation failure, outputs JSON with `success` set to `0` and `validation_errors`.
      */
     public function create()
     {
@@ -318,9 +336,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalQuoteToInvoice
+     * Prepare and render the modal used to convert a quote into an invoice.
      *
-     * @originalFile AjaxController.php
+     * Loads invoice groups and the specified quote, then renders the quote-to-invoice modal
+     * with those values available to the view.
+     *
+     * @param int|string $quote_id The ID of the quote to convert.
      */
     public function modalQuoteToInvoice($quote_id)
     {
@@ -329,9 +350,17 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName quoteToInvoice
+     * Converts a quote into a new invoice, copies quote items and tax rates to the invoice,
+     * and updates discount and association fields accordingly.
      *
-     * @originalFile AjaxController.php
+     * If validation succeeds, creates an invoice, applies the quote's discount values to the invoice,
+     * links the invoice_id on the source quote, copies each quote item into the invoice (respecting
+     * the computed global discount and current legacy_calculation setting), and copies quote tax rates
+     * to the invoice. On validation failure, returns validation errors.
+     *
+     * The method sends a JSON response and terminates execution:
+     * - on success: {"success":1,"invoice_id":<new_invoice_id>}
+     * - on failure: {"success":0,"validation_errors":<errors>}
      */
     public function quoteToInvoice()
     {

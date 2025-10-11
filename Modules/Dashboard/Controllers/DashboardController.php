@@ -15,10 +15,17 @@ use Modules\Tasks\Services\TasksService;
 class DashboardController extends AdminController
 {
     /**
-     * @originalName index
+     * Prepare data required by the admin dashboard and render the dashboard view.
      *
-     * @originalFile DashboardController.php
-     */
+     * The view data includes:
+     * - `invoice_status_totals`, `quote_status_totals`
+     * - `invoice_status_period`, `quote_status_period`
+     * - `invoices`, `quotes`
+     * - `invoice_statuses`, `quote_statuses`
+     * - `overdue_invoices`
+     * - `projects`, `tasks`, `task_statuses`
+     *
+     * @return string The rendered dashboard view content. */
     public function index()
     {
         $quote_overview_period   = get_setting('quote_overview_period');

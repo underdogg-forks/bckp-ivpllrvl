@@ -11,9 +11,14 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * @originalName nameQuery
+     * Retrieve users matching the request query for a given user type.
      *
-     * @originalFile AjaxController.php
+     * Reads 'query' and 'permissive_search_users' from the request. If 'query' is empty,
+     * the method outputs an empty JSON array and exits. Otherwise it outputs a JSON
+     * array of objects, each containing `id` (user_id) and `text` (formatted user label)
+     * for active users of the specified type that match the query.
+     *
+     * @param int $type The user_type filter to apply (default: 1).
      */
     public function nameQuery($type = 1)
     {
@@ -42,9 +47,13 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName getLatest
+     * Retrieve up to five active users ordered by creation date and format them for select lists.
      *
-     * @originalFile AjaxController.php
+     * Echoes a JSON-encoded array of items where each item contains:
+     * - `id`: the user's `user_id`
+     * - `text`: the HTML-escaped formatted user label
+     *
+     * The results are limited to five users and ordered by `user_date_created`.
      */
     public function getLatest()
     {
@@ -59,9 +68,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName savePreferencePermissiveSearchUsers
+     * Persist the user's preference for permissive user searching.
      *
-     * @originalFile AjaxController.php
+     * Validates that the request value for 'permissive_search_users' is either '0' or '1' and, if valid, saves it under the 'enable_permissive_search_users' setting.
      */
     public function savePreferencePermissiveSearchUsers()
     {
@@ -73,9 +82,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName saveUserClient
+     * Associate a client with an existing user or queue the client for a new user.
      *
-     * @originalFile AjaxController.php
+     * If the provided client ID corresponds to an existing client and a user ID is supplied,
+     * creates a user-client association if one does not already exist. If no user ID is supplied,
+     * stores the client ID in the session under 'user_clients' for association after user creation.
+     * If the client ID is not found, no action is taken.
      */
     public function saveUserClient()
     {
@@ -101,8 +113,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName loadUserClientTable
+     * Render the partial user-client table populated from either session-stored client IDs or the posted user's client associations.
      *
+     * When the session key `user_clients` exists, loads clients matching those IDs and passes them to the partial view with `id` set to null.
+     * Otherwise, loads client associations for the posted `user_id` and passes them to the partial view with `id` set to that `user_id`.
+     *
+     * @originalName loadUserClientTable
      * @originalFile AjaxController.php
      */
     public function loadUserClientTable()
@@ -117,9 +133,13 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalAddUserClient
+     * Render the modal for adding a client association to a user.
      *
-     * @originalFile AjaxController.php
+     * Prepares a list of clients: if session 'user_clients' exists, returns clients not in that session list;
+     * otherwise returns clients not already assigned to the specified user. Renders the 'users/modal_user_client' view
+     * with keys 'user_id' and 'clients'.
+     *
+     * @param int|null $user_id The user ID whose assigned clients should be excluded from the selection; if null, session 'user_clients' determines excluded clients.
      */
     public function modalAddUserClient($user_id = null)
     {

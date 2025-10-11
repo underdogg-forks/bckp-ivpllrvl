@@ -10,7 +10,7 @@ use Modules\Core\Controllers\AdminController;
 class ReportsController extends AdminController
 {
     /**
-     * ReportsController constructor.
+     * Initialize the ReportsController.
      */
     public function __construct()
     {

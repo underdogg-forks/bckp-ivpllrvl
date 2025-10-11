@@ -13,7 +13,9 @@ class SetupController extends MXController
     public $errors = 0;
 
     /**
-     * SetupController constructor.
+     * Initialize the setup controller: enforce setup availability, load framework resources, and initialize localization.
+     *
+     * Aborts with HTTP 403 if DISABLE_SETUP is enabled. Loads the session library, required helpers (file, directory, url, lang, trans, settings, echo) and the layout module, ensures the session key `ip_lang` exists (defaults to `'en'`) and applies that language, then loads the `'ip'` language file.
      */
     public function __construct()
     {
@@ -176,10 +178,12 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName createUser
-     *
-     * @originalFile SetupController.php
-     */
+         * Handles the "create user" setup step: validates submitted user data, creates the initial user when valid,
+         * advances the installation step and redirects, or renders the user creation form with country and language data.
+         *
+         * Side effects: may create a new user record, update the `install_step` session value, perform an HTTP redirect,
+         * and render the setup layout when validation fails or no submission is present.
+         */
     public function createUser(): void
     {
         if ($this->session->userdata('install_step') != 'create_user') {
@@ -406,9 +410,12 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName checkCalculationConfig
+     * Determines whether the legacy calculation setting requires explicit configuration for the installed version.
      *
-     * @originalFile SetupController.php
+     * @return array An associative array describing configuration needs:
+     *               - `needs_config` (bool): `true` if manual configuration is required, `false` otherwise.
+     *               - `current_value` (string): the current `LEGACY_CALCULATION` value (`'not_set'`, `'true'`, or `'false'`).
+     *               - `recommended` (string|null): the recommended value when configuration is required (`'false'`), or `null` when not applicable.
      */
     private function checkCalculationConfig(): array
     {
