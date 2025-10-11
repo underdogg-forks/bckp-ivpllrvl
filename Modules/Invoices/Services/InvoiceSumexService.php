@@ -4,6 +4,7 @@ namespace Modules\Invoices\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Invoices\Models\InvoiceSumex;
 
 #[AllowDynamicProperties]
 class InvoiceSumexService extends BaseService
@@ -29,8 +30,9 @@ class InvoiceSumexService extends BaseService
      */
     public function save($id = null, $db_array = null)
     {
-        $id = $this->where('sumex_invoice', $id)->get()->row()->sumex_id;
-        parent::save($id, $db_array);
+        $sumex = InvoiceSumex::query()->where('sumex_invoice', $id)->first();
+        $sumex_id = $sumex ? $sumex->sumex_id : null;
+        parent::save($sumex_id, $db_array);
     }
 
     /**

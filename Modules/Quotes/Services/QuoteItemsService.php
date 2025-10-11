@@ -108,14 +108,15 @@ class QuoteItemsService extends BaseService
      */
     public function getItemsSubtotal($quote_id)
     {
-        $row = $this->db->query('
-            SELECT SUM(item_subtotal) AS items_subtotal
-            FROM ip_quote_item_amounts
-            WHERE item_id
-                IN (SELECT item_id FROM ip_quote_items WHERE quote_id = ' . $this->db->escape($quote_id) . ')
-            ')->row();
+        $result = \Illuminate\Support\Facades\DB::table('ip_quote_item_amounts')
+            ->whereIn('item_id', function($query) use ($quote_id) {
+                $query->select('item_id')
+                      ->from('ip_quote_items')
+                      ->where('quote_id', $quote_id);
+            })
+            ->sum('item_subtotal');
 
-        return $row->items_subtotal;
+        return $result;
     }
 
     /**
