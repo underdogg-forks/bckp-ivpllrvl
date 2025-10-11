@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature\Modules\Payments;
+namespace Modules\Payments\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\PaymentMethods\Models\PaymentMethod;
 use Modules\Payments\Controllers\PaymentsController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\TestCase;
 use Modules\Payments\Models\Payment;
-use Modules\Payments\Models\PaymentMethod;
 use Modules\Payments\Models\PaymentLog;
 use Modules\Payments\Models\PaymentCustom;
 use Modules\Invoices\Models\Invoice;

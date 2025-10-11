@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Clients;
+namespace Modules\Clients\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Clients\Controllers\AjaxController;

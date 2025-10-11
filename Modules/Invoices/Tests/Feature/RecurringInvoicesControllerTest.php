@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Feature\Modules\Invoices;
+namespace Modules\Invoices\Tests\Feature;
 
 use Modules\Invoices\Controllers\RecurringController;
+use Tests\TestCase;
 
 #[CoversClass(RecurringController::class)]
 class RecurringInvoicesControllerTest extends TestCase

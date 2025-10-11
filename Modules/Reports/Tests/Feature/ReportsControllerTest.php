@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Feature\Modules\Reports;
+namespace Modules\Reports\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Reports\Controllers\ReportsController;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Modules\Invoices\Models\Invoice;

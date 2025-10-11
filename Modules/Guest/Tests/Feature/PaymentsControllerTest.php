@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Guest;
+namespace Modules\Guest\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Guest\Controllers\PaymentsController;

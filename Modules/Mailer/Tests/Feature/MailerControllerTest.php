@@ -1,9 +1,11 @@
 <?php
 
-namespace Tests\Feature\Modules\Mailer;
+namespace Modules\Mailer\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\Mailer\Controllers\MailerController;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Modules\Invoices\Models\Invoice;

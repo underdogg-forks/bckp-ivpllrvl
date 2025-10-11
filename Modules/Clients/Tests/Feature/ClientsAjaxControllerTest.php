@@ -3,6 +3,14 @@
 namespace Modules\Clients\Tests\Feature;
 
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Modules\Clients\Controllers\AjaxController;
+use Modules\Users\Models\User;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\TestCase;
+
+#[CoversClass(AjaxController::class)]
 class ClientsAjaxControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

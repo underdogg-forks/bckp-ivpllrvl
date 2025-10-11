@@ -3,7 +3,11 @@
 namespace Modules\Payments\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Modules\Invoices\Models\Invoice;
+use Modules\PaymentMethods\Models\PaymentMethod;
 use Modules\Payments\Controllers\AjaxController;
+use Modules\Users\Models\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;

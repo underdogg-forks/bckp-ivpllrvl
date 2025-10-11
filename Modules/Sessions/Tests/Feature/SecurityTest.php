@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Security;
+namespace Modules\Sessions\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;

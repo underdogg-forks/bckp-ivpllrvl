@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Modules\Invoices;
+namespace Modules\Invoices\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -8,9 +8,7 @@ use Modules\Invoices\Controllers\InvoicesController;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Modules\Invoices\Models\Invoice;
-use Modules\Invoices\Models\InvoiceItem;
 use Modules\Invoices\Models\InvoiceTaxRate;
-use Modules\Invoices\Models\InvoiceGroup;
 use Modules\Clients\Models\Client;
 use Modules\TaxRates\Models\TaxRate;
 use App\Models\User;

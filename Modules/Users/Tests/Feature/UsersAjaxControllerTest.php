@@ -1,18 +1,20 @@
 <?php
 
-namespace Tests\Feature\Modules\Users;
+namespace Modules\Users\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\UserClients\Models\UserClient;
+use Modules\Users\Controllers\AjaxController;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Modules\Users\Models\User;
-use Modules\Users\Models\UserClient;
 use Modules\Clients\Models\Client;
 use App\Models\User as AuthUser;
 use Illuminate\Support\Facades\Hash;
 
-#[CoversClass(UsersController::class)]
+#[CoversClass(AjaxController::class)]
 class UsersAjaxControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
