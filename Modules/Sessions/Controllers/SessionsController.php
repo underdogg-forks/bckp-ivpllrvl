@@ -65,7 +65,6 @@ class SessionsController extends BaseController
      */
     public function authenticate($email_address, $password): bool
     {
-        $this->load->model('mdl_sessions');
         //check if user is banned
         $login_log = $this->loginLogCheck($email_address);
         if (empty($login_log) || $login_log->log_count < 10) {
@@ -143,7 +142,6 @@ class SessionsController extends BaseController
                 $this->session->set_flashdata('alert_error', trans('loginalert_no_password'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
-            $this->load->model('users/mdl_users');
             // Check for the reset token
             $user = (new UsersService())->getById($user_id);
             if (empty($user)) {

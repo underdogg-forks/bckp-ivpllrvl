@@ -14,7 +14,6 @@ class CustomFieldsController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_custom_fields');
     }
 
     /**
@@ -43,7 +42,6 @@ class CustomFieldsController extends AdminController
         // Paginate before result
         (new CustomFieldsService())->paginate(site_url('custom_fields/name/' . $name), $page);
         $custom_fields = (new CustomFieldsService())->result();
-        $this->load->model('custom_values/mdl_custom_values');
 
         return view('custom_fields.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_custom_fields'), 'filter_method' => 'filter_custom_fields', 'custom_fields' => $custom_fields, 'custom_tables' => $custom_tables, 'custom_value_fields' => (new CustomValuesService())->customValueFields(), 'positions' => (new CustomFieldsService())->getPositions(true)]);
     }

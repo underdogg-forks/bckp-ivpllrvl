@@ -14,7 +14,6 @@ class EmailTemplatesController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_email_templates');
     }
 
     /**
@@ -60,7 +59,6 @@ class EmailTemplatesController extends AdminController
             }
             (new EmailTemplatesService())->setFormValue('is_update', true);
         }
-        $this->load->model(['custom_fields/mdl_custom_fields', 'invoices/mdl_templates']);
         foreach (array_keys((new CustomFieldsService())->customTables()) as $table) {
             $custom_fields[$table] = (new CustomFieldsService())->byTable($table)->get()->result();
         }

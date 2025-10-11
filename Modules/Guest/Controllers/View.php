@@ -74,7 +74,6 @@ class View extends BaseGuestController
      */
     public function generateInvoicePdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
-        $this->load->model('invoices/mdl_invoices');
         $invoice = (new InvoicesService())->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
         if ($invoice->numRows() == 1) {
             $invoice = $invoice->row();
@@ -94,7 +93,6 @@ class View extends BaseGuestController
      */
     public function generateSumexPdf($invoice_url_key, $stream = true, $invoice_template = null)
     {
-        $this->load->model('invoices/mdl_invoices');
         $invoice = (new InvoicesService())->guestVisible()->where('invoice_url_key', $invoice_url_key)->get();
         if ($invoice->numRows() == 1) {
             $invoice = $invoice->row();
@@ -159,7 +157,6 @@ class View extends BaseGuestController
      */
     public function generateQuotePdf($quote_url_key, $stream = true, $quote_template = null)
     {
-        $this->load->model('quotes/mdl_quotes');
         $quote = (new QuotesService())->guestVisible()->where('quote_url_key', $quote_url_key)->get()->row();
         if ( ! $quote) {
             show_404();
@@ -178,7 +175,6 @@ class View extends BaseGuestController
      */
     public function approveQuote(string $quote_url_key)
     {
-        $this->load->model('quotes/mdl_quotes');
         (new QuotesService())->approveQuoteByKey($quote_url_key);
         email_quote_status((new QuotesService())->where('ip_quotes.quote_url_key', $quote_url_key)->get()->row()->quote_id, 'approved');
         redirect('guest/view/quote/' . $quote_url_key);
@@ -191,7 +187,6 @@ class View extends BaseGuestController
      */
     public function rejectQuote(string $quote_url_key)
     {
-        $this->load->model('quotes/mdl_quotes');
         (new QuotesService())->rejectQuoteByKey($quote_url_key);
         email_quote_status((new QuotesService())->where('ip_quotes.quote_url_key', $quote_url_key)->get()->row()->quote_id, 'rejected');
         redirect('guest/view/quote/' . $quote_url_key);

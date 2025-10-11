@@ -17,7 +17,6 @@ class ImportController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_import');
     }
 
     /**
@@ -69,17 +68,14 @@ class ImportController extends AdminController
                             (new ImportService())->recordImportDetails($import_id, 'ip_clients', 'clients', $ids);
                             break;
                         case 'invoices.csv':
-                            $this->load->model('invoices/mdl_invoices');
                             $ids = (new ImportService())->importInvoices();
                             (new ImportService())->recordImportDetails($import_id, 'ip_invoices', 'invoices', $ids);
                             break;
                         case 'invoice_items.csv':
-                            $this->load->model('invoices/mdl_items');
                             $ids = (new ImportService())->importInvoiceItems();
                             (new ImportService())->recordImportDetails($import_id, 'ip_invoice_items', 'invoice_items', $ids);
                             break;
                         case 'payments.csv':
-                            $this->load->model('payments/mdl_payments');
                             $ids = (new ImportService())->importPayments();
                             (new ImportService())->recordImportDetails($import_id, 'ip_payments', 'payments', $ids);
                             break;

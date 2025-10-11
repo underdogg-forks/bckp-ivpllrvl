@@ -15,7 +15,6 @@ class PaymentsController extends BaseGuestController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('payments/mdl_payments');
     }
 
     /**

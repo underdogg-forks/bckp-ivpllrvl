@@ -16,7 +16,6 @@ class PaymentsController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_payments');
     }
 
     /**
@@ -44,7 +43,6 @@ class PaymentsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        $this->load->model('custom_fields/mdl_payment_custom');
         if ((new PaymentsService())->runValidation()) {
             $id = (new PaymentsService())->save($id);
             (new PaymentCustomService())->saveCustom($id, $this->input->post('custom'));
@@ -55,7 +53,6 @@ class PaymentsController extends AdminController
             if ($id && ! $prep_form) {
                 show_404();
             }
-            $this->load->model('custom_values/mdl_custom_values');
             $payment_custom = (new PaymentCustomService())->where('payment_id', $id)->get();
             if ($payment_custom->numRows()) {
                 $payment_custom = $payment_custom->row();
@@ -70,7 +67,6 @@ class PaymentsController extends AdminController
             }
         }
         $this->load->helper('custom_values');
-        $this->load->model(['invoices/mdl_invoices', 'payment_methods/mdl_payment_methods', 'custom_fields/mdl_custom_fields', 'custom_values/mdl_custom_values']);
         $open_invoices = (new InvoicesService())->isOpen()->get()->result();
         $custom_fields = (new CustomFieldsService())->byTable('ip_payment_custom')->get()->result();
         $custom_values = [];

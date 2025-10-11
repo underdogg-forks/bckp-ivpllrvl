@@ -29,9 +29,7 @@ class SetupController extends MXController
         $this->load->helper('trans');
         $this->load->helper('settings');
         $this->load->helper('echo');
-        $this->load->model('settings/mdl_settings');
         // For get_setting() in echo_helper
-        $this->load->model('setup/mdl_setup');
         $this->load->module('layout');
         if ( ! $this->session->userdata('ip_lang')) {
             $this->session->set_userdata('ip_lang', 'en');
@@ -188,7 +186,6 @@ class SetupController extends MXController
             redirect()->route('setup/prerequisites');
         }
         $this->loadCiDatabase();
-        $this->load->model('users/mdl_users');
         $this->load->helper('country');
         if ((new UsersService())->runValidation()) {
             $db_array              = (new UsersService())->dbArray();
@@ -416,7 +413,6 @@ class SetupController extends MXController
     private function checkCalculationConfig(): array
     {
         $this->loadCiDatabase();
-        $this->load->model('settings/mdl_versions');
         $current_version = (new VersionsService())->getCurrentVersion();
         if (version_compare($current_version, '1.6.3', '>=')) {
             // Reload the ipconfig.php

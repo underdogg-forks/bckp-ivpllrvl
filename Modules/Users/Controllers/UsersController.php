@@ -170,7 +170,6 @@ class UsersController extends AdminController
      */
     public function deleteUserClient(string $user_id, $user_client_id)
     {
-        $this->load->model('mdl_user_clients');
         (new UserClientsService())->delete($user_client_id);
         redirect('users/form/' . $user_id);
     }

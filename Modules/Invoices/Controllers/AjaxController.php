@@ -122,7 +122,6 @@ class AjaxController extends AdminController
                         unset($item->item_task_id);
                     } else {
                         if (empty($this->mdl_tasks)) {
-                            $this->load->model('tasks/mdl_tasks');
                         }
                         $this->tasksService->updateStatus(4, $item->item_task_id);
                     }
@@ -161,7 +160,6 @@ class AjaxController extends AdminController
             }
             if (config_item('legacy_calculation')) {
                 // Recalculate for discounts
-                $this->load->model('invoices/mdl_invoice_amounts');
                 $this->invoiceAmountsService->calculate($invoice_id, $global_discount);
             }
             $response = ['success' => 1];
@@ -187,7 +185,6 @@ class AjaxController extends AdminController
                     $db_array[$matches[1]] = $value;
                 }
             }
-            $this->load->model('custom_fields/mdl_invoice_custom');
             $result = $this->invoiceCustomService->saveCustom($invoice_id, $db_array);
             if ($result !== true) {
                 $response = ['success' => 0, 'validation_errors' => $result];
@@ -233,18 +230,15 @@ class AjaxController extends AdminController
     {
         $success = 0;
         $item_id = $this->security->xss_clean($this->input->post('item_id'));
-        $this->load->model('mdl_invoices');
         // Only continue if the invoice exists or no item id was provided
         if ($this->invoicesService->getById($invoice_id) || empty($item_id)) {
             // Delete invoice item
-            $this->load->model('mdl_items');
             $item = $this->itemsService->delete($item_id);
             // Check if deletion was successful
             if ($item) {
                 $success = 1;
                 // Mark task as complete from invoiced
                 if (isset($item->item_task_id) && $item->item_task_id) {
-                    $this->load->model('tasks/mdl_tasks');
                     $this->tasksService->updateStatus(3, $item->item_task_id);
                 }
             }
@@ -437,7 +431,6 @@ class AjaxController extends AdminController
      */
     public function createRecurring()
     {
-        $this->load->model('invoices/mdl_invoices_recurring');
         if ((new InvoicesRecurringService())->runValidation()) {
             (new InvoicesRecurringService())->save();
             $response = ['success' => 1];
@@ -505,7 +498,6 @@ class AjaxController extends AdminController
      */
     public function createCredit()
     {
-        $this->load->model(['invoices/mdl_invoices', 'invoices/mdl_items', 'invoices/mdl_invoice_tax_rates']);
         if ((new InvoicesService())->runValidation()) {
             // Automatic calculation mode
             if (get_setting('einvoicing')) {

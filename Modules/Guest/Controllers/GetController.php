@@ -27,7 +27,6 @@ class GetController extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('upload/mdl_uploads');
         $this->content_types = (new UploadsService())->content_types;
     }
 

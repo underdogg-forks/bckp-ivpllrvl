@@ -14,7 +14,6 @@ class QuotesController extends BaseGuestController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('quotes/mdl_quotes');
     }
 
     /**
@@ -78,7 +77,6 @@ class QuotesController extends BaseGuestController
             show_404();
         }
         (new QuotesService())->markViewed($quote->quote_id);
-        $this->load->model(['quotes/mdl_quote_items', 'quotes/mdl_quote_tax_rates']);
         $this->load->helper('dropzone');
         $this->layout->set(['quote_id' => $quote_id, 'quote' => $quote, 'items' => (new QuoteItemsService())->where('quote_id', $quote_id)->get()->result(), 'quote_tax_rates' => (new QuoteTaxRatesService())->where('quote_id', $quote_id)->get()->result(), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/quotes_view');
@@ -110,7 +108,6 @@ class QuotesController extends BaseGuestController
      */
     public function approve(string $quote_id)
     {
-        $this->load->model('quotes/mdl_quotes');
         (new QuotesService())->approveQuoteById($quote_id);
         email_quote_status($quote_id, 'approved');
         redirect_to('guest/quotes');
@@ -125,7 +122,6 @@ class QuotesController extends BaseGuestController
      */
     public function reject(string $quote_id)
     {
-        $this->load->model('quotes/mdl_quotes');
         (new QuotesService())->rejectQuoteById($quote_id);
         email_quote_status($quote_id, 'rejected');
         redirect_to('guest/quotes');

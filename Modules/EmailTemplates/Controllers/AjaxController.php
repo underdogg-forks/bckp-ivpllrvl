@@ -17,7 +17,6 @@ class AjaxController extends AdminController
      */
     public function getContent()
     {
-        $this->load->model('email_templates/mdl_email_templates');
         $id = $this->input->post('email_template_id');
         echo json_encode((new EmailTemplatesService())->getById($id));
     }

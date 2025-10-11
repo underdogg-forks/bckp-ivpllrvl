@@ -18,7 +18,6 @@ class AjaxController extends AdminController
     public function nameQuery($type = 1)
     {
         // Load the model & helper
-        $this->load->model('users/mdl_users');
         $this->load->helper('user');
         $response = [];
         // GetController the post input
@@ -50,7 +49,6 @@ class AjaxController extends AdminController
     public function getLatest()
     {
         // Load the model & helper
-        $this->load->model('users/mdl_users');
         $response = [];
         $users    = (new UsersService())->where('user_active', 1)->limit(5)->orderBy('user_date_created')->get()->result();
         foreach ($users as $user) {
@@ -67,7 +65,6 @@ class AjaxController extends AdminController
      */
     public function savePreferencePermissiveSearchUsers()
     {
-        $this->load->model('mdl_settings');
         $permissiveSearchUsers = $this->input->get('permissive_search_users');
         if ( ! preg_match('!^[0-1]{1}$!', $permissiveSearchUsers)) {
             exit;
@@ -84,8 +81,6 @@ class AjaxController extends AdminController
     {
         $user_id   = $this->input->post('user_id');
         $client_id = $this->input->post('client_id');
-        $this->load->model('clients/mdl_clients');
-        $this->load->model('users/mdl_user_clients');
         $client = (new ClientsService())->getById($client_id);
         if ($client) {
             $client_id = $client->client_id;
@@ -114,10 +109,8 @@ class AjaxController extends AdminController
     {
         $session_user_clients = $this->session->userdata('user_clients');
         if ($session_user_clients) {
-            $this->load->model('clients/mdl_clients');
             $data = ['id' => null, 'user_clients' => (new ClientsService())->where_in('ip_clients.client_id', $session_user_clients)->get()->result()];
         } else {
-            $this->load->model('users/mdl_user_clients');
             $data = ['id' => $this->input->post('user_id'), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', $this->input->post('user_id'))->get()->result()];
         }
         $this->layout->loadView('users/partial_user_client_table', $data);
@@ -130,12 +123,10 @@ class AjaxController extends AdminController
      */
     public function modalAddUserClient($user_id = null)
     {
-        $this->load->model('clients/mdl_clients');
         if ($session_user_clients = $this->session->userdata('user_clients')) {
             $clients          = (new ClientsService())->where_not_in('ip_clients.client_id', $session_user_clients)->get()->result();
             $assigned_clients = [];
         } else {
-            $this->load->model('users/mdl_user_clients');
             $assigned_clients_query = (new UserClientsService())->where('ip_user_clients.user_id', $user_id)->get()->result();
             $assigned_clients       = [];
             foreach ($assigned_clients_query as $assigned_client) {
