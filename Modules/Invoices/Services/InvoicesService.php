@@ -299,9 +299,8 @@ class InvoicesService extends BaseService
      */
     public function getPayments($invoice)
     {
-        $this->db->where('invoice_id', $invoice->invoice_id);
-        $payment_results   = $this->db->get('ip_payments');
-        $invoice->payments = $payment_results->numRows() > 0 ? $payment_results->result() : null;
+        $payments = Payment::query()->where('invoice_id', $invoice->invoice_id)->get();
+        $invoice->payments = $payments->isNotEmpty() ? $payments : null;
         return $invoice;
     }
 
@@ -585,9 +584,7 @@ class InvoicesService extends BaseService
         if ( ! empty($invoice) && ($invoice->invoice_status_id == 1 && $invoice->invoice_number == '') && get_setting('generate_invoice_number_for_draft') == 0) {
             $invoice_number = $this->getInvoiceNumber($invoice->invoice_group_id);
             // Set new invoice number and save
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->set('invoice_number', $invoice_number);
-            $this->db->update('ip_invoices');
+            Invoice::query()->where('invoice_id', $invoice_id)->update(['invoice_number' => $invoice_number]);
         }
     }
 
@@ -601,9 +598,7 @@ class InvoicesService extends BaseService
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice) && $invoice->is_read_only != 1 && get_setting('no_update_invoice_due_date_mail') == 0) {
             $current_date = date_to_mysql(date(date_format_setting()));
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->set('invoice_date_due', $this->getDateDue($current_date));
-            $this->db->update('ip_invoices');
+            Invoice::query()->where('invoice_id', $invoice_id)->update(['invoice_date_due' => $this->getDateDue($current_date)]);
         }
     }
 }
