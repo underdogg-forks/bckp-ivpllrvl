@@ -5,7 +5,6 @@ namespace Modules\Quotes\Services;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\Quote;
-use Modules\Quotes\Models\Quote;
 
 #[AllowDynamicProperties]
 class QuotesService extends BaseService

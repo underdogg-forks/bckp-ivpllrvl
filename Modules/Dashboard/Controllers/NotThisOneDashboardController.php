@@ -12,7 +12,7 @@ use Modules\Quotes\Services\QuotesService;
 use Modules\Tasks\Services\TasksService;
 
 #[AllowDynamicProperties]
-class DashboardController extends AdminController
+class NotThisOneDashboardController extends AdminController
 {
     /**
      * Prepares data required by the admin dashboard and renders the dashboard view.

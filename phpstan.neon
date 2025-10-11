@@ -1,5 +1,5 @@
-#includes:
-#    - phpstan-baseline.neon
+includes:
+    - phpstan-baseline.neon
 
 parameters:
     tmpDir: null
@@ -9,7 +9,18 @@ parameters:
 
     excludePaths:
         analyse:
-            - */Http/*
+            - *.blade.php
+            - */*.blade.php
+            - */cache/*
+            - */Cache/*
+            - */docs/*
+            - */Docs/*
+            - */migrations/*
+            - */Migrations/*
+            - */node_modules/*
+            - */tests/*
+            - */Tests/*
+            - */vendor/*
 
     ignoreErrors:
 

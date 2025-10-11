@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Dashboard\Controllers\DashboardController;
+use Modules\Dashboard\Controllers\NotThisOneDashboardController;
 
 Route::middleware('web')->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('dashboard', [NotThisOneDashboardController::class, 'index'])->name('dashboard.index');
 });
