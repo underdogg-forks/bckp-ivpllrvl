@@ -1,6 +1,6 @@
 
-<div class="table-responsive">
-    <table id="tasks_table" class="table table-hover table-bordered table-striped no-margin">
+<div class="overflow-x-auto">
+    <table id="tasks_table" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-bordered table-striped no-margin">
         <tr>
             <th>&nbsp;</th>
             <th>@lang('project_name');
@@ -12,10 +12,10 @@
         </tr>
 
         @foreach($tasks as $task)
-        <tr class="task-row">
+        <tr class="task- flex flex-wrap -mx-4">
             <td class="text-left">
                 <input type="checkbox" class="modal-task-id" name="task_ids[]"
-                       id="task-id-{{ $task->task_id }}" value="{{ $task->task_id }}">
+                       id="task-id-{{ $task->task_id }}" value="{{ $task->task_id " }}>
             </td>
             <td nowrap class="text-left">
                 <b>{{ isset($task->project_name) ? htmlsc($task->project_name) : '' }}</b>
@@ -36,4 +36,4 @@
                     </tr>@endforeach
 
     </table>
-</div><?php
+</div>

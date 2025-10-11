@@ -15,7 +15,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('password.email') }}">
+            <form method="POST" action="{{ route('password.email') " }}>
                 @csrf
                 <!-- Email Input -->
                 <div class="mb-4">
@@ -31,7 +31,7 @@
             <!-- Back to Login Link -->
             <div class="text-center mt-6">
                 <a href="{{ route('login') }}"
-                    class="text-blue-600 dark:text-blue-400 hover:underline font-medium">{{ trans('ip.Back to login') }}</a>
+                    class="text-link hover:text-link-hover hover:underline font-medium">{{ trans('ip.Back to login') }}</a>
             </div>
         </div>
     </div>

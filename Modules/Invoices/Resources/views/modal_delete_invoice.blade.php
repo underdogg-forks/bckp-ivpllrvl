@@ -1,10 +1,9 @@
-
 <div id="delete-invoice" class="modal modal-lg" role="dialog" aria-labelledby="delete-invoice" aria-hidden="true">
 
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
-            <h4 class="panel-title">@lang('delete_invoice')</h4>
+            <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">@lang('delete_invoice')</h4>
         </div>
         <div class="modal-body">
 

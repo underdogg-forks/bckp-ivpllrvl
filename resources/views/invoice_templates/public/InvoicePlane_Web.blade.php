@@ -10,9 +10,9 @@
         - @lang('invoice') {{ $invoice->invoice_number }}
     </title>
 
-    <link rel="icon" href="@php _core_asset('img/favicon.png'); " type="image/png">
-    <link rel="stylesheet" href="@php _theme_asset('css/style.css'); " type="text/css">
-    <link rel="stylesheet" href="@php _core_asset('css/custom.css'); " type="text/css">
+    <link rel="icon" href="{{ _core_asset('img/favicon.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ _theme_asset('css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ _core_asset('css/custom.css') }}" type="text/css">
 </head>
 <body>
 
@@ -23,22 +23,22 @@
 
             <h2>@lang('invoice')&nbsp;{{ $invoice->invoice_number }}</h2>
 
-            <div class="btn-group">
+            <div class="inline-flex rounded-md shadow-sm">
                 @if(isset($_SESSION['user_id'], $_SESSION['user_type'])) {
                 ?>
                 <a href="{{ url($_SESSION['user_type'] > 1 ? 'guest' : '') }}"
-                   class="btn btn-default" title="@lang('dashboard')">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors" title="@lang('dashboard')">
                     <i class="fa fa-dashboard"></i> @lang('dashboard')
                 </a>
                 @php }
                 <a href="{{ url('guest/view/generate_' . ($invoice->sumex_id == null ? 'invoice' : 'sumex') . '_pdf/' . $invoice_url_key) }}"
-                   class="btn btn-primary">
+                   class="inline-flex items-center gap-2 px-4 py-2 btn-primary border border-transparent rounded-md text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors">
                     <i class="fa fa-print"></i> @lang('download_pdf')
                 </a>
                 @if(get_setting('enable_online_payments') == 1 && $invoice->invoice_balance > 0)
 
                 <a href="{{ url('guest/payment_information/form/' . $invoice_url_key) }}"
-                   class="btn btn-success">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
                     <i class="fa fa-credit-card"></i> @lang('pay_now')
                 </a>
 
@@ -53,96 +53,92 @@
 
         <div class="invoice">
 
-            @php $logo = invoice_logo();
-if ($logo)
-{$logo  <br><br>}
-@endif
+            @php $logo = invoice_logo(); @endphp
+            @if($logo)
+                {!! $logo !!}<br><br>
+            @endif
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6 col-lg-5">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2 col-lg-5">
 
                     <h4>{!! $invoice->user_name !!}</h4>
-                    <p>@if($invoice->user_vat_id)
-{trans(vat_id_short)  :   $invoice->user_vat_id  <br>}
-@endif
-if ($invoice->user_tax_code)
-{trans(tax_code_short)  :   $invoice->user_tax_code  <br>}
-@endif
-if ($invoice->user_address_1)
-{htmlsc($invoice->user_address_1)  <br>}
-@endif
-if ($invoice->user_address_2)
-{htmlsc($invoice->user_address_2)  <br>}
-@endif
-if ($invoice->user_city)
-{htmlsc($invoice->user_city)   InvoicePlane_Webphp}
-@endif
-if ($invoice->user_state)
-{htmlsc($invoice->user_state)   InvoicePlane_Webphp}
-@endif
-if ($invoice->user_zip)
-{htmlsc($invoice->user_zip)  <br>}
-@endif
-if ($invoice->user_phone) {
-    @lang('phone_abbr');
-    echo ': ' . htmlsc($invoice->user_phone) . '<br>';
-}
-if ($invoice->user_fax) {
-    @lang('fax_abbr');
-    echo ': ' . htmlsc($invoice->user_fax);
-} </p>
+                    <p>
+                        @if($invoice->user_vat_id)
+                            @lang('vat_id_short'): {{ $invoice->user_vat_id }}<br>
+                        @endif
+                        @if($invoice->user_tax_code)
+                            @lang('tax_code_short'): {{ $invoice->user_tax_code }}<br>
+                        @endif
+                        @if($invoice->user_address_1)
+                            {{ htmlsc($invoice->user_address_1) }}<br>
+                        @endif
+                        @if($invoice->user_address_2)
+                            {{ htmlsc($invoice->user_address_2) }}<br>
+                        @endif
+                        @if($invoice->user_city)
+                            {{ htmlsc($invoice->user_city) }}
+                        @endif
+                        @if($invoice->user_state)
+                            {{ htmlsc($invoice->user_state) }}
+                        @endif
+                        @if($invoice->user_zip)
+                            {{ htmlsc($invoice->user_zip) }}<br>
+                        @endif
+                        @if($invoice->user_phone)
+                            @lang('phone_abbr'): {{ htmlsc($invoice->user_phone) }}<br>
+                        @endif
+                        @if($invoice->user_fax)
+                            @lang('fax_abbr'): {{ htmlsc($invoice->user_fax) }}
+                        @endif
+                    </p>
 
                 </div>
                 <div class="col-lg-2"></div>
-                <div class="col-xs-12 col-md-6 col-lg-5 text-right">
+                <div class="w-full px-4 md:w-1/2 col-lg-5 text-right">
 
                     <h4>{!! format_client($invoice) !!}</h4>
-                    <p>@if($invoice->client_vat_id) {
-        @lang('vat_id_short');
-        echo ': ' . $invoice->client_vat_id . '<br>';
-    }
-if ($invoice->client_tax_code) {
-    @lang('tax_code_short');
-    echo ': ' . $invoice->client_tax_code . '<br>';
-}
-if ($invoice->client_address_1)
-{htmlsc($invoice->client_address_1)  <br>}
-@endif
-if ($invoice->client_address_2)
-{htmlsc($invoice->client_address_2)  <br>}
-@endif
-if ($invoice->client_city)
-{htmlsc($invoice->client_city)   InvoicePlane_Webphp}
-@endif
-if ($invoice->client_state)
-{htmlsc($invoice->client_state)   InvoicePlane_Webphp}
-@endif
-if ($invoice->client_zip)
-{htmlsc($invoice->client_zip)  <br>}
-@endif
-if ($invoice->client_phone)
-{trans(phone_abbr)  :   htmlsc($invoice->client_phone)  <br>}
-@endif </p>
+                    <p>
+                        @if($invoice->client_vat_id)
+                            @lang('vat_id_short'): {{ $invoice->client_vat_id }}<br>
+                        @endif
+                        @if($invoice->client_tax_code)
+                            @lang('tax_code_short'): {{ $invoice->client_tax_code }}<br>
+                        @endif
+                        @if($invoice->client_address_1)
+                            {{ htmlsc($invoice->client_address_1) }}<br>
+                        @endif
+                        @if($invoice->client_address_2)
+                            {{ htmlsc($invoice->client_address_2) }}<br>
+                        @endif
+                        @if($invoice->client_city)
+                            {{ htmlsc($invoice->client_city) }}
+                        @endif
+                        @if($invoice->client_state)
+                            {{ htmlsc($invoice->client_state) }}
+                        @endif
+                        @if($invoice->client_zip)
+                            {{ htmlsc($invoice->client_zip) }}<br>
+                        @endif
+                        @if($invoice->client_phone)
+                            @lang('phone_abbr'): {{ htmlsc($invoice->client_phone) }}<br>
+                        @endif
+                    </p>
 
                     <br>
 
-                    <table class="table table-condensed">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
                         <tbody>
                         <tr>
                             <td>@lang('invoice_date')</td>
                             <td style="text-align:right;">{{ date_from_mysql($invoice->invoice_date_created) }}</td>
                         </tr>
-                        <tr class="{{ $is_overdue ? 'overdue' : '' ?>">
-                                    <td>@lang('due_date') }}</td>
-                                    <td class=" amount
-                        ">
-                        {{ date_from_mysql($invoice->invoice_date_due) }}
-                        </td>
+                        <tr class="{{ $is_overdue ? 'overdue' : ''" }}>
+                            <td>@lang('due_date')</td>
+                            <td class="amount">{{ date_from_mysql($invoice->invoice_date_due) }}</td>
                         </tr>
-                        <tr class="{{ $is_overdue ? 'overdue' : '' ">
-                                    <td>@lang('amount_due') }}</td>
-                                    <td style=" text-align:right;
-                        ">{{ format_currency($invoice->invoice_balance) }}</td>
+                        <tr class="{{ $is_overdue ? 'overdue' : ''" }}>
+                            <td>@lang('amount_due')</td>
+                            <td style="text-align:right;">{{ format_currency($invoice->invoice_balance) }}</td>
                         </tr>
                         @if($payment_method)
 
@@ -161,8 +157,8 @@ if ($invoice->client_phone)
             <br>
 
             <div class="invoice-items">
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-bordered">
                         <thead>
                         <tr>
                             <th>@lang('item')</th>
@@ -249,9 +245,9 @@ if ($invoice->client_phone)
                             <td class="amount">@lang('paid')</td>
                             <td class="amount">{{ format_currency($invoice->invoice_paid) </td>
                                 </tr>
-                                <tr class="{{ ($invoice->invoice_balance > 0) ? 'overdue' : 'text-success' }}">
+                                <tr class="{{ ($invoice->invoice_balance > 0) ? 'overdue' : 'text-success'" }}>
                             <td class="no-bottom-border" colspan="4"></td>
-                            <td class="amount">@php @lang('balance') }}</td>
+                            <td class="amount">@php @lang('balance')</td>
                             <td class="amount">
                                 <b>{{ format_currency($invoice->invoice_balance) </b>
                                     </td>
@@ -261,8 +257,11 @@ if ($invoice->client_phone)
                     </div>
 
 @if($invoice->invoice_balance == 0)
-{<span class="stamp rotate bottom paid">  trans(paid)  </span>}@endforeach elseif ($is_overdue)
-{<span class="stamp rotate bottom overdue">  trans(overdue)  </span>}@endforeach
+                        @if($invoice->invoice_balance > 0 && $invoice->invoice_status_id != 4)
+                            <span class="stamp rotate bottom paid">@lang('paid')</span>
+                        @elseif($is_overdue)
+                            <span class="stamp rotate bottom overdue">@lang('overdue')</span>
+                        @endif
 
                 </div><!-- .invoice-items -->
 
@@ -275,13 +274,13 @@ if ($invoice->client_phone)
                         <tr>
                             <td>
                                 <div>
-                                    <strong>@lang('qr_code_settings_recipient') }}:</strong>
-                    {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
-                </div>
-                <div>
-                    <strong><?php @lang('qr_code_settings_iban'):</strong>
-                    {{ $invoice->user_iban ?: get_setting('qr_code_iban') }}
-                </div>
+                                    <strong>@lang('qr_code_settings_recipient'):</strong>
+                                    {{ $invoice->user_company ?: get_setting('qr_code_recipient') }}
+                                </div>
+                                <div>
+                                    <strong>@lang('qr_code_settings_iban'):</strong>
+                                    {{ $invoice->user_iban ?: get_setting('qr_code_iban') }}
+                                </div>
                 <div>
                     <strong>@lang('qr_code_settings_bic'):</strong>
                     {{ $invoice->user_bic ?: get_setting('qr_code_bic') }}
@@ -300,27 +299,27 @@ if ($invoice->client_phone)
 
                 <hr>@endforeach
 
-                <div class="row">
+                <div class="flex flex-wrap -mx-4">
 
                     @if($invoice->invoice_terms)
 
-                    <div class="col-xs-12 col-md-6">
+                    <div class="w-full px-4 md:w-1/2">
                         <h4>@lang('terms')</h4>
                         <p>{{ nl2br(e($invoice->invoice_terms)) }}</p>
                     </div>@endforeach
 
                     @if(count($attachments) > 0)
 
-                    <div class="col-xs-12 col-md-6">
+                    <div class="w-full px-4 md:w-1/2">
                         <h4>@lang('attachments')</h4>
-                        <div class="table-responsive">
-                            <table class="table table-condensed">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
                                 @foreach($attachments as $attachment)
                                 <tr class="attachments">
                                     <td>{{ $attachment['name'] }}</td>
                                     <td>
                                         <a href="{{ url('guest/get/attachment/' . $attachment['fullname']) }}"
-                                           class="btn btn-primary btn-sm">
+                                           class="inline-flex items-center gap-2 px-4 py-2 btn-primary border border-transparent rounded-md text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors px-3 py-1.5">
                                             <i class="fa fa-download"></i> @lang('download')
                                         </a>
                                     </td>

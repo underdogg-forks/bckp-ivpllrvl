@@ -2,7 +2,7 @@
 <html lang="@lang('cldr')">
 <head>
     <title>{{ get_setting('custom_title', 'InvoicePlane', true) }} - @lang('invoice_aging')</title>
-    <link rel="stylesheet" href="@php _theme_asset('css/reports.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/reports.css') }}" type="text/css">
 </head>
 <body>
 

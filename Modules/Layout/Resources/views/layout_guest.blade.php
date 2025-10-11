@@ -17,30 +17,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="NOINDEX,NOFOLLOW">
-    <meta name="_csrf" content="{{ $this->security->get_csrf_hash() }}">
-    <meta name="csrf_token_name" content="{{ config_item('csrf_token_name') }}">
-    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') }}">
-    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') }}">
+    <meta name="_csrf" content="{{ $this->security->get_csrf_hash() " }}>
+    <meta name="csrf_token_name" content="{{ config_item('csrf_token_name') " }}>
+    <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') " }}>
+    <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') " }}>
 
     <link rel="icon" href="@php _core_asset('img/favicon.png')" type="image/png">
 
-    <link rel="stylesheet" href="@php _theme_asset('css/style.css'); " type="text/css">
-    <link rel="stylesheet" href="@php _core_asset('css/custom.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ _core_asset('css/custom.css') }}" type="text/css">
 
     @if(get_setting('monospace_amounts') == 1)
-    <link rel="stylesheet" href="@php
-    _theme_asset('css/monospace.css');
-    " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/monospace.css') }}" type="text/css">
     @endif
 
         <!--[if lt IE 9]>
-    <script src="@php _core_asset('js/legacy.min.js'); "></script>
+    <script src="{{ _core_asset('js/legacy.min.js') " }}></script>
     <![endif]-->
 
-    <script src="@php _core_asset('js/dependencies.min.js'); "></script>
+    <script src="{{ _core_asset('js/dependencies.min.js') " }}></script>
 
 </head>
-<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : '' }}">
+<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : ''" }}>
 
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="container-fluid">
@@ -48,7 +46,7 @@
             <button type="button" class="navbar-toggle"
                     data-toggle="collapse" data-target="#ip-navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
-                {{ __('menu') }} &nbsp; <i class="fa fa-bars"></i>
+                {{ trans('menu') }} &nbsp; <i class="fa fa-bars"></i>
             </button>
         </div>
 
@@ -65,7 +63,7 @@
                     <a href="{{ url('sessions/logout') }}"
                        class="tip icon logout" data-placement="bottom"
                        title="@lang('logout')">
-                        <span class="visible-xs">&nbsp;@lang('logout')</span>
+                        <span class="block sm:hidden">&nbsp;@lang('logout')</span>
                         <i class="fa fa-power-off"></i>
                     </a>
                 </li>
@@ -76,7 +74,7 @@
 
 <div id="main-area">
 
-    <div class="sidebar hidden-xs{{ get_setting('disable_sidebar') == 1 ? ' hidden' : '' }}">
+    <div class="sidebar hidden sm:block {{ get_setting('disable_sidebar') == 1 ? ' hidden' : ''" }}>
         <ul>
             <li>
                 <a href="{{ url('guest') }}" title="@lang('dashboard')" class="tip"
@@ -116,13 +114,11 @@
 
 {{ $this->layout->loadView('layout/includes/fullpage-loader') }}
 
-<script defer src="@php _core_asset('js/scripts.min.js')"></script>
+<script defer src="{{ _core_asset('js/scripts.min.js')"></script>
 @if(trans('cldr') != 'en')
 <script src="@php
-    _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js');
-    "></script>
+    _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js') " }}></script>
     @endif
 
 </body>
 </html>
-<?php

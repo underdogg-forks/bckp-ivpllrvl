@@ -1,22 +1,22 @@
 
-<div class="row">
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
+<div class="flex flex-wrap -mx-4">
+    <div class="w-full px-4 col-md-8 col-md-offset-2">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                 @lang('taxes')
             </div>
-            <div class="panel-body">
+            <div class="p-6">
 
-                <div class="row">
-                    <div class="col-xs-12 col-md-6">
+                <div class="flex flex-wrap -mx-4">
+                    <div class="w-full px-4 md:w-1/2">
 
-                        <div class="form-group">
+                        <div class="mb-4">
                             <label for="settings[default_invoice_tax_rate]">
                                 @lang('default_invoice_tax_rate')
                             </label>
                             <select name="settings[default_invoice_tax_rate]" id="settings[default_invoice_tax_rate]"
-                                    class="form-control simple-select">
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                                 <option value="">@lang('none')</option>
                                 @foreach($tax_rates as $tax_rate)
                                 <option value="{{ $tax_rate->tax_rate_id }}"
@@ -27,12 +27,12 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-4">
                             <label for="settings[default_item_tax_rate]">
                                 @lang('default_item_tax_rate')
                             </label>
                             <select name="settings[default_item_tax_rate]" id="settings[default_item_tax_rate]"
-                                    class="form-control simple-select">
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                                 <option value="">@lang('none')</option>
                                 @foreach($tax_rates as $tax_rate)
                                 <option value="{{ $tax_rate->tax_rate_id }}"
@@ -47,18 +47,18 @@
 
                     @php // LEGACY_CALCULATION false : Taxes Global N, Item Y : Use simple calculation : Apply global discount before item tax
 // For e-invoices : 🗸 EN16931, ? PEPPOL3BIS, ? UBL, ? CII ••• (WIP : todo: checks, modify, create Models).
-if (!$legacy_calculation) {
+@if(!$legacy_calculation) {
 
                     <input name="settings[default_include_item_tax]" id="settings[default_include_item_tax]"
                            type="hidden" value="">
                     @else
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
+                    <div class="w-full px-4 md:w-1/2">
+                        <div class="mb-4">
                             <label for="settings[default_include_item_tax]">
                                 @lang('default_invoice_tax_rate_placement')
                             </label>
                             <select name="settings[default_include_item_tax]" id="settings[default_include_item_tax]"
-                                    class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                                 <option value="">@lang('none')</option>
                                 <option value="0" @php
                                     check_select(get_setting('default_include_item_tax'), '0')>
@@ -81,4 +81,3 @@ if (!$legacy_calculation) {
 
     </div >
 </div >
-<?php

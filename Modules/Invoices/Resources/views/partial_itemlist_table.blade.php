@@ -1,8 +1,6 @@
-@php namespace Modules\Invoices\Views;
-
 $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
-<div class="table-responsive">
-    <table id="item_table" class="items table table-condensed table-bordered no-margin">
+<div class="overflow-x-auto">
+    <table id="item_table" class="items min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm table-bordered no-margin">
 
         <thead style="display:none">
         <tr>
@@ -37,26 +35,26 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                 @endif
             </td>
             <td class="td-text">
-                <input type="hidden" name="invoice_id" value="{{ $invoice_id }}">
+                <input type="hidden" name="invoice_id" value="{{ $invoice_id " }}>
                 <input type="hidden" name="item_id" value="">
                 <input type="hidden" name="item_product_id" value="">
                 <input type="hidden" name="item_task_id" class="item-task-id" value="">
 
                 <div class="input-group">
                     <span class="input-group-addon">@lang('item')</span>
-                    <input type="text" name="item_name" class="form-control" value="">
+                    <input type="text" name="item_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" value="">
                 </div>
             </td>
             <td class="td-amount td-quantity">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('quantity')</span>
-                    <input type="text" name="item_quantity" class="form-control amount" value="">
+                    <input type="text" name="item_quantity" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors amount" value="">
                 </div>
             </td>
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('price')</span>
-                    <input type="text" name="item_price" class="form-control amount" value="">
+                    <input type="text" name="item_price" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors amount" value="">
                     <div class="input-group-addon">{{ get_setting('currency_symbol') }}</div>
                 </div>
             </td>
@@ -66,7 +64,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('tax_rate')</span>
-                    <select name="item_tax_rate_id" class="form-control">
+                    <select name="item_tax_rate_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                         <option value="0">@lang('none')</option>
                         @foreach($tax_rates as $tax_rate)
                         <option value="{{ $tax_rate->tax_rate_id }}"
@@ -81,7 +79,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
     $this->layout->loadView('layout/partial/itemlist_table_item_discount_input');
 }
             <td class="td-icon text-right td-vert-middle">
-                <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')">
+                <button type="button" class="btn_delete_item inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors px-3 py-1.5" title="@lang('delete')">
                     <i class="fa fa-trash-o text-danger"></i>
                 </button>
             </td>
@@ -91,24 +89,24 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td class="td-textarea">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('description')</span>
-                    <textarea name="item_description" class="form-control"></textarea>
+                    <textarea name="item_description" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"></textarea>
                 </div>
             </td>
             @else
             <td class="td-date">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('date')</span>
-                    <input type="text" name="item_date" class="form-control datepicker"
+                    <input type="text" name="item_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                            value="{{ format_date(date('y-m-d')) }}"{{ $invoice_disabled }}>
                 </div>
             </td>@endforeach
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('product_unit')</span>
-                    <select name="item_product_unit_id" class="form-control">
+                    <select name="item_product_unit_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                         <option value="0">@lang('none')</option>
                         @foreach($units as $unit)
-                        <option value="{{ $unit->unit_id }}">
+                        <option value="{{ $unit->unit_id " }}>
                             {{ $unit->unit_name . '/' . $unit->unit_name_plrl }}
                         </option>@endforeach
                     </select>
@@ -141,7 +139,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td rowspan="2" class="td-icon">
                 <i class="fa fa-arrows cursor-move"></i>
                 @if($invoice->invoice_is_recurring) {
-                        if ($item->item_is_recurring == 1 || null === $item->item_is_recurring) {
+                        @if($item->item_is_recurring == 1 || null === $item->item_is_recurring) {
                             $item_recurrence_state = '1';
                             $item_recurrence_class = 'fa-calendar-check-o text-success';
                         } else {
@@ -150,34 +148,34 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                         }
 
                 <br/>
-                <i title="{{ __('recurring') }}"
-                   class="js-item-recurrence-toggler cursor-pointer fa {{ $item_recurrence_class }}"></i>
+                <i title="{{ trans('recurring') }}"
+                   class="js-item-recurrence-toggler cursor-pointer fa {{ $item_recurrence_class" }}></i>
                 <input type="hidden" name="item_is_recurring" value="{{ $item_recurrence_state }}"/>@endforeach
             </td>
             <td class="td-text">
-                <input type="hidden" name="invoice_id" value="{{ $invoice_id }}">
+                <input type="hidden" name="invoice_id" value="{{ $invoice_id " }}>
                 <input type="hidden" name="item_id" value="{{ $item->item_id }}"{{ $invoice_disabled }}>
                 <input type="hidden" name="item_task_id" class="item-task-id"
-                       value="{{ $item->item_task_id ? $item->item_task_id : '' }}">
-                <input type="hidden" name="item_product_id" value="{{ $item->item_product_id }}">
+                       value="{{ $item->item_task_id ? $item->item_task_id : '' " }}>
+                <input type="hidden" name="item_product_id" value="{{ $item->item_product_id " }}>
 
                 <div class="input-group">
                     <span class="input-group-addon">@lang('item')</span>
-                    <input type="text" name="item_name" class="form-control"
+                    <input type="text" name="item_name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                            value="{!! $item->item_name !!}"{{ $invoice_disabled }}>
                 </div>
             </td>
             <td class="td-amount td-quantity">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('quantity')</span>
-                    <input type="text" name="item_quantity" class="form-control amount"
+                    <input type="text" name="item_quantity" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors amount"
                            value="{{ format_quantity($item->item_quantity) }}"{{ $invoice_disabled }}>
                 </div>
             </td>
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('price')</span>
-                    <input type="text" name="item_price" class="form-control amount"
+                    <input type="text" name="item_price" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors amount"
                            value="{{ format_amount($item->item_price) }}"{{ $invoice_disabled }}>
                     <div class="input-group-addon">{{ get_setting('currency_symbol') }}</div>
                 </div>
@@ -189,7 +187,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('tax_rate')</span>
-                    <select name="item_tax_rate_id" class="form-control"{{ $invoice_disabled }}>
+                    <select name="item_tax_rate_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"{{ $invoice_disabled }}>
                         <option value="0">@lang('none')</option>
                         @foreach($tax_rates as $tax_rate)
                         <option value="{{ $tax_rate->tax_rate_id }}"
@@ -206,8 +204,8 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
 
             <td class="td-icon text-right td-vert-middle">
                 @if($invoice->is_read_only != 1)
-                <button type="button" class="btn_delete_item btn btn-link btn-sm" title="@lang('delete')"
-                        data-item-id="{{ $item->item_id }}">
+                <button type="button" class="btn_delete_item inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors px-3 py-1.5" title="@lang('delete')"
+                        data-item-id="{{ $item->item_id " }}>
                     <i class="fa fa-trash-o text-danger"></i>
                 </button>@endforeach
             </td>
@@ -218,7 +216,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td class="td-textarea">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('description')</span>
-                    <textarea name="item_description" class="form-control"{{ $invoice_disabled }}
+                    <textarea name="item_description" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"{{ $invoice_disabled }}
                             >{!! $item->item_description !!}</textarea>
                 </div>
             </td>
@@ -226,7 +224,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td class="td-date">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('date')</span>
-                    <input type="text" name="item_date" class="form-control datepicker"
+                    <input type="text" name="item_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                            value="{{ format_date($item->item_date) }}"{{ $invoice_disabled }}>
                 </div>
             </td>@endforeach
@@ -234,7 +232,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
             <td class="td-amount">
                 <div class="input-group">
                     <span class="input-group-addon">@lang('product_unit')</span>
-                    <select name="item_product_unit_id" class="form-control">
+                    <select name="item_product_unit_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                         <option value="0">@lang('none')</option>
                         @foreach($units as $unit)
                         <option value="{{ $unit->unit_id }}"
@@ -282,28 +280,28 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
 
 <br>
 
-<div class="row">
-    <div class="col-xs-12 col-md-4">
-        <div class="btn-group">
+<div class="flex flex-wrap -mx-4">
+    <div class="w-full px-4 md:w-1/3">
+        <div class="inline-flex rounded-md shadow-sm">
             @if($invoice->is_read_only != 1)
-            <a href="javascript:void(0);" class="btn_add_row btn btn-sm btn-default">
+            <a href="javascript:void(0);" class="btn_add_row inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                 <i class="fa fa-plus"></i> @lang('add_new_row')
             </a>
-            <a href="javascript:void(0);" class="btn_add_product btn btn-sm btn-default">
+            <a href="javascript:void(0);" class="btn_add_product inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                 <i class="fa fa-database"></i>
                 @lang('add_product')
             </a>
             <a href="javascript:void(0);"
-               class="btn_add_task btn btn-sm btn-default{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' }}">
+               class="btn_add_task inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors{{ get_setting('projects_enabled') == 1 ? '' : ' hidden'" }}>
                 <i class="fa fa-database"></i> @lang('add_task')
             </a>@endforeach
         </div>
     </div>
 
-    <div class="col-xs-12 visible-xs visible-sm"><br></div>
+    <div class="w-full px-4 block sm:hidden hidden sm:block md:hidden"><br></div>
 
-    <div class="col-xs-12 col-md-6 col-md-offset-2 col-lg-4 col-lg-offset-4">
-        <table class="table table-bordered text-right">
+    <div class="w-full px-4 md:w-1/2 col-md-offset-2 lg:w-1/3 col-lg-offset-4">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700 text-right">
             @if(!$legacy_calculation) {
     $this->layout->loadView('invoices/partial_itemlist_table_invoice_discount');
 }
@@ -321,11 +319,11 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                 <td>@lang('invoice_tax')</td>
                 <td>
                     @if($invoice_tax_rates) {
-                            foreach ($invoice_tax_rates as $invoice_tax_rate)
+                            @foreach($invoice_tax_rates as $invoice_tax_rate)
                     <form method="post"
-                          action="{{ url('invoices/delete_invoice_tax/' . $invoice->invoice_id . '/' . $invoice_tax_rate->invoice_tax_rate_id) }}">
+                          action="{{ url('invoices/delete_invoice_tax/' . $invoice->invoice_id . '/' . $invoice_tax_rate->invoice_tax_rate_id) " }}>
                         @csrf
-                        <button type="submit" class="btn btn-xs btn-link"
+                        <button type="submit" class="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                                 onclick="var Y=confirm('@lang('delete_tax_warning')');if(Y)show_loader();return Y;">
                             <i class="fa fa-trash-o"></i>
                         </button>
@@ -362,4 +360,3 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
         </table>
     </div>
 </div>
-<?php

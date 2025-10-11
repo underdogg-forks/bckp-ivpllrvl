@@ -2,7 +2,7 @@
 
 <li x-data="{ open: {{ $active ? 'true' : 'false' }} }">
     <button @click="
-        if (sidebarOpen) {
+        @if(sidebarOpen) {
             open = !open;
         } else {
             temporarilyOpenSidebar();

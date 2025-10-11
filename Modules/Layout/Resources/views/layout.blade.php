@@ -14,10 +14,10 @@
     @php // GetController the page head content
 $this->layout->loadView('layout/includes/head')
 </head>
-<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : '' }}">
+<body class="{{ get_setting('disable_sidebar') ? 'hidden-sidebar' : ''" }}>
 
 <noscript>
-    <div class="alert alert-danger no-margin">@lang('please_enable_js')</div>
+    <div class="p-4 mb-4 text-red-700 dark:text-red-200 bg-red-100 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg no-margin">@lang('please_enable_js')</div>
 </noscript>
 
 @php // GetController the navigation bar
@@ -25,7 +25,7 @@ $this->layout->loadView('layout/includes/navbar')
 
 <div id="main-area">
     @php // Display the sidebar if enabled
-if (get_setting('disable_sidebar') != 1) {
+@if(get_setting('disable_sidebar') != 1) {
     $this->layout->loadView('layout/includes/sidebar');
 }
     <div id="main-content">
@@ -38,13 +38,10 @@ if (get_setting('disable_sidebar') != 1) {
 
 {{ $this->layout->loadView('layout/includes/fullpage-loader') }}
 
-<script defer src="@php _core_asset('js/scripts.min.js'); "></script>
+<script defer src="{{ _core_asset('js/scripts.min.js') " }}></script>
 @if(trans('cldr') != 'en')
-<script src="@php
-    _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js');
-    "></script>
+<script src="{{ _core_asset('js/locales/bootstrap-datepicker.' . trans('cldr') . '.js') " }}></script>
     @endif
 
 </body>
 </html>
-<?php

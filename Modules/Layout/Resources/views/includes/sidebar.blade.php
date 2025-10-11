@@ -1,5 +1,5 @@
 
-<div class="sidebar hidden-xs">
+<div class="sidebar hidden sm:block">
     <ul>
         <li>
             <a href="{{ url('clients/index');
@@ -35,7 +35,7 @@
         @if(get_setting('projects_enabled') == 1)
         <li>
             <a href="{{ site_url('tasks/index') }}" title="@php
-    @lang('tasks') }}"
+    @lang('tasks')"
                    class="tip" data-placement="right">
                     <i class="fa fa-check-square-o"></i>
                 </a>
@@ -49,4 +49,3 @@
         </li>
     </ul>
 </div>
-<?php

@@ -11,41 +11,41 @@
 
         <div class="collapse navbar-collapse" id="ip-navbar-collapse">
             <ul class="nav navbar-nav">
-                <li>{{ anchor('dashboard', trans('dashboard'), 'class="hidden-md"') }}
-                {{ anchor('dashboard', '<i class="fa fa-dashboard"></i>', 'class="visible-md-inline-block"') }}
+                <li>{{ anchor('dashboard', trans('dashboard'), 'class="md:hidden lg:block"') }}
+                {{ anchor('dashboard', '<i class="fa fa-dashboard"></i>', 'class="hidden md:block lg:hidden -inline-block"') }}
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="inline-flex items-center gap-2" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
-                        <span class="hidden-md">@lang('clients')</span>
-                        <i class="visible-md-inline fa fa-users"></i>
+                        <span class="md:hidden lg:block">@lang('clients')</span>
+                        <i class="hidden md:block lg:hidden -inline fa fa-users"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                         <li>{{ anchor('clients/form', trans('add_client')) }}</li>
                         <li>{{ anchor('clients/index', trans('view_clients')) }}</li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="inline-flex items-center gap-2" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
-                        <span class="hidden-md">@lang('quotes')</span>
-                        <i class="visible-md-inline fa fa-file"></i>
+                        <span class="md:hidden lg:block">@lang('quotes')</span>
+                        <i class="hidden md:block lg:hidden -inline fa fa-file"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                         <li><a href="#" class="create-quote">@lang('create_quote')</a></li>
                         <li>{{ anchor('quotes/index', trans('view_quotes')) }}</li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="inline-flex items-center gap-2" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
-                        <span class="hidden-md">@lang('invoices')</span>
-                        <i class="visible-md-inline fa fa-file-text"></i>
+                        <span class="md:hidden lg:block">@lang('invoices')</span>
+                        <i class="hidden md:block lg:hidden -inline fa fa-file-text"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                         <li><a href="#" class="create-invoice">@lang('create_invoice')</a></li>
                         <li>{{ anchor('invoices/index', trans('view_invoices')) }}</li>
                         <li>{{ anchor('invoices/recurring/index', trans('view_recurring_invoices')) }}</li>
@@ -53,12 +53,12 @@
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="inline-flex items-center gap-2" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
-                        <span class="hidden-md">@lang('payments')</span>
-                        <i class="visible-md-inline fa fa-credit-card"></i>
+                        <span class="md:hidden lg:block">@lang('payments')</span>
+                        <i class="hidden md:block lg:hidden -inline fa fa-credit-card"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                         <li>{{ anchor('payments/form', trans('enter_payment')) }}</li>
                         <li>{{ anchor('payments/index', trans('view_payments')) }}</li>
                         <li>{{ anchor('payments/online_logs', trans('view_payment_logs')) }}</li>
@@ -66,12 +66,12 @@
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="inline-flex items-center gap-2" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
-                        <span class="hidden-md">@lang('products')</span>
-                        <i class="visible-md-inline fa fa-database"></i>
+                        <span class="md:hidden lg:block">@lang('products')</span>
+                        <i class="hidden md:block lg:hidden -inline fa fa-database"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                         <li>{{ anchor('products/form', trans('create_product')) }}</li>
                         <li>{{ anchor('products/index', trans('view_products')) }}</li>
                         <li>{{ anchor('families/index', trans('view_product_families')) }}</li>
@@ -79,13 +79,13 @@
                     </ul>
                 </li>
 
-                <li class="dropdown{{ get_setting('projects_enabled') == 1 ? '' : ' hidden' }}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <li class="dropdown{{ get_setting('projects_enabled') == 1 ? '' : ' hidden'" }}>
+                    <a href="#" class="inline-flex items-center gap-2" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
-                        <span class="hidden-md">@lang('tasks')</span>
-                        <i class="visible-md-inline fa fa-check-square-o"></i>
+                        <span class="md:hidden lg:block">@lang('tasks')</span>
+                        <i class="hidden md:block lg:hidden -inline fa fa-check-square-o"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                         <li>{{ anchor('tasks/form', trans('create_task')) }}</li>
                         <li>{{ anchor('tasks/index', trans('view_tasks')) }}</li>
                         <li role="separator" class="divider"></li>
@@ -95,12 +95,12 @@
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="inline-flex items-center gap-2" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
-                        <span class="hidden-md">@lang('reports')</span>
-                        <i class="visible-md-inline fa fa-bar-chart"></i>
+                        <span class="md:hidden lg:block">@lang('reports')</span>
+                        <i class="hidden md:block lg:hidden -inline fa fa-bar-chart"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                         <li>{{ anchor('reports/invoice_aging', trans('invoice_aging')) }}</li>
                         <li>{{ anchor('reports/payment_history', trans('payment_history')) }}</li>
                         <li>{{ anchor('reports/sales_by_client', trans('sales_by_client')) }}</li>
@@ -115,9 +115,9 @@
                 @php
                     $this->layout->loadView('filter/jquery_filter') }}
                                 <form class="navbar-form navbar-left" role="search" onsubmit="return false;">
-                                    <div class="form-group">
-                                        <input id="filter" type="text" class="search-query form-control"
-                                               placeholder="{{ $filter_placeholder }}">
+                                    <div class="mb-4">
+                                        <input id="filter" type="text" class="search-query w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
+                                               placeholder="{{ $filter_placeholder " }}>
                                     </div>
                                 </form>
                             @endif
@@ -128,18 +128,18 @@
                            class="tip icon" title="@lang('documentation')"
                            data-placement="bottom">
                             <i class="fa fa-question-circle"></i>
-                            <span class="visible-xs">&nbsp;@lang('documentation')</span>
+                            <span class="block sm:hidden">&nbsp;@lang('documentation')</span>
                         </a>
                     </li>
 
                     <li class="dropdown">
-                        <a href="#" class="tip icon dropdown-toggle" data-toggle="dropdown"
+                        <a href="#" class="tip icon inline-flex items-center gap-2" data-toggle="dropdown"
                            title="@lang('settings')"
                            data-placement="bottom">
                             <i class="fa fa-cogs"></i>
-                            <span class="visible-xs">&nbsp;@lang('settings')</span>
+                            <span class="block sm:hidden">&nbsp;@lang('settings')</span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                             <li>{{ anchor('custom_fields/index', trans('custom_fields')) }}</li>
                             <li>{{ anchor('email_templates/index', trans('email_templates')) }}</li>
                             <li>{{ anchor('invoice_groups/index', trans('invoice_groups')) }}</li>
@@ -150,7 +150,7 @@
                             <li>{{ anchor('payment_methods/index', trans('payment_methods')) }}</li>
                             <li>{{ anchor('tax_rates/index', trans('tax_rates')) }}</li>
                             <li>{{ anchor('users/index', trans('user_accounts')) }}</li>
-                            <li class="divider hidden-xs hidden-sm"></li>
+                            <li class="divider hidden sm:block sm:hidden md:block"></li>
                             <li>{{ anchor('settings', trans('system_settings')) }}</li>
                             <li>{{ anchor('import', trans('import_data')) }}</li>
                         </ul>
@@ -159,12 +159,12 @@
                         <a href="{{ url('users/form/' . $this->session->userdata('user_id')) }}"
                            class="tip icon" data-placement="bottom"
                            title="@php htmlspecialchars($this->session->userdata('user_name'));
-if ($this->session->userdata('user_company'))
+@if($this->session->userdata('user_company'))
 { (  htmlsc($this->session->userdata(user_company))  )}
 @endif ">
                             <i class="fa fa-user"></i>
-                            <span class="visible-xs">&nbsp;@php htmlspecialchars($this->session->userdata('user_name'));
-if ($this->session->userdata('user_company'))
+                            <span class="block sm:hidden">&nbsp;@php htmlspecialchars($this->session->userdata('user_name'));
+@if($this->session->userdata('user_company'))
 { (  htmlsc($this->session->userdata(user_company))  )}
 @endif </span>
                         </a>
@@ -174,11 +174,10 @@ if ($this->session->userdata('user_company'))
                            class="tip icon logout" data-placement="bottom"
                            title="@lang('logout')">
                             <i class="fa fa-power-off"></i>
-                            <span class="visible-xs">&nbsp;@lang('logout')</span>
+                            <span class="block sm:hidden">&nbsp;@lang('logout')</span>
                         </a>
                     </li>
                 </ul>
         </div>
     </div>
 </nav>
-<?php

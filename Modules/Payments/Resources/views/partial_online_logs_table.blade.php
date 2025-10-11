@@ -1,6 +1,5 @@
-
-<div class="table-responsive">
-    <table class="table table-hover table-striped">
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 
         <thead>
         <tr>
@@ -40,4 +39,3 @@
 
     </table>
 </div>
-<?php
