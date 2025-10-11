@@ -51,7 +51,7 @@
 
                 <hr>
 
-                <div class="mb-4 no-margin">
+                <div class="mb-4">
 
                     <label for="tags_client">@lang('identifier_format_template_tags')</label>
 
