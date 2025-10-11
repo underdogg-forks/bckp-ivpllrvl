@@ -4,6 +4,7 @@ namespace Modules\CustomFields\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\CustomFields\Models\ClientCustom;
 
 #[AllowDynamicProperties]
 class ClientCustomsService extends BaseService
@@ -85,7 +86,7 @@ class ClientCustomsService extends BaseService
     public function prepForm($id = null)
     {
         if ($id) {
-            $values = $this->getByClient($id)->result();
+            $values = $this->getByClient($id);
             $this->load->helper('custom_values_helper');
             $this->load->module('custom_fields/mdl_custom_fields');
             if ($values != null) {
@@ -133,7 +134,14 @@ class ClientCustomsService extends BaseService
      */
     public function getByClid($client_id)
     {
-        return $this->where('ip_client_custom.client_id', $client_id)->get()->result();
+        return ClientCustom::query()
+            ->select('ip_client_custom.*', 'ip_custom_fields.*')
+            ->join('ip_custom_fields', 'ip_client_custom.client_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')
+            ->where('ip_client_custom.client_id', $client_id)
+            ->orderBy('custom_field_table')
+            ->orderBy('custom_field_order')
+            ->orderBy('custom_field_label')
+            ->get();
     }
 
     /**

@@ -6,8 +6,10 @@ use AllowDynamicProperties;
 use Illuminate\Support\Str;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Services\BaseService;
+use Modules\CustomFields\Models\InvoiceCustom;
 use Modules\CustomFields\Services\InvoiceCustomService;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
+use Modules\Invoices\Models\Invoice;
 use Modules\Payments\Services\PaymentsService;
 
 #[AllowDynamicProperties]
@@ -160,8 +162,8 @@ class InvoicesService extends BaseService
             'items_subtotal' => $this->itemsService->getItemsSubtotal($source_id),
         ];
         unset($invoice);
-        $this->where('invoice_id', $target_id)->update('ip_invoices', ['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
-        $invoice_items = $this->itemsService->where('invoice_id', $source_id)->get()->result();
+        Invoice::query()->where('invoice_id', $target_id)->update(['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
+        $invoice_items = $this->itemsService->getByInvoiceId($source_id);
         foreach ($invoice_items as $invoice_item) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -182,7 +184,7 @@ class InvoicesService extends BaseService
                 $this->itemsService->save(null, $db_array, $global_discount);
             }
         }
-        $invoice_tax_rates = $this->invoiceTaxRatesService->where('invoice_id', $source_id)->get()->result();
+        $invoice_tax_rates = $this->invoiceTaxRatesService->getByInvoiceId($source_id);
         foreach ($invoice_tax_rates as $invoice_tax_rate) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -192,7 +194,7 @@ class InvoicesService extends BaseService
             ];
             $this->invoiceTaxRatesService->save(null, $db_array);
         }
-        $custom_fields = $this->invoiceCustomService->where('invoice_id', $source_id)->get()->result();
+        $custom_fields = InvoiceCustom::query()->join('ip_custom_fields', 'ip_invoice_custom.invoice_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')->where('ip_invoice_custom.invoice_id', $source_id)->get();
         $form_data     = [];
         foreach ($custom_fields as $field) {
             $form_data[$field->invoice_custom_fieldid] = $field->invoice_custom_fieldvalue;
@@ -218,9 +220,9 @@ class InvoicesService extends BaseService
             'item'    => 0.0,
             'items_subtotal' => $this->itemsService->getItemsSubtotal($source_id),
         ];
-        $this->where('invoice_id', $target_id)->update('ip_invoices', ['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
+        Invoice::query()->where('invoice_id', $target_id)->update(['invoice_discount_percent' => $global_discount['percent'], 'invoice_discount_amount' => $global_discount['amount']]);
         unset($invoice);
-        $invoice_items = $this->itemsService->where('invoice_id', $source_id)->get()->result();
+        $invoice_items = $this->itemsService->getByInvoiceId($source_id);
         foreach ($invoice_items as $invoice_item) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -239,7 +241,7 @@ class InvoicesService extends BaseService
             ];
             $this->itemsService->save(null, $db_array, $global_discount);
         }
-        $invoice_tax_rates = $this->invoiceTaxRatesService->where('invoice_id', $source_id)->get()->result();
+        $invoice_tax_rates = $this->invoiceTaxRatesService->getByInvoiceId($source_id);
         foreach ($invoice_tax_rates as $invoice_tax_rate) {
             $db_array = [
                 'invoice_id' => $target_id,
@@ -249,7 +251,7 @@ class InvoicesService extends BaseService
             ];
             $this->invoiceTaxRatesService->save(null, $db_array);
         }
-        $custom_fields = $this->invoiceCustomService->where('invoice_id', $source_id)->get()->result();
+        $custom_fields = InvoiceCustom::query()->join('ip_custom_fields', 'ip_invoice_custom.invoice_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')->where('ip_invoice_custom.invoice_id', $source_id)->get();
         $form_data     = [];
         foreach ($custom_fields as $field) {
             $form_data[$field->invoice_custom_fieldid] = $field->invoice_custom_fieldvalue;

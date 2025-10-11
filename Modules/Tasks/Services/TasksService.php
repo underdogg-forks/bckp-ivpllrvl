@@ -65,8 +65,8 @@ class TasksService extends BaseService
      */
     public function byTask($match)
     {
-        $this->db->like('task_name', $match);
-        $this->db->or_like('task_description', $match);
+        return $this->where('task_name', 'like', "%{$match}%")
+                    ->orWhere('task_description', 'like', "%{$match}%");
     }
 
     /**

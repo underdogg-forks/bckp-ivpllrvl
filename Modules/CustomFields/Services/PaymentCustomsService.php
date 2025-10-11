@@ -4,6 +4,7 @@ namespace Modules\CustomFields\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\CustomFields\Models\PaymentCustom;
 
 #[AllowDynamicProperties]
 class PaymentCustomsService extends BaseService
@@ -96,6 +97,13 @@ class PaymentCustomsService extends BaseService
      */
     public function getByPayid($payment_id)
     {
-        return $this->where('ip_payment_custom.payment_id', $payment_id)->get()->result();
+        return PaymentCustom::query()
+            ->select('ip_payment_custom.*', 'ip_custom_fields.*')
+            ->join('ip_custom_fields', 'ip_payment_custom.payment_custom_fieldid', '=', 'ip_custom_fields.custom_field_id')
+            ->where('ip_payment_custom.payment_id', $payment_id)
+            ->orderBy('custom_field_table')
+            ->orderBy('custom_field_order')
+            ->orderBy('custom_field_label')
+            ->get();
     }
 }
