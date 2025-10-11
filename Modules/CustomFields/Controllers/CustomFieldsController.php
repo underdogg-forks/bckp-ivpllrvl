@@ -19,9 +19,9 @@ class CustomFieldsController extends AdminController
     }
 
     /**
-     * @originalName index
+     * Redirects to the view that lists all custom fields tables.
      *
-     * @originalFile CustomFieldsController.php
+     * Performs an immediate redirect to the 'custom_fields/table/all' route.
      */
     public function index(): void
     {
@@ -30,10 +30,9 @@ class CustomFieldsController extends AdminController
     }
 
     /**
-     * Render the custom fields list view for a specific table (or all) with pagination.
+     * Render the custom fields list view filtered by table name with pagination.
      *
-     * The rendered view receives filter controls, the selected table's custom fields,
-     * the list of available custom tables, available custom value fields, and position options.
+     * When $name is not 'all' and exists, only fields for that table are shown. The view is provided with filter controls, the paginated custom fields, available custom tables, custom value fields, and position options.
      *
      * @param string $name The custom table name to filter by, or 'all' to show all tables.
      * @param int $page The pagination page number to display.
@@ -76,9 +75,11 @@ class CustomFieldsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Attempts to delete a custom field identified by `$id` and then redirects back to the referring page.
      *
-     * @originalFile CustomFieldsController.php
+     * If the field cannot be deleted, a flash message is set to inform the user that the field is in use.
+     *
+     * @param int|string $id The custom field identifier to delete.
      */
     public function delete($id)
     {

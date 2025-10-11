@@ -22,10 +22,12 @@ class GetController extends BaseController
     public $content_types = [];
 
     /**
-     * Initialize the UploadController and populate MIME type mappings.
+     * Initialize the controller and load MIME type mappings.
      *
-     * Calls the parent constructor and sets the controller's `$content_types`
-     * property from UploadsService to provide file extension → MIME type mappings.
+     * Calls the parent constructor and sets the `$content_types` property using
+     * the mappings provided by UploadsService.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -74,9 +76,11 @@ class GetController extends BaseController
     }
 
     /**
-     * @originalName respondMessage
+     * Log a translated message, set the HTTP response code, output the translated message, and terminate execution.
      *
-     * @originalFile GetController.php
+     * @param int    $httpCode        The HTTP status code to send in the response.
+     * @param string $messageKey      Translation key used for the response message and for log lookup.
+     * @param string $dynamicLogValue Optional additional context appended to the log entry.
      */
     private function respondMessage(int $httpCode, string $messageKey, string $dynamicLogValue = ''): void
     {

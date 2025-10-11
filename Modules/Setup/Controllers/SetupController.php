@@ -13,9 +13,11 @@ class SetupController extends MXController
     public $errors = 0;
 
     /**
-     * Initialize the setup controller: enforce setup availability, load framework resources, and initialize localization.
+     * Enforces setup availability, loads required framework resources, and initializes localization.
      *
-     * Aborts with HTTP 403 if DISABLE_SETUP is enabled. Loads the session library, required helpers (file, directory, url, lang, trans, settings, echo) and the layout module, ensures the session key `ip_lang` exists (defaults to `'en'`) and applies that language, then loads the `'ip'` language file.
+     * Aborts with HTTP 403 if the DISABLE_SETUP environment flag is true. Loads the session library,
+     * necessary helpers and the layout module, ensures the session key `ip_lang` exists (defaults to
+     * `'en'`) and applies that language, then loads the `ip` language file.
      */
     public function __construct()
     {
@@ -149,9 +151,12 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName upgradeTables
+     * Handle the database upgrade step of the setup flow.
      *
-     * @originalFile SetupController.php
+     * Validates the current install step and redirects to prerequisites if not allowed.
+     * On form submission advances the install flow to either the create-user or calculation-info step and redirects.
+     * Ensures the database is loaded and an encryption key exists, runs table upgrade operations via the setup service,
+     * and renders the upgrade view with the operation results and any errors.
      */
     public function upgradeTables(): void
     {
@@ -178,12 +183,12 @@ class SetupController extends MXController
     }
 
     /**
-         * Handles the "create user" setup step: validates submitted user data, creates the initial user when valid,
-         * advances the installation step and redirects, or renders the user creation form with country and language data.
-         *
-         * Side effects: may create a new user record, update the `install_step` session value, perform an HTTP redirect,
-         * and render the setup layout when validation fails or no submission is present.
-         */
+     * Handle the "create user" setup step and create the initial admin user when valid.
+     *
+     * Validates submitted user data; if validation succeeds, creates a user with `user_type` = 1,
+     * advances the `install_step` session value to `calculation_info`, and redirects to the calculation info step.
+     * If not submitted or validation fails, prepares country and language data for the layout and renders the user creation form.
+     */
     public function createUser(): void
     {
         if ($this->session->userdata('install_step') != 'create_user') {
@@ -397,9 +402,9 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName postSetupTasks
+     * Mark the application's setup as completed in the IPCONFIG_FILE.
      *
-     * @originalFile SetupController.php
+     * Updates the SETUP_COMPLETED entry in the configuration file to `true`.
      */
     private function postSetupTasks()
     {
@@ -440,10 +445,11 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName writeCalculationConfig
-     *
-     * @originalFile SetupController.php
-     */
+         * Append the LEGACY_CALCULATION setting to the IPCONFIG file.
+         *
+         * Reads the contents of IPCONFIG_FILE, appends a newline and the line
+         * `LEGACY_CALCULATION=false`, and writes the updated content back to the file.
+         */
     private function writeCalculationConfig()
     {
         $config = file_get_contents(IPCONFIG_FILE);

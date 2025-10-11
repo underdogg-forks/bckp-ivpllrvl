@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class PaymentsController extends AdminController
 {
     /**
-     * Initialize the PaymentsController and perform controller setup.
+     * Initialize the PaymentsController and set up controller state.
      */
     public function __construct()
     {
@@ -19,9 +19,12 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * @originalName index
+     * Display a paginated list of payments.
      *
-     * @originalFile PaymentsController.php
+     * Renders the payments index view with the paginated payments and filter UI configuration.
+     *
+     * @param int $page Page number for pagination.
+     * @return \Illuminate\View\View The payments index view populated with payments and filter settings.
      */
     public function index($page = 0)
     {
@@ -32,12 +35,12 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * Prepare and handle the payment form: load form data and custom fields, process submissions (save or cancel), and render the online logs view.
+     * Prepare and process the payment form and render the online payment logs view.
      *
-     * Handles cancellation and submission flow: validates and persists payments and custom field values, redirects on cancel or successful save, and populates form values from existing payment and custom data when editing. Also collects open invoices, payment methods, custom field definitions and their possible values for the view.
+     * Handles cancel and submit actions, persists payment and custom field values when saved, and populates form values, open invoices, payment methods, custom fields, and custom values for the view.
      *
-     * @param int|null $id The payment ID to edit, or null to create a new payment.
-     * @return string The rendered view content for the payments online logs.
+     * @param int|null $id Payment ID to edit, or null to create a new payment.
+     * @return string Rendered HTML content of the payments online logs view.
      */
     public function form($id = null)
     {
@@ -124,7 +127,10 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * Delete a payment record.
+     * Delete the specified payment.
+     *
+     * @param int $id The ID of the payment to delete.
+     * @return \Illuminate\Http\RedirectResponse A redirect response to the payments index route.
      */
     public function delete(int $id): \Illuminate\Http\RedirectResponse
     {

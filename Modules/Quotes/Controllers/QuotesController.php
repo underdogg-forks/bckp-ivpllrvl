@@ -139,9 +139,10 @@ class QuotesController extends AdminController
     }
 
     /**
-     * @originalName recalculateAllQuotes
+     * Recalculate totals and derived values for every quote in the system.
      *
-     * @originalFile QuotesController.php
+     * Iterates all quote records and triggers the quote recalculation routine so stored totals,
+     * taxes, and related derived fields are updated in persistent storage.
      */
     public function recalculateAllQuotes(): void
     {

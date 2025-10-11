@@ -12,9 +12,7 @@ class ImportController extends AdminController
     private array $allowed_files = ['clients.csv', 'invoices.csv', 'invoice_items.csv', 'payments.csv'];
 
     /**
-     * Initialize the ImportController and perform parent controller setup.
-     *
-     * Calls the parent AdminController constructor to ensure standard admin controller initialization for import operations.
+     * Initialize the ImportController and perform standard AdminController setup.
      */
     public function __construct()
     {
@@ -22,9 +20,14 @@ class ImportController extends AdminController
     }
 
     /**
-     * @originalName index
+     * Display a paginated list of import records in the admin layout.
      *
-     * @originalFile ImportController.php
+     * Paginates import records using the provided page index, assigns the resulting
+     * import collection to the layout as `imports`, buffers the import index view,
+     * and renders the layout.
+     *
+     * @param int $page The page index for pagination (default 0).
+     * @return void
      */
     public function index($page = 0)
     {
@@ -94,9 +97,9 @@ class ImportController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete the import record identified by the given ID and redirect to the import index.
      *
-     * @originalFile ImportController.php
+     * @param int $id The ID of the import to delete.
      */
     public function delete($id)
     {

@@ -31,9 +31,13 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName status
+     * Display a paginated list of invoices visible to the guest, filtered by status.
      *
-     * @originalFile InvoicesController.php
+     * Loads invoices for the current guest's clients according to the given status,
+     * paginates the results, and renders the guest invoices index layout.
+     *
+     * @param string $status The invoice status filter: 'open' (default), 'all', 'paid', or 'overdue'.
+     * @param int $page The pagination page number (zero-based).
      */
     public function status(string $status = 'open', $page = 0): void
     {
@@ -99,9 +103,15 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName generateSumexPdf
+     * Generate and deliver a Sumex-formatted PDF for a guest invoice.
      *
-     * @originalFile InvoicesController.php
+     * If the invoice does not belong to any of the guest's clients, a 404 page is shown.
+     * The invoice is marked as viewed before the PDF is generated; the PDF is produced
+     * and either streamed or returned according to the `$stream` flag.
+     *
+     * @param int|string $invoice_id Identifier of the invoice to generate the Sumex PDF for.
+     * @param bool $stream If true, stream the PDF to the client; if false, return or save it according to the PDF helper's behavior.
+     * @param string|null $invoice_template Optional invoice template to use when generating the PDF.
      */
     public function generateSumexPdf($invoice_id, $stream = true, $invoice_template = null): void
     {

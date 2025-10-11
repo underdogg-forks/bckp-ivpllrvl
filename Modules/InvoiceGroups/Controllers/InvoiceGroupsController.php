@@ -10,9 +10,9 @@ use Modules\InvoiceGroups\Services\InvoiceGroupsService;
 class InvoiceGroupsController extends AdminController
 {
     /**
-     * Create a new InvoiceGroupsController instance and perform controller initialization.
+     * Initialize the InvoiceGroupsController.
      *
-     * Calls the parent controller constructor to inherit base setup required for admin controllers.
+     * Performs controller initialization required for admin controllers.
      */
     public function __construct()
     {
@@ -62,9 +62,9 @@ class InvoiceGroupsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete the invoice group identified by the given ID and redirect to the invoice groups list.
      *
-     * @originalFile InvoiceGroupsController.php
+     * @param int|string $id The ID of the invoice group to delete.
      */
     public function delete($id)
     {

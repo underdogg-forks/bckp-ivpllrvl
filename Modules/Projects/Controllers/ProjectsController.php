@@ -20,9 +20,10 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName index
+     * Display paginated list of projects and render the projects index view.
      *
-     * @originalFile ProjectsController.php
+     * @param int $page The page number to display (zero-based).
+     * @return string Rendered view for the projects index populated with projects and filter settings.
      */
     public function index($page = 0)
     {
@@ -61,10 +62,12 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * Display a project's details along with its tasks and available task statuses.
+     * Show a project's details with its tasks and available task statuses.
      *
-     * @param int|string $project_id The identifier of the project to display.
-     * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|string The view response for the project page or a redirect response when cancelling.
+     * Triggers a 404 response if the specified project does not exist. If the cancel button is submitted, redirects to the projects list.
+     *
+     * @param int|string $project_id Identifier of the project to display.
+     * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|string The rendered project view response or a redirect response when cancelled.
      */
     public function view($project_id)
     {
@@ -80,12 +83,12 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * Delete a project and update its associated tasks.
-     *
-     * Deletes the project identified by $id and updates tasks that reference the project so they no longer do.
-     *
-     * @param int|string $id The ID of the project to delete.
-     */
+         * Delete the specified project and disassociate it from related tasks, then redirect to the projects list.
+         *
+         * Removes the project identified by `$id`, updates any tasks that referenced the project so they no longer do, and redirects the user to the projects index route.
+         *
+         * @param int|string $id The ID of the project to delete.
+         */
     public function delete($id)
     {
         (new TasksService())->updateOnProjectDelete($id);

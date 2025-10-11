@@ -151,9 +151,11 @@ class UsersController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a user by id and redirect to the users list.
      *
-     * @originalFile UsersController.php
+     * Does not delete the primary administrator with id 1; in all cases the request is redirected to the users route.
+     *
+     * @param int|string $id The identifier of the user to delete.
      */
     public function delete($id)
     {

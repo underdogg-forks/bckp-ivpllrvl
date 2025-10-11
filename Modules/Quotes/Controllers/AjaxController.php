@@ -22,11 +22,10 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * Validate and persist a quote with its items, discounts, and custom fields, then emit a JSON success or validation error response.
+     * Persist a quote with its items, discounts, and custom fields and emit a JSON response indicating success or validation errors.
      *
-     * Performs request validation, saves or updates the quote record and its items (including applying a global discount and honoring legacy calculation mode),
-     * generates a quote number when required, recalculates amounts if legacy calculation is enabled, persists custom field values, and exits after sending a JSON response
-     * that indicates success or contains validation errors.
+     * Validates request input, saves or updates the quote and related items/tax/discount data, persists custom field values,
+     * and outputs a JSON-encoded response before terminating execution.
      */
     public function save()
     {
@@ -182,9 +181,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Retrieves a quote item identified by the POST field 'item_id' and outputs it as JSON.
+     * Retrieve a quote item identified by the POST field 'item_id' and output it as JSON.
      *
-     * Reads 'item_id' from the HTTP POST payload, fetches the corresponding quote item via QuoteItemsService, encodes the result as JSON, and terminates execution.
+     * Reads 'item_id' from the HTTP POST payload, fetches the corresponding quote item, writes the item as a JSON response, and terminates execution.
      */
     public function getItem()
     {
@@ -205,11 +204,10 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Copy an existing quote into a newly created quote and emit a JSON success or error response.
+     * Create a new quote by copying data from an existing quote and emit a JSON response.
      *
-     * Validates the incoming request, optionally adjusts the legacy_calculation config when einvoicing
-     * is enabled, creates a new target quote, copies data from the source quote into the target,
-     * and then outputs a JSON payload with either the new `quote_id` on success or validation errors.
+     * Validates the request, creates a target quote, copies the source quote's data into the target,
+     * and outputs JSON with `{"success":1,"quote_id":<id>}` on success or `{"success":0,"validation_errors":...}` on failure.
      */
     public function copyQuote()
     {
@@ -231,10 +229,10 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Prepares and renders the modal for changing the user assigned to a quote.
+     * Render the modal to change the user assigned to a quote.
      *
-     * Reads `user_id` and `quote_id` from POST input (sanitized), loads the latest users list,
-     * and renders the `layout/ajax/modal_change_user_client` view with that data.
+     * Reads sanitized `user_id` and `quote_id` from POST, loads the latest users, and renders
+     * the `layout/ajax/modal_change_user_client` view with the prepared data.
      */
     public function modalChangeUser()
     {
@@ -244,11 +242,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Change the user assigned to a quote and emit a JSON response indicating outcome.
+     * Change the user assigned to a quote based on POSTed input.
      *
-     * Validates that the provided user exists; if so, updates ip_quotes.user_id for the supplied
-     * quote_id and returns a JSON success object containing the sanitized quote_id. If the user
-     * is missing or invalid, returns a JSON object with validation errors.
+     * Validates that the posted user exists; if valid, updates the quote's `user_id` in the database
+     * and emits JSON containing a success flag and the sanitized `quote_id`. If the user is invalid
+     * or missing, emits JSON containing a failure flag and validation error messages.
      */
     public function changeUser()
     {
@@ -269,9 +267,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Load the "change client" modal for a quote.
+     * Render the modal used to change the client on an existing quote.
      *
-     * Reads `client_id` and `quote_id` from POST (sanitized) and supplies them along with the latest clients list to the modal view.
+     * Reads sanitized `client_id` and `quote_id` from POST and provides them,
+     * along with the latest clients list, to the modal view.
+     *
+     * @return void
      */
     public function modalChangeClient()
     {
@@ -338,10 +339,13 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Prepare and render the modal used to convert a quote into an invoice.
+     * Render the modal for converting a specific quote to an invoice.
      *
-     * Loads invoice groups and the specified quote, then renders the quote-to-invoice modal
-     * with those values available to the view.
+     * Loads invoice groups and the quote identified by $quote_id and renders the
+     * quotes/modal_quote_to_invoice view with the following view data:
+     * - `invoice_groups`: list of invoice groups
+     * - `quote_id`: sanitized quote identifier
+     * - `quote`: the quote record
      *
      * @param int|string $quote_id The ID of the quote to convert.
      */
@@ -352,17 +356,11 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Converts a quote into a new invoice, copies quote items and tax rates to the invoice,
-     * and updates discount and association fields accordingly.
+     * Convert the specified quote into a new invoice, copying items, tax rates, discounts, and the quote→invoice association.
      *
-     * If validation succeeds, creates an invoice, applies the quote's discount values to the invoice,
-     * links the invoice_id on the source quote, copies each quote item into the invoice (respecting
-     * the computed global discount and current legacy_calculation setting), and copies quote tax rates
-     * to the invoice. On validation failure, returns validation errors.
-     *
-     * The method sends a JSON response and terminates execution:
-     * - on success: {"success":1,"invoice_id":<new_invoice_id>}
-     * - on failure: {"success":0,"validation_errors":<errors>}
+     * Creates a new invoice, applies the source quote's global and per-item discounts to the invoice, copies each quote item into the invoice using the current legacy_calculation mode, copies quote tax rates to the invoice, and saves the created invoice_id on the source quote. Sends a JSON response and terminates execution:
+     * - Success: {"success":1,"invoice_id":<new_invoice_id>}
+     * - Failure: {"success":0,"validation_errors":<errors>}
      */
     public function quoteToInvoice()
     {

@@ -11,12 +11,13 @@ class AjaxController extends AdminController
     public $ajax_controller = true;
 
     /**
-     * Retrieve users matching the request query for a given user type.
+     * Outputs matching active users of a given type as JSON objects for select lists.
      *
      * Reads 'query' and 'permissive_search_users' from the request. If 'query' is empty,
-     * the method outputs an empty JSON array and exits. Otherwise it outputs a JSON
-     * array of objects, each containing `id` (user_id) and `text` (formatted user label)
-     * for active users of the specified type that match the query.
+     * the method outputs an empty JSON array and exits early. Otherwise it outputs a JSON
+     * array of objects with `id` (user_id) and `text` (formatted user label) for active users
+     * of the specified type whose name, company, or invoicing contact matches the query.
+     * When 'permissive_search_users' is truthy, matching allows the query to appear in the middle of fields.
      *
      * @param int $type The user_type filter to apply (default: 1).
      */
@@ -68,9 +69,9 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Persist the user's preference for permissive user searching.
+     * Save the user's permissive-user-search preference.
      *
-     * Validates that the request value for 'permissive_search_users' is either '0' or '1' and, if valid, saves it under the 'enable_permissive_search_users' setting.
+     * Validates that the 'permissive_search_users' request value is '0' or '1'; if valid, stores it under the 'enable_permissive_search_users' setting. If the value is invalid, no setting is changed.
      */
     public function savePreferencePermissiveSearchUsers()
     {

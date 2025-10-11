@@ -405,12 +405,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Create a new invoice after validating input and send a JSON response.
+     * Create a new invoice from validated input and return a JSON result.
      *
-     * If validation succeeds, creates an invoice and outputs {"success": 1, "invoice_id": <id>}.
-     * If validation fails, outputs {"success": 0, "validation_errors": <errors>}.
+     * On successful validation saves a new invoice and outputs {"success":1,"invoice_id":<id>}.
+     * On validation failure outputs {"success":0,"validation_errors":<errors>}.
      *
-     * This method sends the JSON response and terminates execution.
+     * The method sends the JSON response and terminates execution.
      */
     public function create()
     {
@@ -425,11 +425,11 @@ class AjaxController extends AdminController
     }
 
     /**
-         * Create or update a recurring invoice and output a JSON result.
-         *
-         * Validates input with InvoicesRecurringService; if validation passes, saves the recurring invoice.
-         * Outputs a JSON response with `success: 1` on success, or `success: 0` and `validation_errors` on failure.
-         */
+     * Create or update a recurring invoice.
+     *
+     * Validates the request data and, if valid, saves the recurring invoice and outputs a JSON response.
+     * The JSON response is {"success": 1} on success, or {"success": 0, "validation_errors": [...] } when validation fails.
+     */
     public function createRecurring()
     {
         if ((new InvoicesRecurringService())->runValidation()) {

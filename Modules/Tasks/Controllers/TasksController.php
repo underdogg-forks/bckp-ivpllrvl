@@ -20,9 +20,14 @@ class TasksController extends AdminController
     }
 
     /**
-     * @originalName index
+     * Display the tasks index page with paginated tasks and related view data.
      *
-     * @originalFile TasksController.php
+     * Prepares pagination for the tasks list, retrieves the current page of tasks
+     * and task statuses, and returns the rendered tasks index view including
+     * filter configuration.
+     *
+     * @param int $page The page number to display (zero-based).
+     * @return string|\CodeIgniter\HTTP\Response The rendered tasks index view.
      */
     public function index($page = 0)
     {
@@ -33,14 +38,14 @@ class TasksController extends AdminController
     }
 
     /**
-     * Display and handle submission of the task create/edit form.
+     * Show the task create/edit form and handle its submission.
      *
-     * Processes form input: if the cancel button is posted it redirects to the tasks list;
-     * if the form is submitted and validates, it saves the task and redirects to the tasks list.
-     * When opening the form for an existing task, a missing task will trigger a 404.
+     * If the cancel action is posted, redirects to the tasks list. If the form is submitted and validates,
+     * saves the task and redirects to the tasks list. When opening the form for an existing task, a missing
+     * task triggers a 404.
      *
      * @param int|null $id The task ID to edit, or null to create a new task.
-     * @return string Rendered HTML of the task form view.
+     * @return string The rendered task form view HTML.
      */
     public function form($id = null)
     {
@@ -64,10 +69,10 @@ class TasksController extends AdminController
     }
 
     /**
-     * @originalName delete
-     *
-     * @originalFile TasksController.php
-     */
+         * Delete the task identified by the given id and redirect to the tasks list.
+         *
+         * @param int|string $id The identifier of the task to delete.
+         */
     public function delete($id)
     {
         (new TasksService())->delete($id);
