@@ -54,7 +54,36 @@ class ProjectsController extends AdminController
         }
         $this->load->model('clients/mdl_clients');
 
-        return view('projects.form', ['project' => (new ProjectsService())->getById($id), 'clients' => (new ClientsService())->getActive()]);
+// File: Modules/Projects/Controllers/ProjectsController.php
+
+use Modules\Clients\Services\ClientsService;
+use Modules\Projects\Services\ProjectsService;
+use Modules\Tasks\Services\TasksService;
+
+class ProjectsController extends BaseController
+{
+    public function __construct(
+        private ClientsService $clientsService,
+        private ProjectsService $projectsService,
+        private TasksService $tasksService
+    ) {
+        parent::__construct();
+        $this->load->model('mdl_projects');
+    }
+
+    // …
+
+    public function form(int $id)
+    {
+        // …
+        return view('projects.form', [
+            'project' => $this->projectsService->getById($id),
+            'clients' => $this->clientsService->getActive()
+        ]);
+    }
+
+    // …
+}
     }
 
     /**
