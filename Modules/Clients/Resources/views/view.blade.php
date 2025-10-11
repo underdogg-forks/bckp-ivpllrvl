@@ -297,7 +297,7 @@
     // eInvoicing button toggle users table checking
     @if($client->client_einvoicing_active && !$user_fields_nook) {
 
-                            <span class="float-right cursor-pointer btn px-2 py-1 text-xs -default alert-{{ $user_toggle }}"
+                            <span class="float-right cursor-pointer inline-flex items-center gap-1 px-2 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-sm text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors alert-{{ $user_toggle }}"
                                   data-toggle="collapse" data-target=".einvoice-users-check"
                                   onclick="switch_fa_toggle('einvoice_users_check_fa_toggle')"
                             >

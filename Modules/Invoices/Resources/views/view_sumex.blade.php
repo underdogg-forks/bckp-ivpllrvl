@@ -297,7 +297,7 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
         </div>
 
 @if($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4)
-        <a href="#" class="btn px-3 py-1.5 text-sm -success ajax-loader" id="btn_save_invoice">
+        <a href="#" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors ajax-loader" id="btn_save_invoice">
             <i class="fa fa-check"></i> @lang('save')
         </a>
 @endif

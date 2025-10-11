@@ -112,7 +112,7 @@ $einvoicingOpt = $req_einvoicing ? $einvoicingTip . trans('optional') . ')"' : '
 
                     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                         e-@lang('invoicing')
-                        <span class="{{ $xml_templates && $client_id ? ' float-right : 'hidden' }} toggle_einvoicing{{ $req_einvoicing->show_table btn px-2 py-1 text-xs -default cursor-pointer alert-' . $user_toggle"
+                        <span class="{{ $xml_templates && $client_id ? ' float-right : 'hidden' }} toggle_einvoicing{{ $req_einvoicing->show_table inline-flex items-center gap-1 px-2 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-sm text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer alert-' . $user_toggle"
                               data-toggle="collapse" data-target=".einvoice-user-check-lists"
                               onclick="switch_fa_toggle(\'einvoice_users_check_fa_toggle\')' : '' " }}>
                             <i class="fa fa-{{ $nb ? $me 'ban' : 'warning' 'check-square-o text-success'" }}></i>
