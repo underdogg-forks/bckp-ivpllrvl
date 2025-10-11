@@ -120,17 +120,22 @@ class InvoicesService extends BaseService
         $invoice_id    = parent::save(null, $db_array);
         $inv           = $this->where('ip_invoices.invoice_id', $invoice_id)->get()->row();
         $invoice_group = $inv->invoice_group_id;
-        $db_array = ['invoice_id' => $invoice_id];
-        $this->db->insert('ip_invoice_amounts', $db_array);
+        
+        \Modules\Invoices\Models\InvoiceAmount::query()->create(['invoice_id' => $invoice_id]);
+        
         if ($include_invoice_tax_rates && get_setting('default_invoice_tax_rate')) {
-            $db_array = ['invoice_id' => $invoice_id, 'tax_rate_id' => get_setting('default_invoice_tax_rate'), 'include_item_tax' => get_setting('default_include_item_tax', 0), 'invoice_tax_rate_amount' => 0];
-            $this->db->insert('ip_invoice_tax_rates', $db_array);
+            \Modules\Invoices\Models\InvoiceTaxRate::query()->create([
+                'invoice_id' => $invoice_id,
+                'tax_rate_id' => get_setting('default_invoice_tax_rate'),
+                'include_item_tax' => get_setting('default_include_item_tax', 0),
+                'invoice_tax_rate_amount' => 0
+            ]);
         }
+        
         if ($invoice_group !== '0') {
             $invgroup = $this->invoiceGroupsService->where('invoice_group_id', $invoice_group)->get()->row();
             if (preg_match('/sumex/i', $invgroup->invoice_group_name)) {
-                $db_array = ['sumex_invoice' => $invoice_id];
-                $this->db->insert('ip_invoice_sumex', $db_array);
+                \Modules\Invoices\Models\InvoiceSumex::query()->create(['sumex_invoice' => $invoice_id]);
             }
         }
         return $invoice_id;
