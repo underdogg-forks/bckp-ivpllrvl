@@ -14,12 +14,14 @@ class ClientsController extends AdminController
     private const CLIENT_TITLE = 'client_title';
 
     /**
-     * ClientsController constructor.
+     * Initialize the ClientsController and perform required AdminController setup.
+     *
+     * Ensures the base controller's initialization runs so the clients controller
+     * inherits common admin behaviour and dependencies.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_clients');
     }
 
     /**
@@ -132,15 +134,15 @@ class ClientsController extends AdminController
     }
 
     /**
-         * Adjusts a client record based on requested e-invoicing settings.
-         *
-         * This method applies or verifies e-invoicing-related changes for the given client according
-         * to the provided request data and returns the client instance (unchanged if no updates are required).
-         *
-         * @param mixed $client The client model instance to check or modify.
-         * @param mixed $req_einvoicing E-invoicing configuration or flag provided by the request.
-         * @return mixed The client instance, potentially modified to reflect e-invoicing activation.
-         */
+     * Ensure a client's e-invoicing activation matches the requested e-invoicing setting.
+     *
+     * This is currently a no-op that returns the provided client unchanged; intended to
+     * validate or adjust the client's e-invoicing state when implemented.
+     *
+     * @param mixed $client The client entity to check or update (typically a Client model instance).
+     * @param mixed $req_einvoicing The requested e-invoicing setting (e.g., boolean, null, or config identifier).
+     * @return mixed The (possibly updated) client entity.
+     */
     private function checkClientEinvoiceActive($client, $req_einvoicing)
     {
         return $client;

@@ -11,12 +11,13 @@ use Modules\Quotes\Services\QuoteTaxRatesService;
 class QuotesController extends BaseGuestController
 {
     /**
-     * QuotesController constructor.
+     * Initialize the guest quotes controller.
+     *
+     * Sets up controller state by invoking the base guest controller constructor.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('quotes/mdl_quotes');
     }
 
     /**
@@ -76,11 +77,12 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * Display the guest-accessible page for a quote identified by the given quote ID.
+     * Display a single quote to the current guest client and render the guest layout.
      *
-     * Loads the quote if it is visible to guests and belongs to one of the current user's clients; shows a 404 response if the quote is not found or not accessible.
+     * Marks the quote as viewed and makes the quote, its items, and its tax rates available to the view.
+     * If the quote is not accessible to the current guest, a 404 response is shown.
      *
-     * @param int|string $quote_id The quote identifier to display.
+     * @param int|string $quote_id The identifier of the quote to display.
      */
     public function view($quote_id)
     {
@@ -91,7 +93,6 @@ class QuotesController extends BaseGuestController
             show_404();
         }
         (new QuotesService())->markViewed($quote->quote_id);
-        $this->load->model(['quotes/mdl_quote_items', 'quotes/mdl_quote_tax_rates']);
         $this->load->helper('dropzone');
         $this->layout->set(['quote_id' => $quote_id, 'quote' => $quote, 'items' => (new QuoteItemsService())->getByQuoteId($quote_id), 'quote_tax_rates' => (new QuoteTaxRatesService())->getByQuoteId($quote_id), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/quotes_view');
@@ -99,9 +100,14 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName generatePdf
+     * Generate and send a PDF for a guest-visible quote.
      *
-     * @originalFile QuotesController.php
+     * Marks the quote as viewed. If the quote is not accessible to the current guest, sends a 404 response.
+     * Otherwise generates the quote PDF and either streams it to the client or produces it without streaming.
+     *
+     * @param int|string $quote_id The quote identifier.
+     * @param bool $stream True to stream the PDF to the client, false to generate without streaming.
+     * @param string|null $quote_template Optional template identifier to use when generating the PDF.
      */
     public function generatePdf($quote_id, $stream = true, $quote_template = null)
     {
@@ -115,30 +121,24 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * Approve the specified quote, notify recipients of the approval, and redirect to the guest quotes list.
+     * Approve a quote, notify its recipients of the approval, and redirect to the guest quotes list.
      *
-     * Approves the quote identified by $quote_id, triggers the quote-status email for "approved", and then redirects the user to the guest quotes index.
-     *
-     * @param string $quote_id The identifier of the quote to approve.
+     * @param string $quote_id The quote identifier to approve.
      */
     public function approve(string $quote_id)
     {
-        $this->load->model('quotes/mdl_quotes');
         (new QuotesService())->approveQuoteById($quote_id);
         email_quote_status($quote_id, 'approved');
         redirect_to('guest/quotes');
     }
 
     /**
-     * Rejects the specified quote, sends a rejection notification, and redirects to the guest quotes listing.
+     * Mark a quote as rejected, notify recipients of the rejection, and redirect to the guest quotes listing.
      *
-     * Rejects the quote identified by `$quote_id`, triggers an email notifying relevant parties of the rejection, and redirects the user to the guest quotes index.
-     *
-     * @param string $quote_id The identifier of the quote to reject.
+     * @param string $quote_id The quote's unique identifier.
      */
     public function reject(string $quote_id)
     {
-        $this->load->model('quotes/mdl_quotes');
         (new QuotesService())->rejectQuoteById($quote_id);
         email_quote_status($quote_id, 'rejected');
         redirect_to('guest/quotes');

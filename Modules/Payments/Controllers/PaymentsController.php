@@ -12,20 +12,21 @@ use Illuminate\Http\Request;
 class PaymentsController extends AdminController
 {
     /**
-     * PaymentsController constructor.
+     * Initialize the PaymentsController and set up controller state.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_payments');
     }
 
     /**
-         * Display a paginated list of payments in the admin payments index view.
-         *
-         * @param int $page Page number for pagination, starting at 0.
-         * @return string The rendered payments index view populated with payments and filter configuration.
-         */
+     * Display a paginated list of payments.
+     *
+     * Renders the payments index view with the paginated payments and filter UI configuration.
+     *
+     * @param int $page Page number for pagination.
+     * @return \Illuminate\View\View The payments index view populated with payments and filter settings.
+     */
     public function index($page = 0)
     {
         (new PaymentsService())->paginate(site_url('payments/index'), $page);
@@ -35,14 +36,9 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * Display and handle the payments form for creating or editing a payment.
+     * @originalName form
      *
-     * Handles form cancellation, validation, persisting the payment and its custom fields,
-     * and prepares data required by the view (open invoices, custom fields/values, amounts,
-     * and invoice payment methods).
-     *
-     * @param int|null $id The payment ID to edit, or null to create a new payment.
-     * @return \Illuminate\View\View The rendered payments.online_logs view populated with form and related data.
+     * @originalFile PaymentsController.php
      */
     public function form($id = null)
     {
@@ -51,7 +47,6 @@ class PaymentsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        $this->load->model('custom_fields/mdl_payment_custom');
         if ((new PaymentsService())->runValidation()) {
             $id = (new PaymentsService())->save($id);
             (new PaymentCustomService())->saveCustom($id, $this->input->post('custom'));
@@ -62,7 +57,6 @@ class PaymentsController extends AdminController
             if ($id && ! $prep_form) {
                 show_404();
             }
-            $this->load->model('custom_values/mdl_custom_values');
             $payment_custom = (new PaymentCustomService())->where('payment_id', $id)->get();
             if ($payment_custom->numRows()) {
                 $payment_custom = $payment_custom->row();
@@ -77,7 +71,6 @@ class PaymentsController extends AdminController
             }
         }
         $this->load->helper('custom_values');
-        $this->load->model(['invoices/mdl_invoices', 'payment_methods/mdl_payment_methods', 'custom_fields/mdl_custom_fields', 'custom_values/mdl_custom_values']);
         $open_invoices = (new InvoicesService())->isOpen()->get()->result();
         $custom_fields = (new CustomFieldsService())->byTable('ip_payment_custom')->get()->result();
         $custom_values = [];
@@ -127,10 +120,10 @@ class PaymentsController extends AdminController
     }
 
     /**
-     * Delete the payment with the given ID.
+     * Delete the specified payment.
      *
      * @param int $id The ID of the payment to delete.
-     * @return \Illuminate\Http\RedirectResponse Redirect to the payments index route.
+     * @return \Illuminate\Http\RedirectResponse A redirect response to the payments index route.
      */
     public function delete(int $id): \Illuminate\Http\RedirectResponse
     {

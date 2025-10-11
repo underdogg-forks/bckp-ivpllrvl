@@ -11,12 +11,13 @@ use Modules\Invoices\Services\ItemsService;
 class InvoicesController extends BaseGuestController
 {
     /**
-     * InvoicesController constructor.
+     * Initialize the InvoicesController for guest access.
+     *
+     * Sets up controller state by delegating to the BaseGuestController constructor.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('invoices/mdl_invoices');
     }
 
     /**
@@ -31,13 +32,13 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * Display a paginated list of guest-visible invoices filtered by status.
+     * Display a paginated list of invoices visible to the guest, filtered by status.
      *
-     * Loads invoices for the current user's clients filtered by $status ('all', 'paid', 'overdue', or 'open'),
-     * paginates the results, and prepares data for the guest invoices index view.
+     * Loads invoices for the current guest's clients according to the given status,
+     * paginates the results, and renders the guest invoices index layout.
      *
-     * @param string $status The invoice group to display: 'all', 'paid', 'overdue', or 'open' (default).
-     * @param int $page Pagination page index.
+     * @param string $status The invoice status filter: 'open' (default), 'all', 'paid', or 'overdue'.
+     * @param int $page The pagination page number (zero-based).
      */
     public function status(string $status = 'open', $page = 0): void
     {
@@ -80,7 +81,6 @@ class InvoicesController extends BaseGuestController
             show_404();
         }
         (new InvoicesService())->markViewed($invoice->invoice_id);
-        $this->load->model(['invoices/mdl_items', 'invoices/mdl_invoice_tax_rates', 'upload/mdl_uploads']);
         $this->load->helper('dropzone');
         $this->layout->set(['invoice_id' => $invoice_id, 'invoice' => $invoice, 'items' => (new ItemsService())->getByInvoiceId($invoice_id), 'invoice_tax_rates' => (new InvoiceTaxRatesService())->getByInvoiceId($invoice_id), 'enable_online_payments' => get_setting('enable_online_payments'), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/invoices_view');

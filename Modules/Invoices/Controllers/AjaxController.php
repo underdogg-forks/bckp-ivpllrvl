@@ -122,7 +122,6 @@ class AjaxController extends AdminController
                         unset($item->item_task_id);
                     } else {
                         if (empty($this->mdl_tasks)) {
-                            $this->load->model('tasks/mdl_tasks');
                         }
                         $this->tasksService->updateStatus(4, $item->item_task_id);
                     }
@@ -161,7 +160,6 @@ class AjaxController extends AdminController
             }
             if (config_item('legacy_calculation')) {
                 // Recalculate for discounts
-                $this->load->model('invoices/mdl_invoice_amounts');
                 $this->invoiceAmountsService->calculate($invoice_id, $global_discount);
             }
             $response = ['success' => 1];
@@ -187,7 +185,6 @@ class AjaxController extends AdminController
                     $db_array[$matches[1]] = $value;
                 }
             }
-            $this->load->model('custom_fields/mdl_invoice_custom');
             $result = $this->invoiceCustomService->saveCustom($invoice_id, $db_array);
             if ($result !== true) {
                 $response = ['success' => 0, 'validation_errors' => $result];
@@ -233,18 +230,15 @@ class AjaxController extends AdminController
     {
         $success = 0;
         $item_id = $this->security->xss_clean($this->input->post('item_id'));
-        $this->load->model('mdl_invoices');
         // Only continue if the invoice exists or no item id was provided
         if ($this->invoicesService->getById($invoice_id) || empty($item_id)) {
             // Delete invoice item
-            $this->load->model('mdl_items');
             $item = $this->itemsService->delete($item_id);
             // Check if deletion was successful
             if ($item) {
                 $success = 1;
                 // Mark task as complete from invoiced
                 if (isset($item->item_task_id) && $item->item_task_id) {
-                    $this->load->model('tasks/mdl_tasks');
                     $this->tasksService->updateStatus(3, $item->item_task_id);
                 }
             }
@@ -410,12 +404,12 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Create a new invoice after validating input and send a JSON response.
+     * Create a new invoice from validated input and return a JSON result.
      *
-     * If validation succeeds, creates an invoice and outputs {"success": 1, "invoice_id": <id>}.
-     * If validation fails, outputs {"success": 0, "validation_errors": <errors>}.
+     * On successful validation saves a new invoice and outputs {"success":1,"invoice_id":<id>}.
+     * On validation failure outputs {"success":0,"validation_errors":<errors>}.
      *
-     * This method sends the JSON response and terminates execution.
+     * The method sends the JSON response and terminates execution.
      */
     public function create()
     {
@@ -430,13 +424,13 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName createRecurring
+     * Create or update a recurring invoice.
      *
-     * @originalFile AjaxController.php
+     * Validates the request data and, if valid, saves the recurring invoice and outputs a JSON response.
+     * The JSON response is {"success": 1} on success, or {"success": 0, "validation_errors": [...] } when validation fails.
      */
     public function createRecurring()
     {
-        $this->load->model('invoices/mdl_invoices_recurring');
         if ((new InvoicesRecurringService())->runValidation()) {
             (new InvoicesRecurringService())->save();
             $response = ['success' => 1];
@@ -498,13 +492,19 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName createCredit
+     * Create a credit invoice from an existing invoice.
      *
-     * @originalFile AjaxController.php
+     * Validates input, creates a new invoice as a credit for the posted source invoice, and emits a JSON response.
+     * On success the source invoice is optionally marked read-only (depending on configuration), the new invoice
+     * is linked to the source via `creditinvoice_parent_id`, and the new invoice amount sign is set to negative.
+     * If einvoicing is enabled, the method updates the legacy calculation mode from the posted `legacy_calculation` value.
+     *
+     * The method exits with a JSON object:
+     * - On success: `{"success": 1, "invoice_id": <new_invoice_id>}`
+     * - On validation failure: `{"success": 0, "validation_errors": ...}`
      */
     public function createCredit()
     {
-        $this->load->model(['invoices/mdl_invoices', 'invoices/mdl_items', 'invoices/mdl_invoice_tax_rates']);
         if ((new InvoicesService())->runValidation()) {
             // Automatic calculation mode
             if (get_setting('einvoicing')) {

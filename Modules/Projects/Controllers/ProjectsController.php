@@ -12,19 +12,18 @@ use Modules\Tasks\Services\TasksService;
 class ProjectsController extends AdminController
 {
     /**
-     * ProjectsController constructor.
+     * Initialize the ProjectsController and perform the parent controller setup.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_projects');
     }
 
     /**
-     * Displays the projects index page with paginated projects and filter settings.
+     * @originalName index
      *
-     * @param int $page Page number for pagination (starting at 0).
-     * @return string Rendered view containing the paginated project list and filter configuration.
+     * @param int $page The page number to display (zero-based).
+     * @return string Rendered view for the projects index populated with projects and filter settings.
      */
     public function index($page = 0)
     {
@@ -35,11 +34,15 @@ class ProjectsController extends AdminController
     }
 
     /**
-         * Render the project creation/edit form populated with the specified project and active clients.
-         *
-         * @param int $id The project identifier to edit.
-         * @return string The rendered view content for the projects form.
-         */
+     * Display and process the project creation/edit form.
+     *
+     * Processes form submission, validates and saves project data, and renders the project form populated with the project and active clients when not redirected.
+     *
+     * @param int|null $id The project identifier to edit, or null to create a new project.
+     * @return string The rendered HTML of the project form view.
+     *
+     * Note: this method may redirect to the projects list on cancel or after a successful save, and will trigger a 404 response if the provided `$id` cannot be prepared for editing.
+     */
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
@@ -54,7 +57,6 @@ class ProjectsController extends AdminController
         if ($id && ! $this->input->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
             show_404();
         }
-        $this->load->model('clients/mdl_clients');
 
 // File: Modules/Projects/Controllers/ProjectsController.php
 
@@ -99,33 +101,35 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * @originalName view
+     * Show a project's details with its tasks and available task statuses.
      *
-     * @originalFile ProjectsController.php
+     * Triggers a 404 response if the specified project does not exist. If the cancel button is submitted, redirects to the projects list.
+     *
+     * @param int|string $project_id Identifier of the project to display.
+     * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|string The rendered project view response or a redirect response when cancelled.
      */
     public function view($project_id)
     {
         if ($this->input->post('btn_cancel')) {
             redirect()->route('projects');
         }
-        $this->load->model('projects/mdl_projects');
         $project = (new ProjectsService())->getById($project_id);
         if ( ! $project) {
             show_404();
         }
-        $this->load->model('tasks/mdl_tasks');
 
         return view('projects.view', ['project' => $project, 'tasks' => (new ProjectsService())->getTasks($project->project_id), 'task_statuses' => (new TasksService())->statuses()]);
     }
 
     /**
-     * Deletes a project, updates tasks that reference it, and redirects to the projects list.
-     *
-     * @param int|string $id The identifier of the project to delete.
-     */
+         * Delete the specified project and disassociate it from related tasks, then redirect to the projects list.
+         *
+         * Removes the project identified by `$id`, updates any tasks that referenced the project so they no longer do, and redirects the user to the projects index route.
+         *
+         * @param int|string $id The ID of the project to delete.
+         */
     public function delete($id)
     {
-        $this->load->model('tasks/mdl_tasks');
         (new TasksService())->updateOnProjectDelete($id);
         (new ProjectsService())->delete($id);
         redirect()->route('projects');

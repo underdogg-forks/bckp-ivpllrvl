@@ -12,18 +12,22 @@ class ImportController extends AdminController
     private array $allowed_files = ['clients.csv', 'invoices.csv', 'invoice_items.csv', 'payments.csv'];
 
     /**
-     * ImportController constructor.
+     * Initialize the ImportController and perform standard AdminController setup.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_import');
     }
 
     /**
-     * @originalName index
+     * Display a paginated list of import records in the admin layout.
      *
-     * @originalFile ImportController.php
+     * Paginates import records using the provided page index, assigns the resulting
+     * import collection to the layout as `imports`, buffers the import index view,
+     * and renders the layout.
+     *
+     * @param int $page The page index for pagination (default 0).
+     * @return void
      */
     public function index($page = 0)
     {
@@ -35,9 +39,14 @@ class ImportController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display the import form or process a submitted import.
      *
-     * @originalFile ImportController.php
+     * When accessed without a submission, prepares the list of allowed import files
+     * from the uploads/import directory and renders the import form view.
+     * When a submission is present, creates a new import record, processes the
+     * selected allowed CSV files (clients.csv, invoices.csv, invoice_items.csv,
+     * payments.csv), records import details for each processed file, and redirects
+     * to the import listing.
      */
     public function form()
     {
@@ -69,17 +78,14 @@ class ImportController extends AdminController
                             (new ImportService())->recordImportDetails($import_id, 'ip_clients', 'clients', $ids);
                             break;
                         case 'invoices.csv':
-                            $this->load->model('invoices/mdl_invoices');
                             $ids = (new ImportService())->importInvoices();
                             (new ImportService())->recordImportDetails($import_id, 'ip_invoices', 'invoices', $ids);
                             break;
                         case 'invoice_items.csv':
-                            $this->load->model('invoices/mdl_items');
                             $ids = (new ImportService())->importInvoiceItems();
                             (new ImportService())->recordImportDetails($import_id, 'ip_invoice_items', 'invoice_items', $ids);
                             break;
                         case 'payments.csv':
-                            $this->load->model('payments/mdl_payments');
                             $ids = (new ImportService())->importPayments();
                             (new ImportService())->recordImportDetails($import_id, 'ip_payments', 'payments', $ids);
                             break;
@@ -91,9 +97,9 @@ class ImportController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete the import record identified by the given ID and redirect to the import index.
      *
-     * @originalFile ImportController.php
+     * @param int $id The ID of the import to delete.
      */
     public function delete($id)
     {

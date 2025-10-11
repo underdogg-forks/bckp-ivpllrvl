@@ -10,18 +10,20 @@ use Modules\Payments\Services\PaymentsService;
 class PaymentsController extends BaseGuestController
 {
     /**
-     * PaymentsController constructor.
+     * Initialize the PaymentsController.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('payments/mdl_payments');
     }
 
     /**
-     * @originalName index
+     * Retrieve and display a paginated list of payments for the current user's clients.
      *
-     * @originalFile PaymentsController.php
+     * Sets layout data for payments and filter UI, buffers the guest payments view, and renders
+     * the guest layout for the specified page of results.
+     *
+     * @param int $page The page number to display for pagination.
      */
     public function index($page = 0)
     {

@@ -21,6 +21,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-composer.lock
-package-lock.json
-yarn.lock
+/todo.txt

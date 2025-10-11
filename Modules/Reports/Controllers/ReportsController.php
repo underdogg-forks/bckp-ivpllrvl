@@ -10,12 +10,11 @@ use Modules\Core\Controllers\AdminController;
 class ReportsController extends AdminController
 {
     /**
-     * ReportsController constructor.
+     * Initialize the ReportsController.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_reports');
     }
 
     /**
@@ -99,9 +98,12 @@ class ReportsController extends AdminController
     }
 
     /**
-     * @originalName salesByYear
+     * Display the Sales by Year report page and prepare report data when the form is submitted.
      *
-     * @originalFile ReportsController.php
+     * When the request includes 'btn_submit', prepares report data (results, from_date, to_date)
+     * from the request inputs for rendering or PDF generation.
+     *
+     * @return \Illuminate\Contracts\View\View The view for the sales by year report.
      */
     public function salesByYear(Request $request): \Illuminate\Contracts\View\View
     {

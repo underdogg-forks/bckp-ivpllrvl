@@ -13,7 +13,11 @@ class SetupController extends MXController
     public $errors = 0;
 
     /**
-     * SetupController constructor.
+     * Enforces setup availability, loads required framework resources, and initializes localization.
+     *
+     * Aborts with HTTP 403 if the DISABLE_SETUP environment flag is true. Loads the session library,
+     * necessary helpers and the layout module, ensures the session key `ip_lang` exists (defaults to
+     * `'en'`) and applies that language, then loads the `ip` language file.
      */
     public function __construct()
     {
@@ -29,9 +33,7 @@ class SetupController extends MXController
         $this->load->helper('trans');
         $this->load->helper('settings');
         $this->load->helper('echo');
-        $this->load->model('settings/mdl_settings');
         // For get_setting() in echo_helper
-        $this->load->model('setup/mdl_setup');
         $this->load->module('layout');
         if ( ! $this->session->userdata('ip_lang')) {
             $this->session->set_userdata('ip_lang', 'en');
@@ -149,9 +151,12 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName upgradeTables
+     * Handle the database upgrade step of the setup flow.
      *
-     * @originalFile SetupController.php
+     * Validates the current install step and redirects to prerequisites if not allowed.
+     * On form submission advances the install flow to either the create-user or calculation-info step and redirects.
+     * Ensures the database is loaded and an encryption key exists, runs table upgrade operations via the setup service,
+     * and renders the upgrade view with the operation results and any errors.
      */
     public function upgradeTables(): void
     {
@@ -178,9 +183,11 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName createUser
+     * Handle the "create user" setup step and create the initial admin user when valid.
      *
-     * @originalFile SetupController.php
+     * Validates submitted user data; if validation succeeds, creates a user with `user_type` = 1,
+     * advances the `install_step` session value to `calculation_info`, and redirects to the calculation info step.
+     * If not submitted or validation fails, prepares country and language data for the layout and renders the user creation form.
      */
     public function createUser(): void
     {
@@ -188,7 +195,6 @@ class SetupController extends MXController
             redirect()->route('setup/prerequisites');
         }
         $this->loadCiDatabase();
-        $this->load->model('users/mdl_users');
         $this->load->helper('country');
         if ((new UsersService())->runValidation()) {
             $db_array              = (new UsersService())->dbArray();
@@ -396,9 +402,9 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName postSetupTasks
+     * Mark the application's setup as completed in the IPCONFIG_FILE.
      *
-     * @originalFile SetupController.php
+     * Updates the SETUP_COMPLETED entry in the configuration file to `true`.
      */
     private function postSetupTasks()
     {
@@ -409,14 +415,16 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName checkCalculationConfig
+     * Determines whether the legacy calculation setting requires explicit configuration for the installed version.
      *
-     * @originalFile SetupController.php
+     * @return array An associative array describing configuration needs:
+     *               - `needs_config` (bool): `true` if manual configuration is required, `false` otherwise.
+     *               - `current_value` (string): the current `LEGACY_CALCULATION` value (`'not_set'`, `'true'`, or `'false'`).
+     *               - `recommended` (string|null): the recommended value when configuration is required (`'false'`), or `null` when not applicable.
      */
     private function checkCalculationConfig(): array
     {
         $this->loadCiDatabase();
-        $this->load->model('settings/mdl_versions');
         $current_version = (new VersionsService())->getCurrentVersion();
         if (version_compare($current_version, '1.6.3', '>=')) {
             // Reload the ipconfig.php
@@ -437,10 +445,11 @@ class SetupController extends MXController
     }
 
     /**
-     * @originalName writeCalculationConfig
-     *
-     * @originalFile SetupController.php
-     */
+         * Append the LEGACY_CALCULATION setting to the IPCONFIG file.
+         *
+         * Reads the contents of IPCONFIG_FILE, appends a newline and the line
+         * `LEGACY_CALCULATION=false`, and writes the updated content back to the file.
+         */
     private function writeCalculationConfig()
     {
         $config = file_get_contents(IPCONFIG_FILE);

@@ -3,20 +3,20 @@
 namespace Modules\UserClients\Controllers;
 
 use AllowDynamicProperties;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
+use Modules\UserClients\Services\UserClientsService;
+use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
 class UserClientsController extends AdminController
 {
     /**
-     * Custom_Values constructor.
+     * Initialize the controller and perform the parent controller setup.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('users/mdl_users');
-        $this->load->model('clients/mdl_clients');
-        $this->load->model('user_clients/mdl_user_clients');
     }
 
     /**
@@ -82,9 +82,12 @@ class UserClientsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a user-client relation and redirect to that user's client list.
      *
-     * @originalFile UserClientsController.php
+     * Deletes the user-client mapping identified by the given relation ID and redirects to
+     * the 'user_clients/user/{user_id}' route for the associated user.
+     *
+     * @param int $user_client_id The ID of the user-client relation to remove.
      */
     public function delete($user_client_id)
     {

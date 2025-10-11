@@ -25,7 +25,6 @@ class CronController extends BaseController
             show_error(trans('wrong_cron_key_provided'), 500);
             exit('Wrong cron key!');
         }
-        $this->load->model(['invoices/mdl_invoices_recurring', 'invoices/mdl_invoices', 'invoices/mdl_invoice_amounts']);
         // Gather a list of recurring invoices to generate
         $invoices_recurring = (new InvoicesRecurringService())->active()->get()->result();
         $recurInfo          = [];
@@ -65,7 +64,6 @@ class CronController extends BaseController
             if (get_setting('automatic_email_on_recur') && MailerHelper::mailerConfigured()) {
                 $new_invoice = (new InvoicesService())->getById($target_id);
                 // Set the email body, use default email template if available
-                $this->load->model('email_templates/mdl_email_templates');
                 $email_template_id = get_setting('email_invoice_template');
                 if ( ! $email_template_id) {
                     Log::error('[CronController RecurringController InvoicesController] No email template set in the system settings!');
@@ -78,7 +76,6 @@ class CronController extends BaseController
                 }
                 $tpl = $email_template->row();
                 // Prepare the attachments
-                $this->load->model('upload/mdl_uploads');
                 $attachment_files = (new UploadsService())->getInvoiceUploads($target_id);
                 // Prepare the body
                 $body = $tpl->email_template_body;
