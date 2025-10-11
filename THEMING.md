@@ -8,6 +8,7 @@ Themes are now organized in separate CSS files located in `resources/css/themes/
 - `default.css` - Default theme with standard colors
 - `nord.css` - Nord theme (Polar Night variant)
 - `nord-dark.css` - Nord Dark theme (darker backgrounds)
+- `mandarin.css` - Mandarin theme (dark gray with warm accents) **NEW!**
 
 All theme files are loaded via `vite.config.js` and compiled into separate CSS files that can be loaded on demand.
 
@@ -50,6 +51,27 @@ Darker variant of Nord with deeper backgrounds for better contrast.
 ```blade
 @vite(['resources/css/app.css', 'resources/css/themes/nord-dark.css'])
 ```
+
+### 4. Mandarin Theme **NEW!**
+A sophisticated dark theme with gray-based primary colors and warm accent colors. Perfect for a professional, subdued look.
+
+**File:** `resources/css/themes/mandarin.css`
+
+**Colors:**
+- Primary: Gray (#7A8288)
+- Success: Green (#58a959)
+- Warning: Orange (#f89406)
+- Danger: Red (#ee5f5b)
+- Background: Dark gray (#272B30)
+- Text: Light gray (#C8C8C8)
+
+**Usage:**
+```blade
+@vite(['resources/css/app.css', 'resources/css/themes/mandarin.css'])
+```
+
+**Dark Mode:**
+The mandarin theme includes an even darker variant when the `dark` class is applied, making backgrounds nearly black while maintaining the warm accent colors.
 
 ## Dark Mode Support
 

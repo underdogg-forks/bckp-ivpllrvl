@@ -22,6 +22,7 @@ export default defineConfig({
                 "resources/css/themes/default.css",
                 "resources/css/themes/nord.css",
                 "resources/css/themes/nord-dark.css",
+                "resources/css/themes/mandarin.css",
                 "resources/js/app.js"
             ],
             refresh: true,
