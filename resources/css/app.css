@@ -16,20 +16,6 @@
     --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
     --sidebar-border: hsl(var(--sidebar-border));
     --sidebar-ring: hsl(var(--sidebar-ring));
-    
-    /* Welcome page colors */
-    --color-welcome-bg: var(--welcome-bg);
-    --color-welcome-text: var(--welcome-text);
-    --color-welcome-text-muted: var(--welcome-text-muted);
-    --color-welcome-border: var(--welcome-border);
-    --color-welcome-border-hover: var(--welcome-border-hover);
-    --color-welcome-accent: var(--welcome-accent);
-    --color-welcome-accent-dark: var(--welcome-accent-dark);
-    --color-welcome-card-bg: var(--welcome-card-bg);
-    --color-welcome-hero-bg: var(--welcome-hero-bg);
-    --color-welcome-dot-bg: var(--welcome-dot-bg);
-    --color-welcome-button-bg: var(--welcome-button-bg);
-    --color-welcome-button-text: var(--welcome-button-text);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -117,14 +103,11 @@
         --welcome-border: 227 227 224;  /* #e3e3e0 */
         --welcome-border-hover: 98 96 91 / 0.29;  /* #62605b with opacity */
         --welcome-accent: 245 48 3;  /* #f53003 */
-        --welcome-accent-dark: 255 68 51;  /* #FF4433 */
         --welcome-card-bg: 255 255 255;  /* white */
         --welcome-hero-bg: 255 242 242;  /* #fff2f2 */
         --welcome-dot-bg: 219 219 215;  /* #dbdbd7 */
         --welcome-button-bg: 27 27 24;  /* #1b1b18 */
         --welcome-button-text: 255 255 255;  /* white */
-        --welcome-button-bg-alt: 238 238 236;  /* #eeeeec */
-        --welcome-button-text-alt: 28 28 26;  /* #1C1C1A */
     }
 
     .dark {
@@ -142,14 +125,11 @@
         --welcome-border: 62 62 58;  /* #3E3E3A */
         --welcome-border-hover: 98 96 91;  /* #62605b */
         --welcome-accent: 246 21 0;  /* #F61500 */
-        --welcome-accent-dark: 255 68 51;  /* #FF4433 */
         --welcome-card-bg: 22 22 21;  /* #161615 */
         --welcome-hero-bg: 29 0 2;  /* #1D0002 */
         --welcome-dot-bg: 62 62 58;  /* #3E3E3A */
         --welcome-button-bg: 238 238 236;  /* #eeeeec */
         --welcome-button-text: 28 28 26;  /* #1C1C1A */
-        --welcome-button-bg-alt: 27 27 24;  /* #1b1b18 */
-        --welcome-button-text-alt: 255 255 255;  /* white */
     }
 }
 
