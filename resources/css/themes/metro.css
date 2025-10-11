@@ -1,0 +1,105 @@
+/**
+ * Metro Theme Colors
+ * 
+ * Dark theme with gray-based primary color and warm accent colors
+ * Metro design language inspired theme
+ */
+
+@theme {
+    /* Gray scale - metro uses darker grays */
+    --color-gray-base: #000000;
+    --color-gray-darker: #272B30;
+    --color-gray-dark: #3A3F44;
+    --color-gray: #52575C;
+    --color-gray-light: #7A8288;
+    --color-gray-lighter: #999999;
+    --color-gray-lightest: #f5f5f5;
+    
+    /* Brand colors - metro palette */
+    --color-brand-primary: #7A8288;  /* Gray-light as primary */
+    --color-brand-success: #58a959;
+    --color-brand-info: #5bc0de;
+    --color-brand-warning: #f89406;
+    --color-brand-danger: #ee5f5b;
+    
+    /* Scaffolding - dark background theme */
+    --color-body-bg: #272B30;  /* Gray-darker */
+    --color-text: #C8C8C8;
+    --color-link: #C8C8C8;
+    --color-link-hover: #ffffff;
+    
+    /* UI Component colors - metro style */
+    --color-btn-primary-bg: #7A8288;
+    --color-btn-primary-bg-hover: #5f666b;
+    --color-btn-primary-text: #ffffff;
+    --color-btn-primary-border: transparent;
+    --color-btn-primary-focus-ring: #7A8288;
+    
+    --color-btn-default-bg: #3A3F44;
+    --color-btn-default-bg-hover: #52575C;
+    --color-btn-default-text: #C8C8C8;
+    --color-btn-default-border: #52575C;
+    --color-btn-default-focus-ring: #7A8288;
+    
+    /* Card/Panel colors - dark theme */
+    --color-card-bg: #3A3F44;
+    --color-card-border: #52575C;
+    --color-card-text: #C8C8C8;
+    
+    /* Table colors - dark theme */
+    --color-table-bg: #3A3F44;
+    --color-table-hover-bg: #52575C;
+    --color-table-border: #52575C;
+    --color-table-header-bg: #272B30;
+    --color-table-header-text: #C8C8C8;
+}
+
+/* Dark mode variant for metro - slightly lighter */
+.dark {
+    /* In metro, the base is already dark, so dark mode is slightly adjusted */
+    --color-gray-base: #ffffff;
+    --color-gray-darker: #3A3F44;
+    --color-gray-dark: #52575C;
+    --color-gray: #7A8288;
+    --color-gray-light: #999999;
+    --color-gray-lighter: #272B30;
+    --color-gray-lightest: #1a1d20;
+    
+    /* Brand colors stay the same in dark mode */
+    --color-brand-primary: #7A8288;
+    --color-brand-success: #58a959;
+    --color-brand-info: #5bc0de;
+    --color-brand-warning: #f89406;
+    --color-brand-danger: #ee5f5b;
+    
+    /* Scaffolding - even darker */
+    --color-body-bg: #1a1d20;
+    --color-text: #e0e0e0;
+    --color-link: #e0e0e0;
+    --color-link-hover: #ffffff;
+    
+    /* UI Component colors - dark mode variant */
+    --color-btn-primary-bg: #7A8288;
+    --color-btn-primary-bg-hover: #646a6f;
+    --color-btn-primary-text: #ffffff;
+    --color-btn-primary-border: transparent;
+    --color-btn-primary-focus-ring: #7A8288;
+    
+    --color-btn-default-bg: #272B30;
+    --color-btn-default-bg-hover: #3A3F44;
+    --color-btn-default-text: #C8C8C8;
+    --color-btn-default-border: #3A3F44;
+    --color-btn-default-focus-ring: #7A8288;
+    
+    /* Card/Panel colors - darker */
+    --color-card-bg: #272B30;
+    --color-card-border: #3A3F44;
+    --color-card-text: #e0e0e0;
+    
+    /* Table colors - darker */
+    --color-table-bg: #272B30;
+    --color-table-hover-bg: #3A3F44;
+    --color-table-border: #3A3F44;
+    --color-table-header-bg: #1a1d20;
+    --color-table-header-text: #C8C8C8;
+}
