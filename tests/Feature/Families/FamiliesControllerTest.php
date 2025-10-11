@@ -57,10 +57,10 @@ class FamiliesControllerTest extends TestCase
         $family = \Modules\Families\Models\Family::factory()->create();
 
         // Act: delete the family
-        $response = $this->get(route('families.delete', ['id' => $family->id]));
+        $response = $this->delete(route('families.delete', ['id' => $family->id]));
 
         // Assert: redirects and family is deleted
-        $response->assertRedirect(route('families'));
+        $response->assertRedirect(route('families.index'));
         $this->assertDatabaseMissing('ip_families', ['family_id' => $family->id]);
     }
 }
