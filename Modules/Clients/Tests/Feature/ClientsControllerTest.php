@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Feature\Clients;
+namespace Modules\Clients\Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Clients\Controllers\ClientsController;
@@ -9,8 +10,6 @@ use Modules\Clients\Models\Client;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Modules\Clients\Models\ClientNote;
-use App\Models\User;
 
 #[CoversClass(ClientsController::class)]
 class ClientsControllerTest extends TestCase
