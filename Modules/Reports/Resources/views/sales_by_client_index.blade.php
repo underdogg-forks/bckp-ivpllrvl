@@ -1,4 +1,3 @@
-
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('sales_by_client')</h1>
 </div>
@@ -30,7 +29,7 @@
                             </label>
 
                             <div class="input-group">
-                                <input name="from_date" id="from_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker">
+                                <input name="from_date" id="from_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-base-color placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary sm:text-sm transition-colors datepicker">
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar fa-fw"></i>
                             </span>
@@ -43,7 +42,7 @@
                             </label>
 
                             <div class="input-group">
-                                <input name="to_date" id="to_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker">
+                                <input name="to_date" id="to_date" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-base-color placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary sm:text-sm transition-colors datepicker">
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar fa-fw"></i>
                             </span>

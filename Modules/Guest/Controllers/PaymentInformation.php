@@ -45,12 +45,12 @@ class PaymentInformation extends BaseController
         $disable_form = false;
         $invoice = (new InvoicesService())->where('ip_invoices.invoice_url_key', $invoice_url_key)->get()->row();
         if (! $invoice) {
-            Session::flash('alert_error', __('invoice_not_found'));
+            Session::flash('alert_error', trans('invoice_not_found'));
             return redirect()->route('guest');
         }
         if ($invoice->invoice_balance == 0) {
             if (Session::get('user_id')) {
-                Session::flash('alert_info', __('invoice_already_paid'));
+                Session::flash('alert_info', trans('invoice_already_paid'));
                 return redirect()->route('guest');
             }
             $disable_form = true;

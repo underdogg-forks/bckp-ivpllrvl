@@ -148,7 +148,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                         }
 
                 <br/>
-                <i title="{{ __('recurring') }}"
+                <i title="{{ trans('recurring') }}"
                    class="js-item-recurrence-toggler cursor-pointer fa {{ $item_recurrence_class" }}></i>
                 <input type="hidden" name="item_is_recurring" value="{{ $item_recurrence_state }}"/>@endforeach
             </td>

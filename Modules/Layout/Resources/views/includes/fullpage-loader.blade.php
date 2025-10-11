@@ -1,4 +1,3 @@
-
 <div id="fullpage-loader" style="display: none">
     <div class="loader-content">
         <i id="loader-icon" class="fa fa-cog fa-spin"></i>
@@ -11,7 +10,7 @@
         </div>
     </div>
     <div class="text-right">
-        <button type="button" class="fullpage-loader-close inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors tip" aria-label="@lang('close')"
+        <button type="button" class="fullpage-loader-close inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-link hover:text-link-hover hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors tip" aria-label="@lang('close')"
                 title="@lang('close')" data-placement="left">
             <span aria-hidden="true"><i class="fa fa-close"></i></span>
         </button>

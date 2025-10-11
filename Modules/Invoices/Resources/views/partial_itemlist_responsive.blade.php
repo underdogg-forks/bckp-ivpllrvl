@@ -15,7 +15,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                                 <i class="fa fa-chevron-down"></i>
                             </button>
                             @if($invoice->invoice_is_recurring)
-                            <i title="{{ __('recurring') }}"
+                            <i title="{{ trans('recurring') }}"
                                class="js-item-recurrence-toggler cursor-pointer fa fa-calendar-o text-muted"></i>
                             <input type="hidden" name="item_is_recurring" value=""/>
                             @endif
@@ -158,7 +158,7 @@ $invoice_disabled = $invoice->is_read_only != 1 ? '' : ' disabled="disabled"';
                                         $item_recurrence_class = 'fa-calendar-o text-muted';
                                     }
 
-                            <i title="{{ __('recurring') }}"
+                            <i title="{{ trans('recurring') }}"
                                class="js-item-recurrence-toggler cursor-pointer fa {{ $item_recurrence_class" }}>
                             </i>
                             <input type="hidden" name="item_is_recurring" value="{{ $item_recurrence_state }}"/>

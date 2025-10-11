@@ -78,7 +78,7 @@ echo $credit_date; ">
             <p><strong>@lang('credit_invoice_details')</strong></p>
 
             <ul>
-                <li>{{ __('client') . ': ' . htmlsc($invoice->client_name) }}</li>
+                <li>{{ trans('client') . ': ' . htmlsc($invoice->client_name) }}</li>
                 <li>{{ trans('credit_invoice_date') . ': ' . $credit_date }}</li>
                 <li>{{ trans('invoice_group') . ': ' . $credit_invoice_group }}</li>
             </ul>

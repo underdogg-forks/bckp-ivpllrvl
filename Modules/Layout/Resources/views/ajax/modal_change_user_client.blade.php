@@ -10,7 +10,7 @@
     // Add *_id quote/invoice
     $type_id = $this->input->post($type_id) ?: false;
     // Type exist? get id
-    @if(!$type_id) {
+    if (!$type_id) {
         return;
         // No quote/invoice id do nothing
     }
@@ -70,23 +70,21 @@
                     <select name="{{ $who }}_id" id="change_{{ $who }}_id" class="{{ $who }}-id-select w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                             autofocus="autofocus" required>
                         @php
-                            $who_id = ${$who}->{$who_id} ?? $this->input->post($who_id);
-                            @if($who_id) {
+                            $who_id_val = ${$who}->{$who_id} ?? $this->input->post($who_id);
+                            if ($who_id_val) {
                                 $format = 'format_' . $who;
-                                // func name
-                                $name = $who . '_name';
-                                // user or client property
-                                $name = empty(${$who}->{$name}) ? $format($who_id) : ${$who}->{$name};
+                                $name_prop = $who . '_name';
+                                $name = empty(${$who}->{$name_prop}) ? $format($who_id_val) : ${$who}->{$name_prop};
+                        @endphp
+                                <option value="{{ $who_id_val }}">{!! $name !!}</option>
+                        @php
                             }
                         @endphp
-                        @if ($who_id)
-                            <option value="{{ $who_id " }}>{!! $name !!}</option>
-                        @endif
                     </select>
                 </div>
             </div>
-            <input class="hidden" id="{{ $type }}_id" value="{{ $type_id " }}>
-            <input class="hidden" id="input_permissive_search_{{ $who }}s" value="{{ $permissive " }}>
+            <input class="hidden" id="{{ $type }}_id" value="{{ $type_id }}">
+            <input class="hidden" id="input_permissive_search_{{ $who }}s" value="{{ $permissive }}">
         </div>
         <div class="modal-footer">
             <div class="inline-flex rounded-md shadow-sm">

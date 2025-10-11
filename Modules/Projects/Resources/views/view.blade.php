@@ -82,7 +82,7 @@
         </div>
         @if(empty($tasks))
         <div class="p-6">
-            <div class="p-4 mb-4 text-cyan-700 dark:text-cyan-200 bg-cyan-100 dark:bg-cyan-900/50 border border-cyan-200 dark:border-cyan-800 rounded-lg no-margin">{{ __('alert_no_tasks_found') }}</div>
+            <div class="p-4 mb-4 text-cyan-700 dark:text-cyan-200 bg-cyan-100 dark:bg-cyan-900/50 border border-cyan-200 dark:border-cyan-800 rounded-lg no-margin">{{ trans('alert_no_tasks_found') }}</div>
         </div>@endforeach
     </div>
 </div>

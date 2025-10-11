@@ -23,7 +23,7 @@
 
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-                    {{ __('user') . ': ' . htmlsc($user->user_name) }}
+                    {{ trans('user') . ': ' . htmlsc($user->user_name) }}
                 </div>
 
                 <div class="p-6 table-content">

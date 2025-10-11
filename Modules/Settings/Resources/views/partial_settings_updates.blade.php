@@ -115,7 +115,7 @@
                         var ipnews = '<div class="alert alert-' + news.type '">';
                         ipnews += '<b>' + news.title + '</b><br/>';
                         ipnews += news.text + '<br/>';
-                        @if(news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
+                        @if(news.newsdate.date) ipnews += '<small>{{ trans('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
                         ipnews += '</div>';
                         ipnews = ipnews.replace(/\n/g, "<br />");
                         $('#ipnews-container').append(ipnews);
@@ -138,7 +138,7 @@
                                 var ipnews = '<div class="alert alert-' + news.type '">';
                                 ipnews += '<b>' + news.title + '</b><br/>';
                                 ipnews += news.text + '<br/>';
-                                @if(news.newsdate.date) ipnews += '<small>{{ __('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
+                                @if(news.newsdate.date) ipnews += '<small>{{ trans('date') }}: ' + news.newsdate.date.substr(0, 11) + '</b><br/>';
                                 ipnews += '</div>';
                                 ipnews = ipnews.replace(/\n/g, "<br />");
                                 $('#ipnews-container').append(ipnews);

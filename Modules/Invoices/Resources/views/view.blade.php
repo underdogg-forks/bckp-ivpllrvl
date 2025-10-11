@@ -438,7 +438,7 @@ href="{{ url('users/form/' . $invoice->user_id) " }}>
                                         @if($einvoice->name)
                                     <label class="float-right" id="e_invoice_active"
                                            data-toggle="tooltip" data-placement="bottom"
-                                           title="e-{{ __('invoice') . ' ' . ($einvoice->user ? trans('version') . ' ' . $einvoice->name . ' 🗸' : '🚫 ' . trans('einvoicing_user_fields_error')) }}"
+                                           title="e-{{ trans('invoice') . ' ' . ($einvoice->user ? trans('version') . ' ' . $einvoice->name . ' 🗸' : '🚫 ' . trans('einvoicing_user_fields_error')) }}"
                                     >
                                         <i class="fa fa-file-code-o"></i>
                                         {{ $einvoice->name;

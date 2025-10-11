@@ -13,7 +13,7 @@ $global_discount = $invoice->invoice_discount_percent > 0 ? format_amount($invoi
         <div class="inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
             @if($invoice->invoice_balance == 0 || $invoice->invoice_status_id >= 4)
             <button class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors disabled">
-                <i class="fa fa-check"></i> {{ __('paid') }}
+                <i class="fa fa-check"></i> {{ trans('paid') }}
             </button>
             @elseif($enable_online_payments)
             <a href="{{ url('guest/payment_information/form/' . $invoice->invoice_url_key) }}"

@@ -97,13 +97,13 @@ class StripeController extends BaseController
                 ]);
             }
             $response = $paid
-                ? '. livemode: ' . __($session->livemode ? 'yes' : 'no') . ', currency: ' . $session->currency . ', amount: ' . $session->amount_received / 100 . ', fee: ' . $session->application_fee_amount / 100 . ', session ID: ' . $session->id
+                ? '. livemode: ' . trans($session->livemode ? 'yes' : 'no') . ', currency: ' . $session->currency . ', amount: ' . $session->amount_received / 100 . ', fee: ' . $session->application_fee_amount / 100 . ', session ID: ' . $session->id
                 : ($session->cancel ? $session->cancellation_reason : $session->last_payment_error);
             $user_msg = $paid
-                ? sprintf(__('online_payment_successful'), '#' . $invoice->invoice_number)
-                : __('online_payment_failed') . '<br>' . sprintf(__('online_payment_incomplete'), __CLASS__, $session->payment_status);
+                ? sprintf(trans('online_payment_successful'), '#' . $invoice->invoice_number)
+                : trans('online_payment_failed') . '<br>' . sprintf(trans('online_payment_incomplete'), __CLASS__, $session->payment_status);
         } catch (Error|Exception|ErrorException $e) {
-            $user_msg = __('online_payment_error') . (empty($user_msg) ? '' : '<br>' . $user_msg);
+            $user_msg = trans('online_payment_error') . (empty($user_msg) ? '' : '<br>' . $user_msg);
             $paid     = 'error';
             $response = __CLASS__ . '::' . __FUNCTION__ . ' exception: ' . $e->getMessage() . (empty($response) ? '' : ' - response: ' . $response);
             Log::error(str_replace('<br>', ' ', $response . ' user_msg: ' . $user_msg));

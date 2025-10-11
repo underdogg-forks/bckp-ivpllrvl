@@ -24,7 +24,7 @@
     @include('layout.alerts')
 
     @if($this->mdl_tasks->form_value('task_id') && $this->mdl_tasks->form_value('task_status') == 4)
-    <div class="p-4 mb-4 text-yellow-700 dark:text-yellow-200 bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800 rounded-lg small">{{ __('info_task_readonly') }}</div>
+    <div class="p-4 mb-4 text-yellow-700 dark:text-yellow-200 bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800 rounded-lg small">{{ trans('info_task_readonly') }}</div>
     @endif
 
     <div class="flex flex-wrap -mx-4">
