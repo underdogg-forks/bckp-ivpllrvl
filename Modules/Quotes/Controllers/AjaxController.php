@@ -285,7 +285,9 @@ class AjaxController extends AdminController
      *
      * Validates that the posted client exists and, if so, updates the quote's client_id in the database using the posted quote_id.
      *
-     * @return string JSON-encoded response: `{ "success": 1, "quote_id": "<cleaned_quote_id>" }` on success; `{ "success": 0, "validation_errors": { ... } }` if the client is invalid. */
+     * @return string
+     *   JSON-encoded response: `{ "success": 1, "quote_id": "<cleaned_quote_id>" }` on success; `{ "success": 0, "validation_errors": { ... } }` if the client is invalid.
+     */
     public function changeClient()
     {
         // GetController the client ID
