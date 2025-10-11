@@ -30,9 +30,14 @@ class AjaxController extends AdminController
     }
 
     /**
-     * @originalName modalAddPayment
+     * Displays the "Add Payment" modal and supplies it with required payment data.
      *
-     * @originalFile AjaxController.php
+     * Prepares an array passed to the 'payments/modal_add_payment' view containing:
+     * - `payment_methods`: list of available payment methods,
+     * - `invoice_id`: sanitized invoice identifier,
+     * - `invoice_balance`: invoice balance from POST,
+     * - `invoice_payment_method`: selected payment method from POST,
+     * - `payment_cf_exist`: sanitized flag indicating whether payment custom fields exist.
      */
     public function modalAddPayment()
     {

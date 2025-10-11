@@ -34,9 +34,13 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display and process the project create/edit form.
      *
-     * @originalFile ProjectsController.php
+     * Validates and saves submitted project data, handles cancel redirects, and prepares
+     * project and active clients data for rendering the form view.
+     *
+     * @param int|null $id Project ID to edit, or null to create a new project.
+     * @return mixed Rendered view for the project form, or a redirect/response issued after submit or cancel.
      */
     public function form($id = null)
     {
@@ -62,6 +66,12 @@ use Modules\Tasks\Services\TasksService;
 
 class ProjectsController extends BaseController
 {
+    /**
+     * Initialize the controller by assigning injected services and loading the projects model.
+     *
+     * Loads the `mdl_projects` model and makes ClientsService, ProjectsService, and TasksService
+     * available to the controller via constructor property promotion.
+     */
     public function __construct(
         private ClientsService $clientsService,
         private ProjectsService $projectsService,
@@ -71,7 +81,12 @@ class ProjectsController extends BaseController
         $this->load->model('mdl_projects');
     }
 
-    // …
+    /**
+     * Render the project creation/edit form populated with the specified project and active clients.
+     *
+     * @param int $id The project identifier to edit.
+     * @return string The rendered view content for the projects form.
+     */
 
     public function form(int $id)
     {

@@ -395,7 +395,7 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Render and return the "create invoice" modal populated with groups, tax rates, and client data.
+     * Render the create-invoice modal populated with invoice groups, tax rates, the specified client, and recent clients.
      *
      * @return string The rendered modal HTML containing `invoice_groups`, `tax_rates`, `client`, and `clients` in the view context.
      */

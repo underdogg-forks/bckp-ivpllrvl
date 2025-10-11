@@ -118,6 +118,11 @@ class QuoteItemsService extends BaseService
         return $row->items_subtotal;
     }
 
+    /**
+     * Retrieves all quote items with their amounts, product, and tax rate relations, ordered by item_order.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteItem models with `quoteItemAmount`, `product`, and `taxRate` relations loaded, ordered by `item_order`.
+     */
     public function getQuoteItemsWithRelations(): \Illuminate\Database\Eloquent\Collection
     {
         return QuoteItem::with(['quoteItemAmount', 'product', 'taxRate'])
@@ -126,10 +131,10 @@ class QuoteItemsService extends BaseService
     }
 
     /**
-     * Get all items for a specific quote
+     * Retrieve all quote items belonging to the specified quote.
      *
-     * @param int $quote_id The quote ID
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param int $quote_id The quote ID.
+     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteItem models for the given quote.
      */
     public function getByQuoteId($quote_id)
     {

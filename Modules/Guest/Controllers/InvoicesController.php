@@ -61,10 +61,14 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName view
-     *
-     * @originalFile InvoicesController.php
-     */
+         * Display a single invoice to the guest user and render the guest layout.
+         *
+         * Loads the requested invoice (restricted to the current user's clients), marks it as viewed, prepares related data
+         * (items, tax rates, uploads and relevant settings) for the view, buffers the 'guest/invoices_view' content, and
+         * renders the 'layout_guest' layout. If the invoice cannot be found, a 404 response is shown.
+         *
+         * @param int|string $invoice_id The ID of the invoice to display.
+         */
     public function view($invoice_id): void
     {
         $invoice = (new InvoicesService())->where('ip_invoices.invoice_id', $invoice_id)->where_in('ip_invoices.client_id', $this->user_clients)->get()->row();

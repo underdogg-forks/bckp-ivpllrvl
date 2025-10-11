@@ -67,9 +67,13 @@ class QuotesController extends BaseGuestController
     }
 
     /**
-     * @originalName view
+     * Display a guest-accessible quote page for the given quote identifier.
      *
-     * @originalFile QuotesController.php
+     * Loads the quote if it is visible to guest users and belongs to one of the current user's clients,
+     * marks the quote as viewed, prepares related items and tax rates for the view, buffers the guest
+     * quote template, and renders the guest layout. If the quote is not found, a 404 response is shown.
+     *
+     * @param int|string $quote_id The identifier of the quote to display.
      */
     public function view($quote_id)
     {

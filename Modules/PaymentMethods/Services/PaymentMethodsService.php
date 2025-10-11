@@ -33,9 +33,14 @@ class PaymentMethodsService extends BaseService
     }
 
     /**
-     * @originalName validationRules
+     * Provide validation rules for payment method fields.
      *
-     * @originalFile PaymentMethod.php
+     * Returns an array mapping field keys to their validation configuration
+     * for use by the application's validator.
+     *
+     * @return array{
+     *     payment_method_name: array{field: string, label: string, rules: string}
+     * } Array where each entry contains 'field', 'label', and 'rules' for the field.
      */
     public function validationRules()
     {
@@ -43,9 +48,9 @@ class PaymentMethodsService extends BaseService
     }
 
     /**
-     * Get all payment methods
+     * Retrieve all payment methods.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\PaymentMethods\Models\PaymentMethod[] Collection of PaymentMethod models.
      */
     public function getAll()
     {

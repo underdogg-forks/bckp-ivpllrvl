@@ -53,9 +53,13 @@ class UnitsService extends BaseService
     }
 
     /**
-     * @originalName validationRules
+     * Provide validation rules for unit fields.
      *
-     * @originalFile Unit.php
+     * Returns an associative array keyed by field name where each entry contains
+     * 'field' (form field name), 'label' (translation key for the field label),
+     * and 'rules' (validation rules string).
+     *
+     * @return array<string, array{field:string,label:string,rules:string}>
      */
     public function validationRules()
     {
@@ -63,9 +67,9 @@ class UnitsService extends BaseService
     }
 
     /**
-     * Get all units
+     * Retrieve all Unit records.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection<\Modules\Units\Models\Unit> Collection of Unit models.
      */
     public function getAll()
     {

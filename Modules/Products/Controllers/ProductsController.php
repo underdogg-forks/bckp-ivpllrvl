@@ -27,6 +27,17 @@ class ProductsController extends AdminController
         ]);
     }
 
+    /**
+     * Display and process the product creation/edit form.
+     *
+     * Handles cancel redirects, validates submitted data and saves the product when valid,
+     * prepares the form for editing an existing product (or aborts with 404 if the product
+     * cannot be prepared), and provides families, units, and tax rates for the view.
+     *
+     * @param \Illuminate\Http\Request $request The current HTTP request.
+     * @param int|null $id Optional product ID for editing; null when creating a new product.
+     * @return \Illuminate\Contracts\View\View The products form view populated with `families`, `units`, and `tax_rates`.
+     */
     public function form(Request $request, $id = null): \Illuminate\Contracts\View\View
     {
         if ($request->has('btn_cancel')) {
