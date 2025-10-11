@@ -50,7 +50,7 @@
                             </div>
                         </div>
 
-                        <input type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" name="btn_submit"
+                        <input type="submit" class="btn-success" name="btn_submit"
                                value="@lang('run_report')">
 
                     </form>
