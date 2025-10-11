@@ -10,7 +10,7 @@
 
             @include('layout.alerts')
 
-            <div id="report_options" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+            <div id="report_options" class="bg-card-bg border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
 
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                     <i class="fa fa-print"></i>
