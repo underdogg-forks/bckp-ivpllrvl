@@ -6,7 +6,7 @@
 <div id="content">
 
     <div class="flex flex-wrap -mx-4">
-        <div class="w-full px-4 md:w-1/2 col-md-offset-3">
+        <div class="w-full px-4 md:w-1/2 md:mx-auto">
 
             @include('layout.alerts')
 
