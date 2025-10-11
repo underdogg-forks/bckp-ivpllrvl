@@ -4,20 +4,25 @@ namespace Modules\Invoices\Controllers;
 
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
+use Modules\Clients\Models\Client;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
+use Modules\InvoiceGroups\Models\InvoiceGroup;
+use Modules\InvoiceGroups\Services\InvoiceGroupsService;
+use Modules\Invoices\Models\Invoice;
+use Modules\Invoices\Services\InvoiceAmountsService;
+use Modules\Invoices\Services\InvoiceCustomService;
+use Modules\Invoices\Services\InvoicesRecurringService;
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Invoices\Services\InvoiceSumexService;
 use Modules\Invoices\Services\InvoiceTaxRatesService;
 use Modules\Invoices\Services\ItemsService;
-use Modules\Invoices\Services\InvoiceAmountsService;
-use Modules\Invoices\Services\InvoiceCustomService;
 use Modules\Tasks\Services\TasksService;
-use Modules\Units\Services\UnitsService;
-use Modules\Clients\Services\ClientsService;
-use Modules\Users\Services\UsersService;
-use Modules\InvoiceGroups\Services\InvoiceGroupsService;
+use Modules\TaxRates\Models\TaxRate;
 use Modules\TaxRates\Services\TaxRatesService;
-use Modules\Invoices\Services\InvoicesRecurringService;
+use Modules\Units\Services\UnitsService;
+use Modules\Users\Models\User;
+use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
 class AjaxController extends AdminController
@@ -275,10 +280,10 @@ class AjaxController extends AdminController
     public function modalCopyInvoice()
     {
         $data = [
-            'invoice_groups' => $this->invoiceGroupsService->get()->result(),
-            'tax_rates' => $this->taxRatesService->get()->result(),
+            'invoice_groups' => InvoiceGroup::all(),
+            'tax_rates' => TaxRate::all(),
             'invoice_id' => $this->input->post('invoice_id'),
-            'invoice' => $this->invoicesService->where('ip_invoices.invoice_id', $this->input->post('invoice_id'))->get()->row(),
+            'invoice' => Invoice::where('invoice_id', $this->input->post('invoice_id'))->first(),
             'client' => $this->clientsService->getById($this->input->post('client_id')),
         ];
         return view('invoices.modal_copy_invoice', $data);
@@ -340,7 +345,7 @@ class AjaxController extends AdminController
     {
         // GetController the user ID
         $user_id = $this->security->xss_clean($this->input->post('user_id'));
-        $user    = $this->usersService->where('ip_users.user_id', $user_id)->get()->row();
+        $user    = User::where('user_id', $user_id)->first();
         if ( ! empty($user)) {
             $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
             $db_array   = ['user_id' => $user_id];
@@ -380,7 +385,7 @@ class AjaxController extends AdminController
     {
         // GetController the client ID
         $client_id = $this->security->xss_clean($this->input->post('client_id'));
-        $client    = $this->clientsService->where('ip_clients.client_id', $client_id)->get()->row();
+        $client    = Client::where('client_id', $client_id)->first();
         if ( ! empty($client)) {
             $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
             $db_array   = ['client_id' => $client_id];
@@ -402,8 +407,8 @@ class AjaxController extends AdminController
     public function modalCreateInvoice()
     {
         $data = [
-            'invoice_groups' => $this->invoiceGroupsService->get()->result(),
-            'tax_rates' => $this->taxRatesService->get()->result(),
+            'invoice_groups' => InvoiceGroup::all(),
+            'tax_rates' => TaxRate::all(),
             'client' => $this->clientsService->getById($this->input->post('client_id')),
             'clients' => $this->clientsService->getLatest(),
         ];
@@ -490,10 +495,10 @@ class AjaxController extends AdminController
     public function modalCreateCredit()
     {
         $data = [
-            'invoice_groups' => $this->invoiceGroupsService->get()->result(),
-            'tax_rates' => $this->taxRatesService->get()->result(),
+            'invoice_groups' => InvoiceGroup::all(),
+            'tax_rates' => TaxRate::all(),
             'invoice_id' => $this->input->post('invoice_id'),
-            'invoice' => $this->invoicesService->where('ip_invoices.invoice_id', $this->input->post('invoice_id'))->get()->row(),
+            'invoice' => Invoice::where('invoice_id', $this->input->post('invoice_id'))->first(),
         ];
         return view('invoices.modal_create_credit', $data);
     }
