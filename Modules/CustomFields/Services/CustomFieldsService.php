@@ -76,9 +76,10 @@ class CustomFieldsService extends BaseService
      */
     public function getByTable($table)
     {
-        $this->where('custom_field_table', $table);
-
-        return $this->get()->result();
+        return \Modules\CustomFields\Models\CustomField::query()
+            ->where('custom_field_table', $table)
+            ->get()
+            ->all();
     }
 
     /**
@@ -182,9 +183,13 @@ class CustomFieldsService extends BaseService
         }
         $cf   = $this->getById($id);
         $base = strtr($cf->custom_field_table, ['ip_' => '']) . '_field';
-        $this->db->from($cf->custom_field_table)->where($base . 'id', $id)->where($base . 'value IS NOT NULL', null, false)->where($base . 'value <> ""');
+        
+        $query = \Illuminate\Support\Facades\DB::table($cf->custom_field_table)
+            ->where($base . 'id', $id)
+            ->whereNotNull($base . 'value')
+            ->where($base . 'value', '<>', '');
 
-        return $get ? $this->db->get()->result() : $this->db;
+        return $get ? $query->get()->all() : $query;
     }
 
     /**
@@ -203,7 +208,9 @@ class CustomFieldsService extends BaseService
             }
             // Remove reference in custom table
             $base = strtr($custom_field->custom_field_table, ['ip_' => '']) . '_field';
-            $this->db->from($custom_field->custom_field_table)->where($base . 'id', $id)->delete($custom_field->custom_field_table);
+            \Illuminate\Support\Facades\DB::table($custom_field->custom_field_table)
+                ->where($base . 'id', $id)
+                ->delete();
             parent::delete($id);
 
             return true;
