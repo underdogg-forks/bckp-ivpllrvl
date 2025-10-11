@@ -4,7 +4,8 @@ namespace Modules\Guest\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
-use Modules\Invoices\Services\InvoiceTaxRatesService;
+use Modules\Invoices\Models\InvoiceTaxRate;
+use Modules\Invoices\Models\Item;
 
 #[AllowDynamicProperties]
 class InvoicesController extends BaseGuestController
@@ -73,7 +74,7 @@ class InvoicesController extends BaseGuestController
         (new InvoicesService())->markViewed($invoice->invoice_id);
         $this->load->model(['invoices/mdl_items', 'invoices/mdl_invoice_tax_rates', 'upload/mdl_uploads']);
         $this->load->helper('dropzone');
-        $this->layout->set(['invoice_id' => $invoice_id, 'invoice' => $invoice, 'items' => (new ItemsService())->where('invoice_id', $invoice_id)->get()->result(), 'invoice_tax_rates' => (new InvoiceTaxRatesService())->where('invoice_id', $invoice_id)->get()->result(), 'enable_online_payments' => get_setting('enable_online_payments'), 'legacy_calculation' => config_item('legacy_calculation')]);
+        $this->layout->set(['invoice_id' => $invoice_id, 'invoice' => $invoice, 'items' => Item::where('invoice_id', $invoice_id)->get(), 'invoice_tax_rates' => InvoiceTaxRate::where('invoice_id', $invoice_id)->get(), 'enable_online_payments' => get_setting('enable_online_payments'), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/invoices_view');
         $this->layout->render('layout_guest');
     }
