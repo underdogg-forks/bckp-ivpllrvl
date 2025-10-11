@@ -221,12 +221,12 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * Generate a PDF for the given invoice and output it according to the specified mode.
+     * Generate a PDF for the specified invoice and emit it according to the chosen mode.
      *
-     * If the "mark_invoices_sent_pdf" setting is enabled, this may assign an invoice number if needed and mark the invoice as sent before generating the PDF.
+     * If the `mark_invoices_sent_pdf` setting is enabled, this may assign an invoice number when necessary and mark the invoice as sent prior to PDF generation.
      *
-     * @param int|string $invoice_id The ID of the invoice to generate a PDF for.
-     * @param bool $stream When true, output the PDF directly (stream to the client); when false, return or save the generated PDF.
+     * @param int|string $invoice_id ID of the invoice to generate the PDF for.
+     * @param bool $stream If `true`, send the PDF directly to the client; if `false`, produce the PDF without streaming.
      * @param string|null $invoice_template Optional template identifier to use for PDF generation.
      */
     public function generatePdf($invoice_id, $stream = true, $invoice_template = null): void
@@ -239,13 +239,13 @@ class InvoicesController extends AdminController
     }
 
     /**
-     * Generate and output the electronic invoice XML for a given invoice.
+     * Generate the electronic invoice XML and send it as the HTTP response with Content-Type `text/xml`.
      *
-     * Loads the invoice and its items, determines the e-invoice configuration and XML generator,
-     * writes a temporary XML file, sets the HTTP response body to that XML with Content-Type `text/xml`,
-     * and removes the temporary file after sending.
+     * Loads the invoice and its items, determines the e-invoice configuration and XML generator (optionally via
+     * a config file in app/Helpers/XMLconfigs/), generates a temporary XML file, writes its contents to the response,
+     * and removes the temporary file.
      *
-     * If the invoice does not exist or the e-invoice configuration lacks a user, the request is aborted with a 404 response.
+     * If the invoice cannot be found or the e-invoice configuration lacks a user, the request is aborted with a 404 response.
      *
      * @param int|string $invoice_id The invoice identifier.
      */

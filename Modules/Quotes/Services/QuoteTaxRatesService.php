@@ -63,6 +63,11 @@ class QuoteTaxRatesService extends BaseService
         return ['quote_id' => ['field' => 'quote_id', 'label' => trans('quote'), 'rules' => 'required'], 'tax_rate_id' => ['field' => 'tax_rate_id', 'label' => trans('tax_rate'), 'rules' => 'required'], 'include_item_tax' => ['field' => 'include_item_tax', 'label' => trans('tax_rate_placement'), 'rules' => 'required']];
     }
 
+    /**
+     * Retrieve all quote tax rate records with their associated tax rate relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Collection of QuoteTaxRate models with the `taxRate` relationship loaded.
+     */
     public function getWithTaxRate(): \Illuminate\Database\Eloquent\Collection
     {
         return QuoteTaxRate::with('taxRate')->get();

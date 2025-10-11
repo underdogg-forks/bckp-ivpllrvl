@@ -299,10 +299,10 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * Attach payments matching the invoice's ID to the given invoice object.
+     * Attach matching payments to the given invoice object.
      *
      * @param object $invoice Invoice object containing an `invoice_id` property.
-     * @return object The same invoice object with a `payments` property set to an array of payment records when payments exist, or `null` when none are found.
+     * @return object The invoice object with a `payments` property: an Eloquent Collection of payment records if any exist, `null` otherwise.
      */
     public function getPayments($invoice)
     {
@@ -524,9 +524,14 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName markViewed
+     * Mark an invoice as viewed and optionally mark it read-only.
      *
-     * @originalFile Invoice.php
+     * If the invoice exists and its status is "sent" (2), updates the status to
+     * "viewed" (3). If the read-only feature is enabled and the read-only toggle
+     * setting equals 3, also sets the invoice to read-only. Persists changes only
+     * when there are updates to save.
+     *
+     * @param int|string $invoice_id The ID of the invoice to update.
      */
     public function markViewed($invoice_id)
     {
@@ -549,9 +554,12 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName markSent
+     * Mark an invoice as sent and apply related state updates.
      *
-     * @originalFile Invoice.php
+     * If the invoice is currently a draft (status 1), updates its due date and changes its status to sent (2).
+     * If read-only behavior is enabled via configuration and the `read_only_toggle` setting equals 2, marks the invoice as read-only.
+     *
+     * @param int $invoice_id The ID of the invoice to mark as sent.
      */
     public function markSent($invoice_id)
     {
@@ -576,9 +584,11 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName generateInvoiceNumberIfApplicable
+     * Generate and persist an invoice number for a draft invoice when invoice-number generation for drafts is disabled.
      *
-     * @originalFile Invoice.php
+     * Checks the invoice by ID and, if it is a draft with no number and the setting `generate_invoice_number_for_draft` is disabled, obtains a new invoice number for the invoice's group and updates the invoice record.
+     *
+     * @param int $invoice_id The ID of the invoice to potentially update.
      */
     public function generateInvoiceNumberIfApplicable($invoice_id)
     {
@@ -592,9 +602,12 @@ class InvoicesService extends BaseService
     }
 
     /**
-     * @originalName updateInvoiceDueDate
+     * Update an invoice's due date based on the current date when allowed by invoice state and settings.
      *
-     * @originalFile Invoice.php
+     * If the invoice exists, is not marked read-only, and the "no_update_invoice_due_date_mail" setting is disabled,
+     * the invoice's due date will be recalculated and persisted.
+     *
+     * @param int $invoice_id The ID of the invoice to update.
      */
     public function updateInvoiceDueDate($invoice_id)
     {

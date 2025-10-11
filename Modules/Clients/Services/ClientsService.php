@@ -216,9 +216,9 @@ class ClientsService extends BaseService
     }
 
     /**
-     * @originalName isActive
+     * Get a query builder filtered to active clients.
      *
-     * @originalFile Client.php
+     * @return \Illuminate\Database\Eloquent\Builder A query builder scoped to records where `client_active` equals 1.
      */
     public function isActive(): \Illuminate\Database\Eloquent\Builder
     {

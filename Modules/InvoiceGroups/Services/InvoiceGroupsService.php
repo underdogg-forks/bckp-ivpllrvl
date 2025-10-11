@@ -61,10 +61,11 @@ class InvoiceGroupsService extends BaseService
     }
 
     /**
-     * Set the next invoice number using Eloquent.
+     * Advance the next invoice sequence for the specified invoice group by one.
      *
-     * @param int $invoice_group_id
-     * @return void
+     * If no invoice group exists with the given ID, the method performs no action.
+     *
+     * @param int $invoice_group_id The ID of the invoice group whose `invoice_group_next_id` will be incremented.
      */
     public function setNextInvoiceNumber(int $invoice_group_id): void
     {

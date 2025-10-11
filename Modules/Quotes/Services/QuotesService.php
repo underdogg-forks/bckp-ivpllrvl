@@ -79,10 +79,10 @@ class QuotesService extends BaseService
     }
 
     /**
-     * Create a quote and related records using Eloquent.
+     * Create a quote record and its related amount and default tax records.
      *
-     * @param array|null $db_array
-     * @return int
+     * @param array|null $db_array Optional associative array of quote attributes to set before saving.
+     * @return int The created quote's primary key (`quote_id`).
      */
     public function create(?array $db_array = null): int
     {
@@ -105,9 +105,11 @@ class QuotesService extends BaseService
     }
 
     /**
-     * Copy a quote's line items, tax rates, discounts, and custom fields from one quote to another.
+     * Copy line items, tax rates, global discount, and non-primary-key custom fields from one quote to another.
      *
-     * Copies the source quote's global discount to the target, duplicates each quote item (preserving name, description, quantity, price, tax rate and product/unit references) while applying the source's global discount, copies the source's quote tax rates to the target, and copies non-primary-key custom fields from the source to the target.
+     * Duplicates each item from the source quote into the target while preserving item name, description,
+     * quantity, price, tax rate, product/unit references, and applies the source quote's global discount to the copied items.
+     * Also copies the source quote's tax rate entries and any custom fields (excluding primary key) to the target.
      *
      * @param int $source_id The ID of the quote to copy from.
      * @param int $target_id The ID of the quote to copy to.
@@ -351,9 +353,11 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName approveQuoteByKey
+     * Approve a quote identified by its URL key.
      *
-     * @originalFile Quote.php
+     * Updates the quote's status to approved (4) for any quote matching the given URL key that is currently in sent (2) or viewed (3) status.
+     *
+     * @param string $quote_url_key The quote's public URL key.
      */
     public function approveQuoteByKey($quote_url_key)
     {
@@ -364,9 +368,12 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName rejectQuoteByKey
+     * Mark the quote identified by the given URL key as rejected when its current status is "sent" or "viewed".
      *
-     * @originalFile Quote.php
+     * Updates matching quotes' status to the rejected status (5) for records whose `quote_url_key` equals
+     * the provided key and whose current `quote_status_id` is 2 (sent) or 3 (viewed).
+     *
+     * @param string $quote_url_key The public URL key of the quote.
      */
     public function rejectQuoteByKey($quote_url_key)
     {
@@ -377,9 +384,11 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName approveQuoteById
+     * Mark a quote as approved if its current status is "sent" or "viewed".
      *
-     * @originalFile Quote.php
+     * Updates the quote's status to approved for the given quote id only when the quote is in status 2 (sent) or 3 (viewed).
+     *
+     * @param int $quote_id The ID of the quote to approve.
      */
     public function approveQuoteById($quote_id)
     {
@@ -390,9 +399,9 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName rejectQuoteById
+     * Mark the specified quote as rejected when its current status is "sent" or "viewed".
      *
-     * @originalFile Quote.php
+     * @param int $quote_id The ID of the quote to reject.
      */
     public function rejectQuoteById($quote_id)
     {
@@ -403,9 +412,11 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName markViewed
+     * Change a quote's status from "sent" to "viewed" when the quote is currently sent.
      *
-     * @originalFile Quote.php
+     * If the quote exists and its status is "sent", this updates the status to "viewed".
+     *
+     * @param int $quote_id The ID of the quote to mark as viewed.
      */
     public function markViewed($quote_id)
     {
@@ -420,9 +431,11 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName markSent
+     * Set a quote's status to "sent" when the quote is currently a draft.
      *
-     * @originalFile Quote.php
+     * Updates the quote's `quote_status_id` to 2 if the quote exists and its current `quote_status_id` is 1.
+     *
+     * @param int $quote_id The ID of the quote to mark as sent.
      */
     public function markSent($quote_id)
     {
@@ -437,9 +450,13 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName generateQuoteNumberIfApplicable
+     * Assigns a generated quote number to a draft quote when application settings require it.
      *
-     * @originalFile Quote.php
+     * Checks the specified quote; if it exists, has status 1 (draft), has an empty quote_number,
+     * and the `generate_quote_number_for_draft` setting is 0, generates a new quote number for the
+     * quote's invoice group and updates the quote record with that number.
+     *
+     * @param int $quote_id The ID of the quote to evaluate and potentially update.
      */
     public function generateQuoteNumberIfApplicable($quote_id)
     {
@@ -452,6 +469,11 @@ class QuotesService extends BaseService
         }
     }
 
+    /**
+     * Retrieve all quotes with their related user, client, quoteAmount, and invoice models, ordered by creation date, quote number, and quote id in descending order.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Collection of Quote models with the specified relations loaded.
+     */
     public function getQuotesWithRelations(): \Illuminate\Database\Eloquent\Collection
     {
         return Quote::with(['user', 'client', 'quoteAmount', 'invoice'])

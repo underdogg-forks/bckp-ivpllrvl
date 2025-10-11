@@ -21,9 +21,10 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * @originalName index
+     * Displays the projects index page with paginated projects and filter settings.
      *
-     * @originalFile ProjectsController.php
+     * @param int $page Page number for pagination (starting at 0).
+     * @return string Rendered view containing the paginated project list and filter configuration.
      */
     public function index($page = 0)
     {
@@ -34,14 +35,11 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * Display and process the project create/edit form.
-     *
-     * Validates and saves submitted project data, handles cancel redirects, and prepares
-     * project and active clients data for rendering the form view.
-     *
-     * @param int|null $id Project ID to edit, or null to create a new project.
-     * @return mixed Rendered view for the project form, or a redirect/response issued after submit or cancel.
-     */
+         * Render the project creation/edit form populated with the specified project and active clients.
+         *
+         * @param int $id The project identifier to edit.
+         * @return string The rendered view content for the projects form.
+         */
     public function form($id = null)
     {
         if ($this->input->post('btn_cancel')) {
@@ -67,10 +65,9 @@ use Modules\Tasks\Services\TasksService;
 class ProjectsController extends BaseController
 {
     /**
-     * Initialize the controller by assigning injected services and loading the projects model.
+     * Assigns service dependencies to the controller and loads the projects model.
      *
-     * Loads the `mdl_projects` model and makes ClientsService, ProjectsService, and TasksService
-     * available to the controller via constructor property promotion.
+     * Loads the `mdl_projects` model into the controller so project-related model methods are available.
      */
     public function __construct(
         private ClientsService $clientsService,
@@ -82,10 +79,10 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * Render the project creation/edit form populated with the specified project and active clients.
+     * Renders the project creation/edit form populated with the specified project and active clients.
      *
      * @param int $id The project identifier to edit.
-     * @return string The rendered view content for the projects form.
+     * @return string The rendered HTML content of the projects form.
      */
 
     public function form(int $id)
@@ -122,9 +119,9 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * @originalName delete
+     * Deletes a project, updates tasks that reference it, and redirects to the projects list.
      *
-     * @originalFile ProjectsController.php
+     * @param int|string $id The identifier of the project to delete.
      */
     public function delete($id)
     {

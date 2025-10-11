@@ -13,6 +13,14 @@ use Modules\Units\Services\UnitsService;
 #[AllowDynamicProperties]
 class ProductsController extends AdminController
 {
+    /**
+     * Display a paginated list of products.
+     *
+     * The returned view is populated with the paginated products and settings
+     * controlling the filter UI (display flag, placeholder text, and filter method).
+     *
+     * @return \Illuminate\Contracts\View\View The products index view with paginated products and filter configuration.
+     */
     public function index(Request $request, int $page = 0): \Illuminate\Contracts\View\View
     {
         $service = new ProductsService();
@@ -66,6 +74,12 @@ class ProductsController extends AdminController
         ]);
     }
 
+    /**
+     * Delete the specified product and redirect to the products index.
+     *
+     * @param int|string $id Identifier of the product to delete.
+     * @return \Illuminate\Http\RedirectResponse Redirect response to the products index route.
+     */
     public function delete($id)
     {
         (new ProductsService())->delete($id);

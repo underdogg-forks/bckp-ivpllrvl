@@ -34,11 +34,11 @@ class UnitsService extends BaseService
     }
 
     /**
-     * Get the name or plural name for a unit based on quantity using Eloquent.
+     * Selects the singular or plural label for a unit identified by ID based on the provided quantity.
      *
-     * @param int $unit_id
-     * @param int $quantity
-     * @return string|null
+     * @param int $unit_id The unit's primary identifier.
+     * @param int $quantity The quantity used to decide form; values less than -1 or greater than 1 use the plural form.
+     * @return string|null The unit's name in the appropriate form, or `null` if no unit exists with the given ID.
      */
     public function getName(int $unit_id, int $quantity): ?string
     {

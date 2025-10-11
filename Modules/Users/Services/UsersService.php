@@ -163,9 +163,13 @@ class UsersService extends BaseService
     }
 
     /**
-     * @originalName saveChangePassword
+     * Update the stored password and salt for the given user and set a success flash message.
      *
-     * @originalFile User.php
+     * Updates the user's password hash and salt in persistent storage for the user with the
+     * specified identifier, then sets a session flash message indicating the password change.
+     *
+     * @param int $user_id The identifier of the user to update.
+     * @param string $password The new plaintext password to be salted and hashed before storage.
      */
     public function saveChangePassword($user_id, $password): void
     {

@@ -130,11 +130,11 @@ class ItemsService extends BaseService
     }
 
     /**
-     * Retrieve the total of item subtotals for a given invoice.
-     *
-     * @param int|string $invoice_id The invoice identifier.
-     * @return float|null The sum of `item_subtotal` for all items on the invoice, or `null` if the invoice has no items.
-     */
+         * Calculate the sum of `item_subtotal` for all items belonging to the specified invoice.
+         *
+         * @param int|string $invoice_id The invoice identifier.
+         * @return float The summed `item_subtotal` value for the invoice; returns `0` if there are no matching items.
+         */
     public function getItemsSubtotal($invoice_id)
     {
         $result = \Illuminate\Support\Facades\DB::table('ip_invoice_item_amounts')

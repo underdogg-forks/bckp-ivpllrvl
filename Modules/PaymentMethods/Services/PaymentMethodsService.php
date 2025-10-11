@@ -23,9 +23,9 @@ class PaymentMethodsService extends BaseService
     }
 
     /**
-     * @originalName orderBy
+     * Applies the default ordering to the query.
      *
-     * @originalFile PaymentMethod.php
+     * Orders results by the payment method name column (`ip_payment_methods.payment_method_name`).
      */
     public function orderBy()
     {
@@ -35,12 +35,11 @@ class PaymentMethodsService extends BaseService
     /**
      * Provide validation rules for payment method fields.
      *
-     * Returns an array mapping field keys to their validation configuration
-     * for use by the application's validator.
+     * Each entry maps a field key to an array with keys 'field', 'label', and 'rules' used by the validator.
      *
      * @return array{
      *     payment_method_name: array{field: string, label: string, rules: string}
-     * } Array where each entry contains 'field', 'label', and 'rules' for the field.
+     * } Mapping of field keys to their validation configuration.
      */
     public function validationRules()
     {

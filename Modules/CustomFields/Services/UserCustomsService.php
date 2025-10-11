@@ -52,9 +52,11 @@ class UserCustomsService extends BaseService
     }
 
     /**
-     * @originalName saveCustom
+     * Persist custom field values from the service's form data for the specified user.
      *
-     * @originalFile UserCustom.php
+     * @param int|string $user_id The identifier of the user to save custom fields for.
+     * @param array $db_array Data passed to the validator.
+     * @return true|mixed `true` if validation passed and form data (if any) were saved or there was nothing to save; otherwise the validation error information returned by validate().
      */
     public function saveCustom($user_id, $db_array)
     {
@@ -97,9 +99,10 @@ class UserCustomsService extends BaseService
     }
 
     /**
-     * @originalName getByUseid
+     * Retrieve custom field records for a specific user.
      *
-     * @originalFile UserCustom.php
+     * @param int $user_id The user's ID to filter records by.
+     * @return array An array of matching user custom field records.
      */
     public function getByUseid($user_id)
     {
