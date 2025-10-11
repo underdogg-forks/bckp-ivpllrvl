@@ -16,6 +16,20 @@
     --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
     --sidebar-border: hsl(var(--sidebar-border));
     --sidebar-ring: hsl(var(--sidebar-ring));
+    
+    /* Welcome page colors */
+    --color-welcome-bg: var(--welcome-bg);
+    --color-welcome-text: var(--welcome-text);
+    --color-welcome-text-muted: var(--welcome-text-muted);
+    --color-welcome-border: var(--welcome-border);
+    --color-welcome-border-hover: var(--welcome-border-hover);
+    --color-welcome-accent: var(--welcome-accent);
+    --color-welcome-accent-dark: var(--welcome-accent-dark);
+    --color-welcome-card-bg: var(--welcome-card-bg);
+    --color-welcome-hero-bg: var(--welcome-hero-bg);
+    --color-welcome-dot-bg: var(--welcome-dot-bg);
+    --color-welcome-button-bg: var(--welcome-button-bg);
+    --color-welcome-button-text: var(--welcome-button-text);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -40,6 +54,51 @@
     .hover\:text-sidebar-accent-foreground:hover {
         color: hsl(var(--sidebar-accent-foreground));
     }
+    
+    /* Welcome page utility classes */
+    .bg-welcome {
+        background-color: rgb(var(--welcome-bg));
+    }
+    
+    .text-welcome {
+        color: rgb(var(--welcome-text));
+    }
+    
+    .text-welcome-muted {
+        color: rgb(var(--welcome-text-muted));
+    }
+    
+    .border-welcome {
+        border-color: rgb(var(--welcome-border));
+    }
+    
+    .hover\:border-welcome-hover:hover {
+        border-color: rgb(var(--welcome-border-hover));
+    }
+    
+    .text-welcome-accent {
+        color: rgb(var(--welcome-accent));
+    }
+    
+    .bg-welcome-card {
+        background-color: rgb(var(--welcome-card-bg));
+    }
+    
+    .bg-welcome-hero {
+        background-color: rgb(var(--welcome-hero-bg));
+    }
+    
+    .bg-welcome-dot {
+        background-color: rgb(var(--welcome-dot-bg));
+    }
+    
+    .bg-welcome-button {
+        background-color: rgb(var(--welcome-button-bg));
+    }
+    
+    .text-welcome-button {
+        color: rgb(var(--welcome-button-text));
+    }
 }
 
 @layer base {
@@ -50,6 +109,22 @@
         --sidebar-accent-foreground: 210 40% 98%;
         --sidebar-border: 214 32% 91%;
         --sidebar-ring: 221 83% 53%;
+        
+        /* Welcome page light mode colors */
+        --welcome-bg: 253 253 252;  /* #FDFDFC */
+        --welcome-text: 27 27 24;  /* #1b1b18 */
+        --welcome-text-muted: 112 111 108;  /* #706f6c */
+        --welcome-border: 227 227 224;  /* #e3e3e0 */
+        --welcome-border-hover: 98 96 91 / 0.29;  /* #62605b with opacity */
+        --welcome-accent: 245 48 3;  /* #f53003 */
+        --welcome-accent-dark: 255 68 51;  /* #FF4433 */
+        --welcome-card-bg: 255 255 255;  /* white */
+        --welcome-hero-bg: 255 242 242;  /* #fff2f2 */
+        --welcome-dot-bg: 219 219 215;  /* #dbdbd7 */
+        --welcome-button-bg: 27 27 24;  /* #1b1b18 */
+        --welcome-button-text: 255 255 255;  /* white */
+        --welcome-button-bg-alt: 238 238 236;  /* #eeeeec */
+        --welcome-button-text-alt: 28 28 26;  /* #1C1C1A */
     }
 
     .dark {
@@ -59,6 +134,22 @@
         --sidebar-accent-foreground: 217 33% 17%;
         --sidebar-border: 215 25% 27%;
         --sidebar-ring: 221 83% 65%;
+        
+        /* Welcome page dark mode colors */
+        --welcome-bg: 10 10 10;  /* #0a0a0a */
+        --welcome-text: 237 237 236;  /* #EDEDEC */
+        --welcome-text-muted: 161 160 154;  /* #A1A09A */
+        --welcome-border: 62 62 58;  /* #3E3E3A */
+        --welcome-border-hover: 98 96 91;  /* #62605b */
+        --welcome-accent: 246 21 0;  /* #F61500 */
+        --welcome-accent-dark: 255 68 51;  /* #FF4433 */
+        --welcome-card-bg: 22 22 21;  /* #161615 */
+        --welcome-hero-bg: 29 0 2;  /* #1D0002 */
+        --welcome-dot-bg: 62 62 58;  /* #3E3E3A */
+        --welcome-button-bg: 238 238 236;  /* #eeeeec */
+        --welcome-button-text: 28 28 26;  /* #1C1C1A */
+        --welcome-button-bg-alt: 27 27 24;  /* #1b1b18 */
+        --welcome-button-text-alt: 255 255 255;  /* white */
     }
 }
 
