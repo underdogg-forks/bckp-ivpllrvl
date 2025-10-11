@@ -4,6 +4,7 @@ namespace Modules\Invoices\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Invoices\Models\InvoiceRecurring;
 
 #[AllowDynamicProperties]
 class InvoicesRecurringService extends BaseService
@@ -73,8 +74,7 @@ class InvoicesRecurringService extends BaseService
     public function stop($invoice_recurring_id)
     {
         $db_array = ['recur_end_date' => date('Y-m-d'), 'recur_next_date' => null];
-        $this->db->where('invoice_recurring_id', $invoice_recurring_id);
-        $this->db->update('ip_invoices_recurring', $db_array);
+        InvoiceRecurring::query()->where('invoice_recurring_id', $invoice_recurring_id)->update($db_array);
     }
 
     /**
@@ -99,7 +99,6 @@ class InvoicesRecurringService extends BaseService
         $invoice_recurring = $this->where('invoice_recurring_id', $invoice_recurring_id)->get()->row();
         $recur_next_date   = increment_date($invoice_recurring->recur_next_date, $invoice_recurring->recur_frequency);
         $db_array          = ['recur_next_date' => $recur_next_date];
-        $this->db->where('invoice_recurring_id', $invoice_recurring_id);
-        $this->db->update('ip_invoices_recurring', $db_array);
+        InvoiceRecurring::query()->where('invoice_recurring_id', $invoice_recurring_id)->update($db_array);
     }
 }
