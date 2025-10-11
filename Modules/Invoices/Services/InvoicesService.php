@@ -525,20 +525,18 @@ class InvoicesService extends BaseService
     {
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice)) {
-            $up = false;
+            $update_data = [];
+            
             if ($invoice->invoice_status_id == 2) {
-                $up = true;
-                $this->db->set('invoice_status_id', 3);
+                $update_data['invoice_status_id'] = 3;
             }
             // Set the invoice to read-only if feature is not disabled and setting is view
             if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 3) {
-                $up = true;
-                $this->db->set('is_read_only', 1);
+                $update_data['is_read_only'] = 1;
             }
             // Save?
-            if ($up) {
-                $this->db->where('invoice_id', $invoice_id);
-                $this->db->update('ip_invoices');
+            if (!empty($update_data)) {
+                Invoice::query()->where('invoice_id', $invoice_id)->update($update_data);
             }
         }
     }
@@ -552,22 +550,20 @@ class InvoicesService extends BaseService
     {
         $invoice = $this->getById($invoice_id);
         if ( ! empty($invoice)) {
-            $up = false;
+            $update_data = [];
+            
             if ($invoice->invoice_status_id == 1) {
                 // Set new due date and save
                 $this->updateInvoiceDueDate($invoice_id);
-                $up = true;
-                $this->db->set('invoice_status_id', 2);
+                $update_data['invoice_status_id'] = 2;
             }
             // Set the invoice to read-only if feature is not disabled and setting is sent
             if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 2) {
-                $up = true;
-                $this->db->set('is_read_only', 1);
+                $update_data['is_read_only'] = 1;
             }
             // Save?
-            if ($up) {
-                $this->db->where('invoice_id', $invoice_id);
-                $this->db->update('ip_invoices');
+            if (!empty($update_data)) {
+                Invoice::query()->where('invoice_id', $invoice_id)->update($update_data);
             }
         }
     }
