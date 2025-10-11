@@ -9,8 +9,8 @@
     <div id="headerbar">
         <h1 class="headerbar-title">{{ __('custom_field_form') }}</h1>
         @include('layout.header_buttons')
-        <div class="headerbar-item pull-right">
-            <a href="{{ url('custom_values/field/' . $custom_field_id) }}" class="btn btn-sm btn-default">
+        <div class="headerbar-item float-right">
+            <a href="{{ url('custom_values/field/' . $custom_field_id) }}" class="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                 <i class="fa fa-list fa-margin"></i> {{ __('values') }}
             </a>
         </div>
@@ -19,20 +19,20 @@
         <input type="hidden" name="custom_field_table" value="{{ $custom_field_table " }}>
         <input type="hidden" name="custom_field_type" value="{{ $custom_field_type " }}>
     @endif
-    <div id="content" class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div id="content" class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 md:w-1/2 col-md-offset-3">
             @include('layout.alerts')
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="custom_field_label">{{ __('label') }}</label>
-                <input type="text" name="custom_field_label" id="custom_field_label" class="form-control"
+                <input type="text" name="custom_field_label" id="custom_field_label" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_custom_fields->form_value('custom_field_label', true) }}" required>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="custom_field_table">{{ __('table') }}</label>
                 <select name="custom_field_table" id="custom_field_table"
-                        class="form-control simple-select"{{ $disabled ?: ' required' }}>
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"{{ $disabled ?: ' required' }}>
                     @php
                         // New field? Auto select (work if come from custom_fields/table/*)
                         $custom_field_table = $custom_field_table ?: (isset($_SERVER['HTTP_REFERER']) ? 'ip_' . basename($_SERVER['HTTP_REFERER']) . '_custom' : '');
@@ -45,16 +45,16 @@
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="custom_field_location">{{ __('position') }}</label>
                 <select name="custom_field_location" id="custom_field_location"
-                        class="form-control simple-select"></select>
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"></select>
             </div>
 
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="custom_field_type">{{ __('type') }}</label>
                 <select name="custom_field_type" id="custom_field_type"
-                        class="form-control simple-select"{{ $disabled ?: ' required' }}>
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"{{ $disabled ?: ' required' }}>
                     @foreach ($custom_field_types as $type)
                         @php
                             $alpha = str_replace('-', '_', mb_strtolower($type));
@@ -65,9 +65,9 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group">
+            <div class="mb-4">
                 <label for="custom_field_order">{{ __('order') }}</label>
-                <input type="number" name="custom_field_order" id="custom_field_order" class="form-control"
+                <input type="number" name="custom_field_order" id="custom_field_order" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                        value="{{ $this->mdl_custom_fields->form_value('custom_field_order', true) " }}>
             </div>
         </div>

@@ -15,17 +15,17 @@
         <input class="hidden" name="is_update" type="hidden"
                value="{{ $this->mdl_email_templates->form_value('is_update') ? '1' : '0' " }}>
 
-        <div class="row">
-            <div class="col-xs-12 col-md-8 col-md-offset-2">
+        <div class="flex flex-wrap -mx-4">
+            <div class="w-full px-4 col-md-8 col-md-offset-2">
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_title" class="control-label">@lang('title')</label>
                     <input type="text" name="email_template_title" id="email_template_title"
                            value="{{ $this->mdl_email_templates->form_value('email_template_title', true) }}"
-                           class="form-control" required>
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" required>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_type" class="control-label">@lang('type')</label>
                     <div class="radio">
                         <label>
@@ -45,51 +45,51 @@
 
                 <hr>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_from_name" class="control-label">
                         @lang('from_name')
                     </label>
                     <input type="text" name="email_template_from_name" id="email_template_from_name"
-                           class="form-control taggable"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors taggable"
                            value="{{ $this->mdl_email_templates->form_value('email_template_from_name', true) " }}>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_from_email" class="control-label">
                         @lang('from_email')
                     </label>
                     <input type="text" name="email_template_from_email" id="email_template_from_email"
-                           class="form-control taggable"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors taggable"
                            value="{{ $this->mdl_email_templates->form_value('email_template_from_email', true) " }}>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_cc" class="control-label">@lang('cc')</label>
-                    <input type="text" name="email_template_cc" id="email_template_cc" class="form-control taggable"
+                    <input type="text" name="email_template_cc" id="email_template_cc" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors taggable"
                            value="{{ $this->mdl_email_templates->form_value('email_template_cc', true) " }}>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_bcc" class="control-label">@lang('bcc'): </label>
-                    <input type="text" name="email_template_bcc" id="email_template_bcc" class="form-control taggable"
+                    <input type="text" name="email_template_bcc" id="email_template_bcc" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors taggable"
                            value="{{ $this->mdl_email_templates->form_value('email_template_bcc', true) " }}>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_subject" class="control-label">
                         @lang('subject')
                     </label>
                     <input type="text" name="email_template_subject" id="email_template_subject"
-                           class="form-control taggable"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors taggable"
                            value="{{ $this->mdl_email_templates->form_value('email_template_subject', true) " }}>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="email_template_pdf_template" class="control-label">
                         @lang('pdf_template'):
                     </label>
                     <select name="email_template_pdf_template" id="email_template_pdf_template"
-                            class="form-control simple-select">
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                         <option value="">@lang('none')</option>
 
                         <optgroup label="@lang('invoices')">
@@ -114,42 +114,42 @@
 
                 <hr>
 
-                <div class="row">
-                    <div class="col-xs-12 col-md-6">
+                <div class="flex flex-wrap -mx-4">
+                    <div class="w-full px-4 md:w-1/2">
 
-                        <div class="form-group">
+                        <div class="mb-4">
                             <label for="email_template_body">@lang('body')</label>
 
                             <br>
 
-                            <div class="html-tags btn-group btn-group-sm">
-                                <span class="html-tag btn btn-default" data-tag-type="text-paragraph">
+                            <div class="html-tags inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-paragraph">
                                     <i class="fa fa-fw fa-paragraph"></i>
                                 </span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-linebreak">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-linebreak">
                                     &lt;br&gt;
                                 </span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-bold">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-bold">
                                     <i class="fa fa-fw fa-bold"></i>
                                 </span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-italic">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-italic">
                                     <i class="fa fa-fw fa-italic"></i>
                                 </span>
                             </div>
-                            <div class="html-tags btn-group btn-group-sm">
-                                <span class="html-tag btn btn-default" data-tag-type="text-h1">H1</span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-h2">H2</span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-h3">H3</span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-h4">H4</span>
+                            <div class="html-tags inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-h1">H1</span>
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-h2">H2</span>
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-h3">H3</span>
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-h4">H4</span>
                             </div>
-                            <div class="html-tags btn-group btn-group-sm">
-                                <span class="html-tag btn btn-default" data-tag-type="text-code">
+                            <div class="html-tags inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-code">
                                     <i class="fa fa-fw fa-code"></i>
                                 </span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-hr">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-hr">
                                     &lt;hr/&gt;
                                 </span>
-                                <span class="html-tag btn btn-default" data-tag-type="text-css">
+                                <span class="html-tag inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" data-tag-type="text-css">
                                     CSS
                                 </span>
                             </div>
@@ -158,19 +158,19 @@
                                 name="email_template_body"
                                 id="email_template_body"
                                 rows="8"
-                                class="email-template-body form-control taggable"
+                                class="email-template-body w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors taggable"
                             >{{ $this->mdl_email_templates->form_value('email_template_body', true) }}</textarea>
 
                             <br>
 
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
+                            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                                     @lang('preview')
-                                    <span id="email-template-preview-reload" class="pull-right cursor-pointer">
+                                    <span id="email-template-preview-reload" class="float-right cursor-pointer">
                                         <i class="fa fa-refresh"></i>
                                     </span>
                                 </div>
-                                <div class="panel-body">
+                                <div class="p-6">
                                     <iframe id="email-template-preview"></iframe>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@
                         </div>
 
                     </div>
-                    <div class="col-xs-12 col-md-6">
+                    <div class="w-full px-4 md:w-1/2">
 
                         @include('email_templates.template-tags')
 

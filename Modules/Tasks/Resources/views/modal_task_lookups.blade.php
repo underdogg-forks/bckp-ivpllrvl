@@ -76,12 +76,12 @@
     });
 </script>
 
-<div id="modal-choose-items" class="modal col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2"
+<div id="modal-choose-items" class="modal w-full px-4 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2"
      role="dialog" aria-labelledby="modal-choose-items" aria-hidden="true">
     <form class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
-            <h4 class="panel-title">@lang('add_task')</h4>
+            <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">@lang('add_task')</h4>
         </div>
 
         <div class="modal-body">
@@ -89,12 +89,12 @@
         </div>
 
         <div class="modal-footer">
-            <div class="btn-group">
-                <button id="task-modal-submit" class="select-items-confirm btn btn-success" type="button">
+            <div class="inline-flex rounded-md shadow-sm">
+                <button id="task-modal-submit" class="select-items-confirm inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" type="button">
                     <i class="fa fa-check"></i>
                     @lang('submit')
                 </button>
-                <button class="btn btn-danger" type="button" data-dismiss="modal">
+                <button class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i>
                     @lang('cancel')
                 </button>

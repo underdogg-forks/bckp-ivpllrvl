@@ -9,32 +9,32 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('quote') #{{ $quote->quote_number }}</h1>
 
-    <div class="headerbar-item pull-right">
-        <div class="btn-group btn-group-sm">
+    <div class="headerbar-item float-right">
+        <div class="inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
             @if(in_array($quote->quote_status_id, [2, 3]))
             <a href="{{ url('guest/quotes/approve/' . $quote->quote_id) }}"
-               class="btn btn-success">
+               class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
                 <i class="fa fa-check"></i>
                 @lang('approve_this_quote')
             </a>
             <a href="{{ url('guest/quotes/reject/' . $quote->quote_id) }}"
-               class="btn btn-danger">
+               class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
                 <i class="fa fa-times-circle"></i>
                 @lang('reject_this_quote')
             </a>
             @elseif($quote->quote_status_id == 4)
-            <a href="#" class="btn btn-success disabled">
+            <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors disabled">
                 <i class="fa fa-check"></i>
                 @lang('quote_approved')
             </a>
             @elseif($quote->quote_status_id == 5)
-            <a href="#" class="btn btn-danger disabled">
+            <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled">
                 <i class="fa fa-times-circle"></i>
                 @lang('quote_rejected')
             </a>
             @endif
             <a href="{{ url('guest/quotes/generate_pdf/' . $quote_id) }}"
-               class="btn btn-default" id="btn_generate_pdf" target="_blank">
+               class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" id="btn_generate_pdf" target="_blank">
                 <i class="fa fa-print"></i> @lang('download_pdf')
             </a>
         </div>
@@ -49,10 +49,10 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
 
     <div class="quote">
 
-        <div class="row">
+        <div class="flex flex-wrap -mx-4">
 
-            <div class="col-xs-12 col-md-9 clearfix">
-                <div class="pull-left">
+            <div class="w-full px-4 col-md-9 clear-both">
+                <div class="float-left">
 
                     <h3>{!! format_client($quote) !!}</h3>
                     <div class="client-address">
@@ -69,9 +69,9 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
                 </div>
             </div>
 
-            <div class="col-xs-12 col-md-3">
+            <div class="w-full px-4 md:w-1/4">
 
-                <table class="table table-bordered">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700">
                     <tr>
                         <td>@lang('quote') #</td>
                         <td>{{ $quote->quote_number }}</td>
@@ -91,8 +91,8 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
         </div>
 
         <br/>
-        <div class="table-responsive">
-            <table class="table table-bordered">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700">
                 <thead>
                 <tr>
                     <th></th>
@@ -108,24 +108,24 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
                     <td rowspan="2" style="width:20px;" class="text-center">{{ 1 + $i }}</td>
                     <td>{!! $item->item_name !!}</td>
                     <td>
-                        <span class="pull-left">@lang('quantity')</span>
+                        <span class="float-left">@lang('quantity')</span>
                         <span
-                            class="pull-right amount">{{ format_quantity($item->item_quantity) . ' ' . htmlsc($item->item_product_unit) }}</span>
+                            class="float-right amount">{{ format_quantity($item->item_quantity) . ' ' . htmlsc($item->item_product_unit) }}</span>
                     </td>
                     <td>
-                        <span class="pull-left">@lang('price')</span>
-                        <span class="pull-right amount">{{ format_currency($item->item_price) }}</span>
+                        <span class="float-left">@lang('price')</span>
+                        <span class="float-right amount">{{ format_currency($item->item_price) }}</span>
                     </td>
                     <td>
-                        <span class="pull-left">@lang('subtotal')</span>
-                        <span class="pull-right amount">{{ format_currency($item->item_subtotal) }}</span>
+                        <span class="float-left">@lang('subtotal')</span>
+                        <span class="float-right amount">{{ format_currency($item->item_subtotal) }}</span>
                     </td>
                 </tr>
                 <tr>
                     <td class="text-muted">{{ nl2br(e($item->item_description)) }}</td>
                     <td>
-                        <span class="pull-left">@lang('discount')</span>
-                        <span class="pull-right amount">
+                        <span class="float-left">@lang('discount')</span>
+                        <span class="float-right amount">
                             <span data-toggle="tooltip" data-placement="bottom" title="@lang('item_discount')">
                                 {{ format_currency($item->item_discount) }}
                             </span>
@@ -144,13 +144,13 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
                         </span>
                     </td>
                     <td>
-                        <span class="pull-left">@lang('tax')</span>
-                        <span class="pull-right amount">{{ $item->item_tax_rate_percent ? $item->item_tax_rate_name . ' (' . format_amount($item->item_tax_rate_percent) . '%): ' : '';
+                        <span class="float-left">@lang('tax')</span>
+                        <span class="float-right amount">{{ $item->item_tax_rate_percent ? $item->item_tax_rate_name . ' (' . format_amount($item->item_tax_rate_percent) . '%): ' : '';
     echo format_currency($item->item_tax_total) }}</span>
                     </td>
                     <td>
-                        <span class="pull-left">@lang('total')</span>
-                        <span class="pull-right amount">{{ format_currency($item->item_total) }}</span>
+                        <span class="float-left">@lang('total')</span>
+                        <span class="float-right amount">{{ format_currency($item->item_total) }}</span>
                     </td>
                 </tr>
                 </tbody>
@@ -160,8 +160,8 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
             </table>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-bordered">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700">
                 <thead>
                 <tr>
                     @if(!$legacy_calculation)
@@ -197,7 +197,7 @@ $global_discount = $quote->quote_discount_percent > 0 ? format_amount($quote->qu
             </table>
         </div>
     </div>
-    <div class="col-xs-12 col-md-6">
+    <div class="w-full px-4 md:w-1/2">
 
         @php _dropzone_html()
 

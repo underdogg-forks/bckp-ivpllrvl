@@ -1,5 +1,5 @@
 
-<div class="sidebar hidden-xs">
+<div class="sidebar hidden sm:block">
     <ul>
         <li>
             <a href="{{ url('clients/index');

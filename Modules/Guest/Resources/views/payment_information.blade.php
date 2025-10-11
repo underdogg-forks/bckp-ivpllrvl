@@ -40,7 +40,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default ">
+<nav class="navbar navbar-default">
     <div class="container">
 
         <div class="navbar-brand">
@@ -60,8 +60,8 @@
 
 <div class="container">
 
-    <div class="row">
-        <div class="col-xs-12 col-md-8 col-md-offset-2">
+    <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4 col-md-8 col-md-offset-2">
 
             <br>
             @php $logo = invoice_logo();
@@ -69,16 +69,16 @@
 {$logo  <br><br>}
 @endif
 
-            <div class="form-group">
+            <div class="mb-4">
                 {{ $this->layout->loadView('layout/alerts', ['without_margin' => true]) }}
             </div>
 
-            <div class="panel panel-default">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
 
-                <div class="panel-body">
+                <div class="p-6">
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-7">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 col-md-7">
                             <h4>
                                 {!! format_client($invoice) !!}
                             </h4>
@@ -87,26 +87,26 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-md-5">
-                            <div class="hidden-md hidden-lg"><br></div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-condensed no-margin">
+                        <div class="w-full px-4 col-md-5">
+                            <div class="md:hidden lg:block lg:hidden"><br></div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700 table-condensed no-margin">
                                     <tbody>
                                     <tr>
                                         <td>{{ __('invoice_date') }}</td>
                                         <td class="text-right">{{ date_from_mysql($invoice->invoice_date_created) }}</td>
                                     </tr>
-                                    <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
+                                    <tr class="{{ $is_overdue ? 'overdue' : ''" }}>
                                         <td>{{ __('due_date') }}</td>
                                         <td class="text-right">
                                             {{ date_from_mysql($invoice->invoice_date_due) }}
                                         </td>
                                     </tr>
-                                    <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
+                                    <tr class="{{ $is_overdue ? 'overdue' : ''" }}>
                                         <td>{{ __('total') }}</td>
                                         <td class="text-right">{{ format_currency($invoice->invoice_total) }}</td>
                                     </tr>
-                                    <tr class="{{ $is_overdue ? 'overdue' : '' " }}>
+                                    <tr class="{{ $is_overdue ? 'overdue' : ''" }}>
                                         <td>{{ __('balance') }}</td>
                                         <td class="text-right">{{ format_currency($invoice->invoice_balance) }}</td>
                                     </tr>
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         @if(!empty($invoice->invoice_terms))
-                        <div class="col-xs-12 text-muted">
+                        <div class="w-full px-4 text-muted">
                             <br>
                             <h4>@lang('terms')</h4>
                             <div>{!! nl2br($invoice->invoice_terms) !!}</div>

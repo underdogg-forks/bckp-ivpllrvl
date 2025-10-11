@@ -1,13 +1,13 @@
 
-<div class="panel panel-default">
-    <div class="panel-heading">@lang('email_template_tags')</div>
-    <div class="panel-body">
+<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('email_template_tags')</div>
+    <div class="p-6">
 
         <p class="small">@lang('email_template_tags_instructions')</p>
 
-        <div class="form-group">
+        <div class="mb-4">
             <label for="tags_client">@lang('client')</label>
-            <select id="tags_client" class="tag-select form-control">
+            <select id="tags_client" class="tag-select w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                 <option value="{{{client_name}" }}>
                     @lang('client_name')
                 </option>
@@ -86,9 +86,9 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="mb-4">
             <label for="tags_user">@lang('user')</label>
-            <select id="tags_user" class="tag-select form-control">
+            <select id="tags_user" class="tag-select w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                 <option value="{{{user_name}" }}>
                     @lang('name')
                 </option>
@@ -178,9 +178,9 @@
 
         @include('email_templates.template-tags-invoices')
 
-        <div class="form-group">
+        <div class="mb-4">
             <label for="tags_quote">@lang('quotes')</label>
-            <select id="tags_quote" class="tag-select form-control">
+            <select id="tags_quote" class="tag-select w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                 <option value="{{{quote_number}" }}>
                     @lang('id')
                 </option>
@@ -223,9 +223,9 @@
             </select>
         </div>
         @if($sumex)
-        <div class="form-group">
+        <div class="mb-4">
             <label for="tags_sumex">@lang('invoice_sumex')</label>
-            <select id="tags_sumex" class="tag-select form-control">
+            <select id="tags_sumex" class="tag-select w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                 <option value="{{{sumex_reason}" }}>
                     @lang('reason')
                 </option>

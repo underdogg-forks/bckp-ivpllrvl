@@ -106,7 +106,7 @@ $edit_user_title = trans('edit') . ' ' . trans('user') . ' (' . trans('invoicing
                             $('#' + key).parent().addClass('has-error');
                             all_resp_errors += resp_errors[key];
                         }
-                        $('#invoice_form').prepend('<div class="alert alert-danger">' + all_resp_errors + '</div>');
+                        $('#invoice_form').prepend('<div class="p-4 mb-4 text-red-700 dark:text-red-200 bg-red-100 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg">' + all_resp_errors + '</div>');
                     }
                 });
         });
@@ -200,8 +200,8 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
 <a data-toggle="tooltip" data-placement="bottom"
    title="{{ $edit_user_title }}"
    href="{{ site_url('users/form/' . $invoice->user_id) " }}>
-    <i class="fa fa-xs fa-user text-{{ $my_class " }}></i>
-    <span class="hidden-xs">{!! $invoice->user_name) }}</span>
+    <i class="fa fa-xs fa-user text-{{ $my_class" }}></i>
+    <span class="hidden sm:block">{!! $invoice->user_name) }}</span>
                 </a>
         @if($invoice->invoice_status_id == 1 && !$invoice->creditinvoice_parent_id)
 
@@ -216,14 +216,14 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
         </h1>
 
         <div
-            class="headerbar-item pull-right{{ $invoice->is_read_only != 1 || $invoice->invoice_status_id != 4 ? ' btn-group' : '' " }}>
+            class="headerbar-item float-right {{ $invoice->is_read_only != 1 || $invoice->invoice_status_id 4 ? ' inline-flex rounded-md shadow-sm : ''" }}>
 
-        <div class="options btn-group pull-left">
-            <a class="btn btn-sm btn-default dropdown-toggle"
+        <div class="options inline-flex rounded-md shadow-sm float-left">
+            <a class="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                data-toggle="dropdown" href="#">
                 <i class="fa fa-caret-down no-margin"></i> @lang('options')
             </a>
-            <ul class="dropdown-menu">
+            <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
 @if($legacy_calculation && $invoice->is_read_only != 1) {
     // Legacy calculation have global taxes - since v1.6.3
 
@@ -297,20 +297,20 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
         </div>
 
 @if($invoice->is_read_only != 1 || $invoice->invoice_status_id != 4)
-        <a href="#" class="btn btn-sm btn-success ajax-loader" id="btn_save_invoice">
+        <a href="#" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors ajax-loader" id="btn_save_invoice">
             <i class="fa fa-check"></i> @lang('save')
         </a>
 @endif
     </div>
 
-    <div class="headerbar-item invoice-labels pull-right">
+    <div class="headerbar-item invoice-labels float-right">
 @if($invoice->invoice_is_recurring)
-        <span class="label label-info">@lang('recurring')</span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 dark:bg-cyan-900/50 text-cyan-800 dark:text-cyan-200">@lang('recurring')</span>
 @php
     }
     @if($invoice->is_read_only == 1) {
 
-        <span class="label label-danger">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">
             <i class="fa fa-read-only"></i> @lang('read_only')
         </span>
 @endif
@@ -324,9 +324,9 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
 
     <div id="invoice_form">
         <div class="invoice">
-            <div class="cf row">
-                <div class="col-xs-12 col-md-8">
-                    <div class="col-md-6">
+            <div class="cf flex flex-wrap -mx-4">
+                <div class="w-full px-4 col-md-8">
+                    <div class="w-full md:w-1/2 px-4">
                         <h2>
                             <a href="{{ url('clients/view/' . $invoice->client_id) " }}>{{ format_client($invoice) }}</a>
 @if($invoice->invoice_status_id == 1)
@@ -373,21 +373,21 @@ echo $legacy_calculation ? $modal_add_invoice_tax : '';
                             <div>@lang('birthdate'):&nbsp;{{ format_gender($invoice->client_gender) }}</div>
         @endif
         </div>
-        <div class="col-md-6">
+        <div class="w-full md:w-1/2 px-4">
 @php // Fix New invoice date in db
 $invoice->sumex_treatmentstart = $invoice->sumex_treatmentstart == '0000-00-00' ? date('y-m-d') : $invoice->sumex_treatmentstart;
 $invoice->sumex_treatmentend = $invoice->sumex_treatmentend == '0000-00-00' ? date('y-m-d') : $invoice->sumex_treatmentend;
 $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-d') : $invoice->sumex_casedate;
                         <h3>@lang('treatment')</h3>
                         <br>
-                        <div class="col-xs-12 col-md-8">
+                        <div class="w-full px-4 col-md-8">
                             <table class="items table">
                                 <tr>
                                     <td>
                                         <div class="input-group">
                                             <span class="input-group-addon">@lang('start')</span>
                                             <input id="invoice_sumex_treatmentstart" name="sumex_treatmentstart"
-                                                   class="form-control datepicker"
+                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                                                    value="{{ date_from_mysql($invoice->sumex_treatmentstart) }}"
                                                    type="text">
                                         </div>
@@ -398,7 +398,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                                         <div class="input-group">
                                             <span class="input-group-addon">@lang('end')</span>
                                             <input id="invoice_sumex_treatmentend" name="sumex_treatmentend"
-                                                   class="form-control datepicker"
+                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                                                    value="{{ date_from_mysql($invoice->sumex_treatmentend) }}"
                                                    type="text">
                                         </div>
@@ -409,7 +409,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                                         <div class="input-group">
                                             <span class="input-group-addon">@lang('reason')</span>
                                             <select name="invoice_sumex_reason" id="invoice_sumex_reason"
-                                                    class="form-control simple-select">
+                                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
 @php $reasons = ['accident', 'birthdefect', 'disease', 'maternity', 'prevention', 'unknown'];
 @foreach($reasons as $key => $reason) {
     $selected = $invoice->sumex_reason == $key ? ' selected' : '';
@@ -429,7 +429,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                                         <div class="input-group">
                                             <span class="input-group-addon">@lang('case_date')</span>
                                             <input id="invoice_sumex_casedate" name="sumex_casedate"
-                                                   class="form-control datepicker"
+                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                                                    value="{{ date_from_mysql($invoice->sumex_casedate) }}"
                                                    type="text">
                                         </div>
@@ -440,7 +440,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                                         <div class="input-group">
                                             <span class="input-group-addon">@lang('case_number')</span>
                                             <input id="invoice_sumex_casenumber" name="sumex_casenumber"
-                                                   class="form-control"
+                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                                    value="@php _htmle($invoice->sumex_casenumber)"
                                                    type="text">
                                         </div>
@@ -451,7 +451,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                                         <div class="input-group">
                                             <span class="input-group-addon">@lang('invoice_sumex_diagnosis')</span>
                                             <input id="invoice_sumex_diagnosis" name="invoice_sumex_diagnosis"
-                                                   class="form-control"
+                                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                                    value="@php _htmle($invoice->sumex_diagnosis)"
                                                    type="text" maxlength="500">
                                         </div>
@@ -462,26 +462,26 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                     </div>
         </div>
 
-        <div class="col-xs-12 col-md-4">
+        <div class="w-full px-4 md:w-1/3">
 
                     <div class="details-box">
 
-                        <div class=" row">
+                        <div class="flex flex-wrap -mx-4">
 
 @if($invoice->invoice_sign == -1)
                                 {
                                 $credit_link = anchor('/invoices/view/' . $invoice->creditinvoice_parent_id,
                                 $invoice->creditinvoice_parent_id);
 
-                                <div class="col-xs-12">
-                                <span class="label label-warning">
+                                <div class="w-full px-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200">
                                     <i class="fa fa-credit-invoice"></i>&nbsp;
                                     {{ trans('credit_invoice_for_invoice') . ' ' . $credit_link }}
                                 </span>
                             </div>
                             @endif
 
-                            <div class="col-xs-12">
+                            <div class="w-full px-4">
 
                                 <div class="invoice-properties">
                                     <label>@lang('status');
@@ -490,7 +490,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
 @endif
                                     </label>
                                     <select name="invoice_status_id" id="invoice_status_id"
-                                            class="form-control simple-select"
+                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                             {{ $invoice->is_read_only == 1 && $invoice->invoice_status_id == 4 ? 'disabled="disabled"' : '' }}
                                     >
 @foreach($invoice_statuses as $key => $status)
@@ -505,7 +505,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                                 <div class="invoice-properties">
                                     <label>@lang('invoice') #</label>
                                     <input type="text" id="invoice_number"
-                                           class="form-control"
+                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            @if($invoice->invoice_number)
                                                value="{{ $invoice->invoice_number }}"
                                            @else
@@ -519,7 +519,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
 
                                     <div class="input-group">
                                         <input name="invoice_date_created" id="invoice_date_created"
-                                               class="form-control datepicker"
+                                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                                                value="{{ date_from_mysql($invoice->invoice_date_created) }}"
                                                {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
                                         >
@@ -534,7 +534,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
 
                                     <div class="input-group">
                                         <input name="invoice_date_due" id="invoice_date_due"
-                                               class="form-control datepicker"
+                                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                                                value="{{ date_from_mysql($invoice->invoice_date_due) }}"
                                                {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
                                         >
@@ -548,7 +548,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
                                 <div class="invoice-properties">
                                     <label>@lang('payment_method')</label>
                                     <select name="payment_method" id="payment_method"
-                                            class="form-control simple-select"
+                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                             {{ $invoice->is_read_only == 1 && $invoice->invoice_status_id == 4 ? 'disabled="disabled"' : '' }}
                                     >
                                         <option value="0">@lang('select_payment_method')</option>
@@ -565,7 +565,7 @@ $invoice->sumex_casedate = $invoice->sumex_casedate == '0000-00-00' ? date('y-m-
 
                                 <div class="invoice-properties">
                                     <label>@lang('invoice_password')</label>
-                                    <input type="text" id="invoice_password" class="form-control"
+                                    <input type="text" id="invoice_password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            value="{!! $invoice->invoice_password !!}"
                                            {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}>
                                 </div>
@@ -582,11 +582,11 @@ $classes = ['control-label', 'controls', '', 'col-xs-12'];
 }
 
                             @if($invoice->invoice_status_id != 1)
-                                <div class="col-xs-12">
-                                <div class="form-group">
+                                <div class="w-full px-4">
+                                <div class="mb-4">
                                     <label for="invoice-guest-url">@lang('guest_url')</label>
                                     <div class="input-group">
-                                        <input type="text" id="invoice-guest-url" readonly class="form-control"
+                                        <input type="text" id="invoice-guest-url" readonly class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                                value="{{ url('guest/view/invoice/' . $invoice->invoice_url_key) " }}>
                                         <span class="input-group-addon to-clipboard cursor-pointer"
                                               data-clipboard-target="#invoice-guest-url">
@@ -609,16 +609,16 @@ $classes = ['control-label', 'controls', '', 'col-xs-12'];
 
             <hr/>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-4">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/3">
 
-                    <div class="panel panel-default no-margin">
-                        <div class="panel-heading">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                             @lang('sumex_observations')
                         </div>
-                        <div class="panel-body">
+                        <div class="p-6">
                             <textarea id="invoice_sumex_observations" name="invoice_sumex_observations"
-                                      class="form-control" rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" rows="3"
                                       {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
                             >{{ $invoice->sumex_observations }}</textarea>
                         </div>
@@ -626,14 +626,14 @@ $classes = ['control-label', 'controls', '', 'col-xs-12'];
 
                 </div>
 
-                <div class="col-xs-12 col-md-4">
+                <div class="w-full px-4 md:w-1/3">
 
-                    <div class="panel panel-default no-margin">
-                        <div class="panel-heading">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                             @lang('invoice_terms')
                         </div>
-                        <div class="panel-body">
-                            <textarea id="invoice_terms" name="invoice_terms" class="form-control" rows="3"
+                        <div class="p-6">
+                            <textarea id="invoice_terms" name="invoice_terms" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" rows="3"
                                       {{ $invoice->is_read_only ? 'disabled="disabled"' : '' }}
                             >{!! $invoice->invoice_terms !!}</textarea>
                         </div>
@@ -641,26 +641,26 @@ $classes = ['control-label', 'controls', '', 'col-xs-12'];
 
                 </div>
 
-                <div class="col-xs-12 col-md-4">
+                <div class="w-full px-4 md:w-1/3">
 
                     @php _dropzone_html($invoice->is_read_only)
 
                 </div>
 
-                <div class="col-xs-12 visible-xs visible-sm"><br></div>
+                <div class="w-full px-4 block sm:hidden hidden sm:block md:hidden"><br></div>
 
             </div>
 
 @if($default_custom)
-            <div class="row">
-                <div class="col-xs-12">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4">
 
                     <hr>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">@lang('custom_fields')</div>
-                        <div class="panel-body">
-                            <div class="row">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('custom_fields')</div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap -mx-4">
 @php
     $classes = ['control-label', 'controls', '', 'form-group col-xs-12 col-sm-6'];
     @foreach($custom_fields as $custom_field) {

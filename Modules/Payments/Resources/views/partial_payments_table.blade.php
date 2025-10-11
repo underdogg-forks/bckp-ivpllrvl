@@ -1,5 +1,5 @@
-<div class="table-responsive">
-    <table class="table table-hover table-striped">
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 
         <thead>
         <tr>
@@ -30,11 +30,11 @@
                 <td>{!! $payment->payment_method_name !!}</td>
                 <td>{!! $payment->payment_note !!}</td>
                 <td>
-                    <div class="options btn-group">
-                        <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="options inline-flex rounded-md shadow-sm">
+                        <a class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors px-3 py-1.5" data-toggle="dropdown" href="#">
                             <i class="fa fa-cog"></i> @lang('options')
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="absolute z-10 mt-2 min-w-[160px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden">
                             <li>
                                 <a href="{{ url('payments/form/' . $payment->payment_id) " }}>
                                     <i class="fa fa-edit fa-margin"></i>
@@ -45,7 +45,7 @@
                                 <form action="{{ url('payments/delete/' . $payment->payment_id) }}"
                                       method="POST">
                                     @csrf
-                                    <button type="submit" class="dropdown-button"
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                             onclick="return confirm('@lang('delete_record_warning')');">
                                         <i class="fa fa-trash-o fa-margin"></i> @lang('delete')
                                     </button>

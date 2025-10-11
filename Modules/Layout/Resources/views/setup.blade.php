@@ -31,7 +31,7 @@
 <body>
 
 <noscript>
-    <div class="alert alert-danger no-margin">@lang('please_enable_js')</div>
+    <div class="p-4 mb-4 text-red-700 dark:text-red-200 bg-red-100 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg no-margin">@lang('please_enable_js')</div>
 </noscript>
 
 {{ $content }}

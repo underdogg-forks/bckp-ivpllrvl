@@ -1,8 +1,27 @@
+/**
+ * Tailwind CSS v4 Application Stylesheet
+ * 
+ * This file configures Tailwind CSS v4 with:
+ * - Multiple theme support via separate CSS files (see resources/css/themes/)
+ * - Dark mode support via custom variant
+ * - Source paths for automatic class detection
+ * - Component layer for reusable utility classes
+ * 
+ * Themes are loaded separately via vite.config.js:
+ * - resources/css/themes/default.css
+ * - resources/css/themes/nord.css
+ * - resources/css/themes/nord-dark.css
+ */
 @import "tailwindcss";
 
+/* Import theme files */
+@import "./themes/default.css";
+
+/* Source paths for Tailwind class detection */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
+@source '../views/**/*.blade.php';
+@source '../../Modules/**/Resources/views/**/*.blade.php';
 @source '../**/*.js';
 
 @theme {
@@ -10,55 +29,203 @@
         "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
-    --sidebar-background: hsl(var(--sidebar-background));
-    --sidebar-foreground: hsl(var(--sidebar-foreground));
-    --sidebar-accent: hsl(var(--sidebar-accent));
-    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
-    --sidebar-border: hsl(var(--sidebar-border));
-    --sidebar-ring: hsl(var(--sidebar-ring));
+    
+    /* Sidebar colors using theme variables */
+    --sidebar-background: var(--color-gray-lightest);
+    --sidebar-foreground: var(--color-gray-dark);
+    --sidebar-accent: var(--color-brand-primary);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: var(--color-gray-lighter);
+    --sidebar-ring: var(--color-brand-info);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer components {
+    /* Button - Primary (active/selected state) */
+    .btn-primary {
+        background-color: var(--color-btn-primary-bg);
+        color: var(--color-btn-primary-text);
+        border-color: var(--color-btn-primary-border);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--color-btn-primary-bg-hover);
+    }
+    
+    .btn-primary:focus {
+        --tw-ring-color: var(--color-btn-primary-focus-ring);
+    }
+    
+    /* Button - Default (inactive/unselected state) */
+    .btn-default {
+        background-color: var(--color-btn-default-bg);
+        color: var(--color-btn-default-text);
+        border-color: var(--color-btn-default-border);
+    }
+    
+    .btn-default:hover {
+        background-color: var(--color-btn-default-bg-hover);
+    }
+    
+    .btn-default:focus {
+        --tw-ring-color: var(--color-btn-default-focus-ring);
+    }
+    
+    /* Theme color utilities using CSS variables */
+    .bg-brand-primary {
+        background-color: var(--color-brand-primary);
+    }
+    
+    .bg-brand-success {
+        background-color: var(--color-brand-success);
+    }
+    
+    .bg-brand-info {
+        background-color: var(--color-brand-info);
+    }
+    
+    .bg-brand-warning {
+        background-color: var(--color-brand-warning);
+    }
+    
+    .bg-brand-danger {
+        background-color: var(--color-brand-danger);
+    }
+    
+    .text-brand-primary {
+        color: var(--color-brand-primary);
+    }
+    
+    .text-brand-success {
+        color: var(--color-brand-success);
+    }
+    
+    .text-brand-info {
+        color: var(--color-brand-info);
+    }
+    
+    .text-brand-warning {
+        color: var(--color-brand-warning);
+    }
+    
+    .text-brand-danger {
+        color: var(--color-brand-danger);
+    }
+    
+    .text-base-color {
+        color: var(--color-text);
+    }
+    
+    .bg-body {
+        background-color: var(--color-body-bg);
+    }
+    
+    .text-link {
+        color: var(--color-link);
+    }
+    
+    .hover\:text-link-hover:hover {
+        color: var(--color-link-hover);
+    }
+    
+    /* Sidebar utilities */
     .bg-sidebar {
-        background-color: hsl(var(--sidebar-background));
+        background-color: var(--sidebar-background);
     }
     
     .bg-sidebar-accent {
-        background-color: hsl(var(--sidebar-accent));
+        background-color: var(--sidebar-accent);
     }
 
     .text-sidebar-accent-foreground {
-        color: hsl(var(--sidebar-accent-foreground));
+        color: var(--sidebar-accent-foreground);
     }
 
     .hover\:bg-sidebar-accent:hover {
-        background-color: hsl(var(--sidebar-accent));
+        background-color: var(--sidebar-accent);
     }
 
     .hover\:text-sidebar-accent-foreground:hover {
-        color: hsl(var(--sidebar-accent-foreground));
+        color: var(--sidebar-accent-foreground);
+    }
+    
+    /* Welcome page utility classes */
+    .bg-welcome {
+        background-color: var(--welcome-bg, #FDFDFC);
+    }
+    
+    .text-welcome {
+        color: var(--welcome-text, #1b1b18);
+    }
+    
+    .text-welcome-muted {
+        color: var(--welcome-text-muted, #706f6c);
+    }
+    
+    .border-welcome {
+        border-color: var(--welcome-border, #e3e3e0);
+    }
+    
+    .hover\:border-welcome-hover:hover {
+        border-color: var(--welcome-border-hover, #62605b);
+    }
+    
+    .text-welcome-accent {
+        color: var(--welcome-accent, #f53003);
+    }
+    
+    .bg-welcome-card {
+        background-color: var(--welcome-card-bg, #ffffff);
+    }
+    
+    .bg-welcome-hero {
+        background-color: var(--welcome-hero-bg, #fff2f2);
+    }
+    
+    .bg-welcome-dot {
+        background-color: var(--welcome-dot-bg, #dbdbd7);
+    }
+    
+    .bg-welcome-button {
+        background-color: var(--welcome-button-bg, #1b1b18);
+    }
+    
+    .text-welcome-button {
+        color: var(--welcome-button-text, #ffffff);
     }
 }
 
+/* Welcome page specific colors - can be customized per theme */
 @layer base {
     :root {
-        --sidebar-background: 210 20% 98%;
-        --sidebar-foreground: 215 25% 27%;
-        --sidebar-accent: 217 33% 17%;
-        --sidebar-accent-foreground: 210 40% 98%;
-        --sidebar-border: 214 32% 91%;
-        --sidebar-ring: 221 83% 53%;
+        /* Welcome page light mode colors */
+        --welcome-bg: #FDFDFC;
+        --welcome-text: #1b1b18;
+        --welcome-text-muted: #706f6c;
+        --welcome-border: #e3e3e0;
+        --welcome-border-hover: #62605b;
+        --welcome-accent: #f53003;
+        --welcome-card-bg: #ffffff;
+        --welcome-hero-bg: #fff2f2;
+        --welcome-dot-bg: #dbdbd7;
+        --welcome-button-bg: #1b1b18;
+        --welcome-button-text: #ffffff;
     }
 
     .dark {
-        --sidebar-background: 217 33% 17%;
-        --sidebar-foreground: 210 40% 98%;
-        --sidebar-accent: 210 40% 96%;
-        --sidebar-accent-foreground: 217 33% 17%;
-        --sidebar-border: 215 25% 27%;
-        --sidebar-ring: 221 83% 65%;
+        /* Welcome page dark mode colors */
+        --welcome-bg: #0a0a0a;
+        --welcome-text: #EDEDEC;
+        --welcome-text-muted: #A1A09A;
+        --welcome-border: #3E3E3A;
+        --welcome-border-hover: #62605b;
+        --welcome-accent: #F61500;
+        --welcome-card-bg: #161615;
+        --welcome-hero-bg: #1D0002;
+        --welcome-dot-bg: #3E3E3A;
+        --welcome-button-bg: #eeeeec;
+        --welcome-button-text: #1C1C1A;
     }
 }
 
