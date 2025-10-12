@@ -99,7 +99,7 @@ class SessionsController extends BaseController
     public function logout()
     {
         $this->session->sess_destroy();
-        redirect()->route('sessions/login');
+        return redirect()->route('sessions/login');
     }
 
     /**
@@ -119,12 +119,12 @@ class SessionsController extends BaseController
         if ($token) {
             if (preg_match('/[^[:alnum:]\-_]/', $token)) {
                 Log::error('Incoming token is not alphanumeric ' . $token);
-                redirect()->route('/');
+                return redirect()->route('/');
             }
             //prevent brute force attacks by counting times a token is used
             $login_log_check = $this->loginLogCheck($token);
             if ( ! empty($login_log_check) && $login_log_check->log_count > 10) {
-                redirect($_SERVER['HTTP_REFERER']);
+                return redirect($_SERVER['HTTP_REFERER']);
             } else {
                 //the use of a token counts as a failure
                 $this->loginLogAddfailure($token);
@@ -135,7 +135,7 @@ class SessionsController extends BaseController
             if (empty($user)) {
                 // Redirect back to the login screen with an alert
                 $this->session->set_flashdata('alert_error', trans('wrong_passwordreset_token'));
-                redirect()->route('sessions/passwordreset');
+                return redirect()->route('sessions/passwordreset');
             } else {
                 //if token is valid, delete the failure attempt from
                 //the login_log table
@@ -189,7 +189,7 @@ class SessionsController extends BaseController
             //prevent brute force attacks by counting password resets
             $login_log_check = $this->loginLogCheck($email);
             if ( ! empty($login_log_check) && $login_log_check->log_count > 10) {
-                redirect($_SERVER['HTTP_REFERER']);
+                return redirect($_SERVER['HTTP_REFERER']);
             } else {
                 //a password recovery attempt counts as failed login
                 $this->loginLogAddfailure($email);
@@ -200,7 +200,7 @@ class SessionsController extends BaseController
                 $email = $request->post('email', true);
                 if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
-                    redirect()->route('/');
+                    return redirect()->route('/');
                 }
                 //use salt to prevent predictability of the reset token (CVE-2021-29023)
                 $this->load->library('crypt');
@@ -245,7 +245,7 @@ class SessionsController extends BaseController
                 } else {
                     $this->session->set_flashdata('alert_success', trans('email_successfully_sent'));
                 }
-                redirect()->route('sessions/login');
+                return redirect()->route('sessions/login');
             }
         }
 
