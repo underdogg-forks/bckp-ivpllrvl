@@ -28,7 +28,7 @@ class PaypalController extends BaseController
         // Check if the invoice is payable
         if ($invoice->invoice_balance <= 0) {
             session()->put('alert_error', lang('invoice_already_paid'));
-            redirect(site_url('guest/view/invoice/' . $invoice->invoice_url_key));
+            return redirect(site_url('guest/view/invoice/' . $invoice->invoice_url_key));
         }
         //create the order
         $paypal_client = $this->lib_paypal->createOrder(['invoice_id' => $invoice->invoice_id, 'currency_code' => get_setting('gateway_paypal_currency'), 'value' => $invoice->invoice_balance, 'custom_id' => $invoice_url_key]);

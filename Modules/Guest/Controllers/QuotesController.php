@@ -25,10 +25,10 @@ class QuotesController extends BaseGuestController
      *
      * @originalFile QuotesController.php
      */
-    public function index()
+    public function index(): \Illuminate\Http\RedirectResponse
     {
         // Display open quotes by default
-        redirect()->route('guest/quotes/status/open');
+        return redirect()->route('guest/quotes/status/open');
     }
 
     /**
