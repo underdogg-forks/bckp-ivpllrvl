@@ -19,9 +19,9 @@ class AjaxController extends AdminController
      * On success the response is an array with `success` = 1 and `payment_id` set to the created payment's ID.
      * On validation failure the response is an array with `success` = 0 and `validation_errors` containing the validation error details.
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function add()
+    public function add(): \Illuminate\Http\JsonResponse
     {
         if ((new PaymentsService())->runValidation()) {
             $payment_id = (new PaymentsService())->save();
@@ -30,7 +30,7 @@ class AjaxController extends AdminController
             $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
-        echo json_encode($response);
+        return response()->json($response);
     }
 
     /**

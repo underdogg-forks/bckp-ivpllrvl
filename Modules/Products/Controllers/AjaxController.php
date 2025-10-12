@@ -34,7 +34,7 @@ class AjaxController extends AdminController
             $productsQuery->where('name', 'like', "%{$filter_product}%");
         }
         $products              = $productsQuery->get();
-        $families              = Family::query()->all();
+        $families              = Family::query()->get();
         $default_item_tax_rate = config('settings.default_item_tax_rate', 0);
         $data                  = [
             'products'              => $products,

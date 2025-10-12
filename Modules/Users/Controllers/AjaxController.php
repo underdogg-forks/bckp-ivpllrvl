@@ -5,7 +5,11 @@ namespace Modules\Users\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
+use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
+use Modules\Settings\Services\SettingsService;
+use Modules\UserClients\Services\UserClientsService;
+use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
 class AjaxController extends AdminController
@@ -16,14 +20,14 @@ class AjaxController extends AdminController
      * Outputs matching active users of a given type as JSON objects for select lists.
      *
      * Reads 'query' and 'permissive_search_users' from the request. If 'query' is empty,
-     * the method outputs an empty JSON array and exits early. Otherwise it outputs a JSON
+     * the method outputs an empty JSON array and returns early. Otherwise it outputs a JSON
      * array of objects with `id` (user_id) and `text` (formatted user label) for active users
      * of the specified type whose name, company, or invoicing contact matches the query.
      * When 'permissive_search_users' is truthy, matching allows the query to appear in the middle of fields.
      *
      * @param int $type the user_type filter to apply (default: 1)
      */
-    public function nameQuery($type = 1)
+    public function nameQuery($type = 1): \Illuminate\Http\JsonResponse
     {
         // Load the model & helper
         $this->load->helper('user');
@@ -32,33 +36,34 @@ class AjaxController extends AdminController
         $query                 = request()->get('query');
         $permissiveSearchUsers = request()->get('permissive_search_users');
         if (empty($query)) {
-            echo json_encode($response);
-            exit;
+            return response()->json($response);
         }
         // Search for chars "in the middle" of users names
-        $moreUsersQuery = $permissiveSearchUsers ? '%' : '';
+        $searchPattern = $permissiveSearchUsers ? "%{$query}%" : "{$query}%";
         // Search for users $type
-        $escapedQuery = $this->db->escape_str($query);
-        $escapedQuery = str_replace('%', '', $escapedQuery);
         // Not searched: user_address_1 user_address_2 user_city user_state user_zip user_country user_invoicing_contact
-        $users = (new UsersService())->where('user_active', 1)->where('user_type', $type)->having("user_name LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_company LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_invoicing_contact LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->orderBy('user_name')->get()->result();
+        $users = (new UsersService())->where('user_active', 1)->where('user_type', $type)->where(function($q) use ($searchPattern) {
+            $q->where('user_name', 'LIKE', $searchPattern)
+              ->orWhere('user_company', 'LIKE', $searchPattern)
+              ->orWhere('user_invoicing_contact', 'LIKE', $searchPattern);
+        })->orderBy('user_name')->get()->result();
         foreach ($users as $user) {
             $response[] = ['id' => $user->user_id, 'text' => format_user($user)];
         }
         // Return the results
-        echo json_encode($response);
+        return response()->json($response);
     }
 
     /**
      * Retrieve up to five active users ordered by creation date and format them for select lists.
      *
-     * Echoes a JSON-encoded array of items where each item contains:
+     * Returns a JSON-encoded array of items where each item contains:
      * - `id`: the user's `user_id`
      * - `text`: the HTML-escaped formatted user label
      *
      * The results are limited to five users and ordered by `user_date_created`.
      */
-    public function getLatest()
+    public function getLatest(): \Illuminate\Http\JsonResponse
     {
         // Load the model & helper
         $response = [];
@@ -67,7 +72,7 @@ class AjaxController extends AdminController
             $response[] = ['id' => $user->user_id, 'text' => htmlsc(format_user($user))];
         }
         // Return the results
-        echo json_encode($response);
+        return response()->json($response);
     }
 
     /**

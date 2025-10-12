@@ -18,7 +18,7 @@ class UserController extends BaseController
         parent::__construct();
         if (session($required_key) != $required_val) {
             session_destroy();
-            redirect()->route('sessions/login');
+            return redirect()->route('sessions/login');
         }
     }
 }

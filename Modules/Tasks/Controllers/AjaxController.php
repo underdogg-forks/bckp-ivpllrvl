@@ -25,7 +25,7 @@ class AjaxController extends AdminController
     public function modalTaskLookups($invoice_id = null): View
     {
         $default_item_tax_rate = get_setting('default_item_tax_rate');
-        $data                  = ['default_item_tax_rate' => $default_item_tax_rate !== '' ?: 0, 'tasks' => []];
+        $data                  = ['default_item_tax_rate' => $default_item_tax_rate ?: 0, 'tasks' => []];
         if ( ! empty($invoice_id)) {
             $data['tasks'] = (new TasksService())->getTasksToInvoice($invoice_id);
         }
@@ -41,13 +41,13 @@ class AjaxController extends AdminController
      *
      * @param Request $request request containing a `task_ids` array of task identifiers to retrieve
      */
-    public function processTaskSelections(Request $request): void
+    public function processTaskSelections(Request $request): \Illuminate\Http\JsonResponse
     {
         $taskIds = $request->input('task_ids', []);
         $tasks   = (new TasksService())->query()->whereIn('task_id', $taskIds)->get();
         foreach ($tasks as $task) {
             $task->task_price = format_amount($task->task_price);
         }
-        echo json_encode($tasks);
+        return response()->json($tasks);
     }
 }

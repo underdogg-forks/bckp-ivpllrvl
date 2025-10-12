@@ -329,7 +329,9 @@ class ImportService extends BaseService
         $import_details = $this->db->where('import_id', $import_id)->get('ip_import_details')->result();
         // Loop through details and delete each of the imported records
         foreach ($import_details as $import_detail) {
-            $this->db->query('DELETE FROM ' . $import_detail->import_table_name . ' WHERE ' . $this->primary_keys[$import_detail->import_table_name] . ' = ' . $import_detail->import_record_id);
+            DB::table($import_detail->import_table_name)
+                ->where($this->primary_keys[$import_detail->import_table_name], $import_detail->import_record_id)
+                ->delete();
         }
         // Delete the master import record
         parent::delete($import_id);

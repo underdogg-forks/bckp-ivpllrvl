@@ -53,9 +53,6 @@ class MailerController extends AdminController
      */
     public function invoice(Request $request, int $invoice_id): View
     {
-        if ( ! $this->mailer_configured) {
-            return;
-        }
         $invoice           = (new InvoicesService())->getById($invoice_id);
         $email_template_id = select_email_invoice_template($invoice);
         $email_template    = '{}';
@@ -97,9 +94,6 @@ class MailerController extends AdminController
      */
     public function quote(Request $request, int $quote_id): View
     {
-        if ( ! $this->mailer_configured) {
-            return;
-        }
         $email_template_id = get_setting('email_quote_template');
         $email_template    = '{}';
         if ($email_template_id) {

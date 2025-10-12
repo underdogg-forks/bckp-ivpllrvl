@@ -93,7 +93,7 @@ class ImportController extends AdminController
                     }
                 }
             }
-            redirect()->route('import');
+            return redirect()->route('import');
         }
     }
 
@@ -105,6 +105,6 @@ class ImportController extends AdminController
     public function delete($id)
     {
         (new ImportService())->delete($id);
-        redirect()->route('import.index');
+        return redirect()->route('import.index');
     }
 }

@@ -25,10 +25,10 @@ class InvoicesController extends BaseGuestController
      *
      * @originalFile InvoicesController.php
      */
-    public function index(): void
+    public function index(): \Illuminate\Http\RedirectResponse
     {
         // Display open invoices by default
-        redirect()->route('guest/invoices/status/open');
+        return redirect()->route('guest/invoices/status/open');
     }
 
     /**

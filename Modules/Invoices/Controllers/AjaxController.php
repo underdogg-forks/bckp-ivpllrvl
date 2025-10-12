@@ -254,11 +254,11 @@ class AjaxController extends AdminController
      * Fetches the invoice item identified by the POSTed `item_id` and outputs it as JSON.
      *
      * Reads `item_id` from POST input (sanitized), retrieves the corresponding item via the items service,
-     * and echoes the item encoded as JSON.
+     * and returns the item encoded as JSON.
      */
-    public function getItem(Request $request) {
+    public function getItem(Request $request): \Illuminate\Http\JsonResponse {
         $item = $this->itemsService->getById(strip_tags($request->post('item_id', true)));
-        echo json_encode($item);
+        return response()->json($item);
     }
 
     /**
