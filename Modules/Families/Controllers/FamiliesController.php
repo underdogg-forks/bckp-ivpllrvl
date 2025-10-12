@@ -40,7 +40,7 @@ class FamiliesController extends AdminController
      */
     public function form(Request $request, $id = null) {
         if ($request->post('btn_cancel')) {
-            redirect()->route('families');
+            return redirect()->route('families');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -48,12 +48,12 @@ class FamiliesController extends AdminController
             $check = $this->db->get_where('ip_families', ['family_name' => $request->post('family_name')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('family_already_exists'));
-                redirect()->route('families/form');
+                return redirect()->route('families/form');
             }
         }
         if ((new FamiliesService())->runValidation()) {
             (new FamiliesService())->save($id);
-            redirect()->route('families');
+            return redirect()->route('families');
         }
         if ($id && ! $request->post('btn_submit')) {
             if ( ! (new FamiliesService())->prepForm($id)) {
@@ -73,6 +73,6 @@ class FamiliesController extends AdminController
     public function delete($id)
     {
         (new FamiliesService())->delete($id);
-        redirect()->route('families');
+        return redirect()->route('families');
     }
 }

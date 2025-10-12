@@ -40,16 +40,16 @@ class InvoiceGroupsController extends AdminController
      * @originalFile InvoiceGroupsController.php
      */
     public function form(Request $request, $id = null) {
-        if ($request->post('btn_cancel')) {
-            redirect()->route('invoice_groups');
+        if ($request->has('btn_cancel')) {
+            return redirect()->route('invoice_groups');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ((new InvoiceGroupsService())->runValidation()) {
             (new InvoiceGroupsService())->save($id);
-            redirect()->route('invoice_groups');
+            return redirect()->route('invoice_groups');
         }
-        if ($id && ! $request->post('btn_submit')) {
+        if ($id && ! $request->has('btn_submit')) {
             if ( ! (new InvoiceGroupsService())->prepForm($id)) {
                 show_404();
             }
@@ -69,6 +69,6 @@ class InvoiceGroupsController extends AdminController
     public function delete($id)
     {
         (new InvoiceGroupsService())->delete($id);
-        redirect()->route('invoice_groups');
+        return redirect()->route('invoice_groups');
     }
 }

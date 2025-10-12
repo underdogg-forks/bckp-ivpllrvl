@@ -147,8 +147,8 @@ class SessionsController extends BaseController
         }
         // Check if the form for a new password was used
         if ($request->post('btn_new_password')) {
-            $new_password = $request->post('new_password', true);
-            $user_id      = $request->post('user_id', true);
+            $new_password = $request->post('new_password');
+            $user_id      = $request->post('user_id');
             if (empty($user_id) || empty($new_password)) {
                 $this->session->set_flashdata('alert_error', trans('loginalert_no_password'));
                 redirect($_SERVER['HTTP_REFERER']);
@@ -176,8 +176,8 @@ class SessionsController extends BaseController
             redirect()->route('sessions/login');
         }
         // Check if the password reset form was used
-        if ($request->post('btn_reset', true)) {
-            $email = $request->post('email', true);
+        if ($request->post('btn_reset')) {
+            $email = $request->post('email');
             if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
                 redirect()->route('/');

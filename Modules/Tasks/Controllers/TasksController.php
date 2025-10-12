@@ -54,13 +54,13 @@ class TasksController extends AdminController
      */
     public function form(Request $request, $id = null) {
         if ($request->post('btn_cancel')) {
-            redirect()->route('tasks');
+            return redirect()->route('tasks');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ((new TasksService())->runValidation()) {
             (new TasksService())->save($id);
-            redirect()->route('tasks');
+            return redirect()->route('tasks');
         }
         if ( ! $request->post('btn_submit')) {
             $prep_form = (new TasksService())->prepForm($id);
@@ -80,6 +80,6 @@ class TasksController extends AdminController
     public function delete($id)
     {
         (new TasksService())->delete($id);
-        redirect()->route('tasks');
+        return redirect()->route('tasks');
     }
 }

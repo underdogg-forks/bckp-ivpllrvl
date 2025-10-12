@@ -41,7 +41,7 @@ class PaymentMethodsController extends AdminController
      */
     public function form(Request $request, $id = null) {
         if ($request->post('btn_cancel')) {
-            redirect()->route('payment_methods');
+            return redirect()->route('payment_methods');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
@@ -49,12 +49,12 @@ class PaymentMethodsController extends AdminController
             $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => $request->post('payment_method_name')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('payment_method_already_exists'));
-                redirect()->route('payment_methods/form');
+                return redirect()->route('payment_methods/form');
             }
         }
         if ((new PaymentMethodsService())->runValidation()) {
             (new PaymentMethodsService())->save($id);
-            redirect()->route('payment_methods');
+            return redirect()->route('payment_methods');
         }
         if ($id && ! $request->post('btn_submit')) {
             if ( ! (new PaymentMethodsService())->prepForm($id)) {
@@ -77,6 +77,6 @@ class PaymentMethodsController extends AdminController
     public function delete($id)
     {
         (new PaymentMethodsService())->delete($id);
-        redirect()->route('payment_methods');
+        return redirect()->route('payment_methods');
     }
 }

@@ -20,25 +20,26 @@ class AjaxController extends AdminController
      *
      * Uses the GET parameter `query` to search active clients by name, surname, or fullname.
      * If GET `permissive_search_clients` is truthy, the query may match with a leading wildcard.
-     * Echoes a JSON array of objects with `id` (client_id) and `text` (formatted client name).
+     * Returns a JSON array of objects with `id` (client_id) and `text` (formatted client name).
      */
-    public function nameQuery(): void
+    public function nameQuery(): \Illuminate\Http\JsonResponse
     {
         $response                = [];
         $query                   = request()->get('query');
         $permissiveSearchClients = request()->get('permissive_search_clients');
         if (empty($query)) {
-            echo json_encode($response);
-            exit;
+            return response()->json($response);
         }
-        $moreClientsQuery = $permissiveSearchClients ? '%' : '';
-        $escapedQuery     = $this->db->escape_str($query);
-        $escapedQuery     = str_replace('%', '', $escapedQuery);
-        $clients          = (new ClientsService())->where('client_active', 1)->having("client_name LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_surname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_fullname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->orderBy('client_name')->get()->result();
+        $searchPattern = $permissiveSearchClients ? "%{$query}%" : "{$query}%";
+        $clients       = (new ClientsService())->where('client_active', 1)->where(function($q) use ($searchPattern) {
+            $q->where('client_name', 'LIKE', $searchPattern)
+              ->orWhere('client_surname', 'LIKE', $searchPattern)
+              ->orWhere('client_fullname', 'LIKE', $searchPattern);
+        })->orderBy('client_name')->get()->result();
         foreach ($clients as $client) {
             $response[] = ['id' => $client->client_id, 'text' => htmlsc(format_client($client, false))];
         }
-        echo json_encode($response);
+        return response()->json($response);
     }
 
     /**
@@ -48,14 +49,14 @@ class AjaxController extends AdminController
      * `text` set to the client's formatted name (HTML-escaped). Results are ordered
      * by client creation date and limited to five active clients.
      */
-    public function getLatest(): void
+    public function getLatest(): \Illuminate\Http\JsonResponse
     {
         $response = [];
         $clients  = (new ClientsService())->where('client_active', 1)->limit(5)->orderBy('client_date_created')->get()->result();
         foreach ($clients as $client) {
             $response[] = ['id' => $client->client_id, 'text' => htmlsc(format_client($client, false))];
         }
-        echo json_encode($response);
+        return response()->json($response);
     }
 
     /**
@@ -73,21 +74,22 @@ class AjaxController extends AdminController
     }
 
     /**
-     * Delete a client note identified by the POST parameter `client_note_id` and echo JSON indicating the result.
+     * Delete a client note identified by the POST parameter `client_note_id` and return JSON indicating the result.
      *
-     * If a note with the provided `client_note_id` exists, or if the ID is empty, the controller attempts deletion and echoes `{"success": 1}` on successful deletion or `{"success": 0}` otherwise.
+     * If a note with the provided `client_note_id` exists and the ID is not empty, the controller attempts deletion 
+     * and returns `{"success": 1}` on successful deletion or `{"success": 0}` otherwise.
      */
-    public function deleteClientNote(Request $request): void
+    public function deleteClientNote(Request $request): \Illuminate\Http\JsonResponse
     {
         $success        = 0;
         $client_note_id = $request->post('client_note_id');
-        if ((new ClientNotesService())->getById($client_note_id) || empty($client_note_id)) {
+        if (!empty($client_note_id) && (new ClientNotesService())->getById($client_note_id)) {
             $item = (new ClientNotesService())->delete($client_note_id);
             if ($item) {
                 $success = 1;
             }
         }
-        echo json_encode(['success' => $success]);
+        return response()->json(['success' => $success]);
     }
 
     /**
@@ -98,7 +100,7 @@ class AjaxController extends AdminController
      * - `new_token`: a fresh CSRF token string.
      * - `validation_errors`: present only when `success` is `0`, containing validation error details.
      */
-    public function saveClientNote(): void
+    public function saveClientNote(): \Illuminate\Http\JsonResponse
     {
         if ((new ClientNotesService())->runValidation()) {
             (new ClientNotesService())->save();
@@ -106,7 +108,7 @@ class AjaxController extends AdminController
         } else {
             $response = ['success' => 0, 'new_token' => csrf_token(), 'validation_errors' => json_errors()];
         }
-        echo json_encode($response);
+        return response()->json($response);
     }
 
     /**
