@@ -300,7 +300,9 @@ class BaseService
         if ( ! $validation_rules) {
             $validation_rules = $this->default_validation_rules;
         }
-        foreach (array_keys($_POST) as $key) {
+        foreach (array_keys($request->post()) as $key) {
+            $this->form_values[$key] = $request->post($key);
+        }
             $this->form_values[$key] = $request->post($key);
         }
         if (method_exists($this, $validation_rules)) {
