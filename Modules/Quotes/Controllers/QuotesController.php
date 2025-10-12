@@ -2,6 +2,8 @@
 
 namespace Modules\Quotes\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\CustomFields\Models\CustomField;

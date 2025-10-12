@@ -2,6 +2,8 @@
 
 namespace Modules\Families\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
@@ -23,7 +25,7 @@ class FamiliesController extends AdminController
      *
      * @originalFile FamiliesController.php
      */
-    public function index($page = 0)
+    public function index($page = 0): View
     {
         (new FamiliesService())->paginate(site_url('families/index'), $page);
         $families = (new FamiliesService())->result();

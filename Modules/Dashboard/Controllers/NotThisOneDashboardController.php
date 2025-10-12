@@ -2,6 +2,8 @@
 
 namespace Modules\Dashboard\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Invoices\Services\InvoiceAmountsService;
@@ -27,7 +29,7 @@ class NotThisOneDashboardController extends AdminController
      *
      * @return string the rendered dashboard view content
      */
-    public function index()
+    public function index(): View
     {
         $quote_overview_period   = get_setting('quote_overview_period');
         $invoice_overview_period = get_setting('invoice_overview_period');

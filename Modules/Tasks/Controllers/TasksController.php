@@ -2,6 +2,8 @@
 
 namespace Modules\Tasks\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
@@ -31,7 +33,7 @@ class TasksController extends AdminController
      *
      * @return string|\CodeIgniter\HTTP\Response the rendered tasks index view
      */
-    public function index($page = 0)
+    public function index($page = 0): View
     {
         (new TasksService())->paginate(site_url('tasks/index'), $page);
         $tasks = (new TasksService())->result();

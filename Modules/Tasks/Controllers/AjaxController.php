@@ -2,6 +2,8 @@
 
 namespace Modules\Tasks\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
@@ -20,7 +22,7 @@ class AjaxController extends AdminController
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory the rendered task lookups view
      */
-    public function modalTaskLookups($invoice_id = null)
+    public function modalTaskLookups($invoice_id = null): View
     {
         $default_item_tax_rate = get_setting('default_item_tax_rate');
         $data                  = ['default_item_tax_rate' => $default_item_tax_rate !== '' ?: 0, 'tasks' => []];

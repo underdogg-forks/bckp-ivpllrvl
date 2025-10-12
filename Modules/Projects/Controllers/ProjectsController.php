@@ -2,6 +2,8 @@
 
 namespace Modules\Projects\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
@@ -28,7 +30,7 @@ class ProjectsController extends AdminController
      *
      * @return string rendered view for the projects index populated with projects and filter settings
      */
-    public function index($page = 0)
+    public function index($page = 0): View
     {
         $this->projectsService->paginate(site_url('projects/index'), $page);
         $projects = $this->projectsService->result();

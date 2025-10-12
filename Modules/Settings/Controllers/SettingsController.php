@@ -2,6 +2,8 @@
 
 namespace Modules\Settings\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use App\Services\SettingsService;
 use Illuminate\Http\Request;

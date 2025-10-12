@@ -2,6 +2,8 @@
 
 namespace Modules\Mailer\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use App\Helpers\MailerHelper;
 use Illuminate\Http\Request;
@@ -49,7 +51,7 @@ class MailerController extends AdminController
      *                                         - pdf_templates: available invoice PDF templates
      *                                         - invoice: the invoice model
      */
-    public function invoice(Request $request, int $invoice_id)
+    public function invoice(Request $request, int $invoice_id): View
     {
         if ( ! $this->mailer_configured) {
             return;
@@ -93,7 +95,7 @@ class MailerController extends AdminController
      *                               - pdf_templates: available quote PDF templates
      *                               - quote: the quote model instance
      */
-    public function quote(Request $request, int $quote_id)
+    public function quote(Request $request, int $quote_id): View
     {
         if ( ! $this->mailer_configured) {
             return;

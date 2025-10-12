@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Invoices\Services\InvoicesRecurringService;
@@ -33,7 +35,7 @@ class RecurringController extends AdminController
      *                - `recur_frequencies`: available recurrence frequencies,
      *                - `recurring_invoices`: paginated recurring invoice results
      */
-    public function index($page = 0)
+    public function index($page = 0): View
     {
         $this->invoicesRecurringService->paginate(site_url('invoices/recurring'), $page);
         $recurring_invoices = $this->invoicesRecurringService->result();

@@ -2,6 +2,8 @@
 
 namespace Modules\UserClients\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use AllowDynamicProperties;

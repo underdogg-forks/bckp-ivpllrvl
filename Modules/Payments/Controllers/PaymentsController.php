@@ -2,6 +2,8 @@
 
 namespace Modules\Payments\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
@@ -28,7 +30,7 @@ class PaymentsController extends AdminController
      *
      * @return \Illuminate\View\View the payments index view populated with payments and filter settings
      */
-    public function index($page = 0)
+    public function index($page = 0): View
     {
         (new PaymentsService())->paginate(site_url('payments/index'), $page);
         $payments = (new PaymentsService())->result();

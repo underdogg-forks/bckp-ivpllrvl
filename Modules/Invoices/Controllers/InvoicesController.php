@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
@@ -70,7 +72,7 @@ class InvoicesController extends AdminController
      *
      * @return \Illuminate\View\View rendered view showing the invoices, filter controls, and invoice statuses
      */
-    public function status(string $status = 'all', $page = 0)
+    public function status(string $status = 'all', $page = 0): View
     {
         // Determine which group of invoices to load
         switch ($status) {
@@ -101,7 +103,7 @@ class InvoicesController extends AdminController
      *
      * @return \Illuminate\View\View the view for archived invoices, including filter UI and archive data
      */
-    public function archive()
+    public function archive(): View
     {
         $invoice_array = $this->invoicesService->getArchives(0);
 

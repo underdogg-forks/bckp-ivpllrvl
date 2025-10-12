@@ -2,6 +2,8 @@
 
 namespace Modules\Users\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;

@@ -2,6 +2,8 @@
 
 namespace Modules\CustomFields\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
