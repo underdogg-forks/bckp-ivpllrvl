@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="NOINDEX,NOFOLLOW">
-    <meta name="_csrf" content="{{ $this->security->get_csrf_hash() " }}>
+    <meta name="_csrf" content="{{ csrf_token() }}">
     <meta name="csrf_token_name" content="{{ config_item('csrf_token_name') " }}>
     <meta name="csrf_cookie_name" content="{{ config_item('csrf_cookie_name') " }}>
     <meta name="legacy_calculation" content="{{ (int) config_item('legacy_calculation') " }}>
