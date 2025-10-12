@@ -184,7 +184,10 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function dbArray(Request $request) {
+    public function dbArray(Request $request = null) {
+        if ($request === null) {
+            $request = request();
+        }
         $db_array         = [];
         $validation_rules = $this->{$this->validation_rules}();
         foreach ($request->post() as $key => $value) {
@@ -296,13 +299,14 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function runValidation(Request $request, $validation_rules = null) {
+    public function runValidation($validation_rules = null, Request $request = null) {
+        if ($request === null) {
+            $request = request();
+        }
         if ( ! $validation_rules) {
             $validation_rules = $this->default_validation_rules;
         }
         foreach (array_keys($request->post()) as $key) {
-            $this->form_values[$key] = $request->post($key);
-        }
             $this->form_values[$key] = $request->post($key);
         }
         if (method_exists($this, $validation_rules)) {
