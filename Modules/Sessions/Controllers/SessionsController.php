@@ -210,7 +210,7 @@ class SessionsController extends BaseController
                 // Send the email with reset link
                 // Prepare some variables for the email
                 $email_resetlink = site_url('sessions/passwordreset/' . $token);
-                $email_message   = $this->load->view('emails/passwordreset', ['resetlink' => $email_resetlink], true);
+                $email_message   = echo view('emails/passwordreset', ['resetlink' => $email_resetlink], true)->render();
                 $email_from      = get_setting('smtp_mail_from');
                 if (empty($email_from)) {
                     $email_from = 'system@' . preg_replace('/^[\w]{2,6}:\/\/([\w\d\.\-]+).*$/', '$1', base_url());

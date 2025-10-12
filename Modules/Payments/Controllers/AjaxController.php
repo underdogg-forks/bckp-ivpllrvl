@@ -48,6 +48,6 @@ class AjaxController extends AdminController
     public function modalAddPayment(Request $request) {
         $this->load->module('layout');
         $data = ['payment_methods' => (new PaymentMethodsService())->getAll(), 'invoice_id' => strip_tags($request->post('invoice_id')), 'invoice_balance' => $request->post('invoice_balance'), 'invoice_payment_method' => $request->post('invoice_payment_method'), 'payment_cf_exist' => strip_tags($request->post('payment_cf_exist'))];
-        $this->layout->loadView('payments/modal_add_payment', $data);
+        echo view('payments/modal_add_payment', $data)->render();
     }
 }

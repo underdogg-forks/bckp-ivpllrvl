@@ -131,7 +131,7 @@ class AjaxController extends AdminController
         } else {
             $data = ['id' => $request->post('user_id'), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', $request->post('user_id'))->get()->result()];
         }
-        $this->layout->loadView('users/partial_user_client_table', $data);
+        echo view('users/partial_user_client_table', $data)->render();
     }
 
     /**
@@ -161,6 +161,6 @@ class AjaxController extends AdminController
             }
         }
         $data = ['user_id' => $user_id, 'clients' => $clients];
-        $this->layout->loadView('users/modal_user_client', $data);
+        echo view('users/modal_user_client', $data)->render();
     }
 }
