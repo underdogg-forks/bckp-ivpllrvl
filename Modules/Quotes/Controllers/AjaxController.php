@@ -3,11 +3,17 @@
 namespace Modules\Quotes\Controllers;
 
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
+use Modules\Invoices\Services\InvoicesService;
+use Modules\Invoices\Services\InvoiceTaxRatesService;
+use Modules\Invoices\Services\ItemsService;
 use Modules\Quotes\Services\QuoteAmountsService;
+use Modules\Quotes\Services\QuoteCustomService;
 use Modules\Quotes\Services\QuoteItemsService;
 use Modules\Quotes\Services\QuotesService;
 use Modules\Quotes\Services\QuoteTaxRatesService;
@@ -26,14 +32,14 @@ class AjaxController extends AdminController
      * Validates request input, saves or updates the quote and related items/tax/discount data, persists custom field values,
      * and outputs a JSON-encoded response before terminating execution.
      */
-    public function save()
+    public function save(Request $request): void
     {
-        $quote_id = $this->security->xss_clean($this->input->post('quote_id', true));
+        $quote_id = strip_tags($request->post('quote_id', true));
         (new QuotesService())->setId($quote_id);
         if ((new QuotesService())->runValidation('validation_rules_save_quote')) {
-            $items                  = json_decode($this->input->post('items'));
-            $quote_discount_percent = (float) $this->input->post('quote_discount_percent');
-            $quote_discount_amount  = (float) $this->input->post('quote_discount_amount');
+            $items                  = json_decode($request->post('items'));
+            $quote_discount_percent = (float) $request->post('quote_discount_percent');
+            $quote_discount_amount  = (float) $request->post('quote_discount_amount');
             // Percent by default. Only one allowed. Prevent set 2 global discounts by geeky client - since v1.6.3
             if ($quote_discount_percent && $quote_discount_amount) {
                 $quote_discount_amount = 0.0;
@@ -58,7 +64,7 @@ class AjaxController extends AdminController
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+                config(['legacy_calculation' => ! empty($request->post('legacy_calculation'))]);
             }
             foreach ($items as $item) {
                 // Check if an item has either a quantity + price or name or description
@@ -75,42 +81,39 @@ class AjaxController extends AdminController
                     (new QuoteItemsService())->save($item_id, $item, $global_discount);
                 } elseif (empty($item->item_name) && ( ! empty($item->item_quantity) || ! empty($item->item_price))) {
                     // Throw an error message and use the form validation for that (todo: where the translations of: The .* field is required.)
-                    $this->load->library('form_validation');
-                    $this->form_validation->set_rules('item_name', trans('item'), 'required');
-                    $this->form_validation->run();
-                    $response = ['success' => 0, 'validation_errors' => ['item_name' => form_error('item_name', '', '')]];
+                    $validator = validator(['item_name' => null], ['item_name' => 'required']);
+                    $response = ['success' => 0, 'validation_errors' => ['item_name' => $validator->errors()->first('item_name')]];
                     exit(json_encode($response));
                 }
             }
-            $quote_status_id = $this->input->post('quote_status_id');
+            $quote_status_id = $request->post('quote_status_id');
             // Generate new quote number if needed
-            $quote_number = $this->input->post('quote_number');
+            $quote_number = $request->post('quote_number');
             if (empty($quote_number) && $quote_status_id != 1) {
                 $quote_group_id = (new QuotesService())->getInvoiceGroupId($quote_id);
                 $quote_number   = (new QuotesService())->getQuoteNumber($quote_group_id);
             }
             // Sometime global discount total value (round) need little adjust to be valid in ZugFerd2.3 standard
-            if ( ! config_item('legacy_calculation') && $quote_discount_amount && $quote_discount_amount != $global_discount['item']) {
+            if ( ! config('legacy_calculation') && $quote_discount_amount && $quote_discount_amount != $global_discount['item']) {
                 // Adjust amount to reflect real calculation (cents)
                 $quote_discount_amount = $global_discount['item'];
             }
-            $db_array = ['quote_number' => $quote_number, 'quote_status_id' => $quote_status_id, 'quote_date_created' => date_to_mysql($this->input->post('quote_date_created')), 'quote_date_expires' => date_to_mysql($this->input->post('quote_date_expires')), 'quote_password' => $this->input->post('quote_password'), 'notes' => $this->input->post('notes'), 'quote_discount_amount' => standardize_amount($quote_discount_amount), 'quote_discount_percent' => standardize_amount($quote_discount_percent)];
+            $db_array = ['quote_number' => $quote_number, 'quote_status_id' => $quote_status_id, 'quote_date_created' => date_to_mysql($request->post('quote_date_created')), 'quote_date_expires' => date_to_mysql($request->post('quote_date_expires')), 'quote_password' => $request->post('quote_password'), 'notes' => $request->post('notes'), 'quote_discount_amount' => standardize_amount($quote_discount_amount), 'quote_discount_percent' => standardize_amount($quote_discount_percent)];
             (new QuotesService())->save($quote_id, $db_array, $global_discount);
-            if (config_item('legacy_calculation')) {
+            if (config('legacy_calculation')) {
                 // Recalculate for discounts
                 (new QuoteAmountsService())->calculate($quote_id, $global_discount);
             }
             $response = ['success' => 1];
         } else {
             Log::error('980: I wasnt able to run the validation validation_rules_save_quote');
-            $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         // Save all custom fields
-        if ($this->input->post('custom')) {
+        if ($request->post('custom')) {
             $db_array = [];
             $values   = [];
-            foreach ($this->input->post('custom') as $custom) {
+            foreach ($request->post('custom') as $custom) {
                 if (preg_match('/^(.*)\[\]$/i', $custom['name'], $matches)) {
                     $values[$matches[1]][] = $custom['value'];
                 } else {
