@@ -196,7 +196,7 @@ class InvoicesController extends AdminController
             ],
             'invoice_statuses'   => $this->invoicesService->statuses(),
             'payment_cf_exist'   => $payment_cf_exist,
-            'legacy_calculation' => config_item('legacy_calculation'),
+            'legacy_calculation' => config('legacy_calculation'),
         ]);
     }
 

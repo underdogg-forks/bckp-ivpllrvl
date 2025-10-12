@@ -2,6 +2,7 @@
 
 namespace Modules\Tasks\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
@@ -49,9 +50,8 @@ class TasksController extends AdminController
      *
      * @return string the rendered task form view HTML
      */
-    public function form($id = null)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function form(Request $request, $id = null) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('tasks');
         }
         $this->filterInput();
@@ -60,7 +60,7 @@ class TasksController extends AdminController
             (new TasksService())->save($id);
             redirect()->route('tasks');
         }
-        if ( ! $this->input->post('btn_submit')) {
+        if ( ! $request->post('btn_submit')) {
             $prep_form = (new TasksService())->prepForm($id);
             if ($id && ! $prep_form) {
                 show_404();

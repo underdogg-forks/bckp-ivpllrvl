@@ -31,7 +31,7 @@ class CronController extends BaseController
         foreach ($invoices_recurring as $invoice_recurring) {
             $recurInfo = ['invoice_id' => $invoice_recurring->invoice_id, 'client_id' => $invoice_recurring->client_id, 'invoice_group_id' => $invoice_recurring->invoice_group_id, 'invoice_status_id' => $invoice_recurring->invoice_status_id, 'invoice_number' => $invoice_recurring->invoice_number, 'invoice_recurring_id' => $invoice_recurring->invoice_recurring_id, 'recur_start_date' => $invoice_recurring->recur_start_date, 'recur_end_date' => $invoice_recurring->recur_end_date, 'recur_frequency' => $invoice_recurring->recur_frequency, 'recur_next_date' => $invoice_recurring->recur_next_date, 'recur_status' => $invoice_recurring->recur_status];
             if (IP_DEBUG) {
-                log_message('debug', '[CronController RecurringController InvoicesController] RecurringController Info: ' . json_encode($recurInfo, JSON_PRETTY_PRINT));
+                Log::debug('[CronController RecurringController InvoicesController] RecurringController Info: ' . json_encode($recurInfo, JSON_PRETTY_PRINT));
             }
             // This is the original invoice id
             $source_id = $invoice_recurring->invoice_id;
@@ -48,17 +48,17 @@ class CronController extends BaseController
             // This is the new invoice id
             $target_id = (new InvoicesService())->create($db_array, false);
             if (IP_DEBUG) {
-                log_message('debug', '[CronController RecurringController InvoicesController] RecurringController Invoice with id ' . $target_id . ' was created');
+                Log::debug('[CronController RecurringController InvoicesController] RecurringController Invoice with id ' . $target_id . ' was created');
             }
             // Copy the original invoice to the new invoice
             (new InvoicesService())->copyInvoice($source_id, $target_id, false);
             if (IP_DEBUG) {
-                log_message('debug', '[CronController RecurringController InvoicesController] RecurringController Invoice with sourceId ' . $source_id . ' was copied to id ' . $target_id);
+                Log::debug('[CronController RecurringController InvoicesController] RecurringController Invoice with sourceId ' . $source_id . ' was copied to id ' . $target_id);
             }
             // Update the next recur date for the recurring invoice
             (new InvoicesRecurringService())->setNextRecurDate($invoice_recurring->invoice_recurring_id);
             if (IP_DEBUG) {
-                log_message('debug', '[CronController RecurringController InvoicesController] Next RecurringController date was set');
+                Log::debug('[CronController RecurringController InvoicesController] Next RecurringController date was set');
             }
             // Email the new invoice if applicable
             if (get_setting('automatic_email_on_recur') && MailerHelper::mailerConfigured()) {
@@ -101,7 +101,7 @@ class CronController extends BaseController
             }
         }
         if (IP_DEBUG) {
-            log_message('debug', '[CronController RecurringController InvoicesController] ' . count($invoices_recurring) . ' recurring invoices processed');
+            Log::debug('[CronController RecurringController InvoicesController] ' . count($invoices_recurring) . ' recurring invoices processed');
         }
     }
 }

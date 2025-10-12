@@ -41,19 +41,18 @@ class PaymentsController extends AdminController
      *
      * @originalFile PaymentsController.php
      */
-    public function form($id = null)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function form(Request $request, $id = null) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('payments');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ((new PaymentsService())->runValidation()) {
             $id = (new PaymentsService())->save($id);
-            (new PaymentCustomService())->saveCustom($id, $this->input->post('custom'));
+            (new PaymentCustomService())->saveCustom($id, $request->post('custom'));
             redirect()->route('payments');
         }
-        if ( ! $this->input->post('btn_submit')) {
+        if ( ! $request->post('btn_submit')) {
             $prep_form = (new PaymentsService())->prepForm($id);
             if ($id && ! $prep_form) {
                 show_404();
@@ -66,8 +65,8 @@ class PaymentsController extends AdminController
                     (new PaymentsService())->setFormValue('custom[' . $key . ']', $val);
                 }
             }
-        } elseif ($this->input->post('custom')) {
-            foreach ($this->input->post('custom') as $key => $val) {
+        } elseif ($request->post('custom')) {
+            foreach ($request->post('custom') as $key => $val) {
                 (new PaymentsService())->setFormValue('custom[' . $key . ']', $val);
             }
         }

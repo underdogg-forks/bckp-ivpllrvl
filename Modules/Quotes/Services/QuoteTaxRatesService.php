@@ -2,6 +2,8 @@
 
 namespace Modules\Quotes\Services;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\QuoteTaxRate;
@@ -40,12 +42,11 @@ class QuoteTaxRatesService extends BaseService
      *
      * @originalFile QuoteTaxRate.php
      */
-    public function save($id = null, $db_array = null)
-    {
+    public function save(Request $request, $id = null, $db_array = null) {
         // Only appliable in legacy calculation - since 1.6.3
-        config_item('legacy_calculation') && parent::save($id, $db_array);
+        config('legacy_calculation') && parent::save($id, $db_array);
         $this->load->model('quotes/mdl_quote_amounts');
-        $quote_id = $db_array['quote_id'] ?? $this->input->post('quote_id');
+        $quote_id = $db_array['quote_id'] ?? $request->post('quote_id');
         if ($quote_id) {
             $global_discount['item'] = $this->mdl_quote_amounts->getGlobalDiscount($quote_id);
             // Recalculate quote amounts

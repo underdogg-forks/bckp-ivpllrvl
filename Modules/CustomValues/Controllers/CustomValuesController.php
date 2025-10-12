@@ -129,12 +129,11 @@ class CustomValuesController extends AdminController
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|\Illuminate\Http\RedirectResponse redirect to the custom values index or to the field page when `custom_field_id` is present in the request
      */
-    public function delete($id)
-    {
+    public function delete(Request $request, $id) {
         if ( ! (new CustomValuesService())->delete($id)) {
             $this->session->set_flashdata('alert_info', trans('id') . sprintf(' "%s" ', $id) . trans('custom_values_used_not_deletable'));
         }
-        $fid = $this->input->post('custom_field_id');
+        $fid = $request->post('custom_field_id');
         redirect('custom_values' . ($fid ? '/field/' . $fid : ''));
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Users\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -27,8 +29,8 @@ class AjaxController extends AdminController
         $this->load->helper('user');
         $response = [];
         // GetController the post input
-        $query                 = $this->input->get('query');
-        $permissiveSearchUsers = $this->input->get('permissive_search_users');
+        $query                 = request()->get('query');
+        $permissiveSearchUsers = request()->get('permissive_search_users');
         if (empty($query)) {
             echo json_encode($response);
             exit;
@@ -75,7 +77,7 @@ class AjaxController extends AdminController
      */
     public function savePreferencePermissiveSearchUsers()
     {
-        $permissiveSearchUsers = $this->input->get('permissive_search_users');
+        $permissiveSearchUsers = request()->get('permissive_search_users');
         if ( ! preg_match('!^[0-1]{1}$!', $permissiveSearchUsers)) {
             exit;
         }
@@ -90,10 +92,9 @@ class AjaxController extends AdminController
      * stores the client ID in the session under 'user_clients' for association after user creation.
      * If the client ID is not found, no action is taken.
      */
-    public function saveUserClient()
-    {
-        $user_id   = $this->input->post('user_id');
-        $client_id = $this->input->post('client_id');
+    public function saveUserClient(Request $request) {
+        $user_id   = $request->post('user_id');
+        $client_id = $request->post('client_id');
         $client    = (new ClientsService())->getById($client_id);
         if ($client) {
             $client_id = $client->client_id;
@@ -106,9 +107,9 @@ class AjaxController extends AdminController
                 }
             } else {
                 // New user - assign the entries to a session variable until user record is saved
-                $user_clients             = $this->session->userdata('user_clients') ? $this->session->userdata('user_clients') : [];
+                $user_clients             = session('user_clients') ? session('user_clients') : [];
                 $user_clients[$client_id] = $client_id;
-                $this->session->set_userdata('user_clients', $user_clients);
+                session()->put('user_clients', $user_clients);
             }
         }
     }
@@ -123,13 +124,12 @@ class AjaxController extends AdminController
      *
      * @originalFile AjaxController.php
      */
-    public function loadUserClientTable()
-    {
-        $session_user_clients = $this->session->userdata('user_clients');
+    public function loadUserClientTable(Request $request) {
+        $session_user_clients = session('user_clients');
         if ($session_user_clients) {
             $data = ['id' => null, 'user_clients' => (new ClientsService())->where_in('ip_clients.client_id', $session_user_clients)->get()->result()];
         } else {
-            $data = ['id' => $this->input->post('user_id'), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', $this->input->post('user_id'))->get()->result()];
+            $data = ['id' => $request->post('user_id'), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', $request->post('user_id'))->get()->result()];
         }
         $this->layout->loadView('users/partial_user_client_table', $data);
     }
@@ -145,7 +145,7 @@ class AjaxController extends AdminController
      */
     public function modalAddUserClient($user_id = null)
     {
-        if ($session_user_clients = $this->session->userdata('user_clients')) {
+        if ($session_user_clients = session('user_clients')) {
             $clients          = (new ClientsService())->where_not_in('ip_clients.client_id', $session_user_clients)->get()->result();
             $assigned_clients = [];
         } else {

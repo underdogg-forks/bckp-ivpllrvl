@@ -2,6 +2,7 @@
 
 namespace Modules\InvoiceGroups\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
@@ -38,9 +39,8 @@ class InvoiceGroupsController extends AdminController
      *
      * @originalFile InvoiceGroupsController.php
      */
-    public function form($id = null)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function form(Request $request, $id = null) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('invoice_groups');
         }
         $this->filterInput();
@@ -49,7 +49,7 @@ class InvoiceGroupsController extends AdminController
             (new InvoiceGroupsService())->save($id);
             redirect()->route('invoice_groups');
         }
-        if ($id && ! $this->input->post('btn_submit')) {
+        if ($id && ! $request->post('btn_submit')) {
             if ( ! (new InvoiceGroupsService())->prepForm($id)) {
                 show_404();
             }

@@ -57,7 +57,7 @@ class StripeController extends BaseController
         $invoice = $this->invoicesService->where('invoice_url_key', $invoice_url_key)->first();
         // Check if the invoice is payable
         if ($invoice->invoice_balance <= 0) {
-            $this->session->set_userdata('alert_error', lang('invoice_already_paid'));
+            session()->put('alert_error', lang('invoice_already_paid'));
             redirect(site_url('guest/view/invoice/' . $invoice->invoice_url_key));
         }
         $checkout_session = $this->stripe->checkout->sessions->create([

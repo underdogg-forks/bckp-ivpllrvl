@@ -2,6 +2,8 @@
 
 namespace Modules\Sessions\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use App\Helpers\MailerHelper;
 use Illuminate\Support\Facades\Log;
@@ -29,11 +31,10 @@ class SessionsController extends BaseController
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View a redirect response after form processing or the login view when displaying the form
      */
-    public function login()
-    {
+    public function login(Request $request) {
         $view_data = ['login_logo' => get_setting('login_logo')];
-        if ($this->input->post('btn_login')) {
-            $this->db->where('user_email', $this->input->post('email'));
+        if ($request->post('btn_login')) {
+            $this->db->where('user_email', $request->post('email'));
             $query = $this->db->get('ip_users');
             $user  = $query->row();
             // Check if the user exists
@@ -44,10 +45,10 @@ class SessionsController extends BaseController
                 // Check if the user is marked as active (not implemented: Todo?)
                 $this->session->set_flashdata('alert_error', trans('loginalert_user_inactive'));
                 redirect()->route('sessions/login');
-            } elseif ($this->authenticate($this->input->post('email'), $this->input->post('password'))) {
-                if ($this->session->userdata('user_type') == 1) {
+            } elseif ($this->authenticate($request->post('email'), $request->post('password'))) {
+                if (session('user_type') == 1) {
                     redirect()->route('dashboard');
-                } elseif ($this->session->userdata('user_type') == 2) {
+                } elseif (session('user_type') == 2) {
                     redirect()->route('guest');
                 }
             } else {
@@ -111,8 +112,7 @@ class SessionsController extends BaseController
      *
      * @return mixed a view response for rendering the appropriate password reset page or a redirect response after processing
      */
-    public function passwordreset($token = null)
-    {
+    public function passwordreset(Request $request, $token = null) {
         // Check if a token was provided
         if ($token) {
             if (preg_match('/[^[:alnum:]\-_]/', $token)) {
@@ -144,9 +144,9 @@ class SessionsController extends BaseController
             return view('session_new_password', $formdata);
         }
         // Check if the form for a new password was used
-        if ($this->input->post('btn_new_password')) {
-            $new_password = $this->input->post('new_password', true);
-            $user_id      = $this->input->post('user_id', true);
+        if ($request->post('btn_new_password')) {
+            $new_password = $request->post('new_password', true);
+            $user_id      = $request->post('user_id', true);
             if (empty($user_id) || empty($new_password)) {
                 $this->session->set_flashdata('alert_error', trans('loginalert_no_password'));
                 redirect($_SERVER['HTTP_REFERER']);
@@ -157,7 +157,7 @@ class SessionsController extends BaseController
                 $this->session->set_flashdata('alert_error', trans('loginalert_user_not_found'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
-            if (empty($user->user_passwordreset_token) || $this->input->post('token') !== $user->user_passwordreset_token) {
+            if (empty($user->user_passwordreset_token) || $request->post('token') !== $user->user_passwordreset_token) {
                 $this->session->set_flashdata('alert_error', trans('loginalert_wrong_auth_code'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
@@ -174,8 +174,8 @@ class SessionsController extends BaseController
             redirect()->route('sessions/login');
         }
         // Check if the password reset form was used
-        if ($this->input->post('btn_reset', true)) {
-            $email = $this->input->post('email', true);
+        if ($request->post('btn_reset', true)) {
+            $email = $request->post('email', true);
             if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
                 redirect()->route('/');
@@ -195,7 +195,7 @@ class SessionsController extends BaseController
             // Test if a user with this email exists
             if ($recovery_result = $this->db->where('user_email', $email)) {
                 // Create a passwordreset token.
-                $email = $this->input->post('email', true);
+                $email = $request->post('email', true);
                 if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
                     redirect()->route('/');

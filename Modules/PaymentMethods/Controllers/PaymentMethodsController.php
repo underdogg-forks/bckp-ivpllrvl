@@ -2,6 +2,7 @@
 
 namespace Modules\PaymentMethods\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\PaymentMethods\Services\PaymentMethodsService;
@@ -38,15 +39,14 @@ class PaymentMethodsController extends AdminController
      *
      * @originalFile PaymentMethodsController.php
      */
-    public function form($id = null)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function form(Request $request, $id = null) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('payment_methods');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->input->post('is_update') == 0 && $this->input->post('payment_method_name') != '') {
-            $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => $this->input->post('payment_method_name')])->result();
+        if ($request->post('is_update') == 0 && $request->post('payment_method_name') != '') {
+            $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => $request->post('payment_method_name')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('payment_method_already_exists'));
                 redirect()->route('payment_methods/form');
@@ -56,7 +56,7 @@ class PaymentMethodsController extends AdminController
             (new PaymentMethodsService())->save($id);
             redirect()->route('payment_methods');
         }
-        if ($id && ! $this->input->post('btn_submit')) {
+        if ($id && ! $request->post('btn_submit')) {
             if ( ! (new PaymentMethodsService())->prepForm($id)) {
                 show_404();
             }

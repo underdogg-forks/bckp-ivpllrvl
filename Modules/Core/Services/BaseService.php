@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use function App\Services\validation_errors;
 
 class BaseService
@@ -182,11 +184,10 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function dbArray()
-    {
+    public function dbArray(Request $request) {
         $db_array         = [];
         $validation_rules = $this->{$this->validation_rules}();
-        foreach ($this->input->post() as $key => $value) {
+        foreach ($request->post() as $key => $value) {
             if (array_key_exists($key, $validation_rules)) {
                 $db_array[$key] = $value;
             }
@@ -295,13 +296,12 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function runValidation($validation_rules = null)
-    {
+    public function runValidation(Request $request, $validation_rules = null) {
         if ( ! $validation_rules) {
             $validation_rules = $this->default_validation_rules;
         }
         foreach (array_keys($_POST) as $key) {
-            $this->form_values[$key] = $this->input->post($key);
+            $this->form_values[$key] = $request->post($key);
         }
         if (method_exists($this, $validation_rules)) {
             $this->validation_rules = $validation_rules;

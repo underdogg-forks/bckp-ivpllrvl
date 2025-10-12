@@ -2,6 +2,7 @@
 
 namespace Modules\EmailTemplates\Services;
 
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\EmailTemplates\Models\EmailTemplate;

@@ -2,6 +2,7 @@
 
 namespace Modules\CustomFields\Services;
 
+use Illuminate\Support\Facades\DB;
 use Modules\Core\Services\BaseService;
 
 /*

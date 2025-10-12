@@ -2,6 +2,7 @@
 
 namespace Modules\EmailTemplates\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -18,9 +19,8 @@ class AjaxController extends AdminController
      *
      * @return void
      */
-    public function getContent()
-    {
-        $id = $this->input->post('email_template_id');
+    public function getContent(Request $request) {
+        $id = $request->post('email_template_id');
         echo json_encode((new EmailTemplatesService())->getById($id));
     }
 }

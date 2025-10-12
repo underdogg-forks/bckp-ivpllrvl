@@ -2,6 +2,7 @@
 
 namespace Modules\CustomFields\Services;
 
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\CustomFields\Models\ClientCustom;

@@ -2,6 +2,7 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Illuminate\Support\Str;
 use Modules\Clients\Services\ClientsService;

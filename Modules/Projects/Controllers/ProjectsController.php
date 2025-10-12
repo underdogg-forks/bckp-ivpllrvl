@@ -2,6 +2,7 @@
 
 namespace Modules\Projects\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
@@ -46,9 +47,8 @@ class ProjectsController extends AdminController
      *
      * Note: this method may redirect to the projects list on cancel or after a successful save, and will trigger a 404 response if the provided `$id` cannot be prepared for editing.
      */
-    public function form($id = null)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function form(Request $request, $id = null) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('projects');
         }
         $this->filterInput();
@@ -57,7 +57,7 @@ class ProjectsController extends AdminController
             $this->projectsService->save($id);
             redirect()->route('projects');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
+        if ($id && ! $request->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
             show_404();
         }
     }
@@ -71,9 +71,8 @@ class ProjectsController extends AdminController
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|string the rendered project view response or a redirect response when cancelled
      */
-    public function view($project_id)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function view(Request $request, $project_id) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('projects');
         }
         $project = $this->projectsService->getById($project_id);

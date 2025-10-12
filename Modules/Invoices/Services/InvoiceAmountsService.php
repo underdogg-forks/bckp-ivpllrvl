@@ -2,6 +2,7 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 
@@ -54,7 +55,7 @@ class InvoiceAmountsService extends BaseService
         ');
         $invoice_amounts = $query->row();
         // Discounts calculation - since v1.6.3
-        if (config_item('legacy_calculation')) {
+        if (config('legacy_calculation')) {
             $invoice_item_subtotal = $invoice_amounts->invoice_item_subtotal - $invoice_amounts->invoice_item_discount;
             $invoice_subtotal      = $invoice_item_subtotal + $invoice_amounts->invoice_item_tax_total;
             $invoice_total         = $this->calculateDiscount($invoice_id, $invoice_subtotal);
@@ -151,7 +152,7 @@ class InvoiceAmountsService extends BaseService
     public function calculateInvoiceTaxes($invoice_id)
     {
         // First check to see if there are any invoice taxes applied
-        $invoice_tax_rates = config_item('legacy_calculation') ? $this->invoiceTaxRatesService->where('invoice_id', $invoice_id)->get()->result() : null;
+        $invoice_tax_rates = config('legacy_calculation') ? $this->invoiceTaxRatesService->where('invoice_id', $invoice_id)->get()->result() : null;
         if ($invoice_tax_rates) {
             // There are invoice taxes applied
             // GetController the current invoice amount record
@@ -183,7 +184,7 @@ class InvoiceAmountsService extends BaseService
             // Recalculate the invoice total and balance
             $invoice_total = $invoice_amount->invoice_item_subtotal + $invoice_amount->invoice_item_tax_total + $invoice_amount->invoice_tax_total;
             // Legacy calculation need recalculate global discounts - New calculation not! & deactivated before here - Only for memo - Todo?: idea settings: calculation mode - since v1.6.3
-            if (config_item('legacy_calculation')) {
+            if (config('legacy_calculation')) {
                 $invoice_total = $this->calculateDiscount($invoice_id, $invoice_total);
             }
             $invoice_balance = $invoice_total - $invoice_amount->invoice_paid;

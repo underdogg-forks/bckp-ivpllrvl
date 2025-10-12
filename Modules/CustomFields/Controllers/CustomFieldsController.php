@@ -2,6 +2,7 @@
 
 namespace Modules\CustomFields\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -56,9 +57,8 @@ class CustomFieldsController extends AdminController
      *
      * @originalFile CustomFieldsController.php
      */
-    public function form($id = null)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function form(Request $request, $id = null) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('custom_fields');
         }
         $this->filterInput();
@@ -67,7 +67,7 @@ class CustomFieldsController extends AdminController
             (new CustomFieldsService())->save($id);
             redirect()->route('custom_fields');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! (new CustomFieldsService())->prepForm($id)) {
+        if ($id && ! $request->post('btn_submit') && ! (new CustomFieldsService())->prepForm($id)) {
             show_404();
         }
 

@@ -2,6 +2,7 @@
 
 namespace Modules\Guest\Controllers\Gateways;
 
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
 
@@ -26,7 +27,7 @@ class PaypalController extends BaseController
         $invoice = $this->mdl_invoices->where('ip_invoices.invoice_url_key', $invoice_url_key)->get()->row();
         // Check if the invoice is payable
         if ($invoice->invoice_balance <= 0) {
-            $this->session->set_userdata('alert_error', lang('invoice_already_paid'));
+            session()->put('alert_error', lang('invoice_already_paid'));
             redirect(site_url('guest/view/invoice/' . $invoice->invoice_url_key));
         }
         //create the order

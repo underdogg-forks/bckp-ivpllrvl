@@ -313,7 +313,7 @@ class Sumex
             'output_type'         => 'pdf',
             'show_item_discounts' => $show_item_discounts,
             'custom_fields'       => $custom_fields,
-            'legacy_calculation'  => config_item('legacy_calculation'),
+            'legacy_calculation'  => config('legacy_calculation'),
         ];
 
         $CI->load->helper(['pdf', 'mpdf']);

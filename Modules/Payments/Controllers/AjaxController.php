@@ -2,6 +2,7 @@
 
 namespace Modules\Payments\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\PaymentMethods\Services\PaymentMethodsService;
@@ -44,10 +45,9 @@ class AjaxController extends AdminController
      *
      * The method then loads the 'payments/modal_add_payment' view through the layout module.
      */
-    public function modalAddPayment()
-    {
+    public function modalAddPayment(Request $request) {
         $this->load->module('layout');
-        $data = ['payment_methods' => (new PaymentMethodsService())->getAll(), 'invoice_id' => $this->security->xss_clean($this->input->post('invoice_id')), 'invoice_balance' => $this->input->post('invoice_balance'), 'invoice_payment_method' => $this->input->post('invoice_payment_method'), 'payment_cf_exist' => $this->security->xss_clean($this->input->post('payment_cf_exist'))];
+        $data = ['payment_methods' => (new PaymentMethodsService())->getAll(), 'invoice_id' => strip_tags($request->post('invoice_id')), 'invoice_balance' => $request->post('invoice_balance'), 'invoice_payment_method' => $request->post('invoice_payment_method'), 'payment_cf_exist' => strip_tags($request->post('payment_cf_exist'))];
         $this->layout->loadView('payments/modal_add_payment', $data);
     }
 }

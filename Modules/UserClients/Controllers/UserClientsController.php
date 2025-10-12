@@ -2,6 +2,8 @@
 
 namespace Modules\UserClients\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
@@ -34,9 +36,8 @@ class UserClientsController extends AdminController
      *
      * @originalFile UserClientsController.php
      */
-    public function user($id = null)
-    {
-        if ($this->input->post('btn_cancel')) {
+    public function user(Request $request, $id = null) {
+        if ($request->post('btn_cancel')) {
             redirect()->route('users');
         }
         $user = (new UsersService())->getById($id);
@@ -56,15 +57,14 @@ class UserClientsController extends AdminController
      *
      * @originalFile UserClientsController.php
      */
-    public function create($user_id = null)
-    {
+    public function create(Request $request, $user_id = null) {
         if ( ! $user_id) {
             redirect()->route('custom_values');
-        } elseif ($this->input->post('btn_cancel')) {
+        } elseif ($request->post('btn_cancel')) {
             redirect('user_clients/field/' . $user_id);
         }
         if ((new UserClientsService())->runValidation()) {
-            if ($this->input->post('user_all_clients')) {
+            if ($request->post('user_all_clients')) {
                 $users_id = [$user_id];
                 (new UserClientsService())->setAllClientsUser($users_id);
                 $user_update = ['user_all_clients' => 1];

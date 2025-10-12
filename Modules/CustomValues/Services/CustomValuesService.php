@@ -2,6 +2,7 @@
 
 namespace Modules\CustomValues\Services;
 
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Services\BaseService;

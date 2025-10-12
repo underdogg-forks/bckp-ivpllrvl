@@ -2,6 +2,7 @@
 
 namespace Modules\Import\Controllers;
 
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Import\Services\ImportService;
@@ -49,9 +50,8 @@ class ImportController extends AdminController
      * payments.csv), records import details for each processed file, and redirects
      * to the import listing.
      */
-    public function form()
-    {
-        if ( ! $this->input->post('btn_submit')) {
+    public function form(Request $request) {
+        if ( ! $request->post('btn_submit')) {
             $this->load->helper('directory');
             $files = directory_map('./uploads/import');
             foreach ($files as $key => $file) {
@@ -65,10 +65,10 @@ class ImportController extends AdminController
         } else {
             $this->load->helper('file');
             $import_id = (new ImportService())->startImport();
-            if ($this->input->post('files')) {
+            if ($request->post('files')) {
                 $files = $this->allowed_files;
                 foreach ($files as $key => $file) {
-                    if ( ! is_numeric(array_search($file, $this->input->post('files'), true))) {
+                    if ( ! is_numeric(array_search($file, $request->post('files'), true))) {
                         unset($files[$key]);
                     }
                 }

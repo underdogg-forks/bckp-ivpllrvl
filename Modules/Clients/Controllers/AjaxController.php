@@ -2,6 +2,8 @@
 
 namespace Modules\Clients\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Clients\Services\ClientNotesService;
 use Modules\Clients\Services\ClientsService;
@@ -23,8 +25,8 @@ class AjaxController extends AdminController
     public function nameQuery(): void
     {
         $response                = [];
-        $query                   = $this->input->get('query');
-        $permissiveSearchClients = $this->input->get('permissive_search_clients');
+        $query                   = request()->get('query');
+        $permissiveSearchClients = request()->get('permissive_search_clients');
         if (empty($query)) {
             echo json_encode($response);
             exit;
@@ -63,7 +65,7 @@ class AjaxController extends AdminController
      */
     public function savePreferencePermissiveSearchClients(): void
     {
-        $permissiveSearchClients = $this->input->get('permissive_search_clients');
+        $permissiveSearchClients = request()->get('permissive_search_clients');
         if ( ! preg_match('!^[0-1]{1}$!', $permissiveSearchClients)) {
             exit;
         }
@@ -75,10 +77,10 @@ class AjaxController extends AdminController
      *
      * If a note with the provided `client_note_id` exists, or if the ID is empty, the controller attempts deletion and echoes `{"success": 1}` on successful deletion or `{"success": 0}` otherwise.
      */
-    public function deleteClientNote(): void
+    public function deleteClientNote(Request $request): void
     {
         $success        = 0;
-        $client_note_id = $this->input->post('client_note_id');
+        $client_note_id = $request->post('client_note_id');
         if ((new ClientNotesService())->getById($client_note_id) || empty($client_note_id)) {
             $item = (new ClientNotesService())->delete($client_note_id);
             if ($item) {
@@ -100,9 +102,9 @@ class AjaxController extends AdminController
     {
         if ((new ClientNotesService())->runValidation()) {
             (new ClientNotesService())->save();
-            $response = ['success' => 1, 'new_token' => $this->security->get_csrf_hash()];
+            $response = ['success' => 1, 'new_token' => csrf_token()];
         } else {
-            $response = ['success' => 0, 'new_token' => $this->security->get_csrf_hash(), 'validation_errors' => json_errors()];
+            $response = ['success' => 0, 'new_token' => csrf_token(), 'validation_errors' => json_errors()];
         }
         echo json_encode($response);
     }
@@ -116,9 +118,9 @@ class AjaxController extends AdminController
      *
      * @originalFile AjaxController.php
      */
-    public function loadClientNotes(): void
+    public function loadClientNotes(Request $request): void
     {
-        $data = ['client_notes' => (new ClientNotesService())->where('client_id', $this->input->post('client_id'))->get()->result()];
-        $this->layout->loadView('clients/partial_notes', $data);
+        $data = ['client_notes' => (new ClientNotesService())->where('client_id', $request->post('client_id'))->get()->result()];
+        echo view('clients.partial_notes', $data)->render();
     }
 }

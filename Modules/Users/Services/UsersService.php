@@ -2,6 +2,7 @@
 
 namespace Modules\Users\Services;
 
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Users\Models\User;
@@ -190,7 +191,7 @@ class UsersService extends BaseService
     public function save($id = null, $db_array = null)
     {
         $id = parent::save($id, $db_array);
-        if ($user_clients = $this->session->userdata('user_clients')) {
+        if ($user_clients = session('user_clients')) {
             $this->load->model('users/mdl_user_clients');
             foreach ($user_clients as $user_client) {
                 $this->mdl_user_clients->save(null, ['user_id' => $id, 'client_id' => $user_client]);

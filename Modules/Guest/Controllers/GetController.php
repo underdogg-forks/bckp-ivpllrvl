@@ -2,6 +2,7 @@
 
 namespace Modules\Guest\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\BaseController;
 
 /*
@@ -84,7 +85,7 @@ class GetController extends BaseController
      */
     private function respondMessage(int $httpCode, string $messageKey, string $dynamicLogValue = ''): void
     {
-        log_message('debug', 'guest/get: ' . trans($messageKey) . ': (status ' . $httpCode . ') ' . $dynamicLogValue);
+        Log::debug('guest/get: ' . trans($messageKey) . ': (status ' . $httpCode . ') ' . $dynamicLogValue);
         http_response_code($httpCode);
         _trans($messageKey);
         exit;
