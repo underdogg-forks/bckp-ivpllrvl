@@ -195,13 +195,9 @@ class SessionsController extends BaseController
                 $this->loginLogAddfailure($email);
             }
             // Test if a user with this email exists
-            if ($recovery_result = $this->db->where('user_email', $email)) {
+            $user_exists = DB::table('ip_users')->where('user_email', $email)->exists();
+            if ($user_exists) {
                 // Create a passwordreset token.
-                $email = $request->post('email');
-                if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
-                    return redirect()->route('/');
-                }
                 //use salt to prevent predictability of the reset token (CVE-2021-29023)
                 $this->load->library('crypt');
                 $token = md5(time() . $email . $this->crypt->salt());

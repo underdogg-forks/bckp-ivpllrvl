@@ -155,6 +155,7 @@ class CustomFieldsService extends BaseService
         } else {
             $custom_field_label = mb_strtolower(str_replace(' ', '_', $db_array['custom_field_label']));
         }
+        $db_array['custom_field_label'] = $custom_field_label;
         if (in_array($db_array['custom_field_type'], $this->customTypes())) {
             $type = $db_array['custom_field_type'];
         } else {

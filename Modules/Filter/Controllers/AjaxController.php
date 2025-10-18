@@ -10,6 +10,17 @@ use Modules\Clients\Models\Client;
 use Modules\Core\Controllers\AdminController;
 use Modules\Invoices\Models\Invoice;
 use Modules\Quotes\Models\Quote;
+use Modules\CustomFields\Services\CustomFieldsService;
+use Modules\CustomValues\Services\CustomValuesService;
+use Modules\Projects\Services\ProjectsService;
+use Modules\Tasks\Services\TasksService;
+use Modules\Products\Services\ProductsService;
+use Modules\Users\Services\UsersService;
+use Modules\Families\Services\FamiliesService;
+use Modules\Invoices\Services\InvoicesRecurringService;
+use Modules\Payments\Services\PaymentLogsService;
+use Modules\Invoices\Services\InvoicesService;
+use Modules\Payments\Services\PaymentsService;
 
 #[AllowDynamicProperties]
 class AjaxController extends AdminController
@@ -25,7 +36,9 @@ class AjaxController extends AdminController
     {
         $query    = $request->input('filter_query');
         $keywords = array_filter(explode(' ', $query));
-        $invoices = Invoice::query();
+        $invoices = Invoice::query()
+            ->leftJoin('ip_clients', 'ip_clients.client_id', '=', 'ip_invoices.client_id')
+            ->select('ip_invoices.*', 'ip_clients.client_title');
         foreach ($keywords as $keyword) {
             $invoices->where(function ($q) use ($keyword) {
                 $q->whereRaw('LOWER(invoice_number) LIKE ?', ["%{$keyword}%"])
@@ -48,7 +61,9 @@ class AjaxController extends AdminController
     {
         $query    = $request->input('filter_query');
         $keywords = array_filter(explode(' ', $query));
-        $quotes   = Quote::query();
+        $quotes   = Quote::query()
+            ->leftJoin('ip_clients', 'ip_clients.client_id', '=', 'ip_quotes.client_id')
+            ->select('ip_quotes.*', 'ip_clients.client_title');
         foreach ($keywords as $keyword) {
             $quotes->where(function ($q) use ($keyword) {
                 $q->whereRaw('LOWER(quote_number) LIKE ?', ["%{$keyword}%"])
@@ -92,7 +107,7 @@ class AjaxController extends AdminController
      */
     public function filterCustomFields(Request $request): \Illuminate\Contracts\View\View
     {
-        $name     = $request->headers->get('referer') ? basename($request->headers->get('referer')) : 'all';
+        $name     = (string) ($request->route('name') ?? $request->input('name', 'all'));
         $query    = $request->input('filter_query');
         $keywords = explode(' ', $query);
         $service  = new CustomFieldsService();
@@ -127,7 +142,7 @@ class AjaxController extends AdminController
     public function filterCustomValues(Request $request): \Illuminate\Contracts\View\View
     {
         // custom values id Normaly always here (it's ajax). Old school but work.
-        $id = empty($_SERVER['HTTP_REFERER']) ? 0 : basename($_SERVER['HTTP_REFERER']);
+        $id = (int) ($request->route('id') ?? $request->input('id', 0));
         // Todo: With CI?
         $query    = $request->input('filter_query');
         $keywords = explode(' ', $query);
@@ -158,7 +173,7 @@ class AjaxController extends AdminController
     public function filterCustomValuesField(Request $request): \Illuminate\Contracts\View\View
     {
         // custom values id Normaly always here (it's ajax). Old school but work.
-        $id       = empty($_SERVER['HTTP_REFERER']) ? 0 : basename($_SERVER['HTTP_REFERER']);
+        $id       = (int) ($request->route('id') ?? $request->input('id', 0));
         $query    = $request->input('filter_query');
         $keywords = explode(' ', $query);
         $service  = new CustomValuesService();

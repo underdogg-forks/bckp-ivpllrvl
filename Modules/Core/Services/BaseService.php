@@ -198,8 +198,17 @@ class BaseService
         if ($request === null) {
             $request = request();
         }
-        $db_array         = [];
-        $validation_rules = $this->{$this->validation_rules}();
+        $db_array   = [];
+        $rulesMethod = $this->validation_rules ?: $this->default_validation_rules ?? null;
+        if ($rulesMethod && method_exists($this, $rulesMethod)) {
+            $validation_rules = $this->{$rulesMethod}();
+        } elseif (method_exists($this, 'validation_rules')) {
+            $validation_rules = $this->validation_rules();
+        } elseif (method_exists($this, 'validationRules')) {
+            $validation_rules = $this->validationRules();
+        } else {
+            $validation_rules = [];
+        }
         foreach ($request->post() as $key => $value) {
             if (array_key_exists($key, $validation_rules)) {
                 $db_array[$key] = $value;

@@ -3,10 +3,12 @@
 namespace Modules\CustomFields\Controllers;
 
 use Illuminate\Contracts\View\View;
-
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\CustomFields\Services\CustomFieldsService;
+use Modules\CustomValues\Services\CustomValuesService;
 
 #[AllowDynamicProperties]
 class CustomFieldsController extends AdminController
@@ -26,10 +28,10 @@ class CustomFieldsController extends AdminController
      *
      * Performs an immediate redirect to the 'custom_fields/table/all' route.
      */
-    public function index(): void
+    public function index(): RedirectResponse
     {
         // Display all custom_fields tables by default
-        redirect()->route('custom_fields/table/all');
+        return redirect('custom_fields/table/all');
     }
 
     /**
@@ -40,7 +42,7 @@ class CustomFieldsController extends AdminController
      * @param string $name the custom table name to filter by, or 'all' to show all tables
      * @param int    $page the pagination page number to display
      */
-    public function table(string $name = 'all', $page = 0): void
+    public function table(string $name = 'all', int $page = 0): View
     {
         // Determine which name of table custom field to load
         $custom_tables = (new CustomFieldsService())->customTables();
@@ -59,7 +61,7 @@ class CustomFieldsController extends AdminController
      *
      * @originalFile CustomFieldsController.php
      */
-    public function form(Request $request, $id = null)
+    public function form(Request $request, $id = null): View|RedirectResponse
     {
         if ($request->post('btn_cancel')) {
             return redirect()->route('custom_fields');
@@ -71,7 +73,7 @@ class CustomFieldsController extends AdminController
             return redirect()->route('custom_fields');
         }
         if ($id && ! $request->post('btn_submit') && ! (new CustomFieldsService())->prepForm($id)) {
-            show_404();
+            abort(404);
         }
 
         return view('custom_fields.form', ['custom_field_id' => $id, 'custom_field_tables' => (new CustomFieldsService())->customTables(), 'custom_field_types' => (new CustomFieldsService())->customTypes(), 'custom_field_usage' => (new CustomFieldsService())->used($id), 'custom_field_location' => (new CustomFieldsService())->formValue('custom_field_location'), 'positions' => (new CustomFieldsService())->getPositions()]);
@@ -84,13 +86,13 @@ class CustomFieldsController extends AdminController
      *
      * @param int|string $id the custom field identifier to delete
      */
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         if ( ! (new CustomFieldsService())->delete($id)) {
             $this->session->set_flashdata('alert_info', trans('id') . sprintf(' "%s" ', $id) . trans('custom_fields_used_not_deletable'));
         }
         // Return to page number of custom values or fields
         $r = empty($_SERVER['HTTP_REFERER']) ? 'custom_fields' : $_SERVER['HTTP_REFERER'];
-        redirect($r);
+        return redirect()->to($r);
     }
 }

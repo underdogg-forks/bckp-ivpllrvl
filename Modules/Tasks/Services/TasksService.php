@@ -88,11 +88,15 @@ class TasksService extends BaseService
      *
      * @originalFile Task.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array                     = parent::dbArray($request);
-        $db_array['task_finish_date'] = date_to_mysql($db_array['task_finish_date']);
-        $db_array['task_price']       = standardize_amount($db_array['task_price']);
+        if (isset($db_array['task_finish_date'])) {
+            $db_array['task_finish_date'] = date_to_mysql($db_array['task_finish_date']);
+        }
+        if (isset($db_array['task_price'])) {
+            $db_array['task_price'] = standardize_amount($db_array['task_price']);
+        }
 
         return $db_array;
     }

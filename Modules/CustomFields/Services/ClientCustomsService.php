@@ -167,7 +167,7 @@ class ClientCustomsService extends BaseService
      *
      * @originalFile ClientCustom.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array = parent::dbArray($request);
         $this->load->module('custom_fields/mdl_custom_fields');
@@ -176,7 +176,8 @@ class ClientCustomsService extends BaseService
             if ($field->custom_field_type == 'DATE') {
                 $db_array[$field->custom_field_column] = date_to_mysql($db_array[$field->custom_field_column]);
             } elseif ($field->custom_field_type == 'MULTIPLE-CHOICE') {
-                $db_array[$field->custom_field_column] = implode(',', $db_array[$field->custom_field_column]);
+                $value = $db_array[$field->custom_field_column] ?? [];
+                $db_array[$field->custom_field_column] = implode(',', (array) $value);
             }
         }
 

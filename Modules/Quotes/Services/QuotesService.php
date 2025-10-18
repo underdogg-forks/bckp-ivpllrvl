@@ -3,6 +3,8 @@
 namespace Modules\Quotes\Services;
 
 use AllowDynamicProperties;
+use DateInterval;
+use DateTime;
 use Illuminate\Http\Request;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\Quote;
@@ -63,7 +65,7 @@ class QuotesService extends BaseService
      */
     public function validationRules()
     {
-        return ['client_id' => ['field' => 'client_id', 'label' => trans('client'), 'rules' => 'required'], 'quote_date_created' => ['field' => 'quote_date_created', 'label' => trans('quote_date'), 'rules' => 'required'], 'invoice_group_id' => ['field' => 'invoice_group_id', 'label' => trans('quote_group'), 'rules' => 'required'], 'quote_password' => ['field' => 'quote_password', 'label' => trans('quote_password')], 'user_id' => ['field' => 'user_id', 'label' => trans('user'), 'rule' => 'required']];
+        return ['client_id' => ['field' => 'client_id', 'label' => trans('client'), 'rules' => 'required'], 'quote_date_created' => ['field' => 'quote_date_created', 'label' => trans('quote_date'), 'rules' => 'required'], 'invoice_group_id' => ['field' => 'invoice_group_id', 'label' => trans('quote_group'), 'rules' => 'required'], 'quote_password' => ['field' => 'quote_password', 'label' => trans('quote_password')], 'user_id' => ['field' => 'user_id', 'label' => trans('user'), 'rules' => 'required']];
     }
 
     /**
@@ -156,7 +158,7 @@ class QuotesService extends BaseService
      *
      * @originalFile Quote.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null): array
     {
         $db_array = parent::dbArray($request);
         // GetController the client id for the submitted quote

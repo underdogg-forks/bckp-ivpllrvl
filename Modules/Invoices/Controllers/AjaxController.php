@@ -505,26 +505,22 @@ class AjaxController extends AdminController
      * - On validation failure: `{"success": 0, "validation_errors": ...}`
      */
     public function createCredit(Request $request) {
-        $invoiceService = new InvoicesService();
-        if ($invoiceService->runValidation(null, $request)) {
+        if ($this->invoicesService->runValidation(null, $request)) {
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
                 config(['legacy_calculation' => ! empty($request->post('legacy_calculation'))]);
             }
-            $target_id = $invoiceService->save($request);
+            $target_id = $this->invoicesService->save($request);
             $source_id = strip_tags($request->post('invoice_id'));
-            $invoiceService->copyCreditInvoice($source_id, $target_id);
+            $this->invoicesService->copyCreditInvoice($source_id, $target_id);
             // Set source invoice to read-only
             if ($this->config->item('disable_read_only') == false) {
-                $invoiceService->where('invoice_id', $source_id);
-                $invoiceService->update('ip_invoices', ['is_read_only' => '1']);
+                DB::table('ip_invoices')->where('invoice_id', $source_id)->update(['is_read_only' => '1']);
             }
             // Set target invoice to credit invoice
-            $invoiceService->where('invoice_id', $target_id);
-            $invoiceService->update('ip_invoices', ['creditinvoice_parent_id' => $source_id]);
-            $invoiceService->where('invoice_id', $target_id);
-            $invoiceService->update('ip_invoice_amounts', ['invoice_sign' => '-1']);
+            DB::table('ip_invoices')->where('invoice_id', $target_id)->update(['creditinvoice_parent_id' => $source_id]);
+            DB::table('ip_invoice_amounts')->where('invoice_id', $target_id)->update(['invoice_sign' => '-1']);
             $response = ['success' => 1, 'invoice_id' => $target_id];
         } else {
             $this->load->helper('json_error');
