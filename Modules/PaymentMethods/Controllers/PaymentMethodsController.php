@@ -2,7 +2,10 @@
 
 namespace Modules\PaymentMethods\Controllers;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\PaymentMethods\Services\PaymentMethodsService;
@@ -25,13 +28,11 @@ class PaymentMethodsController extends AdminController
      *
      * @originalFile PaymentMethodsController.php
      */
-    public function index($page = 0)
+    public function index($page = 0): View
     {
         (new PaymentMethodsService())->paginate(site_url('payment_methods/index'), $page);
         $payment_methods = (new PaymentMethodsService())->result();
-        $this->layout->set('payment_methods', $payment_methods);
-        $this->layout->buffer('content', 'payment_methods/index');
-        $this->layout->render();
+        return view('payment_methods.index', ['payment_methods' => $payment_methods]);
     }
 
     /**
@@ -39,31 +40,33 @@ class PaymentMethodsController extends AdminController
      *
      * @originalFile PaymentMethodsController.php
      */
-    public function form(Request $request, $id = null) {
+    public function form(Request $request, $id = null): View|RedirectResponse
+    {
         if ($request->post('btn_cancel')) {
             return redirect()->route('payment_methods');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ($request->post('is_update') == 0 && $request->post('payment_method_name') != '') {
-            $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => $request->post('payment_method_name')])->result();
-            if ( ! empty($check)) {
-                $this->session->set_flashdata('alert_error', trans('payment_method_already_exists'));
-                return redirect()->route('payment_methods/form');
+            $exists = DB::table('ip_payment_methods')
+                ->where('payment_method_name', $request->post('payment_method_name'))
+                ->exists();
+            if ($exists) {
+                session()->flash('alert_error', trans('payment_method_already_exists'));
+                return redirect()->route('payment_methods.form');
             }
         }
-        if ((new PaymentMethodsService())->runValidation()) {
-            (new PaymentMethodsService())->save($id);
+        if ((new PaymentMethodsService())->runValidation(null, $request)) {
+            (new PaymentMethodsService())->save($request, $id);
             return redirect()->route('payment_methods');
         }
         if ($id && ! $request->post('btn_submit')) {
             if ( ! (new PaymentMethodsService())->prepForm($id)) {
-                show_404();
+                abort(404);
             }
             (new PaymentMethodsService())->setFormValue('is_update', true);
         }
-        $this->layout->buffer('content', 'payment_methods/form');
-        $this->layout->render();
+        return view('payment_methods.form');
     }
 
     /**
@@ -74,7 +77,7 @@ class PaymentMethodsController extends AdminController
      *
      * @param int|string $id the identifier of the payment method to delete
      */
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         (new PaymentMethodsService())->delete($id);
         return redirect()->route('payment_methods');

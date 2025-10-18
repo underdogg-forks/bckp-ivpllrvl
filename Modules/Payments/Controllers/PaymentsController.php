@@ -45,14 +45,14 @@ class PaymentsController extends AdminController
      */
     public function form(Request $request, $id = null) {
         if ($request->post('btn_cancel')) {
-            redirect()->route('payments');
+            return redirect()->route('payments');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ((new PaymentsService())->runValidation()) {
-            $id = (new PaymentsService())->save($id);
+        if ((new PaymentsService())->runValidation(null, $request)) {
+            $id = (new PaymentsService())->save($request, $id);
             (new PaymentCustomService())->saveCustom($id, $request->post('custom'));
-            redirect()->route('payments');
+            return redirect()->route('payments');
         }
         if ( ! $request->post('btn_submit')) {
             $prep_form = (new PaymentsService())->prepForm($id);

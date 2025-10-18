@@ -4,6 +4,7 @@ namespace Modules\Users\Services;
 
 use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Core\Services\BaseService;
 use Modules\Users\Models\User;
 
@@ -149,9 +150,9 @@ class UsersService extends BaseService
      *
      * @originalFile User.php
      */
-    public function dbArray()
+    public function dbArray(Request $request = null)
     {
-        $db_array = parent::dbArray();
+        $db_array = parent::dbArray($request);
         if (isset($db_array['user_password'])) {
             unset($db_array['user_passwordv']);
             $this->load->library('crypt');
@@ -188,9 +189,10 @@ class UsersService extends BaseService
      *
      * @originalFile User.php
      */
-    public function save($id = null, $db_array = null)
+    public function save(Request $request = null, $id = null, $db_array = null)
     {
-        $id = parent::save($id, $db_array);
+        $activeRequest = $request ?? request();
+        $id = parent::save($activeRequest, $id, $db_array);
         if ($user_clients = session('user_clients')) {
             $this->load->model('users/mdl_user_clients');
             foreach ($user_clients as $user_client) {

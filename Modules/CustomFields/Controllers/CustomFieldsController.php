@@ -59,15 +59,16 @@ class CustomFieldsController extends AdminController
      *
      * @originalFile CustomFieldsController.php
      */
-    public function form(Request $request, $id = null) {
+    public function form(Request $request, $id = null)
+    {
         if ($request->post('btn_cancel')) {
-            redirect()->route('custom_fields');
+            return redirect()->route('custom_fields');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ((new CustomFieldsService())->runValidation()) {
-            (new CustomFieldsService())->save($id);
-            redirect()->route('custom_fields');
+        if ((new CustomFieldsService())->runValidation(null, $request)) {
+            (new CustomFieldsService())->save($request, $id);
+            return redirect()->route('custom_fields');
         }
         if ($id && ! $request->post('btn_submit') && ! (new CustomFieldsService())->prepForm($id)) {
             show_404();

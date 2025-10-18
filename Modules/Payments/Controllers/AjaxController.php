@@ -21,10 +21,10 @@ class AjaxController extends AdminController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function add(): \Illuminate\Http\JsonResponse
+    public function add(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ((new PaymentsService())->runValidation()) {
-            $payment_id = (new PaymentsService())->save();
+        if ((new PaymentsService())->runValidation(null, $request)) {
+            $payment_id = (new PaymentsService())->save($request);
             $response   = ['success' => 1, 'payment_id' => $payment_id];
         } else {
             $this->load->helper('json_error');
@@ -45,9 +45,16 @@ class AjaxController extends AdminController
      *
      * The method then loads the 'payments/modal_add_payment' view through the layout module.
      */
-    public function modalAddPayment(Request $request) {
+    public function modalAddPayment(Request $request): void
+    {
         $this->load->module('layout');
-        $data = ['payment_methods' => (new PaymentMethodsService())->getAll(), 'invoice_id' => strip_tags($request->post('invoice_id')), 'invoice_balance' => $request->post('invoice_balance'), 'invoice_payment_method' => $request->post('invoice_payment_method'), 'payment_cf_exist' => strip_tags($request->post('payment_cf_exist'))];
+        $data = [
+            'payment_methods'       => (new PaymentMethodsService())->getAll(),
+            'invoice_id'            => e($request->post('invoice_id')),
+            'invoice_balance'       => $request->post('invoice_balance'),
+            'invoice_payment_method' => $request->post('invoice_payment_method'),
+            'payment_cf_exist'      => e($request->post('payment_cf_exist')),
+        ];
         echo view('payments/modal_add_payment', $data)->render();
     }
 }

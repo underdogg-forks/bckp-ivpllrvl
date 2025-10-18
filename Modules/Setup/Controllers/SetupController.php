@@ -185,17 +185,17 @@ class SetupController extends MXController
      * advances the `install_step` session value to `calculation_info`, and redirects to the calculation info step.
      * If not submitted or validation fails, prepares country and language data for the layout and renders the user creation form.
      */
-    public function createUser(): void
+    public function createUser(Request $request): void
     {
         if (session('install_step') != 'create_user') {
             redirect()->route('setup/prerequisites');
         }
         $this->loadCiDatabase();
         $this->load->helper('country');
-        if ((new UsersService())->runValidation()) {
-            $db_array              = (new UsersService())->dbArray();
+        if ((new UsersService())->runValidation(null, $request)) {
+            $db_array              = (new UsersService())->dbArray($request);
             $db_array['user_type'] = 1;
-            (new UsersService())->save(null, $db_array);
+            (new UsersService())->save($request, null, $db_array);
             session()->put('install_step', 'calculation_info');
             redirect()->route('setup/calculation_info');
         }

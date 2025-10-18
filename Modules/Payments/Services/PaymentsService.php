@@ -3,6 +3,7 @@
 namespace Modules\Payments\Services;
 
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\Models\Invoice;
 use Modules\Invoices\Models\InvoiceAmount;
@@ -85,12 +86,13 @@ class PaymentsService extends BaseService
      *
      * @return int|false the id of the saved payment on success, or `false` if the related invoice amounts could not be loaded
      */
-    public function save($id = null, $db_array = null)
+    public function save(Request $request = null, $id = null, $db_array = null)
     {
-        $db_array = $db_array ? $db_array : $this->dbArray();
+        $activeRequest = $request ?? request();
+        $db_array = $db_array ? $db_array : $this->dbArray($activeRequest);
         $this->load->model('invoices/mdl_invoice_amounts');
         // Save the payment
-        $id                      = parent::save($id, $db_array);
+        $id                      = parent::save($activeRequest, $id, $db_array);
         $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($db_array['invoice_id']);
         // Recalculate invoice amounts
         $this->mdl_invoice_amounts->calculate($db_array['invoice_id'], $global_discount);
@@ -117,9 +119,9 @@ class PaymentsService extends BaseService
      *
      * @originalFile Payment.php
      */
-    public function dbArray()
+    public function dbArray(Request $request = null)
     {
-        $db_array                   = parent::dbArray();
+        $db_array                   = parent::dbArray($request);
         $db_array['payment_date']   = date_to_mysql($db_array['payment_date']);
         $db_array['payment_amount'] = standardize_amount($db_array['payment_amount']);
 

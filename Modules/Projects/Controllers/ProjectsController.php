@@ -49,14 +49,15 @@ class ProjectsController extends AdminController
      *
      * Note: this method may redirect to the projects list on cancel or after a successful save, and will trigger a 404 response if the provided `$id` cannot be prepared for editing.
      */
-    public function form(Request $request, $id = null) {
+    public function form(Request $request, $id = null)
+    {
         if ($request->post('btn_cancel')) {
             return redirect()->route('projects');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->projectsService->runValidation()) {
-            $this->projectsService->save($id);
+        if ($this->projectsService->runValidation(null, $request)) {
+            $this->projectsService->save($request, $id);
             return redirect()->route('projects');
         }
         if ($id && ! $request->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {

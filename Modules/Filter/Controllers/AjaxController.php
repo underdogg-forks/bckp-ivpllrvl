@@ -196,7 +196,8 @@ class AjaxController extends AdminController
             }
         }
         $data = ['projects' => (new ProjectsService())->get()->result()];
-        echo view('projects/partial_projects_table', $data)->render();
+
+        return view('projects/partial_projects_table', $data);
     }
 
     /**
@@ -218,7 +219,8 @@ class AjaxController extends AdminController
             }
         }
         $data = ['tasks' => (new TasksService())->get()->result(), 'task_statuses' => (new TasksService())->statuses()];
-        echo view('tasks/partial_tasks_table', $data)->render();
+
+        return view('tasks/partial_tasks_table', $data);
     }
 
     /**
@@ -240,7 +242,8 @@ class AjaxController extends AdminController
             }
         }
         $data = ['products' => (new ProductsService())->get()->result()];
-        echo view('products/partial_products_table', $data)->render();
+
+        return view('products/partial_products_table', $data);
     }
 
     /**
@@ -264,7 +267,8 @@ class AjaxController extends AdminController
             }
         }
         $data = ['users' => (new UsersService())->get()->result(), 'user_types' => (new UsersService())->userTypes()];
-        echo view('users/partial_users_table', $data)->render();
+
+        return view('users/partial_users_table', $data);
     }
 
     /**
@@ -285,7 +289,8 @@ class AjaxController extends AdminController
             }
         }
         $data = ['families' => (new FamiliesService())->get()->result()];
-        echo view('families/partial_families_table', $data)->render();
+
+        return view('families/partial_families_table', $data);
     }
 
     /**
@@ -305,7 +310,8 @@ class AjaxController extends AdminController
             }
         }
         $data = ['recur_frequencies' => (new InvoicesRecurringService())->recur_frequencies, 'recurring_invoices' => (new InvoicesRecurringService())->get()->result()];
-        echo view('invoices/partial_invoices_recurring_table', $data)->render();
+
+        return view('invoices/partial_invoices_recurring_table', $data);
     }
 
     /**
@@ -324,7 +330,8 @@ class AjaxController extends AdminController
             }
         }
         $data = ['payment_logs' => (new PaymentLogsService())->get()->result()];
-        echo view('payments/partial_online_logs_table', $data)->render();
+
+        return view('payments/partial_online_logs_table', $data);
     }
 
     /**
@@ -335,7 +342,8 @@ class AjaxController extends AdminController
     public function filterArchives(Request $request): \Illuminate\Contracts\View\View
     {
         $data = ['invoices_archive' => (new InvoicesService())->getArchives($request->input('filter_query'))];
-        echo view('invoices/partial_invoice_archive', $data)->render();
+
+        return view('invoices/partial_invoice_archive', $data);
     }
 
     /**
@@ -354,6 +362,7 @@ class AjaxController extends AdminController
             }
         }
         $data = ['payments' => (new PaymentsService())->get()->result()];
-        echo view('payments/partial_payments_table', $data)->render();
+
+        return view('payments/partial_payments_table', $data);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use AllowDynamicProperties;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 /**
  * CodeIgniter CRUD Model 2
@@ -165,10 +166,11 @@ class MyModel
      *
      * @originalFile MyModel.php
      */
-    public function save($id = null, $db_array = null)
+    public function save(Request $request = null, $id = null, $db_array = null)
     {
+        $activeRequest = $request ?? request();
         if ( ! $db_array) {
-            $db_array = $this->dbArray();
+            $db_array = $this->dbArray($activeRequest);
         }
         $datetime = date('Y-m-d H:i:s');
         if ( ! $id) {
@@ -213,17 +215,9 @@ class MyModel
      *
      * @originalFile MyModel.php
      */
-    public function dbArray()
+    public function dbArray(Request $request = null)
     {
-        $db_array         = [];
-        $validation_rules = $this->{$this->validation_rules}();
-        foreach ($this->input->post() as $key => $value) {
-            if (array_key_exists($key, $validation_rules)) {
-                $db_array[$key] = $value;
-            }
-        }
-
-        return $db_array;
+        return parent::dbArray($request);
     }
 
     /**

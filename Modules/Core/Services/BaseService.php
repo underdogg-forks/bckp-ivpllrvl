@@ -136,45 +136,54 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function save($id = null, $db_array = null)
+    public function save($requestOrId = null, $idOrDbArray = null, $db_array = null)
     {
-        if ( ! $db_array) {
-            $db_array = $this->dbArray();
+        if ($requestOrId instanceof Request) {
+            $request = $requestOrId;
+            $id      = $idOrDbArray;
+            $data    = $db_array;
+        } else {
+            $request = request();
+            $id      = $requestOrId;
+            $data    = $idOrDbArray;
+        }
+        if ( ! $data) {
+            $data = $this->dbArray($request);
         }
         $datetime = date('Y-m-d H:i:s');
         if ( ! $id) {
             if ($this->date_created_field) {
-                if (is_array($db_array)) {
-                    $db_array[$this->date_created_field] = $datetime;
+                if (is_array($data)) {
+                    $data[$this->date_created_field] = $datetime;
                     if ($this->date_modified_field) {
-                        $db_array[$this->date_modified_field] = $datetime;
+                        $data[$this->date_modified_field] = $datetime;
                     }
                 } else {
-                    $db_array->{$this->date_created_field} = $datetime;
+                    $data->{$this->date_created_field} = $datetime;
                     if ($this->date_modified_field) {
-                        $db_array->{$this->date_modified_field} = $datetime;
+                        $data->{$this->date_modified_field} = $datetime;
                     }
                 }
             } elseif ($this->date_modified_field) {
-                if (is_array($db_array)) {
-                    $db_array[$this->date_modified_field] = $datetime;
+                if (is_array($data)) {
+                    $data[$this->date_modified_field] = $datetime;
                 } else {
-                    $db_array->{$this->date_modified_field} = $datetime;
+                    $data->{$this->date_modified_field} = $datetime;
                 }
             }
-            $this->db->insert($this->table, $db_array);
+            $this->db->insert($this->table, $data);
 
             return $this->db->insert_id();
         }
         if ($this->date_modified_field) {
-            if (is_array($db_array)) {
-                $db_array[$this->date_modified_field] = $datetime;
+            if (is_array($data)) {
+                $data[$this->date_modified_field] = $datetime;
             } else {
-                $db_array->{$this->date_modified_field} = $datetime;
+                $data->{$this->date_modified_field} = $datetime;
             }
         }
         $this->db->where($this->primary_key, $id);
-        $this->db->update($this->table, $db_array);
+        $this->db->update($this->table, $data);
 
         return $id;
     }
@@ -184,7 +193,8 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function dbArray(Request $request = null) {
+    public function dbArray(Request $request = null)
+    {
         if ($request === null) {
             $request = request();
         }

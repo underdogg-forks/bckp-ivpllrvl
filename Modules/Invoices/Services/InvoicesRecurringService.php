@@ -4,6 +4,7 @@ namespace Modules\Invoices\Services;
 
 use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\Models\InvoiceRecurring;
 
@@ -57,9 +58,9 @@ class InvoicesRecurringService extends BaseService
      *
      * @originalFile InvoiceRecurring.php
      */
-    public function dbArray()
+    public function dbArray(Request $request = null)
     {
-        $db_array                     = parent::dbArray();
+        $db_array                     = parent::dbArray($request);
         $db_array['recur_start_date'] = date_to_mysql($db_array['recur_start_date']);
         $db_array['recur_next_date']  = $db_array['recur_start_date'];
         $db_array['recur_end_date']   = $db_array['recur_end_date'] ? date_to_mysql($db_array['recur_end_date']) : null;

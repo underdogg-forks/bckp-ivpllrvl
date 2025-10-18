@@ -139,16 +139,18 @@ class UsersController extends AdminController
      *
      * @originalFile UsersController.php
      */
-    public function changePassword(Request $request, string $user_id) {
+    public function changePassword(Request $request, string $user_id): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+    {
         if ($request->post('btn_cancel')) {
-            redirect()->route('users');
+            return redirect()->route('users');
         }
-        if ((new UsersService())->runValidation('validation_rules_change_password')) {
+        if ((new UsersService())->runValidation('validation_rules_change_password', $request)) {
             (new UsersService())->saveChangePassword($user_id, $request->post('user_password'));
-            redirect('users/form/' . $user_id);
+            return redirect('users/form/' . $user_id);
         }
-        $this->layout->buffer('content', 'users/form_change_password');
-        $this->layout->render();
+        return view('users.form_change_password', [
+            'user_id' => $user_id,
+        ]);
     }
 
     /**

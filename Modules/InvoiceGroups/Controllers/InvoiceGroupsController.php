@@ -2,7 +2,10 @@
 
 namespace Modules\InvoiceGroups\Controllers;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\InvoiceGroups\Services\InvoiceGroupsService;
@@ -25,13 +28,12 @@ class InvoiceGroupsController extends AdminController
      *
      * @originalFile InvoiceGroupsController.php
      */
-    public function index($page = 0)
+    public function index($page = 0): View
     {
         (new InvoiceGroupsService())->paginate(site_url('invoice_groups/index'), $page);
         $invoice_groups = (new InvoiceGroupsService())->result();
-        $this->layout->set('invoice_groups', $invoice_groups);
-        $this->layout->buffer('content', 'invoice_groups/index');
-        $this->layout->render();
+
+        return view('invoice_groups.index', ['invoice_groups' => $invoice_groups]);
     }
 
     /**
@@ -39,26 +41,26 @@ class InvoiceGroupsController extends AdminController
      *
      * @originalFile InvoiceGroupsController.php
      */
-    public function form(Request $request, $id = null) {
+    public function form(Request $request, $id = null): View|RedirectResponse
+    {
         if ($request->has('btn_cancel')) {
             return redirect()->route('invoice_groups');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ((new InvoiceGroupsService())->runValidation()) {
-            (new InvoiceGroupsService())->save($id);
+        if ((new InvoiceGroupsService())->runValidation(null, $request)) {
+            (new InvoiceGroupsService())->save($request, $id);
             return redirect()->route('invoice_groups');
         }
         if ($id && ! $request->has('btn_submit')) {
             if ( ! (new InvoiceGroupsService())->prepForm($id)) {
-                show_404();
+                abort(404);
             }
         } elseif ( ! $id) {
             (new InvoiceGroupsService())->setFormValue('invoice_group_left_pad', 0);
             (new InvoiceGroupsService())->setFormValue('invoice_group_next_id', 1);
         }
-        $this->layout->buffer('content', 'invoice_groups/form');
-        $this->layout->render();
+        return view('invoice_groups.form');
     }
 
     /**

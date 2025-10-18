@@ -52,24 +52,29 @@ class TasksController extends AdminController
      *
      * @return string the rendered task form view HTML
      */
-    public function form(Request $request, $id = null) {
+    public function form(Request $request, $id = null)
+    {
         if ($request->post('btn_cancel')) {
             return redirect()->route('tasks');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ((new TasksService())->runValidation()) {
-            (new TasksService())->save($id);
+        if ((new TasksService())->runValidation(null, $request)) {
+            (new TasksService())->save($request, $id);
             return redirect()->route('tasks');
         }
         if ( ! $request->post('btn_submit')) {
             $prep_form = (new TasksService())->prepForm($id);
             if ($id && ! $prep_form) {
-                show_404();
+                abort(404);
             }
         }
 
-        return view('tasks.form', ['projects' => (new ProjectsService())->get()->result(), 'task_statuses' => (new TasksService())->statuses(), 'tax_rates' => (new TaxRatesService())->get()->result()]);
+        return view('tasks.form', [
+            'projects'     => (new ProjectsService())->get()->result(),
+            'task_statuses' => (new TasksService())->statuses(),
+            'tax_rates'    => (new TaxRatesService())->get()->result(),
+        ]);
     }
 
     /**

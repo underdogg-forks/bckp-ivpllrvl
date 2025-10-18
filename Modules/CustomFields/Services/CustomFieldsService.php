@@ -3,6 +3,7 @@
 namespace Modules\CustomFields\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 
@@ -90,16 +91,17 @@ class CustomFieldsService extends BaseService
      *
      * @originalFile CustomField.php
      */
-    public function save($id = null, $db_array = null)
+    public function save(Request $request = null, $id = null, $db_array = null)
     {
         if ($id) {
             // GetController the original record before saving
             $original_record = $this->getById($id);
         }
         // Create the record
-        $db_array = $db_array ? $db_array : $this->dbArray();
+        $activeRequest = $request ?? request();
+        $db_array = $db_array ? $db_array : $this->dbArray($activeRequest);
         // Save the record to ip_custom_fields
-        $id = parent::save($id, $db_array);
+        $id = parent::save($activeRequest, $id, $db_array);
 
         return $id;
     }
@@ -142,10 +144,10 @@ class CustomFieldsService extends BaseService
      *
      * @originalFile CustomField.php
      */
-    public function dbArray()
+    public function dbArray(Request $request = null)
     {
         // GetController the default db array
-        $db_array = parent::dbArray();
+        $db_array = parent::dbArray($request);
         // Check if the user wants to add 'id' as custom field
         if (mb_strtolower($db_array['custom_field_label']) == 'id') {
             // Replace 'id' with 'field_id' to avoid problems with the primary key

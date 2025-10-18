@@ -3,6 +3,7 @@
 namespace Modules\Quotes\Services;
 
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\Quote;
 
@@ -155,9 +156,9 @@ class QuotesService extends BaseService
      *
      * @originalFile Quote.php
      */
-    public function dbArray()
+    public function dbArray(Request $request = null)
     {
-        $db_array = parent::dbArray();
+        $db_array = parent::dbArray($request);
         // GetController the client id for the submitted quote
         $this->load->model('clients/mdl_clients');
         $cid                            = $this->mdl_clients->where('ip_clients.client_id', $db_array['client_id'])->get()->row()->client_id;
