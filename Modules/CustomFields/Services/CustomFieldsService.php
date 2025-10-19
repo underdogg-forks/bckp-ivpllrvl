@@ -93,10 +93,7 @@ class CustomFieldsService extends BaseService
      */
     public function save(Request $request = null, $id = null, $db_array = null)
     {
-        if ($id) {
-            // GetController the original record before saving
-            $original_record = $this->getById($id);
-        }
+        // (Optional) Load original record here if you need diffing/auditing.
         // Create the record
         $activeRequest = $request ?? request();
         $db_array = $db_array ? $db_array : $this->dbArray($activeRequest);

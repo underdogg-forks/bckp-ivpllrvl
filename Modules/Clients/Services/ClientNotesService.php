@@ -39,7 +39,7 @@ class ClientNotesService extends BaseService
      *
      * @originalFile ClientNote.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array                     = parent::dbArray($request);
         $db_array['client_note_date'] = date('Y-m-d');
