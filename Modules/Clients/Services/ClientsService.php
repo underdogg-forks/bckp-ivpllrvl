@@ -140,7 +140,7 @@ class ClientsService extends BaseService
      *
      * @originalFile Client.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array = parent::dbArray($request);
         if ( ! isset($db_array['client_active'])) {
