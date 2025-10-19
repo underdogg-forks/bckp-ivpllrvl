@@ -56,7 +56,7 @@ class ProjectsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->projectsService->runValidation(null, $request)) {
+        if ($this->projectsService->runValidation($id, $request)) {
             $this->projectsService->save($request, $id);
             return redirect()->route('projects');
         }
