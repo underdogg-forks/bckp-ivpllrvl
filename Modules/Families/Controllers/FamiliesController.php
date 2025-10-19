@@ -52,7 +52,7 @@ class FamiliesController extends AdminController
                 return redirect()->route('families.form');
             }
         }
-        if ((new FamiliesService())->runValidation(null, $request)) {
+        if ((new FamiliesService())->runValidation($id, $request)) {
             (new FamiliesService())->save($request, $id);
             return redirect()->route('families');
         }
