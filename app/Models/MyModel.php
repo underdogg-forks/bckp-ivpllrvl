@@ -223,7 +223,7 @@ class MyModel
      *
      * @originalFile MyModel.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         return parent::dbArray($request);
     }

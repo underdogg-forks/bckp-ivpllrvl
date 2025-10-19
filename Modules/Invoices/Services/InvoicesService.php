@@ -282,7 +282,7 @@ class InvoicesService extends BaseService
      *               - `payment_method`
      *               - `invoice_url_key`
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array                         = parent::dbArray($request);
         $db_array['invoice_date_created'] = date_to_mysql($db_array['invoice_date_created']);

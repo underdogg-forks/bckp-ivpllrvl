@@ -57,13 +57,25 @@ class InvoiceTaxRatesService extends BaseService
      * @param array|null $db_array Associative array of database fields for the invoice tax rate. If it contains
      *                             an 'invoice_id' key that ID will be used to trigger recalculation.
      */
-    public function save(Request $request, $id = null, $db_array = null)
+    public function save($requestOrId = null, $idOrDbArray = null, $db_array = null)
     {
+        if ($requestOrId instanceof Request) {
+            $request = $requestOrId;
+            $id      = $idOrDbArray;
+            $data    = $db_array;
+        } else {
+            $request = request();
+            $id      = $requestOrId;
+            $data    = $idOrDbArray;
+        }
+        if ($data === null) {
+            $data = $this->dbArray($request);
+        }
         // Only appliable in legacy calculation - since 1.6.3
         if (config('legacy_calculation')) {
-            parent::save($request, $id, $db_array);
+            parent::save($request, $id, $data);
         }
-        $invoice_id = $db_array['invoice_id'] ?? $request->post('invoice_id');
+        $invoice_id = $data['invoice_id'] ?? $request?->post('invoice_id');
         if ($invoice_id) {
             $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
             // Recalculate invoice amounts

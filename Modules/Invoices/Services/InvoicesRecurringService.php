@@ -58,12 +58,16 @@ class InvoicesRecurringService extends BaseService
      *
      * @originalFile InvoiceRecurring.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
-        $db_array                     = parent::dbArray($request);
-        $db_array['recur_start_date'] = date_to_mysql($db_array['recur_start_date']);
-        $db_array['recur_next_date']  = $db_array['recur_start_date'];
-        $db_array['recur_end_date']   = $db_array['recur_end_date'] ? date_to_mysql($db_array['recur_end_date']) : null;
+        $db_array = parent::dbArray($request);
+        $start    = $db_array['recur_start_date'] ?? null;
+        $end      = $db_array['recur_end_date'] ?? null;
+        if ($start) {
+            $db_array['recur_start_date'] = date_to_mysql($start);
+            $db_array['recur_next_date']  = $db_array['recur_start_date'];
+        }
+        $db_array['recur_end_date'] = $end ? date_to_mysql($end) : null;
 
         return $db_array;
     }

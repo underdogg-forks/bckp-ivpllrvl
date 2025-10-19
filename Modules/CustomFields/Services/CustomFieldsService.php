@@ -141,24 +141,26 @@ class CustomFieldsService extends BaseService
      *
      * @originalFile CustomField.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         // GetController the default db array
         $db_array = parent::dbArray($request);
         // Check if the user wants to add 'id' as custom field
-        if (mb_strtolower($db_array['custom_field_label']) == 'id') {
+        $label = $db_array['custom_field_label'] ?? '';
+        if (mb_strtolower($label) === 'id') {
             // Replace 'id' with 'field_id' to avoid problems with the primary key
             $custom_field_label = 'field_id';
         } else {
-            $custom_field_label = mb_strtolower(str_replace(' ', '_', $db_array['custom_field_label']));
+            $custom_field_label = mb_strtolower(str_replace(' ', '_', $label));
         }
         $db_array['custom_field_label'] = $custom_field_label;
-        if (in_array($db_array['custom_field_type'], $this->customTypes())) {
-            $type = $db_array['custom_field_type'];
+        $type = $db_array['custom_field_type'] ?? null;
+        if ($type && in_array($type, $this->customTypes())) {
+            $selectedType = $type;
         } else {
-            $type = $this->customTypes()[0];
+            $selectedType = $this->customTypes()[0];
         }
-        $db_array['custom_field_type'] = $type;
+        $db_array['custom_field_type'] = $selectedType;
 
         // Return the db array
         return $db_array;

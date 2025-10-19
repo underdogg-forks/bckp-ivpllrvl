@@ -119,7 +119,7 @@ class PaymentsService extends BaseService
      *
      * @originalFile Payment.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array                   = parent::dbArray($request);
         $db_array['payment_date']   = date_to_mysql($db_array['payment_date']);

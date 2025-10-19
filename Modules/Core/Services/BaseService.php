@@ -147,7 +147,7 @@ class BaseService
             $id      = $requestOrId;
             $data    = $idOrDbArray;
         }
-        if ( ! $data) {
+        if ($data === null) {
             $data = $this->dbArray($request);
         }
         $datetime = date('Y-m-d H:i:s');
@@ -193,7 +193,7 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         if ($request === null) {
             $request = request();
@@ -209,8 +209,23 @@ class BaseService
         } else {
             $validation_rules = [];
         }
+        $allowedFields = [];
+        if (is_array($validation_rules)) {
+            $keys = array_keys($validation_rules);
+            $isAssoc = $keys !== range(0, count($validation_rules) - 1);
+            if ($isAssoc) {
+                $allowedFields = $keys;
+            } else {
+                foreach ($validation_rules as $rule) {
+                    if (is_array($rule) && isset($rule['field'])) {
+                        $allowedFields[] = $rule['field'];
+                    }
+                }
+            }
+        }
+        $allowedFields = array_unique($allowedFields);
         foreach ($request->post() as $key => $value) {
-            if (array_key_exists($key, $validation_rules)) {
+            if (in_array($key, $allowedFields, true)) {
                 $db_array[$key] = $value;
             }
         }

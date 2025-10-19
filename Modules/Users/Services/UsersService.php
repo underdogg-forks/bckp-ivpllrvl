@@ -150,7 +150,7 @@ class UsersService extends BaseService
      *
      * @originalFile User.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array = parent::dbArray($request);
         if (isset($db_array['user_password'])) {
@@ -189,10 +189,21 @@ class UsersService extends BaseService
      *
      * @originalFile User.php
      */
-    public function save(Request $request = null, $id = null, $db_array = null)
+    public function save($requestOrId = null, $idOrDbArray = null, $db_array = null)
     {
-        $activeRequest = $request ?? request();
-        $id = parent::save($activeRequest, $id, $db_array);
+        if ($requestOrId instanceof Request) {
+            $activeRequest = $requestOrId;
+            $id            = $idOrDbArray;
+            $data          = $db_array;
+        } else {
+            $activeRequest = request();
+            $id            = $requestOrId;
+            $data          = $idOrDbArray;
+        }
+        if ($data === null) {
+            $data = $this->dbArray($activeRequest);
+        }
+        $id = parent::save($activeRequest, $id, $data);
         if ($user_clients = session('user_clients')) {
             $this->load->model('users/mdl_user_clients');
             foreach ($user_clients as $user_client) {
