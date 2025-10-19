@@ -296,7 +296,7 @@ class AjaxController extends AdminController
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                config(['legacy_calculation' => ! empty($request->post('legacy_calculation'])));
+            config(['legacy_calculation' => ! empty($request->post('legacy_calculation'))]);
             }
             $target_id = $this->invoicesService->save($request);
             $source_id = strip_tags($request->post('invoice_id'));
