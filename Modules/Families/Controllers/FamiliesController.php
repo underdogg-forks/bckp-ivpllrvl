@@ -49,7 +49,7 @@ class FamiliesController extends AdminController
             $check = $this->db->get_where('ip_families', ['family_name' => $request->post('family_name')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('family_already_exists'));
-                return redirect()->route('families/form');
+                return redirect()->route('families.form');
             }
         }
         if ((new FamiliesService())->runValidation(null, $request)) {
