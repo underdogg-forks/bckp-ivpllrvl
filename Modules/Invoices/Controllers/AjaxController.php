@@ -432,9 +432,8 @@ class AjaxController extends AdminController
      */
     public function createRecurring(Request $request)
     {
-        $recurringService = new InvoicesRecurringService();
-        if ($recurringService->runValidation(null, $request)) {
-            $recurringService->save($request);
+        if ($this->invoicesRecurringService->runValidation(null, $request)) {
+            $this->invoicesRecurringService->save($request);
             $response = ['success' => 1];
         } else {
             $this->load->helper('json_error');
