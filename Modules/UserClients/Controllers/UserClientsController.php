@@ -73,8 +73,9 @@ class UserClientsController extends AdminController
                 $user_update = ['user_all_clients' => 0];
                 (new UserClientsService())->save($request);
             }
-            $this->db->where('user_id', $user_id);
-            $this->db->update('ip_users', $user_update);
+            DB::table('ip_users')
+                ->where('user_id', $user_id)
+                ->update($user_update);
             return redirect('user_clients/user/' . $user_id);
         }
         $user    = (new UsersService())->getById($user_id);
