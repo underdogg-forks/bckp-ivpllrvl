@@ -100,7 +100,7 @@ class ProductsService extends BaseService
      *
      * @originalFile Product.php
      */
-    public function dbArray(Request $request = null)
+    public function dbArray(?Request $request = null)
     {
         $db_array                   = parent::dbArray($request);
         $db_array['product_price']  = empty($db_array['product_price']) ? null : standardize_amount($db_array['product_price']);
