@@ -3,13 +3,11 @@
 namespace Modules\Units\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Units\Controllers\UnitsController;
+use src\Controllers\UnitsController;
 use Tests\Feature\Units\CoversClass;
-
-use function Tests\Feature\Units\route;
-
 use Tests\Feature\Units\Test;
 use Tests\TestCase;
+use function Tests\Feature\Units\route;
 
 #[CoversClass(UnitsController::class)]
 class UnitsControllerTest extends TestCase
@@ -20,7 +18,7 @@ class UnitsControllerTest extends TestCase
     public function it_displays_units_list()
     {
         // Arrange: create units
-        $unit = \Modules\Units\Models\Unit::factory()->create(['unit_name' => 'Test Unit']);
+        $unit = \src\Models\Unit::factory()->create(['unit_name' => 'Test Unit']);
 
         // Act: call the index route
         $response = $this->get(route('units.index'));
@@ -48,7 +46,7 @@ class UnitsControllerTest extends TestCase
         $response->assertRedirect(route('units'));
 
         // Act: edit the unit
-        $unit     = \Modules\Units\Models\Unit::query()->first();
+        $unit     = \src\Models\Unit::query()->first();
         $editData = [
             'unit_name'      => 'Updated Unit',
             'unit_name_plrl' => 'Updated Units',

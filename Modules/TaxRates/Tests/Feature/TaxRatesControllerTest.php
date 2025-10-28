@@ -3,13 +3,11 @@
 namespace Modules\TaxRates\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\TaxRates\Controllers\TaxRatesController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-
-use function Tests\Feature\TaxRates\route;
-
+use src\Controllers\TaxRatesController;
 use Tests\TestCase;
+use function Tests\Feature\TaxRates\route;
 
 #[CoversClass(TaxRatesController::class)]
 class TaxRatesControllerTest extends TestCase
@@ -20,11 +18,11 @@ class TaxRatesControllerTest extends TestCase
     public function it_displays_tax_rates_list()
     {
         // Arrange: authenticate user
-        $user = \Modules\Users\Models\User::factory()->create();
+        $user = \src\Models\User::factory()->create();
         $this->actingAs($user);
 
         // Arrange: create tax rates
-        $taxRate = \Modules\TaxRates\Models\TaxRate::factory()->create();
+        $taxRate = \src\Models\TaxRate::factory()->create();
 
         // Act: visit tax rates index
         $response = $this->get(route('tax_rates.index'));
@@ -130,7 +128,7 @@ class TaxRatesControllerTest extends TestCase
     public function it_deletes_tax_rate()
     {
         // Arrange: create a tax rate
-        $taxRate = \Modules\TaxRates\Models\TaxRate::factory()->create();
+        $taxRate = \src\Models\TaxRate::factory()->create();
 
         // Act: delete the tax rate
         $response = $this->get(route('tax_rates.delete', ['id' => $taxRate->id]));

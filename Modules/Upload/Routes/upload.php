@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Upload\Controllers\UploadController;
+use src\Controllers\UploadController;
 
 Route::middleware('web')->group(function () {
     Route::post('upload/upload-file', [UploadController::class, 'uploadFile'])->name('upload.upload-file');

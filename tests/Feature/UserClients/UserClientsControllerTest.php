@@ -3,9 +3,9 @@
 namespace Tests\Feature\UserClients;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\UserClients\Controllers\UserClientsController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\UserClientsController;
 use Tests\TestCase;
 
 #[CoversClass(UserClientsController::class)]
@@ -27,7 +27,7 @@ class UserClientsControllerTest extends TestCase
     public function it_displays_user_clients_for_a_user()
     {
         // Arrange: create a user
-        $user = \Modules\Users\Models\User::factory()->create();
+        $user = \src\Models\User::factory()->create();
 
         // Act: visit user clients page
         $response = $this->get(route('user_clients.user', ['id' => $user->id]));
@@ -63,9 +63,9 @@ class UserClientsControllerTest extends TestCase
     public function it_deletes_user_client_and_redirects()
     {
         // Arrange: create user and user client
-        $user       = \Modules\Users\Models\User::factory()->create();
+        $user       = \src\Models\User::factory()->create();
         $client     = \Modules\Clients\Models\tmpClient::factory()->create();
-        $userClient = \Modules\UserClients\Models\UserClient::factory()->create([
+        $userClient = \src\Models\UserClient::factory()->create([
             'user_id'   => $user->id,
             'client_id' => $client->id,
         ]);

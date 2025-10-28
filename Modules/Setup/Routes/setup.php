@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Setup\Controllers\SetupController;
+use src\Controllers\SetupController;
 
 Route::middleware('web')->group(function () {
     Route::get('setup', [SetupController::class, 'index'])->name('setup.index');

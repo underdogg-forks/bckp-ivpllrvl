@@ -6,14 +6,14 @@ use App\Models\User as AuthUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Clients\Models\tmpClient;
-use Modules\UserClients\Models\UserClient;
-use Modules\Users\Controllers\AjaxController;
-use Modules\Users\Models\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\UsersAjaxController;
+use src\Models\User;
+use src\Models\UserClient;
 use Tests\TestCase;
 
-#[CoversClass(AjaxController::class)]
+#[CoversClass(UsersAjaxController::class)]
 class UsersAjaxControllerTest extends TestCase
 {
     use RefreshDatabase;

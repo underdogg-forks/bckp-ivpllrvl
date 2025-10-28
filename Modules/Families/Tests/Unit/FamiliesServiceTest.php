@@ -3,9 +3,9 @@
 namespace Modules\Families\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Families\Models\Family;
-use Modules\Families\Services\FamiliesService;
 use PHPUnit\Framework\Attributes\Test;
+use src\Models\Family;
+use src\Services\FamiliesService;
 use Tests\TestCase;
 
 class FamiliesServiceTest extends TestCase

@@ -3,10 +3,10 @@
 namespace Modules\Units\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Units\Models\Unit;
-use Modules\Units\Services\UnitsService;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
+use src\Models\Unit;
+use src\Services\UnitsService;
 use Tests\TestCase;
 
 class UnitsServiceTest extends TestCase

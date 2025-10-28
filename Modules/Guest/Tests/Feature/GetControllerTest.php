@@ -3,9 +3,9 @@
 namespace Modules\Guest\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Guest\Controllers\GetController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\GetController;
 use Tests\TestCase;
 
 #[CoversClass(GetController::class)]

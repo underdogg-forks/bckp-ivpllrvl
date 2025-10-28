@@ -3,9 +3,9 @@
 namespace Tests\Feature\Import;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Import\Controllers\ImportController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\ImportController;
 use Tests\TestCase;
 
 #[CoversClass(ImportController::class)]

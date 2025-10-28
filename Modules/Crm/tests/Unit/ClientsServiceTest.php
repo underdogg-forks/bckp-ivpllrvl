@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Modules\Clients\Models\tmpClient;
 use Modules\Crm\app\Services\ClientsService;
-use Modules\UserClients\Models\UserClient;
 use PHPUnit\Framework\Attributes\Test;
+use src\Models\UserClient;
 use Tests\TestCase;
 
 class ClientsServiceTest extends TestCase

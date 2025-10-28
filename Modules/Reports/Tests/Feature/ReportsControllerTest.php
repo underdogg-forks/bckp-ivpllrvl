@@ -8,9 +8,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
 use Modules\Payments\Models\Payment;
-use Modules\Reports\Controllers\ReportsController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\ReportsController;
 use Tests\TestCase;
 
 #[CoversClass(ReportsController::class)]

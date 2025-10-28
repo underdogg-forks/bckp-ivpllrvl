@@ -3,7 +3,7 @@
 namespace Tests\Feature\CustomFields;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\CustomFields\Controllers\CustomFieldsController;
+use Modules\Core\Controllers\CustomFieldsController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;

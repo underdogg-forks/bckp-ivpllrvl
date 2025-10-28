@@ -3,9 +3,9 @@
 namespace Modules\EmailTemplates\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\EmailTemplates\Controllers\AjaxController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\AjaxController;
 use Tests\TestCase;
 
 #[CoversClass(AjaxController::class)]

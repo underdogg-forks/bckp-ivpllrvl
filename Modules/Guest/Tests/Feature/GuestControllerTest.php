@@ -3,12 +3,12 @@
 namespace Modules\Guest\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Guest\Controllers\GuestController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\CustomerPortalController;
 use Tests\TestCase;
 
-#[CoversClass(GuestController::class)]
+#[CoversClass(CustomerPortalController::class)]
 class GuestControllerTest extends TestCase
 {
     use RefreshDatabase;

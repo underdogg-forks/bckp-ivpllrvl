@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\EmailTemplates\Controllers\AjaxController;
-use Modules\EmailTemplates\Controllers\EmailTemplatesController;
+use src\Controllers\AjaxController;
+use src\Controllers\EmailTemplatesController;
 
 Route::middleware('web')->group(function () {
     Route::get('email-templates', [EmailTemplatesController::class, 'index'])->name('email-templates.index');

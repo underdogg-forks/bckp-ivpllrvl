@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Sessions\Controllers\SessionsController;
+use src\Controllers\SessionsController;
 
 Route::middleware('web')->group(function () {
     Route::get('sessions', [SessionsController::class, 'index'])->name('sessions.index');

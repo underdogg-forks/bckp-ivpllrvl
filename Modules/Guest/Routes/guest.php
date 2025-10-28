@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Guest\Controllers\Gateways\PaypalController;
-use Modules\Guest\Controllers\Gateways\StripeController;
-use Modules\Guest\Controllers\GetController;
-use Modules\Guest\Controllers\GuestController;
-use Modules\Guest\Controllers\InvoicesController;
-use Modules\Guest\Controllers\PaymentInformation;
-use Modules\Guest\Controllers\PaymentsController;
-use Modules\Guest\Controllers\QuotesController;
-use Modules\Guest\Controllers\View;
+use src\Controllers\CustomerPortalController;
+use src\Controllers\Gateways\PaypalController;
+use src\Controllers\Gateways\StripeController;
+use src\Controllers\GetController;
+use src\Controllers\InvoicesController;
+use src\Controllers\PaymentInformation;
+use src\Controllers\PaymentsController;
+use src\Controllers\QuotesController;
+use src\Controllers\View;
 
 Route::middleware('web')->group(function () {
     Route::get('guest', [InvoicesController::class, 'index'])->name('guest.index');
@@ -17,7 +17,7 @@ Route::middleware('web')->group(function () {
     Route::get('guest/view', [InvoicesController::class, 'view'])->name('guest.view');
     Route::get('guest/generate-pdf', [InvoicesController::class, 'generatePdf'])->name('guest.generate-pdf');
     Route::get('guest/generate-sumex-pdf', [InvoicesController::class, 'generateSumexPdf'])->name('guest.generate-sumex-pdf');
-    Route::get('guest', [GuestController::class, 'index'])->name('guest.index');
+    Route::get('guest', [CustomerPortalController::class, 'index'])->name('guest.index');
     Route::get('guest', [QuotesController::class, 'index'])->name('guest.index');
     Route::get('guest/status', [QuotesController::class, 'status'])->name('guest.status');
     Route::get('guest/view', [QuotesController::class, 'view'])->name('guest.view');

@@ -3,9 +3,9 @@
 namespace Tests\Feature\Welcome;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Welcome\Controllers\WelcomeController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\WelcomeController;
 use Tests\TestCase;
 
 #[CoversClass(WelcomeController::class)]

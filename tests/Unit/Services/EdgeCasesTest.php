@@ -5,12 +5,12 @@ namespace Tests\Unit\Services;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
+use Modules\Projects\app\Models\Task;
+use Modules\Projects\app\Services\TasksService;
 use Modules\Projects\Models\Project;
-use Modules\Tasks\Models\Task;
-use Modules\Tasks\Services\TasksService;
-use Modules\Units\Models\Unit;
-use Modules\Units\Services\UnitsService;
 use PHPUnit\Framework\Attributes\Test;
+use src\Models\Unit;
+use src\Services\UnitsService;
 use Tests\TestCase;
 
 /**

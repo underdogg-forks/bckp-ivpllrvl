@@ -3,10 +3,10 @@
 namespace Tests\Feature\CustomValues;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\CustomValues\Controllers\CustomValuesController;
-use Modules\CustomValues\Models\CustomValue;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\CustomValuesController;
+use src\Models\CustomValue;
 use Tests\TestCase;
 
 #[CoversClass(CustomValuesController::class)]

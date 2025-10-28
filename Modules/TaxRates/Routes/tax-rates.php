@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\TaxRates\Controllers\TaxRatesController;
+use src\Controllers\TaxRatesController;
 
 Route::middleware('web')->group(function () {
     Route::get('tax-rates', [TaxRatesController::class, 'index'])->name('tax-rates.index');

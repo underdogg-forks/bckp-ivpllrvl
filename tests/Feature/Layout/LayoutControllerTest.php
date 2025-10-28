@@ -3,9 +3,9 @@
 namespace Tests\Feature\Layout;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Layout\Controllers\LayoutController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\LayoutController;
 use Tests\TestCase;
 
 #[CoversClass(LayoutController::class)]

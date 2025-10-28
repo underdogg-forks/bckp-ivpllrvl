@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Reports\Controllers\ReportsController;
+use src\Controllers\ReportsController;
 
 Route::middleware('web')->group(function () {
     Route::get('reports/sales-by-client', [ReportsController::class, 'salesByClient'])->name('reports.sales-by-client');

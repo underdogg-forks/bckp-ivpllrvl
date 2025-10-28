@@ -3,9 +3,9 @@
 namespace Modules\TaxRates\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\TaxRates\Models\TaxRate;
-use Modules\TaxRates\Services\TaxRatesService;
 use PHPUnit\Framework\Attributes\Test;
+use src\Models\TaxRate;
+use src\Services\TaxRatesService;
 use Tests\TestCase;
 
 class TaxRatesServiceTest extends TestCase

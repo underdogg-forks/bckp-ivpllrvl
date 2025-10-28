@@ -3,9 +3,9 @@
 namespace Modules\EmailTemplates\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\EmailTemplates\Controllers\EmailTemplatesController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\EmailTemplatesController;
 use Tests\TestCase;
 
 #[CoversClass(EmailTemplatesController::class)]

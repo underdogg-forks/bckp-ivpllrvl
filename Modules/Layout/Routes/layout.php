@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Layout\Controllers\LayoutController;
+use src\LayoutController;
 
 Route::middleware('web')->group(function () {
     Route::get('layout/buffer', [LayoutController::class, 'buffer'])->name('layout.buffer');

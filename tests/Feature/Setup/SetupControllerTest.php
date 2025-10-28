@@ -3,9 +3,9 @@
 namespace Tests\Feature\Setup;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Setup\Controllers\SetupController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\SetupController;
 use Tests\TestCase;
 
 #[CoversClass(SetupController::class)]

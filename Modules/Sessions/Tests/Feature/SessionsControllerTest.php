@@ -6,10 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Modules\Sessions\Controllers\SessionsController;
-use Modules\Users\Models\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\SessionsController;
+use src\Models\User;
 use Tests\TestCase;
 
 #[CoversClass(SessionsController::class)]

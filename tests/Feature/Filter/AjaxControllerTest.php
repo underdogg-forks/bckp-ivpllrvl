@@ -3,12 +3,12 @@
 namespace Tests\Feature\Filter;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Filter\Controllers\AjaxController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\FilterAjaxController;
 use Tests\TestCase;
 
-#[CoversClass(AjaxController::class)]
+#[CoversClass(FilterAjaxController::class)]
 class AjaxControllerTest extends TestCase
 {
     use RefreshDatabase;

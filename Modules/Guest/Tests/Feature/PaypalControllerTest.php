@@ -3,9 +3,9 @@
 namespace Modules\Guest\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Guest\Controllers\Gateways\PaypalController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\Gateways\PaypalController;
 use Tests\TestCase;
 
 #[CoversClass(PaypalController::class)]

@@ -3,13 +3,11 @@
 namespace Modules\Families\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Families\Controllers\FamiliesController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-
-use function Tests\Feature\Families\route;
-
+use src\Controllers\FamiliesController;
 use Tests\TestCase;
+use function Tests\Feature\Families\route;
 
 #[CoversClass(FamiliesController::class)]
 class FamiliesControllerTest extends TestCase
@@ -20,7 +18,7 @@ class FamiliesControllerTest extends TestCase
     public function it_displays_families_list()
     {
         // Arrange: create families
-        $family = \Modules\Families\Models\Family::factory()->create();
+        $family = \src\Models\Family::factory()->create();
 
         // Act: visit families index
         $response = $this->get(route('families.index'));
@@ -57,7 +55,7 @@ class FamiliesControllerTest extends TestCase
     public function it_deletes_family()
     {
         // Arrange: create a family
-        $family = \Modules\Families\Models\Family::factory()->create();
+        $family = \src\Models\Family::factory()->create();
 
         // Act: delete the family
         $response = $this->delete(route('families.delete', ['id' => $family->id]));

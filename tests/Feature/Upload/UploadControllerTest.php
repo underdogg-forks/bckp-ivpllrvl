@@ -3,7 +3,7 @@
 namespace Tests\Feature\Upload;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Upload\Controllers\UploadController;
+use src\Controllers\UploadController;
 use Tests\TestCase;
 
 #[CoversClass(UploadController::class)]

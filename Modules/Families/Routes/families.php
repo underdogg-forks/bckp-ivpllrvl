@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Families\Controllers\FamiliesController;
+use src\Controllers\FamiliesController;
 
 Route::middleware('web')->group(function () {
     Route::get('families', [FamiliesController::class, 'index'])->name('families.index');

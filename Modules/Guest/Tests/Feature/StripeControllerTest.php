@@ -3,9 +3,9 @@
 namespace Modules\Guest\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Guest\Controllers\Gateways\StripeController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Controllers\Gateways\StripeController;
 use Tests\TestCase;
 
 #[CoversClass(StripeController::class)]

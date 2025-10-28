@@ -9,13 +9,13 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Modules\Clients\Models\tmpClient;
-use Modules\EmailTemplates\Models\EmailTemplate;
+use Modules\Core\Controllers\Controllers\MailerController;
 use Modules\Invoices\Models\Invoice;
-use Modules\Mailer\Controllers\MailerController;
 use Modules\Quotes\Models\Quote;
-use Modules\Upload\Models\Upload;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use src\Models\EmailTemplate;
+use src\Models\Upload;
 use Tests\TestCase;
 
 #[CoversClass(MailerController::class)]
