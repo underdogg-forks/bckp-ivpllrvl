@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use src\Controllers\ImportController;
+use Modules\Core\Controllers\ImportController;
 
 Route::middleware('web')->group(function () {
     Route::get('import', [ImportController::class, 'index'])->name('import.index');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\CustomFields;
+namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Core\Controllers\CustomFieldsController;

@@ -1,11 +1,11 @@
 <?php
 
-namespace src\Services;
+namespace Modules\Products\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use RuntimeException;
-use src\Models\Unit;
+use Modules\Products\Models\Unit;
 
 #[AllowDynamicProperties]
 class UnitsService extends BaseService

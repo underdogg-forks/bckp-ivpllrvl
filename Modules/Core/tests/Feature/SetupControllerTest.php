@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Setup;
+namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\CoversClass;

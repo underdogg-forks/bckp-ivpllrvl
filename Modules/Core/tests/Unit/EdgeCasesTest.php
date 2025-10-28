@@ -1,16 +1,15 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
 use Modules\Projects\app\Models\Task;
 use Modules\Projects\app\Services\TasksService;
 use Modules\Projects\Models\Project;
 use PHPUnit\Framework\Attributes\Test;
-use src\Models\Unit;
-use src\Services\UnitsService;
+use Modules\Products\Models\Unit;
+use Modules\Products\Services\UnitsService;
 use Tests\TestCase;
 
 /**
