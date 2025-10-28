@@ -3,6 +3,7 @@
 namespace Modules\CustomFields\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 
@@ -90,16 +91,14 @@ class CustomFieldsService extends BaseService
      *
      * @originalFile CustomField.php
      */
-    public function save($id = null, $db_array = null)
+    public function save(Request $request = null, $id = null, $db_array = null)
     {
-        if ($id) {
-            // GetController the original record before saving
-            $original_record = $this->getById($id);
-        }
+        // (Optional) Load original record here if you need diffing/auditing.
         // Create the record
-        $db_array = $db_array ? $db_array : $this->dbArray();
+        $activeRequest = $request ?? request();
+        $db_array = $db_array ? $db_array : $this->dbArray($activeRequest);
         // Save the record to ip_custom_fields
-        $id = parent::save($id, $db_array);
+        $id = parent::save($activeRequest, $id, $db_array);
 
         return $id;
     }
@@ -142,23 +141,26 @@ class CustomFieldsService extends BaseService
      *
      * @originalFile CustomField.php
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
         // GetController the default db array
-        $db_array = parent::dbArray();
+        $db_array = parent::dbArray($request);
         // Check if the user wants to add 'id' as custom field
-        if (mb_strtolower($db_array['custom_field_label']) == 'id') {
+        $label = $db_array['custom_field_label'] ?? '';
+        if (mb_strtolower($label) === 'id') {
             // Replace 'id' with 'field_id' to avoid problems with the primary key
             $custom_field_label = 'field_id';
         } else {
-            $custom_field_label = mb_strtolower(str_replace(' ', '_', $db_array['custom_field_label']));
+            $custom_field_label = mb_strtolower(str_replace(' ', '_', $label));
         }
-        if (in_array($db_array['custom_field_type'], $this->customTypes())) {
-            $type = $db_array['custom_field_type'];
+        $db_array['custom_field_label'] = $custom_field_label;
+        $type = $db_array['custom_field_type'] ?? null;
+        if ($type && in_array($type, $this->customTypes())) {
+            $selectedType = $type;
         } else {
-            $type = $this->customTypes()[0];
+            $selectedType = $this->customTypes()[0];
         }
-        $db_array['custom_field_type'] = $type;
+        $db_array['custom_field_type'] = $selectedType;
 
         // Return the db array
         return $db_array;

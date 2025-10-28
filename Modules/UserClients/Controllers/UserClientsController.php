@@ -38,7 +38,8 @@ class UserClientsController extends AdminController
      *
      * @originalFile UserClientsController.php
      */
-    public function user(Request $request, $id = null) {
+    public function user(Request $request, $id = null)
+    {
         if ($request->post('btn_cancel')) {
             return redirect()->route('users');
         }
@@ -56,28 +57,36 @@ class UserClientsController extends AdminController
      *
      * @originalFile UserClientsController.php
      */
-    public function create(Request $request, $user_id = null) {
+    public function create(Request $request, $user_id = null)
+    {
         if ( ! $user_id) {
             return redirect()->route('custom_values');
         } elseif ($request->post('btn_cancel')) {
             return redirect('user_clients/field/' . $user_id);
         }
-        if ((new UserClientsService())->runValidation()) {
+        $service = new UserClientsService();
+        if ($service->runValidation(null, $request)) {
             if ($request->post('user_all_clients')) {
                 $users_id = [$user_id];
-                (new UserClientsService())->setAllClientsUser($users_id);
+                $service->setAllClientsUser($users_id);
                 $user_update = ['user_all_clients' => 1];
             } else {
                 $user_update = ['user_all_clients' => 0];
-                (new UserClientsService())->save();
+                $service->save($request);
             }
-            $this->db->where('user_id', $user_id);
-            $this->db->update('ip_users', $user_update);
+            DB::table('ip_users')
+                ->where('user_id', $user_id)
+                ->update($user_update);
             return redirect('user_clients/user/' . $user_id);
         }
         $user    = (new UsersService())->getById($user_id);
         $clients = (new ClientsService())->getNotAssignedToUser($user_id);
-        $this->layout->set(['id' => $user_id, 'user' => $user, 'clients' => $clients]);
+        return view('user_clients.field', [
+            'id' => $user_id,
+            'user' => $user,
+            'clients' => $clients,
+            'validation_errors' => $service->validation_errors,
+        ]);
     }
 
     /**

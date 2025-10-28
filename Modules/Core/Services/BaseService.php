@@ -136,45 +136,54 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function save($id = null, $db_array = null)
+    public function save($requestOrId = null, $idOrDbArray = null, $db_array = null)
     {
-        if ( ! $db_array) {
-            $db_array = $this->dbArray();
+        if ($requestOrId instanceof Request) {
+            $request = $requestOrId;
+            $id      = $idOrDbArray;
+            $data    = $db_array;
+        } else {
+            $request = request();
+            $id      = $requestOrId;
+            $data    = $idOrDbArray;
+        }
+        if ($data === null) {
+            $data = $this->dbArray($request);
         }
         $datetime = date('Y-m-d H:i:s');
         if ( ! $id) {
             if ($this->date_created_field) {
-                if (is_array($db_array)) {
-                    $db_array[$this->date_created_field] = $datetime;
+                if (is_array($data)) {
+                    $data[$this->date_created_field] = $datetime;
                     if ($this->date_modified_field) {
-                        $db_array[$this->date_modified_field] = $datetime;
+                        $data[$this->date_modified_field] = $datetime;
                     }
                 } else {
-                    $db_array->{$this->date_created_field} = $datetime;
+                    $data->{$this->date_created_field} = $datetime;
                     if ($this->date_modified_field) {
-                        $db_array->{$this->date_modified_field} = $datetime;
+                        $data->{$this->date_modified_field} = $datetime;
                     }
                 }
             } elseif ($this->date_modified_field) {
-                if (is_array($db_array)) {
-                    $db_array[$this->date_modified_field] = $datetime;
+                if (is_array($data)) {
+                    $data[$this->date_modified_field] = $datetime;
                 } else {
-                    $db_array->{$this->date_modified_field} = $datetime;
+                    $data->{$this->date_modified_field} = $datetime;
                 }
             }
-            $this->db->insert($this->table, $db_array);
+            $this->db->insert($this->table, $data);
 
             return $this->db->insert_id();
         }
         if ($this->date_modified_field) {
-            if (is_array($db_array)) {
-                $db_array[$this->date_modified_field] = $datetime;
+            if (is_array($data)) {
+                $data[$this->date_modified_field] = $datetime;
             } else {
-                $db_array->{$this->date_modified_field} = $datetime;
+                $data->{$this->date_modified_field} = $datetime;
             }
         }
         $this->db->where($this->primary_key, $id);
-        $this->db->update($this->table, $db_array);
+        $this->db->update($this->table, $data);
 
         return $id;
     }
@@ -184,14 +193,39 @@ class BaseService
      *
      * @originalFile MyModel.php
      */
-    public function dbArray(Request $request = null) {
+    public function dbArray(?Request $request = null)
+    {
         if ($request === null) {
             $request = request();
         }
-        $db_array         = [];
-        $validation_rules = $this->{$this->validation_rules}();
+        $db_array   = [];
+        $rulesMethod = $this->validation_rules ?: $this->default_validation_rules ?? null;
+        if ($rulesMethod && method_exists($this, $rulesMethod)) {
+            $validation_rules = $this->{$rulesMethod}();
+        } elseif (method_exists($this, 'validation_rules')) {
+            $validation_rules = $this->validation_rules();
+        } elseif (method_exists($this, 'validationRules')) {
+            $validation_rules = $this->validationRules();
+        } else {
+            $validation_rules = [];
+        }
+        $allowedFields = [];
+        if (is_array($validation_rules)) {
+            $keys = array_keys($validation_rules);
+            $isAssoc = $keys !== range(0, count($validation_rules) - 1);
+            if ($isAssoc) {
+                $allowedFields = $keys;
+            } else {
+                foreach ($validation_rules as $rule) {
+                    if (is_array($rule) && isset($rule['field'])) {
+                        $allowedFields[] = $rule['field'];
+                    }
+                }
+            }
+        }
+        $allowedFields = array_unique($allowedFields);
         foreach ($request->post() as $key => $value) {
-            if (array_key_exists($key, $validation_rules)) {
+            if (in_array($key, $allowedFields, true)) {
                 $db_array[$key] = $value;
             }
         }

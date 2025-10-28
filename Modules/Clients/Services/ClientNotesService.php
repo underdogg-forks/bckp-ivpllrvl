@@ -3,6 +3,7 @@
 namespace Modules\Clients\Services;
 
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Clients\Models\ClientNote;
 use Modules\Core\Services\BaseService;
 
@@ -38,9 +39,9 @@ class ClientNotesService extends BaseService
      *
      * @originalFile ClientNote.php
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
-        $db_array                     = parent::dbArray();
+        $db_array                     = parent::dbArray($request);
         $db_array['client_note_date'] = date('Y-m-d');
 
         return $db_array;

@@ -52,11 +52,11 @@ class TaxRatesController extends AdminController
             return redirect()->route('tax_rates.index');
         }
         $this->filterInput();
-        if ($this->taxRatesService->runValidation()) {
+        if ($this->taxRatesService->runValidation($id, $request)) {
             $this->taxRatesService->form_values['tax_rate_percent'] = standardize_amount($this->taxRatesService->form_values['tax_rate_percent']);
-            $db_array                                               = $this->taxRatesService->dbArray();
-            $db_array['tax_rate_percent']                           = standardize_amount($request->input('tax_rate_percent'));
-            $this->taxRatesService->save($id, $db_array);
+            $db_array = $this->taxRatesService->dbArray($request);
+            $db_array['tax_rate_percent'] = standardize_amount($request->input('tax_rate_percent'));
+            $this->taxRatesService->save($request, $id, $db_array);
 
             return redirect()->route('tax_rates.index');
         }
@@ -81,11 +81,11 @@ class TaxRatesController extends AdminController
             return redirect()->route('tax_rates.index');
         }
         $this->filterInput();
-        if ($this->taxRatesService->runValidation()) {
+        if ($this->taxRatesService->runValidation($id, $request)) {
             $this->taxRatesService->form_values['tax_rate_percent'] = standardize_amount($this->taxRatesService->form_values['tax_rate_percent']);
-            $db_array                                               = $this->taxRatesService->dbArray();
-            $db_array['tax_rate_percent']                           = standardize_amount($request->input('tax_rate_percent'));
-            $this->taxRatesService->save($id, $db_array);
+            $db_array = $this->taxRatesService->dbArray($request);
+            $db_array['tax_rate_percent'] = standardize_amount($request->input('tax_rate_percent'));
+            $this->taxRatesService->save($request, $id, $db_array);
 
             return redirect()->route('tax_rates.index');
         }

@@ -3,6 +3,7 @@
 namespace Modules\CustomFields\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\CustomFields\Models\ClientCustom;
@@ -101,14 +102,15 @@ class ClientCustomsService extends BaseService
     {
         if ($id) {
             $values = $this->getByClient($id);
-            $this->load->helper('custom_values_helper');
-            $this->load->module('custom_fields/mdl_custom_fields');
             if ($values != null) {
                 foreach ($values as $value) {
                     $type = $value->custom_field_type;
                     if ($type != null) {
-                        $nicename  = Mdl_Custom_Fields::getNicename($type);
-                        $formatted = call_user_func('format_' . $nicename, $value->client_custom_fieldvalue);
+                        $nicename   = CustomFieldsService::getNicename($type);
+                        $formatter  = 'format_' . $nicename;
+                        $formatted  = function_exists($formatter)
+                            ? $formatter($value->client_custom_fieldvalue)
+                            : $value->client_custom_fieldvalue;
                         $this->setFormValue('cf_' . $value->custom_field_id, $formatted);
                     }
                 }
@@ -165,16 +167,17 @@ class ClientCustomsService extends BaseService
      *
      * @originalFile ClientCustom.php
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
-        $db_array = parent::dbArray();
+        $db_array = parent::dbArray($request);
         $this->load->module('custom_fields/mdl_custom_fields');
         $fields = $this->mdl_custom_fields->result();
         foreach ($fields as $field) {
             if ($field->custom_field_type == 'DATE') {
                 $db_array[$field->custom_field_column] = date_to_mysql($db_array[$field->custom_field_column]);
             } elseif ($field->custom_field_type == 'MULTIPLE-CHOICE') {
-                $db_array[$field->custom_field_column] = implode(',', $db_array[$field->custom_field_column]);
+                $value = $db_array[$field->custom_field_column] ?? [];
+                $db_array[$field->custom_field_column] = implode(',', (array) $value);
             }
         }
 

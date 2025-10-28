@@ -3,6 +3,7 @@
 namespace Modules\Tasks\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\Models\Item;
@@ -87,11 +88,15 @@ class TasksService extends BaseService
      *
      * @originalFile Task.php
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
-        $db_array                     = parent::dbArray();
-        $db_array['task_finish_date'] = date_to_mysql($db_array['task_finish_date']);
-        $db_array['task_price']       = standardize_amount($db_array['task_price']);
+        $db_array                     = parent::dbArray($request);
+        if (isset($db_array['task_finish_date'])) {
+            $db_array['task_finish_date'] = date_to_mysql($db_array['task_finish_date']);
+        }
+        if (isset($db_array['task_price'])) {
+            $db_array['task_price'] = standardize_amount($db_array['task_price']);
+        }
 
         return $db_array;
     }

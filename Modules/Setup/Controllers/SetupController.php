@@ -2,11 +2,14 @@
 
 namespace Modules\Setup\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller as MXController;
 use Illuminate\Support\Facades\Log;
 use Modules\Setup\Services\SetupService;
+use Modules\Users\Services\UsersService;
 
 #[AllowDynamicProperties]
 class SetupController extends MXController
@@ -49,9 +52,9 @@ class SetupController extends MXController
      *
      * @originalFile SetupController.php
      */
-    public function index(): void
+    public function index(): RedirectResponse
     {
-        redirect()->route('setup/lang');
+        return redirect()->route('setup/lang');
     }
 
     /**
@@ -59,11 +62,11 @@ class SetupController extends MXController
      *
      * @originalFile SetupController.php
      */
-    public function language(Request $request): void {
+    public function language(Request $request): RedirectResponse|Response {
         if ($request->post('btn_continue')) {
             session()->put('ip_lang', $request->post('ip_lang'));
             session()->put('install_step', 'prerequisites');
-            redirect()->route('setup/prerequisites');
+            return redirect()->route('setup/prerequisites');
         }
         // Reset the session cache
         $this->session->unset_userdata('install_step');
@@ -72,7 +75,7 @@ class SetupController extends MXController
         $languages = get_available_languages();
         $this->layout->set('languages', $languages);
         $this->layout->buffer('content', 'setup/lang');
-        $this->layout->render('setup');
+        return $this->renderLayout('setup');
     }
 
     /**
@@ -80,17 +83,17 @@ class SetupController extends MXController
      *
      * @originalFile SetupController.php
      */
-    public function prerequisites(Request $request): void {
+    public function prerequisites(Request $request): RedirectResponse|Response {
         if (session('install_step') != 'prerequisites') {
-            redirect()->route('setup/lang');
+            return redirect()->route('setup/lang');
         }
         if ($request->post('btn_continue')) {
             session()->put('install_step', 'configure_database');
-            redirect()->route('setup/configure_database');
+            return redirect()->route('setup/configure_database');
         }
         $this->layout->set(['basics' => $this->checkBasics(), 'writables' => $this->checkWritables(), 'errors' => $this->errors]);
         $this->layout->buffer('content', 'setup/prerequisites');
-        $this->layout->render('setup');
+        return $this->renderLayout('setup');
     }
 
     /**
@@ -98,9 +101,9 @@ class SetupController extends MXController
      *
      * @originalFile SetupController.php
      */
-    public function configureDatabase(Request $request): void {
+    public function configureDatabase(Request $request): RedirectResponse|Response {
         if (session('install_step') != 'configure_database') {
-            redirect()->route('setup/prerequisites');
+            return redirect()->route('setup/prerequisites');
         }
         if ($request->post('btn_continue')) {
             $this->loadCiDatabase();
@@ -108,12 +111,12 @@ class SetupController extends MXController
             if ( ! $this->db->table_exists('ip_versions')) {
                 // This appears to be an install
                 session()->put('install_step', 'install_tables');
-                redirect()->route('setup/install_tables');
+                return redirect()->route('setup/install_tables');
             } else {
                 // This appears to be an upgrade
                 session()->put('is_upgrade', true);
                 session()->put('install_step', 'upgrade_tables');
-                redirect()->route('setup/upgrade_tables');
+                return redirect()->route('setup/upgrade_tables');
             }
         }
         if ($request->post('db_hostname')) {
@@ -125,7 +128,7 @@ class SetupController extends MXController
         $this->layout->set('database', $check_database);
         $this->layout->set('errors', $this->errors);
         $this->layout->buffer('content', 'setup/configure_database');
-        $this->layout->render('setup');
+        return $this->renderLayout('setup');
     }
 
     /**
@@ -133,18 +136,18 @@ class SetupController extends MXController
      *
      * @originalFile SetupController.php
      */
-    public function installTables(Request $request): void {
+    public function installTables(Request $request): RedirectResponse|Response {
         if (session('install_step') != 'install_tables') {
-            redirect()->route('setup/prerequisites');
+            return redirect()->route('setup/prerequisites');
         }
         if ($request->post('btn_continue')) {
             session()->put('install_step', 'upgrade_tables');
-            redirect()->route('setup/upgrade_tables');
+            return redirect()->route('setup/upgrade_tables');
         }
         $this->loadCiDatabase();
         $this->layout->set(['success' => (new SetupService())->installTables(), 'errors' => (new SetupService())->errors]);
         $this->layout->buffer('content', 'setup/install_tables');
-        $this->layout->render('setup');
+        return $this->renderLayout('setup');
     }
 
     /**
@@ -155,17 +158,17 @@ class SetupController extends MXController
      * Ensures the database is loaded and an encryption key exists, runs table upgrade operations via the setup service,
      * and renders the upgrade view with the operation results and any errors.
      */
-    public function upgradeTables(Request $request): void {
+    public function upgradeTables(Request $request): RedirectResponse|Response {
         if (session('install_step') != 'upgrade_tables') {
-            redirect()->route('setup/prerequisites');
+            return redirect()->route('setup/prerequisites');
         }
         if ($request->post('btn_continue')) {
             if ( ! session('is_upgrade')) {
                 session()->put('install_step', 'create_user');
-                redirect()->route('setup/create_user');
+                return redirect()->route('setup/create_user');
             } else {
                 session()->put('install_step', 'calculation_info');
-                redirect()->route('setup/calculation_info');
+                return redirect()->route('setup/calculation_info');
             }
         }
         $this->loadCiDatabase();
@@ -175,7 +178,7 @@ class SetupController extends MXController
         }
         $this->layout->set(['success' => (new SetupService())->upgradeTables(), 'errors' => (new SetupService())->errors]);
         $this->layout->buffer('content', 'setup/upgrade_tables');
-        $this->layout->render('setup');
+        return $this->renderLayout('setup');
     }
 
     /**
@@ -185,23 +188,23 @@ class SetupController extends MXController
      * advances the `install_step` session value to `calculation_info`, and redirects to the calculation info step.
      * If not submitted or validation fails, prepares country and language data for the layout and renders the user creation form.
      */
-    public function createUser(): void
+    public function createUser(Request $request): RedirectResponse|Response
     {
         if (session('install_step') != 'create_user') {
-            redirect()->route('setup/prerequisites');
+            return redirect()->route('setup/prerequisites');
         }
         $this->loadCiDatabase();
         $this->load->helper('country');
-        if ((new UsersService())->runValidation()) {
-            $db_array              = (new UsersService())->dbArray();
+        if ((new UsersService())->runValidation(null, $request)) {
+            $db_array              = (new UsersService())->dbArray($request);
             $db_array['user_type'] = 1;
-            (new UsersService())->save(null, $db_array);
+            (new UsersService())->save($request, null, $db_array);
             session()->put('install_step', 'calculation_info');
-            redirect()->route('setup/calculation_info');
+            return redirect()->route('setup/calculation_info');
         }
         $this->layout->set(['countries' => get_country_list(trans('cldr')), 'languages' => get_available_languages()]);
         $this->layout->buffer('content', 'setup/create_user');
-        $this->layout->render('setup');
+        return $this->renderLayout('setup');
     }
 
     /**
@@ -209,26 +212,26 @@ class SetupController extends MXController
      *
      * @originalFile SetupController.php
      */
-    public function calculationInfo(Request $request): void {
+    public function calculationInfo(Request $request): RedirectResponse|Response {
         if (session('install_step') != 'calculation_info') {
-            redirect()->route('setup/prerequisites');
+            return redirect()->route('setup/prerequisites');
         }
         if ($request->post('btn_continue')) {
             session()->put('install_step', 'complete');
-            redirect()->route('setup/complete');
+            return redirect()->route('setup/complete');
         } elseif ($request->post('btn_agree')) {
             $this->writeCalculationConfig();
             session()->put('install_step', 'complete');
-            redirect()->route('setup/complete');
+            return redirect()->route('setup/complete');
         }
         $checkCalculation = $this->checkCalculationConfig();
         if ($checkCalculation['needs_config'] === false) {
             session()->put('install_step', 'complete');
-            redirect()->route('setup/complete');
+            return redirect()->route('setup/complete');
         }
         $this->layout->set('calculation_check', $checkCalculation);
         $this->layout->buffer('content', 'setup/calculation_info');
-        $this->layout->render('setup');
+        return $this->renderLayout('setup');
     }
 
     /**
@@ -236,10 +239,10 @@ class SetupController extends MXController
      *
      * @originalFile SetupController.php
      */
-    public function complete(): void
+    public function complete(): RedirectResponse|Response
     {
         if (session('install_step') != 'complete') {
-            redirect()->route('setup/prerequisites');
+            return redirect()->route('setup/prerequisites');
         }
         $this->loadCiDatabase();
         $users = $this->db->query('SELECT * FROM ip_users');
@@ -247,7 +250,7 @@ class SetupController extends MXController
             Log::error('there was already one or more users in the database');
             $this->session->set_flashdata('alert_error', 'Something went wrong, check the log file for errors');
             session()->put('install_step', 'create_user');
-            redirect()->route('setup/create_user');
+            return redirect()->route('setup/create_user');
         }
         // Additional tasks after setup is completed
         $this->postSetupTasks();
@@ -264,8 +267,18 @@ class SetupController extends MXController
         $update = $data[0]->version_date_applied < time() - 1800;
         $this->layout->set('update', $update);
         $this->layout->buffer('content', 'setup/complete');
-        $this->layout->render('setup');
+        $response = $this->renderLayout('setup');
         $this->session->sess_destroy();
+        return $response;
+    }
+
+    private function renderLayout(string $view): Response
+    {
+        ob_start();
+        $this->layout->render($view);
+        $content = ob_get_clean();
+
+        return response($content);
     }
 
     /**

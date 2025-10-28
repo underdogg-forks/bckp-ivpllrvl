@@ -195,13 +195,9 @@ class SessionsController extends BaseController
                 $this->loginLogAddfailure($email);
             }
             // Test if a user with this email exists
-            if ($recovery_result = $this->db->where('user_email', $email)) {
+            $user_exists = DB::table('ip_users')->where('user_email', $email)->exists();
+            if ($user_exists) {
                 // Create a passwordreset token.
-                $email = $request->post('email', true);
-                if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
-                    return redirect()->route('/');
-                }
                 //use salt to prevent predictability of the reset token (CVE-2021-29023)
                 $this->load->library('crypt');
                 $token = md5(time() . $email . $this->crypt->salt());
@@ -212,7 +208,7 @@ class SessionsController extends BaseController
                 // Send the email with reset link
                 // Prepare some variables for the email
                 $email_resetlink = site_url('sessions/passwordreset/' . $token);
-                $email_message   = echo view('emails/passwordreset', ['resetlink' => $email_resetlink], true)->render();
+                $email_message   = view('emails.passwordreset', ['resetlink' => $email_resetlink])->render();
                 $email_from      = get_setting('smtp_mail_from');
                 if (empty($email_from)) {
                     $email_from = 'system@' . preg_replace('/^[\w]{2,6}:\/\/([\w\d\.\-]+).*$/', '$1', base_url());

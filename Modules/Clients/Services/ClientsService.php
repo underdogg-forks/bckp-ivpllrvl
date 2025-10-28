@@ -5,6 +5,7 @@ namespace Modules\Clients\Services;
 use AllowDynamicProperties;
 use DB;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Modules\Clients\Models\Client;
@@ -139,9 +140,9 @@ class ClientsService extends BaseService
      *
      * @originalFile Client.php
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
-        $db_array = parent::dbArray();
+        $db_array = parent::dbArray($request);
         if ( ! isset($db_array['client_active'])) {
             $db_array['client_active'] = 0;
         }

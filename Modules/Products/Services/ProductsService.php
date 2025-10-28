@@ -3,6 +3,7 @@
 namespace Modules\Products\Services;
 
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Core\Services\BaseService;
 use Modules\Products\Models\Product;
 
@@ -99,9 +100,9 @@ class ProductsService extends BaseService
      *
      * @originalFile Product.php
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
-        $db_array                   = parent::dbArray();
+        $db_array                   = parent::dbArray($request);
         $db_array['product_price']  = empty($db_array['product_price']) ? null : standardize_amount($db_array['product_price']);
         $db_array['purchase_price'] = empty($db_array['purchase_price']) ? null : standardize_amount($db_array['purchase_price']);
         $db_array['family_id']      = empty($db_array['family_id']) ? null : $db_array['family_id'];

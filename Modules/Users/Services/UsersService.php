@@ -4,6 +4,7 @@ namespace Modules\Users\Services;
 
 use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Modules\Core\Services\BaseService;
 use Modules\Users\Models\User;
 
@@ -149,9 +150,9 @@ class UsersService extends BaseService
      *
      * @originalFile User.php
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
-        $db_array = parent::dbArray();
+        $db_array = parent::dbArray($request);
         if (isset($db_array['user_password'])) {
             unset($db_array['user_passwordv']);
             $this->load->library('crypt');
@@ -188,9 +189,26 @@ class UsersService extends BaseService
      *
      * @originalFile User.php
      */
-    public function save($id = null, $db_array = null)
+    public function save($requestOrId = null, $idOrDbArray = null, $db_array = null)
     {
-        $id = parent::save($id, $db_array);
+        if ($requestOrId instanceof Request) {
+            $activeRequest = $requestOrId;
+            $id            = $idOrDbArray;
+            $data          = $db_array;
+        } elseif (is_array($requestOrId) && $idOrDbArray === null && $db_array === null) {
+            // BC: save(db_array)
+            $activeRequest = request();
+            $id            = null;
+            $data          = $requestOrId;
+        } else {
+            $activeRequest = request();
+            $id            = $requestOrId;
+            $data          = $idOrDbArray;
+        }
+        if ($data === null) {
+            $data = $this->dbArray($activeRequest);
+        }
+        $id = parent::save($activeRequest, $id, $data);
         if ($user_clients = session('user_clients')) {
             $this->load->model('users/mdl_user_clients');
             foreach ($user_clients as $user_client) {

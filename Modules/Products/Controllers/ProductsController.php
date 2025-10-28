@@ -5,6 +5,7 @@ namespace Modules\Products\Controllers;
 use Illuminate\Contracts\View\View;
 
 use AllowDynamicProperties;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
 use Modules\Families\Services\FamiliesService;
@@ -49,7 +50,7 @@ class ProductsController extends AdminController
      *
      * @return \Illuminate\Contracts\View\View the products form view populated with `families`, `units`, and `tax_rates`
      */
-    public function form(Request $request, $id = null): \Illuminate\Contracts\View\View
+    public function form(Request $request, $id = null): \Illuminate\Contracts\View\View|RedirectResponse
     {
         if ($request->has('btn_cancel')) {
             return redirect()->route('products.index');
@@ -57,9 +58,9 @@ class ProductsController extends AdminController
         // Filter input if needed
         // Validation
         $service = new ProductsService();
-        if ($service->runValidation()) {
-            $db_array = $service->dbArray();
-            $service->save($id, $db_array);
+        if ($service->runValidation(null, $request)) {
+            $db_array = $service->dbArray($request);
+            $service->save($request, $id, $db_array);
 
             return redirect()->route('products.index');
         }
@@ -84,7 +85,7 @@ class ProductsController extends AdminController
      *
      * @return \Illuminate\Http\RedirectResponse redirect response to the products index route
      */
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         (new ProductsService())->delete($id);
 

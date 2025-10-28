@@ -208,11 +208,13 @@ class AjaxController extends AdminController
      * - `{"success":1}` on successful save (or when validation passes and save is skipped due to configuration).
      * - `{"success":0,"validation_errors": ...}` when validation fails.
      */
-    public function saveInvoiceTaxRate()
+    public function saveInvoiceTaxRate(Request $request)
     {
-        if ($this->invoiceTaxRatesService->runValidation()) {
+        if ($this->invoiceTaxRatesService->runValidation(null, $request)) {
             // Only Legacy calculation have global taxes - since v1.6.3
-            config('legacy_calculation') && $this->invoiceTaxRatesService->save();
+            if (config('legacy_calculation')) {
+                $this->invoiceTaxRatesService->save($request);
+            }
             $response = ['success' => 1];
         } else {
             $response = ['success' => 0, 'validation_errors' => $this->invoiceTaxRatesService->validation_errors];
@@ -290,13 +292,13 @@ class AjaxController extends AdminController
      * If the "einvoicing" setting is enabled, may adjust the legacy_calculation configuration based on input.
      */
     public function copyInvoice(Request $request) {
-        if ($this->invoicesService->runValidation()) {
+        if ($this->invoicesService->runValidation(null, $request)) {
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                config(['legacy_calculation' => ! empty($request->post('legacy_calculation'])));
+            config(['legacy_calculation' => ! empty($request->post('legacy_calculation'))]);
             }
-            $target_id = $this->invoicesService->save();
+            $target_id = $this->invoicesService->save($request);
             $source_id = strip_tags($request->post('invoice_id'));
             $this->invoicesService->copyInvoice($source_id, $target_id);
             $response = ['success' => 1, 'invoice_id' => $target_id];
@@ -410,10 +412,10 @@ class AjaxController extends AdminController
      *
      * The method sends the JSON response and terminates execution.
      */
-    public function create()
+    public function create(Request $request)
     {
-        if ($this->invoicesService->runValidation()) {
-            $invoice_id = $this->invoicesService->create();
+        if ($this->invoicesService->runValidation(null, $request)) {
+            $invoice_id = $this->invoicesService->create($request);
             $response   = ['success' => 1, 'invoice_id' => $invoice_id];
         } else {
             $this->load->helper('json_error');
@@ -428,10 +430,10 @@ class AjaxController extends AdminController
      * Validates the request data and, if valid, saves the recurring invoice and outputs a JSON response.
      * The JSON response is {"success": 1} on success, or {"success": 0, "validation_errors": [...] } when validation fails.
      */
-    public function createRecurring()
+    public function createRecurring(Request $request)
     {
-        if ((new InvoicesRecurringService())->runValidation()) {
-            (new InvoicesRecurringService())->save();
+        if ($this->invoicesRecurringService->runValidation(null, $request)) {
+            $this->invoicesRecurringService->save($request);
             $response = ['success' => 1];
         } else {
             $this->load->helper('json_error');
@@ -502,25 +504,22 @@ class AjaxController extends AdminController
      * - On validation failure: `{"success": 0, "validation_errors": ...}`
      */
     public function createCredit(Request $request) {
-        if ((new InvoicesService())->runValidation()) {
+        if ($this->invoicesService->runValidation(null, $request)) {
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                config(['legacy_calculation' => ! empty($request->post('legacy_calculation'])));
+                config(['legacy_calculation' => ! empty($request->post('legacy_calculation'))]);
             }
-            $target_id = (new InvoicesService())->save();
+            $target_id = $this->invoicesService->save($request);
             $source_id = strip_tags($request->post('invoice_id'));
-            (new InvoicesService())->copyCreditInvoice($source_id, $target_id);
+            $this->invoicesService->copyCreditInvoice($source_id, $target_id);
             // Set source invoice to read-only
             if ($this->config->item('disable_read_only') == false) {
-                (new InvoicesService())->where('invoice_id', $source_id);
-                (new InvoicesService())->update('ip_invoices', ['is_read_only' => '1']);
+                DB::table('ip_invoices')->where('invoice_id', $source_id)->update(['is_read_only' => '1']);
             }
             // Set target invoice to credit invoice
-            (new InvoicesService())->where('invoice_id', $target_id);
-            (new InvoicesService())->update('ip_invoices', ['creditinvoice_parent_id' => $source_id]);
-            (new InvoicesService())->where('invoice_id', $target_id);
-            (new InvoicesService())->update('ip_invoice_amounts', ['invoice_sign' => '-1']);
+            DB::table('ip_invoices')->where('invoice_id', $target_id)->update(['creditinvoice_parent_id' => $source_id]);
+            DB::table('ip_invoice_amounts')->where('invoice_id', $target_id)->update(['invoice_sign' => '-1']);
             $response = ['success' => 1, 'invoice_id' => $target_id];
         } else {
             $this->load->helper('json_error');

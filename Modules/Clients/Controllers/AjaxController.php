@@ -2,7 +2,6 @@
 
 namespace Modules\Clients\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Clients\Services\ClientNotesService;

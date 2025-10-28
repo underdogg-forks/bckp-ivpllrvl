@@ -4,6 +4,7 @@ namespace Modules\Invoices\Services;
 
 use Illuminate\Support\Facades\DB;
 use AllowDynamicProperties;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Modules\Clients\Services\ClientsService;
 use Modules\Core\Services\BaseService;
@@ -119,9 +120,11 @@ class InvoicesService extends BaseService
      *
      * @return int the ID of the newly created invoice
      */
-    public function create($db_array = null, $include_invoice_tax_rates = true)
+    public function create(Request $request = null, $db_array = null, $include_invoice_tax_rates = true)
     {
-        $invoice_id    = parent::save(null, $db_array);
+        $activeRequest = $request ?? request();
+        $data          = $db_array ?? $this->dbArray($activeRequest);
+        $invoice_id    = parent::save($activeRequest, null, $data);
         $inv           = $this->where('ip_invoices.invoice_id', $invoice_id)->get()->row();
         $invoice_group = $inv->invoice_group_id;
 
@@ -279,9 +282,9 @@ class InvoicesService extends BaseService
      *               - `payment_method`
      *               - `invoice_url_key`
      */
-    public function dbArray()
+    public function dbArray(?Request $request = null)
     {
-        $db_array                         = parent::dbArray();
+        $db_array                         = parent::dbArray($request);
         $db_array['invoice_date_created'] = date_to_mysql($db_array['invoice_date_created']);
         $db_array['invoice_date_due']     = $this->getDateDue($db_array['invoice_date_created']);
         $db_array['invoice_terms']        = get_setting('default_invoice_terms');

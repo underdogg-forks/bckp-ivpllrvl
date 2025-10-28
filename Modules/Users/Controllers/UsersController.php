@@ -13,6 +13,7 @@ use Modules\CustomFields\Services\CustomFieldsService;
 use Modules\CustomValues\Services\CustomValuesService;
 use Modules\UserClients\Services\UserClientsService;
 use Modules\Users\Services\UsersService;
+use Modules\Users\Services\UserCustomService;
 
 #[AllowDynamicProperties]
 class UsersController extends AdminController
@@ -139,16 +140,18 @@ class UsersController extends AdminController
      *
      * @originalFile UsersController.php
      */
-    public function changePassword(Request $request, string $user_id) {
+    public function changePassword(Request $request, string $user_id): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+    {
         if ($request->post('btn_cancel')) {
-            redirect()->route('users');
+            return redirect()->route('users');
         }
-        if ((new UsersService())->runValidation('validation_rules_change_password')) {
-            (new UsersService())->saveChangePassword($user_id, $request->post('user_password'));
-            redirect('users/form/' . $user_id);
+        if ($this->usersService->runValidation('validation_rules_change_password', $request)) {
+            $this->usersService->saveChangePassword($user_id, $request->post('user_password'));
+            return redirect('users/form/' . $user_id);
         }
-        $this->layout->buffer('content', 'users/form_change_password');
-        $this->layout->render();
+        return view('users.form_change_password', [
+            'user_id' => $user_id,
+        ]);
     }
 
     /**
@@ -158,12 +161,12 @@ class UsersController extends AdminController
      *
      * @param int|string $id the identifier of the user to delete
      */
-    public function delete($id)
+    public function delete($id): \Illuminate\Http\RedirectResponse
     {
         if ($id != 1) {
-            (new UsersService())->delete($id);
+            $this->usersService->delete($id);
         }
-        redirect()->route('users');
+        return redirect()->route('users');
     }
 
     /**
@@ -172,9 +175,9 @@ class UsersController extends AdminController
      * @param string $user_id        the ID of the user whose form to return to after deletion
      * @param mixed  $user_client_id the identifier of the user-client linkage to delete
      */
-    public function deleteUserClient(string $user_id, $user_client_id)
+    public function deleteUserClient(string $user_id, $user_client_id): \Illuminate\Http\RedirectResponse
     {
-        (new UserClientsService())->delete($user_client_id);
-        redirect('users/form/' . $user_id);
+        $this->userClientsService->delete($user_client_id);
+        return redirect('users/form/' . $user_id);
     }
 }

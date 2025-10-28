@@ -17,10 +17,16 @@ class ImportService extends BaseService
 
     public $primary_keys = ['ip_clients' => 'client_id', 'ip_invoices' => 'invoice_id', 'ip_invoice_items' => 'item_id', 'ip_payments' => 'payment_id'];
 
+    private string $importDirectory;
+
     /**
      * Mdl_Import constructor.
      */
-    public function __construct() {}
+    public function __construct()
+    {
+        // e.g., storage/app/imports
+        $this->importDirectory = storage_path('app/imports');
+    }
 
     /**
      * @originalName defaultSelect
@@ -62,8 +68,12 @@ class ImportService extends BaseService
      */
     public function importData($file, $table)
     {
+        $path = $this->resolveImportPath($file);
         // Open the file
-        $handle = fopen('./uploads/import/' . $file, 'r');
+        $handle = fopen($path, 'r');
+        if ($handle === false) {
+            throw new \RuntimeException("Failed to open import file: {$file}");
+        }
         $row    = 1;
         // GetController the expected file headers
         $headers = $this->expected_headers[$file];
@@ -75,6 +85,7 @@ class ImportService extends BaseService
             if ($row == 1) {
                 foreach ($headers as $header) {
                     if ( ! in_array($header, $data)) {
+                        fclose($handle);
                         return false;
                     }
                 }
@@ -99,6 +110,8 @@ class ImportService extends BaseService
             $row++;
         }
 
+        fclose($handle);
+
         // Return the array of recorded ids
         return $ids;
     }
@@ -111,7 +124,10 @@ class ImportService extends BaseService
     public function importInvoices()
     {
         // Open the file
-        $handle = fopen('./uploads/import/invoices.csv', 'r');
+        $handle = fopen($this->resolveImportPath('invoices.csv'), 'r');
+        if ($handle === false) {
+            throw new \RuntimeException('Failed to open invoices.csv');
+        }
         $row    = 1;
         // GetController the list of expected headers
         $headers = $this->expected_headers['invoices.csv'];
@@ -122,6 +138,7 @@ class ImportService extends BaseService
             $record_error = false;
             // Check to make sure the file headers match expected headers
             if ($row == 1 && $data != $headers) {
+                fclose($handle);
                 return false;
             }
             if ($row > 1) {
@@ -170,6 +187,8 @@ class ImportService extends BaseService
             $row++;
         }
 
+        fclose($handle);
+
         // Return the array of recorded ids
         return $ids;
     }
@@ -182,7 +201,10 @@ class ImportService extends BaseService
     public function importInvoiceItems()
     {
         // Open the file
-        $handle = fopen('./uploads/import/invoice_items.csv', 'r');
+        $handle = fopen($this->resolveImportPath('invoice_items.csv'), 'r');
+        if ($handle === false) {
+            throw new \RuntimeException('Failed to open invoice_items.csv');
+        }
         $row    = 1;
         // GetController the list of expected headers
         $headers = $this->expected_headers['invoice_items.csv'];
@@ -193,6 +215,7 @@ class ImportService extends BaseService
             $record_error = false;
             // Check to make sure the file headers match expected headers
             if ($row == 1 && $data != $headers) {
+                fclose($handle);
                 return false;
             }
             if ($row > 1) {
@@ -246,6 +269,8 @@ class ImportService extends BaseService
             $row++;
         }
 
+        fclose($handle);
+
         return $ids;
     }
 
@@ -256,13 +281,17 @@ class ImportService extends BaseService
      */
     public function importPayments()
     {
-        $handle  = fopen('./uploads/import/payments.csv', 'r');
+        $handle  = fopen($this->resolveImportPath('payments.csv'), 'r');
+        if ($handle === false) {
+            throw new \RuntimeException('Failed to open payments.csv');
+        }
         $row     = 1;
         $headers = $this->expected_headers['payments.csv'];
         $ids     = [];
         while (($data = fgetcsv($handle, 1000, ',')) != false) {
             $record_error = false;
             if ($row == 1 && $data != $headers) {
+                fclose($handle);
                 return false;
             }
             if ($row > 1) {
@@ -301,6 +330,8 @@ class ImportService extends BaseService
             }
             $row++;
         }
+
+        fclose($handle);
 
         return $ids;
     }
@@ -341,5 +372,23 @@ class ImportService extends BaseService
         // Delete any orphaned records
         $this->load->helper('orphan');
         delete_orphans();
+    }
+
+    private function resolveImportPath(string $file): string
+    {
+        $allowedFiles = array_keys($this->expected_headers);
+        if ( ! in_array($file, $allowedFiles, true)) {
+            throw new \InvalidArgumentException('Invalid import file');
+        }
+        $basePath = realpath($this->importDirectory);
+        if ($basePath === false) {
+            throw new \RuntimeException('Import directory not found');
+        }
+        $path = realpath($basePath . DIRECTORY_SEPARATOR . $file);
+        if ($path === false || str_starts_with($path, $basePath . DIRECTORY_SEPARATOR) === false) {
+            throw new \InvalidArgumentException('Invalid file path');
+        }
+
+        return $path;
     }
 }

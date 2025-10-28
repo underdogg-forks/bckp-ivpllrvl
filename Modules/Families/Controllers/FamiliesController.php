@@ -3,7 +3,7 @@
 namespace Modules\Families\Controllers;
 
 use Illuminate\Contracts\View\View;
-
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
@@ -38,7 +38,8 @@ class FamiliesController extends AdminController
      *
      * @originalFile FamiliesController.php
      */
-    public function form(Request $request, $id = null) {
+    public function form(Request $request, $id = null): View|RedirectResponse
+    {
         if ($request->post('btn_cancel')) {
             return redirect()->route('families');
         }
@@ -48,21 +49,20 @@ class FamiliesController extends AdminController
             $check = $this->db->get_where('ip_families', ['family_name' => $request->post('family_name')])->result();
             if ( ! empty($check)) {
                 $this->session->set_flashdata('alert_error', trans('family_already_exists'));
-                return redirect()->route('families/form');
+                return redirect()->route('families.form');
             }
         }
-        if ((new FamiliesService())->runValidation()) {
-            (new FamiliesService())->save($id);
+        if ((new FamiliesService())->runValidation($id, $request)) {
+            (new FamiliesService())->save($request, $id);
             return redirect()->route('families');
         }
         if ($id && ! $request->post('btn_submit')) {
             if ( ! (new FamiliesService())->prepForm($id)) {
-                show_404();
+                abort(404);
             }
             (new FamiliesService())->setFormValue('is_update', true);
         }
-        $this->layout->buffer('content', 'families/form');
-        $this->layout->render();
+        return view('families.form');
     }
 
     /**
@@ -70,7 +70,7 @@ class FamiliesController extends AdminController
      *
      * @originalFile FamiliesController.php
      */
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         (new FamiliesService())->delete($id);
         return redirect()->route('families');
