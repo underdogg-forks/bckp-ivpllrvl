@@ -12,6 +12,8 @@ class EmailTemplate extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_email_templates';
+
     protected $casts = [];
 
     protected $guarded = [];

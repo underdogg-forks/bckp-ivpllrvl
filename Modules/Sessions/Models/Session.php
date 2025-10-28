@@ -12,6 +12,8 @@ class Session extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_sessions';
+
     protected $casts = [];
 
     protected $guarded = [];

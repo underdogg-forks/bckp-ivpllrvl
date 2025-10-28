@@ -12,6 +12,8 @@ class Payment extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_payments';
+
     protected $casts = [];
 
     protected $guarded = [];

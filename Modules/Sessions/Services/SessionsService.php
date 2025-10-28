@@ -4,21 +4,26 @@ namespace Modules\Sessions\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
+use Modules\Users\Models\User;
 
 #[AllowDynamicProperties]
 class SessionsService extends BaseService
 {
     /**
-     * @originalName auth
+     * Authenticate a user by email and password, upgrade legacy MD5 password hashes when needed, and initialize session data on success.
      *
-     * @originalFile Session.php
+     * If the user record contains an old MD5 password, a successful MD5 verification will replace it with the current salted hash format before continuing.
+     *
+     * @param string $email    the user's email address used to locate the account
+     * @param string $password the plaintext password to verify
+     *
+     * @return bool `true` if authentication succeeds and session data is set (session contains `user_type`, `user_id`, `user_name`, `user_email`, `user_company`, and `user_language`), `false` otherwise
      */
     public function auth($email, $password)
     {
-        $this->db->where('user_email', $email);
-        $query = $this->db->get('ip_users');
-        if ($query->numRows()) {
-            $user = $query->row();
+        $user = User::query()->where('user_email', $email)->first();
+
+        if ($user) {
             $this->load->library('crypt');
             /*
              * Password hashing changed after 1.2.0
@@ -37,10 +42,9 @@ class SessionsService extends BaseService
                     $salt     = $this->crypt->salt();
                     $hash     = $this->crypt->generate_password($password, $salt);
                     $db_array = ['user_psalt' => $salt, 'user_password' => $hash];
-                    $this->db->where('user_id', $user->user_id);
-                    $this->db->update('ip_users', $db_array);
-                    $this->db->where('user_email', $email);
-                    $user = $this->db->get('ip_users')->row();
+
+                    User::query()->where('user_id', $user->user_id)->update($db_array);
+                    $user = User::query()->where('user_email', $email)->first();
                 } else {
                     // The password didn't verify against original md5
                     return false;

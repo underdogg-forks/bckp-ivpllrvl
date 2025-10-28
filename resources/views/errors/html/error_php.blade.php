@@ -1,5 +1,3 @@
-@php
-
 <div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
 
     <h4>A PHP Error was encountered</h4>
@@ -8,18 +6,17 @@
     <p>Message: {{ $message }}</p>
     <p>Filename: {{ $filepath }}</p>
     <p>Line Number: {{ $line }}</p>
-@if(defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) {
+@if(defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE)
     <p>Backtrace:</p>
-@foreach(debug_backtrace() as $error) {
-            if (isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH))) {
+@foreach(debug_backtrace() as $error)
+@if(isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH)))
     <p style="margin-left:10px">
-        File: @php echo $error['file'] <br/>
-        Line: @php echo $error['line'] <br/>
-        Function: @php echo $error['function']
+        File: {{ $error['file'] }}<br/>
+        Line: {{ $error['line'] }}<br/>
+        Function: {{ $error['function'] }}
     </p>
-
-@php }
-        }
-}
+@endif
+@endforeach
+@endif
 
 </div>

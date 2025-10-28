@@ -11,10 +11,10 @@ Line Number: {{ $exception->getLine() }}
     Backtrace:
     @foreach($exception->getTrace() as $error)
         @if(isset($error['file']) && ! str_starts_with($error['file'], realpath(BASEPATH)))
-            File: {{ $error['file'], "\n" }}
-            Line: {{ $error['line'], "\n" }}
-            Function: {{ $error['function'], "\n\n" }}
-        @php endif
-    @php endforeach
+            File: {{ $error['file'] }}
+            Line: {{ $error['line'] }}
+            Function: {{ $error['function'] }}
+        @endif
+    @endforeach
 
 <?php endif;

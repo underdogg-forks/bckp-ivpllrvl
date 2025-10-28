@@ -10,23 +10,23 @@
     });
 </script>
 
-<div class="row">
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
+<div class="flex flex-wrap -mx-4">
+    <div class="w-full px-4 col-md-8 col-md-offset-2">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                 @lang('general')
             </div>
-            <div class="panel-body">
+            <div class="p-6">
 
-                <div class="row">
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
+                <div class="flex flex-wrap -mx-4">
+                    <div class="w-full px-4 md:w-1/2">
+                        <div class="mb-4">
                             <label for="settings[default_language]">
                                 @lang('language')
                             </label>
                             <select name="settings[default_language]" id="settings[default_language]"
-                                class="form-control simple-select">
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                                 @foreach($languages as $language) {
     $sys_lang = get_setting('default_language') }}
                 <option value="
@@ -39,13 +39,13 @@
         </div>
         </div>
 
-            <div class="col-xs-12 col-md-6">
-                <div class="form-group">
+            <div class="w-full px-4 md:w-1/2">
+                <div class="mb-4">
                     <label for="settings[system_theme]">
                         @lang('theme')
                     </label>
                     <select name="settings[system_theme]" id="settings[system_theme]"
-                            class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                         @foreach($available_themes as $theme_key => $theme_name)
                         <option value="{{ $theme_key }}" @php
                             check_select(get_setting('system_theme'), $theme_key)>
@@ -56,14 +56,14 @@
             </div>
         </div>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2">
+                    <div class="mb-4">
                         <label for="settings[first_day_of_week]">
                             @lang('first_day_of_week')
                         </label>
                         <select name="settings[first_day_of_week]" id="settings[first_day_of_week]"
-                                class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                             @foreach($first_days_of_weeks as $first_day_of_week_id => $first_day_of_week_name)
                             <option value="{{ $first_day_of_week_id }}"
                                 @php
@@ -74,13 +74,13 @@
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group">
+                <div class="w-full px-4 md:w-1/2">
+                    <div class="mb-4">
                         <label for="settings[date_format]">
                             @lang('date_format')
                         </label>
                         <select name="settings[date_format]" id="settings[date_format]"
-                                class="form-control simple-select">
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                             @foreach($date_formats as $date_format)
                             <option value="{{ $date_format['setting'] }}"
                                 @php
@@ -93,14 +93,14 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2">
+                    <div class="mb-4">
                         <label for="settings[default_country]">
                             @lang('default_country')
                         </label>
                         <select name="settings[default_country]" id="settings[default_country]"
-                                class="form-control simple-select">
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                             <option value="">@lang('none')</option>
                             @foreach($countries as $cldr => $country)
                             <option value="{{ $cldr }}" @php
@@ -111,14 +111,14 @@
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group">
+                <div class="w-full px-4 md:w-1/2">
+                    <div class="mb-4">
                         <label for="default_list_limit">
                             @lang('default_list_limit')
                         </label>
                         <input type="number" name="settings[default_list_limit]" id="default_list_limit"
-                               class="form-control" minlength="1" min="1" required
-                               value="{{ get_setting('default_list_limit', 15, true) }}">
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" minlength="1" min="1" required
+                               value="{{ get_setting('default_list_limit', 15, true) " }}>
                     </div>
                 </div>
             </div>
@@ -126,32 +126,32 @@
         </div>
         </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                     @lang('amount_settings')
                 </div>
-                <div class="panel-body">
+                <div class="p-6">
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[currency_symbol]">
                                     @lang('currency_symbol')
                                 </label>
                                 <input type="text" name="settings[currency_symbol]" id="settings[currency_symbol]"
-                                       class="form-control"
-                                       value="{{ get_setting('currency_symbol', '', true) }}">
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
+                                       value="{{ get_setting('currency_symbol', '', true) " }}>
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[currency_symbol_placement]">
                                     @lang('currency_symbol_placement')
                                 </label>
                                 <select name="settings[currency_symbol_placement]"
                                         id="settings[currency_symbol_placement]"
-                                        class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                                     <option
                                         value="before" @php check_select(get_setting('currency_symbol_placement'), 'before')>
                                         @lang('before_amount')
@@ -169,15 +169,15 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[currency_code]">
                                     @lang('currency_code')
                                 </label>
                                 <select name="settings[currency_code]"
                                         id="settings[currency_code]"
-                                        class="form-control simple-select">
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                                     @foreach($gateway_currency_codes as $val => $key)
                                     <option value="{{ $val }}"
                                         @php
@@ -188,12 +188,12 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="tax_rate_decimal_places">
                                     @lang('tax_rate_decimal_places')
                                 </label>
-                                <select name="settings[tax_rate_decimal_places]" class="form-control simple-select"
+                                <select name="settings[tax_rate_decimal_places]" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                         id="tax_rate_decimal_places" data-minimum-results-for-search="Infinity">
                                     <option
                                         value="2" @php check_select(get_setting('tax_rate_decimal_places'), '2')>
@@ -210,35 +210,32 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[number_format]">
                                     @lang('number_format')
                                 </label>
                                 <select name="settings[number_format]" id="settings[number_format]"
-                                        class="form-control simple-select"
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                         data-minimum-results-for-search="Infinity">
                                     @foreach($number_formats as $key => $value)
                                     <option value="{{ $key }}"
                                         @php
                                             check_select(get_setting('number_format'), $value['label'])>
-                                    @php
-                                        _trans($value['label']);
-
-                                    </option>@endforeach
+                                    {{ _trans($value['label']) }}</option>@endforeach
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[default_item_decimals]">
                                     @lang('default_item_decimals')
                                 </label>
                                 @php $current_default_item_decimals = get_setting('default_item_decimals')
                                 <select name="settings[default_item_decimals]" id="settings[default_item_decimals]"
-                                        class="form-control simple-select"
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                         data-minimum-results-for-search="Infinity">
                                 <option value="1" @php check_select($current_default_item_decimals, '1'); >1
                                 </option>
@@ -264,20 +261,20 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                     @lang('dashboard')
                 </div>
-                <div class="panel-body">
+                <div class="p-6">
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[quote_overview_period]">
                                     @lang('quote_overview_period')
                                 </label>
                                 <select name="settings[quote_overview_period]" id="settings[quote_overview_period]"
-                                        class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                                     <option
                                         value="this-month" @php check_select(get_setting('quote_overview_period'), 'this-month')>
                                         @lang('this_month')
@@ -306,13 +303,13 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[invoice_overview_period]">
                                     @lang('invoice_overview_period')
                                 </label>
                                 <select name="settings[invoice_overview_period]" id="settings[invoice_overview_period]"
-                                        class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                                     <option
                                         value="this-month" @php check_select(get_setting('invoice_overview_period'), 'this-month')>
                                         @lang('this_month')
@@ -342,13 +339,13 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="disable_quickactions">
                                     @lang('disable_quickactions')
                                 </label>
-                                <select name="settings[disable_quickactions]" class="form-control simple-select"
+                                <select name="settings[disable_quickactions]" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                         id="disable_quickactions" data-minimum-results-for-search="Infinity">
                                     <option value="0">
                                         @lang('no')
@@ -365,19 +362,19 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                     @lang('interface')
                 </div>
-                <div class="panel-body">
+                <div class="p-6">
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="disable_sidebar">
                                     @lang('disable_sidebar')
                                 </label>
-                                <select name="settings[disable_sidebar]" class="form-control simple-select"
+                                <select name="settings[disable_sidebar]" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                         id="disable_sidebar" data-minimum-results-for-search="Infinity">
                                     <option value="0">
                                         @lang('no')
@@ -389,25 +386,25 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[custom_title]">
                                     @lang('custom_title')
                                 </label>
                                 <input type="text" name="settings[custom_title]" id="settings[custom_title]"
-                                       class="form-control"
-                                       value="{{ get_setting('custom_title', '', true) }}">
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
+                                       value="{{ get_setting('custom_title', '', true) " }}>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="monospace_amounts">
                                     @lang('monospaced_font_for_amounts')
                                 </label>
-                                <select name="settings[monospace_amounts]" class="form-control simple-select"
+                                <select name="settings[monospace_amounts]" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select"
                                         id="monospace_amounts" data-minimum-results-for-search="Infinity">
                                     <option value="0">@lang('no')</option>
                                     <option value="1" @php check_select(get_setting('monospace_amounts'), '1')>
@@ -423,29 +420,29 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="login_logo">
                                     @lang('login_logo')
                                 </label>
                                 @if(get_setting('login_logo'))
                                 <br/>
                                 <img class="personal_logo"
-                                     src="{{ url() }}uploads/{{ get_setting('login_logo') }}"><br>
+                                     src="{{ url() }}uploads/{{ get_setting('login_logo') " }}><br>
                                     {{ anchor('settings/remove_logo/login', trans('remove_logo')) }}<br/>@endforeach
-                                    <input type="file" name="login_logo" id="login_logo" class="form-control"/>
+                                    <input type="file" name="login_logo" id="login_logo" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"/>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[reports_in_new_tab]">
                                     @lang('open_reports_in_new_tab')
                                 </label>
                                 <select name="settings[reports_in_new_tab]" id="settings[reports_in_new_tab]"
-                                        class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                                     <option value="0">@lang('no')</option>
                                     <option
                                         value="1" @php check_select(get_setting('reports_in_new_tab'), '1')>
@@ -454,14 +451,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
+                        <div class="w-full px-4 md:w-1/2">
+                            <div class="mb-4">
                                 <label for="settings[show_responsive_itemlist]">
                                     @lang('show_responsive_itemlist')
                                 </label>
                                 <select name="settings[show_responsive_itemlist]"
                                         id="settings[show_responsive_itemlist]"
-                                        class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                                     <option value="0">
                                         @lang('no')
                                     </option>
@@ -477,21 +474,21 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                     @lang('system_settings')
                 </div>
-                <div class="panel-body">
+                <div class="p-6">
 
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4 md:w-1/2">
 
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="settings[bcc_mails_to_admin]">
                                     @lang('bcc_mails_to_admin')
                                 </label>
                                 <select name="settings[bcc_mails_to_admin]" id="settings[bcc_mails_to_admin]"
-                                        class="form-control simple-select" data-minimum-results-for-search="Infinity">
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity">
                                     <option value="0">@lang('no')</option>
                                     <option
                                         value="1" @php check_select(get_setting('bcc_mails_to_admin'), '1')>
@@ -503,19 +500,19 @@
                             </div>
 
                         </div>
-                        <div class="col-xs-12 col-md-6">
+                        <div class="w-full px-4 md:w-1/2">
 
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="cron_key">
                                     @lang('cron_key')
                                 </label>
                                 <div class="input-group">
-                                    <input type="text" name="settings[cron_key]" id="cron_key" class="form-control"
+                                    <input type="text" name="settings[cron_key]" id="cron_key" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                            readonly
-                                           value="{{ get_setting('cron_key') }}">
-                                        <div class="input-group-btn">
+                                           value="{{ get_setting('cron_key') " }}>
+                                        <div class="input-group-">
                                             <button id="btn_generate_cron_key" type="button"
-                                                    class="btn btn-primary btn-block">
+                                                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors -block">
                                                 <i class="fa fa-recycle fa-margin"></i> @lang('generate')
                                             </button>
                                         </div>
@@ -530,4 +527,3 @@
 
         </div>
         </div>
-<?php

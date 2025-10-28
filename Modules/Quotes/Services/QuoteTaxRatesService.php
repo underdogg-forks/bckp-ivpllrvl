@@ -63,11 +63,26 @@ class QuoteTaxRatesService extends BaseService
         return ['quote_id' => ['field' => 'quote_id', 'label' => trans('quote'), 'rules' => 'required'], 'tax_rate_id' => ['field' => 'tax_rate_id', 'label' => trans('tax_rate'), 'rules' => 'required'], 'include_item_tax' => ['field' => 'include_item_tax', 'label' => trans('tax_rate_placement'), 'rules' => 'required']];
     }
 
+    /**
+     * Retrieve all quote tax rate records with their associated tax rate relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection collection of QuoteTaxRate models with the `taxRate` relationship loaded
+     */
     public function getWithTaxRate(): \Illuminate\Database\Eloquent\Collection
     {
         return QuoteTaxRate::with('taxRate')->get();
     }
 
+    /**
+     * Creates or updates a QuoteTaxRate record and triggers quote amounts recalculation when a `quote_id` is provided.
+     *
+     * @param array $data Attributes for the QuoteTaxRate. Recognized keys include:
+     *                    - `quote_tax_rate_id` (optional): ID of an existing record to update.
+     *                    - `quote_id` (optional): when present, causes quote amounts to be recalculated.
+     *                    - other QuoteTaxRate model attributes to be saved.
+     *
+     * @return QuoteTaxRate the created or updated QuoteTaxRate instance
+     */
     public function saveTaxRate(array $data): QuoteTaxRate
     {
         $quoteTaxRate = QuoteTaxRate::updateOrCreate(
@@ -80,5 +95,17 @@ class QuoteTaxRatesService extends BaseService
         }
 
         return $quoteTaxRate;
+    }
+
+    /**
+     * Retrieve all quote tax rate records associated with the specified quote.
+     *
+     * @param int $quote_id the quote ID to filter tax rates by
+     *
+     * @return \Illuminate\Database\Eloquent\Collection a collection of QuoteTaxRate models for the given quote
+     */
+    public function getByQuoteId($quote_id)
+    {
+        return \Modules\Quotes\Models\QuoteTaxRate::query()->where('quote_id', $quote_id)->get();
     }
 }

@@ -12,6 +12,8 @@ class PaymentCustom extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_payment_custom';
+
     protected $casts = [];
 
     protected $guarded = [];

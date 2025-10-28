@@ -12,6 +12,8 @@ class Quote extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_quotes';
+
     protected $casts = [];
 
     protected $guarded = [];

@@ -12,6 +12,8 @@ class QuoteCustom extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_quote_custom';
+
     protected $casts = [];
 
     protected $guarded = [];

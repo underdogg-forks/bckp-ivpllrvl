@@ -22,7 +22,7 @@
                     <div class="flex items-center justify-between mt-2">
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}"
-                                class="text-xs text-blue-600 dark:text-blue-400 hover:underline">{{ trans('ip.Forgot password?') }}</a>
+                                class="text-xs text-link hover:text-link-hover hover:underline">{{ trans('ip.Forgot password?') }}</a>
                         @endif
                         <x-forms.checkbox label="Remember me" name="remember" />
                     </div>
@@ -38,7 +38,7 @@
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                         {{ trans('ip.Don\'t have an account?') }}
                         <a href="{{ route('register') }}"
-                            class="text-blue-600 dark:text-blue-400 hover:underline font-medium">{{ trans('ip.Sign up') }}</a>
+                            class="text-link hover:text-link-hover hover:underline font-medium">{{ trans('ip.Sign up') }}</a>
                     </p>
                 </div>
             @endif

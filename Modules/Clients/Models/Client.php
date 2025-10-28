@@ -12,6 +12,8 @@ class Client extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_clients';
+
     protected $casts = [];
 
     protected $guarded = [];

@@ -12,9 +12,9 @@ class QuoteItem extends BaseModel
 
     public $timestamps = false;
 
-    protected $casts = [];
+    protected $table = 'ip_quote_items';
 
-    protected $guarded = [];
+    protected $casts = [];
 
     #region Static Methods
     /*

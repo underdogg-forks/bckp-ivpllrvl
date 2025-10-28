@@ -3,6 +3,7 @@
 namespace Modules\Quotes\Services;
 
 use AllowDynamicProperties;
+use Log;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\QuoteAmount;
 use Modules\Quotes\Models\QuoteItem;
@@ -54,14 +55,15 @@ class QuoteAmountsService extends BaseService
     /**
      * Calculate discount for a quote using Eloquent.
      *
-     * @param int $quote_id
+     * @param int   $quote_id
      * @param float $quote_total
+     *
      * @return float
      */
     public function calculateDiscount(int $quote_id, float $quote_total): float
     {
         $quote = \Modules\Quotes\Models\Quote::query()->find($quote_id);
-        if (! $quote) {
+        if ( ! $quote) {
             return $quote_total;
         }
         $total            = (float) number_format((float) $quote_total, $this->decimal_places, '.', '');
@@ -76,12 +78,13 @@ class QuoteAmountsService extends BaseService
      * Get global discount for a quote using Eloquent.
      *
      * @param int $quote_id
+     *
      * @return float
      */
     public function getGlobalDiscount(int $quote_id): float
     {
-        $item_ids = QuoteItem::query()->where('quote_id', $quote_id)->pluck('item_id');
-        $amounts = QuoteItemAmount::query()->whereIn('item_id', $item_ids)->get();
+        $item_ids        = QuoteItem::query()->where('quote_id', $quote_id)->pluck('item_id');
+        $amounts         = QuoteItemAmount::query()->whereIn('item_id', $item_ids)->get();
         $global_discount = $amounts->sum('item_subtotal') - ($amounts->sum('item_total') - $amounts->sum('item_tax_total') + $amounts->sum('item_discount'));
 
         return $global_discount;
@@ -91,16 +94,17 @@ class QuoteAmountsService extends BaseService
      * Calculate quote taxes using Eloquent.
      *
      * @param int $quote_id
+     *
      * @return float|null
      */
     public function calculateQuoteTaxes(int $quote_id): ?float
     {
-        if (! config('legacy_calculation')) {
+        if ( ! config('legacy_calculation')) {
             return null;
         }
         $quoteTaxRates = \Modules\Quotes\Models\QuoteTaxRate::query()->where('quote_id', $quote_id)->get();
         // Implement tax calculation logic as needed, or log for now
-        \Log::info('Quote taxes calculated', ['quote_id' => $quote_id, 'tax_rates_count' => $quoteTaxRates->count()]);
+        Log::info('Quote taxes calculated', ['quote_id' => $quote_id, 'tax_rates_count' => $quoteTaxRates->count()]);
 
         return $quoteTaxRates->sum('tax_amount');
     }
@@ -109,6 +113,7 @@ class QuoteAmountsService extends BaseService
      * Get total quoted amount for a period using Eloquent.
      *
      * @param string|null $period
+     *
      * @return float
      */
     public function getTotalQuoted(?string $period = null): float
@@ -131,6 +136,7 @@ class QuoteAmountsService extends BaseService
                 $query->whereYear('ip_quotes.quote_date_created', now()->subYear()->year);
                 break;
         }
+
         return (float) $query->sum('quote_total');
     }
 
@@ -138,6 +144,7 @@ class QuoteAmountsService extends BaseService
      * Get status totals for quotes using Eloquent.
      *
      * @param string $period
+     *
      * @return array
      */
     public function getStatusTotals(string $period = 'this-month'): array
@@ -175,15 +182,15 @@ class QuoteAmountsService extends BaseService
             ->groupBy('ip_quotes.quote_status_id')
             ->get();
         $statuses = \Modules\Quotes\Models\Quote::statuses();
-        $return = [];
+        $return   = [];
         foreach ($statuses as $key => $status) {
             $return[$key] = [
                 'quote_status_id' => $key,
-                'class' => $status['class'],
-                'label' => $status['label'],
-                'href' => $status['href'],
-                'sum_total' => 0,
-                'num_total' => 0,
+                'class'           => $status['class'],
+                'label'           => $status['label'],
+                'href'            => $status['href'],
+                'sum_total'       => 0,
+                'num_total'       => 0,
             ];
         }
         foreach ($results as $result) {
@@ -192,6 +199,7 @@ class QuoteAmountsService extends BaseService
                 'num_total' => $result->num_total,
             ]);
         }
+
         return $return;
     }
 }

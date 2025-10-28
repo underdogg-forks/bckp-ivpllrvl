@@ -14,7 +14,7 @@
         }
         function reload_client_notes(data){
             var response = json_parse(data, {{ (int) IP_DEBUG }});
-            if (response.success === 1) {
+            @if(response.success === 1) {
                 // The validation was successful
                 $('.has-error').removeClass('has-error');
                 $('#client_note').val('');
@@ -67,8 +67,8 @@
 </script>
 
 @php $locations = [];
-foreach ($custom_fields as $custom_field) {
-    if (array_key_exists($custom_field->custom_field_location, $locations)) {
+@foreach($custom_fields as $custom_field) {
+    @if(array_key_exists($custom_field->custom_field_location, $locations)) {
         $locations[$custom_field->custom_field_location] += 1;
     } else {
         $locations[$custom_field->custom_field_location] = 1;
@@ -78,23 +78,23 @@ foreach ($custom_fields as $custom_field) {
 <div id="headerbar">
     <h1 class="headerbar-title">{!! format_client($client) !!}</h1>
 
-    <div class="headerbar-item pull-right">
-        <div class="btn-group btn-group-sm">
-            <a href="#" class="btn btn-default client-create-quote"
-               data-client-id="{{ $client->client_id }}">
+    <div class="headerbar-item float-right">
+        <div class="inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
+            <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors client-create-quote"
+               data-client-id="{{ $client->client_id " }}>
                 <i class="fa fa-file"></i> @lang('create_quote')
             </a>
-            <a href="#" class="btn btn-default client-create-invoice"
-               data-client-id="{{ $client->client_id }}">
+            <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors client-create-invoice"
+               data-client-id="{{ $client->client_id " }}>
                 <i class="fa fa-file-text"></i> @lang('create_invoice')</a>
             <a href="{{ url('clients/form/' . $client->client_id) }}"
-               class="btn btn-default">
+               class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                 <i class="fa fa-edit"></i> @lang('edit')
             </a>
             <form action="{{ url('clients/delete/' . $client->client_id) }}"
-                  method="POST" class="btn-group btn-group-sm">
+                  method="POST" class="inline-flex rounded-md shadow-sm [&>*]:px-3 [&>*]:py-1.5 [&>*]:text-sm">
                 @csrf
-                <button type="submit" class="btn btn-danger"
+                <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                         onclick="return confirm('@lang('delete_client_warning')');">
                     <i class="fa fa-trash-o"></i> @lang('delete')
                 </button>
@@ -114,20 +114,20 @@ foreach ($custom_fields as $custom_field) {
 <div id="content" class="tabbable tabs-below no-padding">
     <div class="tab-content no-padding">
 
-        <div id="client-details" class="tab-pane tab-rich-content{{ $activeTab == 'detail' ? ' active' : '' }}">
+        <div id="client-details" class="tab-pane tab-rich-content{{ $activeTab == 'detail' ? ' active' : ''" }}>
 
             @include('layout.alerts')
 
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 col-sm-6 md:w-1/2 col-lg-8">
 
                     <h3>{!! format_client($client) !!}</h3>
                     <p>@include('clients.partial_client_address')</p>
 
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                <div class="w-full px-4 col-sm-6 md:w-1/2 lg:w-1/3">
 
-                    <table class="table table-bordered no-margin">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700 no-margin">
                         <tr>
                             <th>@lang('lang')</th>
                             <td class="td-amount">{{ ucfirst($client->client_language) }}</td>
@@ -151,22 +151,22 @@ foreach ($custom_fields as $custom_field) {
 
             <hr>
 @php $colClass = 'col-xs-12 col-sm-6' . ($req_einvoicing ? ' col-lg-4' : '')
-            <div class="row">
-                <div class="{{ $colClass }}">
+            <div class="flex flex-wrap -mx-4">
+                <div class="{{ $colClass" }}>
 
-                    <div class="panel panel-default no-margin">
-                        <div class="panel-heading">@lang('contact_information')</div>
-                        <div class="panel-body table-content">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('contact_information')</div>
+                        <div class="p-6 table-content">
                             <table class="table no-margin">
 @if($client->client_invoicing_contact)
                                 <tr>
                                     <th>@php
-    @lang('contact') }} (@lang('invoicing'))</th>
+    @lang('contact') (@lang('invoicing'))</th>
                                     <td>{!! $client->client_invoicing_contact !!}</td>
                                 </tr>
 @php
 }
-if ($client->client_email) {
+@if($client->client_email) {
 
                                 <tr>
                                     <th>@lang('email')</th>
@@ -175,7 +175,7 @@ if ($client->client_email) {
                                 </tr>
 @php
 }
-if ($client->client_phone) {
+@if($client->client_phone) {
 
                                 <tr>
                                     <th>@lang('phone')</th>
@@ -183,7 +183,7 @@ if ($client->client_phone) {
                                 </tr>
 @php
 }
-if ($client->client_mobile) {
+@if($client->client_mobile) {
 
                                 <tr>
                                     <th>@lang('mobile')</th>
@@ -191,7 +191,7 @@ if ($client->client_mobile) {
                                 </tr>
 @php
 }
-if ($client->client_fax) {
+@if($client->client_fax) {
 
                                 <tr>
                                     <th>@lang('fax')</th>
@@ -199,7 +199,7 @@ if ($client->client_fax) {
                                 </tr>
 @php
 }
-if ($client->client_web) {
+@if($client->client_web) {
 
                                 <tr>
                                     <th>@lang('web')</th>
@@ -209,7 +209,7 @@ if ($client->client_web) {
 @endif
 
 @foreach($custom_fields as $custom_field) {
-    if ($custom_field->custom_field_location == 2) {
+    @if($custom_field->custom_field_location == 2) {
         $column = $custom_field->custom_field_label;
         $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id);
 
@@ -225,11 +225,11 @@ if ($client->client_web) {
                     </div>
 
                 </div>
-                <div class="{{ $colClass }}">
-                    <div class="panel panel-default no-margin">
+                <div class="{{ $colClass" }}>
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
 
-                        <div class="panel-heading">@lang('tax_information')</div>
-                        <div class="panel-body table-content">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('tax_information')</div>
+                        <div class="p-6 table-content">
                             <table class="table no-margin">
                                 <tr>
                                     <th>@lang('company')</th>
@@ -242,18 +242,18 @@ if ($client->client_web) {
                                 </tr>
 @php
 }
-if ($client->client_tax_code)
+@if($client->client_tax_code)
                                 <tr>
                                     <th>@lang('tax_code')</th>
                                     <td>{!! $client->client_tax_code !!}</td>
                                 </tr>@endforeach
 
 @php $default_custom = false;
-foreach ($custom_fields as $custom_field) {
-    if (!$default_custom && !$custom_field->custom_field_location) {
+@foreach($custom_fields as $custom_field) {
+    @if(!$default_custom && !$custom_field->custom_field_location) {
         $default_custom = true;
     }
-    if ($custom_field->custom_field_location == 4) {
+    @if($custom_field->custom_field_location == 4) {
         $column = $custom_field->custom_field_label;
         $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id)
                                 <tr>
@@ -270,9 +270,9 @@ foreach ($custom_fields as $custom_field) {
                 </div>
 @if($req_einvoicing)
                 <!-- eInvoicing panel -->
-                <div class="{{ $colClass }}">
-                    <div class="panel panel-default no-margin">
-                        <div class="panel-heading">
+                <div class="{{ $colClass" }}>
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                             e-@php
     @lang('invoicing');
     // Panel eInvoicing checks
@@ -295,14 +295,14 @@ foreach ($custom_fields as $custom_field) {
     $lang = explode(' ', strtr($base, ['_1' => '']));
     $user_fields_nook = $req_einvoicing->clients[$client->client_id]->einvoicing_empty_fields > 0 && $client->client_einvoicing_version != '';
     // eInvoicing button toggle users table checking
-    if ($client->client_einvoicing_active && !$user_fields_nook) {
+    @if($client->client_einvoicing_active && !$user_fields_nook) {
 
-                            <span class="pull-right cursor-pointer btn btn-xs btn-default alert-{{ $user_toggle }}"
+                            <span class="float-right cursor-pointer inline-flex items-center gap-1 px-2 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-sm text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors alert-{{ $user_toggle }}"
                                   data-toggle="collapse" data-target=".einvoice-users-check"
                                   onclick="switch_fa_toggle('einvoice_users_check_fa_toggle')"
                             >
-                                <i class="fa fa-{{ $nb ? $me ? 'ban' : 'warning' : 'check-square-o text-success' }}"></i>
-                                <span data-toggle="tooltip" data-placement="bottom" title="{{ '🗸 ' . ($nb_users - $nb) . '/' . $nb_users . ' ' . trans('user' . ($nb_users > 1 ? 's' : '')) }}">
+                                <i class="fa fa-{{ $nb ? $me 'ban' : 'warning' 'check-square-o text-success'" }}></i>
+                                <span data-toggle="tooltip" data-placement="bottom" title="{{ '🗸 ' . ($nb_users - $nb) . '/' . $nb_users . ' ' . trans('user' . ($nb_users > 1 ? 's' : '')) " }}>
                                     {{ ($nb ?: $nb_users) . ' ' . trans($ln) }}
                                 </span>
                                 <i id="einvoice_users_check_fa_toggle" class="fa fa-toggle-{{ $me ? 'on' : 'off' }} fa-margin"></i>
@@ -312,7 +312,7 @@ foreach ($custom_fields as $custom_field) {
     // End if eInvoicing button toggle users table checking
 
                         </div>
-                        <div class="panel-body table-content">
+                        <div class="p-6 table-content">
 
                             <table class="table no-margin">
                                 <tr>
@@ -322,7 +322,7 @@ foreach ($custom_fields as $custom_field) {
                             </table>
 
 @if($client->client_einvoicing_active && $user_fields_nook)
-                            <div class="alert alert-warning small" style="margin: 0px 10px 10px;">
+                            <div class="p-4 mb-4 text-yellow-700 dark:text-yellow-200 bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800 rounded-lg small" style="margin: 0px 10px 10px;">
                                 <table>
                                     <tr>
                                         <td><i class="fa fa-exclamation-triangle fa-2x"></i>&emsp;</td>
@@ -340,10 +340,10 @@ foreach ($custom_fields as $custom_field) {
 @php
         $reqs = [];
         // init ! important
-        if ($req_einvoicing->clients[$client->client_id]->einvoicing_empty_fields) {
-            foreach ($keys as $l => $key) {
-                if ($req_einvoicing->clients[$client->client_id]->{$key}) {
-                    $reqs[] = '<i class="' . $class_checks[$req_einvoicing->clients[$client->client_id]->{$key}] . '"></i>' . anchor('/clients/form/' . $client->client_id . '#client_' . $key, trans($lang[$l]), $title_tip . ' #' . trans($lang[$l]) . ' (' . mb_trim(trans('field')) . ')"');
+        @if($req_einvoicing->clients[$client->client_id]->einvoicing_empty_fields) {
+            @foreach($keys as $l => $key) {
+                @if($req_einvoicing->clients[$client->client_id]->{$key}) {
+                    $reqs[] = '<i class="' . $class_checks[$req_einvoicing->clients[$client->client_id]->{$key}]"></i>' . anchor('/clients/form/' . $client->client_id . '#client_' . $key, trans($lang[$l]), $title_tip . ' #' . trans($lang[$l]) . ' (' . mb_trim(trans('field')) . ')"');
                     // ! Need add: "
                 }
             }
@@ -368,29 +368,27 @@ foreach ($custom_fields as $custom_field) {
                                 </thead>
 @php
         // eInvoicing panel User(s) checks table
-        foreach ($req_einvoicing->users as $uid => $user) {
+        @foreach($req_einvoicing->users as $uid => $user) {
             $ok = !$user->einvoicing_empty_fields;
             // or ->show_table (inverse)
             $tx = $ok ? 'success' : ($_SESSION['user_id'] == $uid ? 'danger' : 'warning')
                                 <tbody class="einvoice-user-check-lists">
-                                    <tr class="text-{{ $tx }}">
+                                    <tr class="text-{{ $tx" }}>
                                         <td class="te te-1">
                                             <i class="fa fa-fw fa-user"></i>
                                             <span>{{ anchor('/users/form/' . $uid, $user->user_name) }}</span>
                                         </td>
-                                        <td><i class="{{ $class_checks[$ok ? 0 : 2] }}"></i>@php
-            _trans($ok ? 'yes' : 'no');
-            </td>
+                                        <td><i class="{{ $class_checks[$ok ? : 2]" }}></i>{{ _trans($ok ? 'yes' : 'no') }}</td>
                                         <td>
 @php
             $reqs = [];
             // Re init ! important
-            if ($user->einvoicing_empty_fields) {
+            @if($user->einvoicing_empty_fields) {
                 $reqs = [];
                 // reuse
-                foreach ($keys as $l => $key) {
-                    if ($user->{$key}) {
-                        $reqs[] = '<span class="text-nowrap"><i class="' . $class_checks[$user->{$key}] . '"></i>' . anchor(
+                @foreach($keys as $l => $key) {
+                    @if($user->{$key}) {
+                        $reqs[] = '<span class="text-nowrap"><i class="' . $class_checks[$user->{$key}]"></i>' . anchor(
                             '/users/form/' . $uid . '#user_' . $key,
                             trans($lang[$l]),
                             // ! Need add: "
@@ -426,13 +424,13 @@ foreach ($custom_fields as $custom_field) {
 
             <hr>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">@lang('personal_information')</div>
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('personal_information')</div>
 
-                        <div class="panel-body table-content">
+                        <div class="p-6 table-content">
                             <table class="table no-margin">
                                 <tr>
                                     <th>@lang('birthdate')</th>
@@ -460,8 +458,8 @@ foreach ($custom_fields as $custom_field) {
 @php
     }
     // fi sumex
-    foreach ($custom_fields as $custom_field) {
-        if ($custom_field->custom_field_location == 3) {
+    @foreach($custom_fields as $custom_field) {
+        @if($custom_field->custom_field_location == 3) {
             $column = $custom_field->custom_field_label;
             $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id)
                                 <tr>
@@ -481,18 +479,18 @@ foreach ($custom_fields as $custom_field) {
 @php
 }
 // fi client->client_surname
-if ($default_custom)
+@if($default_custom)
             <hr>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="panel panel-default no-margin">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
 
-                        <div class="panel-heading">@lang('custom_fields')</div>
-                        <div class="panel-body table-content">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">@lang('custom_fields')</div>
+                        <div class="p-6 table-content">
                             <table class="table no-margin">
 @foreach($custom_fields as $custom_field) {
-        if (!$custom_field->custom_field_location) {
+        @if(!$custom_field->custom_field_location) {
             // == 0
             $column = $custom_field->custom_field_label;
             $value = $this->mdl_client_custom->form_value('cf_' . $custom_field->custom_field_id)
@@ -516,20 +514,20 @@ if ($default_custom)
 
             <hr>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2">
 
-                    <div class="panel panel-default no-margin">
-                        <div class="panel-heading">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm no-margin">
+                        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                             @lang('notes')
                         </div>
-                        <div class="panel-body">
+                        <div class="p-6">
                             <div id="notes_list">
                                 {{ $partial_notes }}
                             </div>
                             <div class="input-group">
-                                <textarea id="client_note" class="form-control" rows="2" style="resize:none"></textarea>
-                                <span id="save_client_note" class="input-group-addon btn btn-default">
+                                <textarea id="client_note" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors" rows="2" style="resize:none"></textarea>
+                                <span id="save_client_note" class="input-group-addon inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                                     @lang('add_note')
                                 </span>
                             </div>
@@ -544,9 +542,9 @@ if ($default_custom)
     $table = $what . '_table';
     // dynamic var name
 
-        <div id="client-{{ $what }}s" class="tab-pane table-content{{ $activeTab == $what . 's' ? ' active' : '' }}">
+        <div id="client-{{ $what }}s" class="tab-pane table-content{{ $activeTab == $what . 's' ? ' active' : ''" }}>
             <div class="container-fluid">
-                <div class="pull-right" style="margin:.5rem 0 -1.5rem 0">
+                <div class="float-right" style="margin:.5rem 0 -1.5rem 0">
                     {{ pager(site_url('clients/view/' . $client->client_id . '/' . $what . 's'), 'mdl_' . $what . 's') }}
                 </div>
             </div>
@@ -554,4 +552,3 @@ if ($default_custom)
         </div>@endforeach
     </div>
 </div>
-<?php

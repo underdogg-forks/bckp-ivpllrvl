@@ -1,0 +1,62 @@
+/**
+ * Nord Theme - Polar Night Variant
+ * 
+ * Arctic, north-bluish color palette
+ * Based on Nord color scheme: https://www.nordtheme.com/
+ */
+
+@theme {
+    /* Gray scale - Nord Polar Night & Snow Storm */
+    --color-gray-base: #4C566A;      /* Polar Night - nord3 */
+    --color-gray-darker: #2E3440;    /* Polar Night - nord0 */
+    --color-gray-dark: #3B4252;      /* Polar Night - nord1 */
+    --color-gray: #4C566A;           /* Polar Night - nord3 */
+    --color-gray-light: #D8DEE9;     /* Snow Storm - nord4 */
+    --color-gray-lighter: #ECEFF4;   /* Snow Storm - nord6 */
+    --color-gray-lightest: #E5E9F0;  /* Snow Storm - nord5 */
+    
+    /* Brand colors - Nord Aurora & Frost */
+    --color-brand-primary: #88C0D0;  /* Frost - nord8 (changed from gray) */
+    --color-brand-success: #8FBCBB;  /* Frost - nord7 */
+    --color-brand-info: #88C0D0;     /* Frost - nord8 */
+    --color-brand-warning: #EBCB8B;  /* Aurora - nord13 */
+    --color-brand-danger: #BF616A;   /* Aurora - nord11 */
+    
+    /* Additional Nord colors */
+    --color-dark-success: #052e16;
+    --color-dark-info: #082f49;
+    --color-ivpl-info: #54a0c6;
+    --color-dark-warning: #8a6d3b;
+    --color-dark-danger: #450a0a;
+    
+    /* Scaffolding */
+    --color-body-bg: #ECEFF4;        /* Snow Storm - light background */
+    --color-text: #2E3440;           /* Polar Night - dark text */
+    --color-link: #88C0D0;           /* Frost blue */
+    --color-link-hover: #81A1C1;     /* Frost blue darker */
+    
+    /* UI Component colors - semantic mapping for Nord */
+    --color-btn-primary-bg: #88C0D0;      /* Frost blue */
+    --color-btn-primary-bg-hover: #81A1C1; /* Frost blue darker */
+    --color-btn-primary-text: #2E3440;    /* Polar Night text */
+    --color-btn-primary-border: transparent;
+    --color-btn-primary-focus-ring: #88C0D0;
+    
+    --color-btn-default-bg: #ECEFF4;      /* Snow Storm */
+    --color-btn-default-bg-hover: #D8DEE9; /* Snow Storm darker */
+    --color-btn-default-text: #2E3440;    /* Polar Night */
+    --color-btn-default-border: #D8DEE9;
+    --color-btn-default-focus-ring: #88C0D0;
+    
+    /* Card/Panel colors */
+    --color-card-bg: #ECEFF4;
+    --color-card-border: #D8DEE9;
+    --color-card-text: #2E3440;
+    
+    /* Table colors */
+    --color-table-bg: #ECEFF4;
+    --color-table-hover-bg: #E5E9F0;
+    --color-table-border: #D8DEE9;
+    --color-table-header-bg: #E5E9F0;
+    --color-table-header-text: #2E3440;
+}

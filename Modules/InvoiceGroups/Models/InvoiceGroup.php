@@ -12,6 +12,8 @@ class InvoiceGroup extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_invoice_groups';
+
     protected $casts = [];
 
     protected $guarded = [];

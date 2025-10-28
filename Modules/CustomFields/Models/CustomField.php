@@ -12,6 +12,8 @@ class CustomField extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_custom_fields';
+
     protected $casts = [];
 
     protected $guarded = [];

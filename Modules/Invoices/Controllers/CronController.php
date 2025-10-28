@@ -3,6 +3,7 @@
 namespace Modules\Invoices\Controllers;
 
 use AllowDynamicProperties;
+use App\Helpers\MailerHelper;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\BaseController;
 
@@ -10,9 +11,11 @@ use Modules\Core\Controllers\BaseController;
 class CronController extends BaseController
 {
     /**
-     * @originalName recur
+     * Validate the provided cron key, generate invoices for all active recurring schedules, update their next run dates, and optionally email the generated invoices.
      *
-     * @originalFile CronController.php
+     * If the provided cron key does not match the system setting, an error is logged, an HTTP 500 error is shown, and execution is terminated.
+     *
+     * @param string|null $cron_key the cron key used to authorize this operation; if null, the system setting will be used for comparison
      */
     public function recur($cron_key = null)
     {
@@ -22,8 +25,6 @@ class CronController extends BaseController
             show_error(trans('wrong_cron_key_provided'), 500);
             exit('Wrong cron key!');
         }
-        $this->load->model(['invoices/mdl_invoices_recurring', 'invoices/mdl_invoices', 'invoices/mdl_invoice_amounts']);
-        $this->load->helper('mailer');
         // Gather a list of recurring invoices to generate
         $invoices_recurring = (new InvoicesRecurringService())->active()->get()->result();
         $recurInfo          = [];
@@ -60,10 +61,9 @@ class CronController extends BaseController
                 log_message('debug', '[CronController RecurringController InvoicesController] Next RecurringController date was set');
             }
             // Email the new invoice if applicable
-            if (get_setting('automatic_email_on_recur') && mailer_configured()) {
+            if (get_setting('automatic_email_on_recur') && MailerHelper::mailerConfigured()) {
                 $new_invoice = (new InvoicesService())->getById($target_id);
                 // Set the email body, use default email template if available
-                $this->load->model('email_templates/mdl_email_templates');
                 $email_template_id = get_setting('email_invoice_template');
                 if ( ! $email_template_id) {
                     Log::error('[CronController RecurringController InvoicesController] No email template set in the system settings!');
@@ -76,7 +76,6 @@ class CronController extends BaseController
                 }
                 $tpl = $email_template->row();
                 // Prepare the attachments
-                $this->load->model('upload/mdl_uploads');
                 $attachment_files = (new UploadsService())->getInvoiceUploads($target_id);
                 // Prepare the body
                 $body = $tpl->email_template_body;

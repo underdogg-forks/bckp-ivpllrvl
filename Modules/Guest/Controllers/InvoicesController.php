@@ -5,17 +5,19 @@ namespace Modules\Guest\Controllers;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
 use Modules\Invoices\Services\InvoiceTaxRatesService;
+use Modules\Invoices\Services\ItemsService;
 
 #[AllowDynamicProperties]
 class InvoicesController extends BaseGuestController
 {
     /**
-     * InvoicesController constructor.
+     * Initialize the InvoicesController for guest access.
+     *
+     * Sets up controller state by delegating to the BaseGuestController constructor.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('invoices/mdl_invoices');
     }
 
     /**
@@ -30,9 +32,13 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName status
+     * Display a paginated list of invoices visible to the guest, filtered by status.
      *
-     * @originalFile InvoicesController.php
+     * Loads invoices for the current guest's clients according to the given status,
+     * paginates the results, and renders the guest invoices index layout.
+     *
+     * @param string $status the invoice status filter: 'open' (default), 'all', 'paid', or 'overdue'
+     * @param int    $page   the pagination page number (zero-based)
      */
     public function status(string $status = 'open', $page = 0): void
     {
@@ -60,9 +66,13 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName view
+     * Load and display a single invoice for the current guest and render the guest layout.
      *
-     * @originalFile InvoicesController.php
+     * Loads the invoice restricted to the guest's associated clients, marks it as viewed, prepares related view data
+     * (items, invoice tax rates, uploads and relevant settings), buffers the invoice view, and renders the guest layout.
+     * Shows a 404 response if the invoice cannot be found.
+     *
+     * @param int|string $invoice_id the invoice identifier to load and display
      */
     public function view($invoice_id): void
     {
@@ -71,9 +81,8 @@ class InvoicesController extends BaseGuestController
             show_404();
         }
         (new InvoicesService())->markViewed($invoice->invoice_id);
-        $this->load->model(['invoices/mdl_items', 'invoices/mdl_invoice_tax_rates', 'upload/mdl_uploads']);
         $this->load->helper('dropzone');
-        $this->layout->set(['invoice_id' => $invoice_id, 'invoice' => $invoice, 'items' => (new ItemsService())->where('invoice_id', $invoice_id)->get()->result(), 'invoice_tax_rates' => (new InvoiceTaxRatesService())->where('invoice_id', $invoice_id)->get()->result(), 'enable_online_payments' => get_setting('enable_online_payments'), 'legacy_calculation' => config_item('legacy_calculation')]);
+        $this->layout->set(['invoice_id' => $invoice_id, 'invoice' => $invoice, 'items' => (new ItemsService())->getByInvoiceId($invoice_id), 'invoice_tax_rates' => (new InvoiceTaxRatesService())->getByInvoiceId($invoice_id), 'enable_online_payments' => get_setting('enable_online_payments'), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/invoices_view');
         $this->layout->render('layout_guest');
     }
@@ -95,9 +104,15 @@ class InvoicesController extends BaseGuestController
     }
 
     /**
-     * @originalName generateSumexPdf
+     * Generate a Sumex-format PDF for a guest-visible invoice.
      *
-     * @originalFile InvoicesController.php
+     * If the invoice is not accessible to the current guest, a 404 response is shown.
+     * The invoice is marked as viewed before PDF generation. When `$stream` is true the
+     * generated PDF is streamed to the client; when false the PDF is produced but not streamed.
+     *
+     * @param int|string  $invoice_id       the invoice identifier
+     * @param bool        $stream           whether to stream the PDF to the client (`true`) or not (`false`)
+     * @param string|null $invoice_template optional invoice template identifier to use
      */
     public function generateSumexPdf($invoice_id, $stream = true, $invoice_template = null): void
     {

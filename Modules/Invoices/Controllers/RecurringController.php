@@ -4,51 +4,65 @@ namespace Modules\Invoices\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Invoices\Services\InvoicesRecurringService;
 
 #[AllowDynamicProperties]
 class RecurringController extends AdminController
 {
     /**
-     * RecurringController constructor.
+     * Create a RecurringController with its dependencies.
+     *
+     * @param InvoicesRecurringService $invoicesRecurringService service used to manage recurring invoices
      */
-    public function __construct()
+    public function __construct(public InvoicesRecurringService $invoicesRecurringService)
     {
         parent::__construct();
-        $this->load->model('mdl_invoices_recurring');
     }
 
     /**
-     * @originalName index
+     * Display the recurring invoices listing page.
      *
-     * @originalFile RecurringController.php
+     * Passes pagination results and related view data to the recurring invoices view.
+     *
+     * @param int $page page index for pagination (defaults to 0)
+     *
+     * @return string rendered view for the recurring invoices list containing:
+     *                - `filter_display`: whether to show the filter controls,
+     *                - `filter_placeholder`: translated placeholder for the filter,
+     *                - `filter_method`: JS filter method name,
+     *                - `recur_frequencies`: available recurrence frequencies,
+     *                - `recurring_invoices`: paginated recurring invoice results
      */
     public function index($page = 0)
     {
-        (new InvoicesRecurringService())->paginate(site_url('invoices/recurring'), $page);
-        $recurring_invoices = (new InvoicesRecurringService())->result();
+        $this->invoicesRecurringService->paginate(site_url('invoices/recurring'), $page);
+        $recurring_invoices = $this->invoicesRecurringService->result();
 
-        return view('invoices.index_recurring', ['filter_display' => true, 'filter_placeholder' => trans('filter_invoices_recuring'), 'filter_method' => 'filter_invoices_recuring', 'recur_frequencies' => (new InvoicesRecurringService())->recur_frequencies, 'recurring_invoices' => $recurring_invoices]);
+        return view('invoices.index_recurring', ['filter_display' => true, 'filter_placeholder' => trans('filter_invoices_recuring'), 'filter_method' => 'filter_invoices_recuring', 'recur_frequencies' => $this->invoicesRecurringService->recur_frequencies, 'recurring_invoices' => $recurring_invoices]);
     }
 
     /**
-     * @originalName stop
+     * Stop a recurring invoice and redirect to the recurring invoices index.
      *
-     * @originalFile RecurringController.php
+     * @param int|string $invoice_recurring_id the ID of the recurring invoice to stop
+     *
+     * @return \Illuminate\Http\RedirectResponse a redirect response to the recurring invoices index route
      */
     public function stop($invoice_recurring_id)
     {
-        (new InvoicesRecurringService())->stop($invoice_recurring_id);
-        redirect()->route('invoices/recurring/index');
+        $this->invoicesRecurringService->stop($invoice_recurring_id);
+
+        return redirect()->route('invoices/recurring/index');
     }
 
     /**
-     * @originalName delete
+     * Deletes a recurring invoice and redirects to the recurring invoices index.
      *
-     * @originalFile RecurringController.php
+     * @param int|string $invoice_recurring_id the ID of the recurring invoice to delete
      */
     public function delete($invoice_recurring_id)
     {
-        (new InvoicesRecurringService())->delete($invoice_recurring_id);
+        $this->invoicesRecurringService->delete($invoice_recurring_id);
         redirect()->route('invoices/recurring/index');
     }
 }

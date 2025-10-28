@@ -12,6 +12,8 @@ class Invoice extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_invoices';
+
     protected $casts = [];
 
     protected $guarded = [];

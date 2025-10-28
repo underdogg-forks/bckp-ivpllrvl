@@ -12,6 +12,8 @@ class Template extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_invoice_templates';
+
     protected $casts = [];
 
     protected $guarded = [];

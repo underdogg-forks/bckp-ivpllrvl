@@ -12,6 +12,8 @@ class QuoteItemAmount extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_quote_item_amounts';
+
     protected $casts = [];
 
     protected $guarded = [];

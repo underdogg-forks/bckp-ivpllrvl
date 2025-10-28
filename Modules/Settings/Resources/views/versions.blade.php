@@ -2,14 +2,14 @@
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('version_history')</h1>
 
-    <div class="headerbar-item pull-right">
+    <div class="headerbar-item float-right">
         {{ pager(site_url('settings/versions/index'), 'mdl_versions') }}
     </div>
 </div>
 
 <div id="content" class="table-content">
 
-    <div class="table-responsive">
+    <div class="overflow-x-auto">
         <table class="table">
 
             <thead>
@@ -34,4 +34,3 @@
 
 </div>
 
-<?php

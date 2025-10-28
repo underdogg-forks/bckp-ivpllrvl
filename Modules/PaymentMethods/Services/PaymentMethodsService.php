@@ -23,9 +23,9 @@ class PaymentMethodsService extends BaseService
     }
 
     /**
-     * @originalName orderBy
+     * Applies the default ordering to the query.
      *
-     * @originalFile PaymentMethod.php
+     * Orders results by the payment method name column (`ip_payment_methods.payment_method_name`).
      */
     public function orderBy()
     {
@@ -33,12 +33,26 @@ class PaymentMethodsService extends BaseService
     }
 
     /**
-     * @originalName validationRules
+     * Provide validation rules for payment method fields.
      *
-     * @originalFile PaymentMethod.php
+     * Each entry maps a field key to an array with keys 'field', 'label', and 'rules' used by the validator.
+     *
+     * @return array{
+     *     payment_method_name: array{field: string, label: string, rules: string}
+     * } Mapping of field keys to their validation configuration
      */
     public function validationRules()
     {
         return ['payment_method_name' => ['field' => 'payment_method_name', 'label' => trans('payment_method'), 'rules' => 'required']];
+    }
+
+    /**
+     * Retrieve all payment methods.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\PaymentMethods\Models\PaymentMethod[] collection of PaymentMethod models
+     */
+    public function getAll()
+    {
+        return \Modules\PaymentMethods\Models\PaymentMethod::query()->get();
     }
 }

@@ -17,6 +17,7 @@ class SettingsService extends BaseService
      *
      * @param string $key
      * @param string $value
+     *
      * @return void
      */
     public function save(string $key, string $value): void
@@ -31,11 +32,13 @@ class SettingsService extends BaseService
      * Get a setting value using Eloquent.
      *
      * @param string $key
+     *
      * @return string|null
      */
     public function get(string $key): ?string
     {
         $setting = Setting::query()->where('setting_key', $key)->first();
+
         return $setting?->setting_value;
     }
 
@@ -43,6 +46,7 @@ class SettingsService extends BaseService
      * Delete a setting using Eloquent.
      *
      * @param string $key
+     *
      * @return void
      */
     public function delete(string $key): void
@@ -78,6 +82,7 @@ class SettingsService extends BaseService
      * Get gateway settings using Eloquent.
      *
      * @param string $key
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function gatewaySettings(string $key)

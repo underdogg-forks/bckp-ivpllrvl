@@ -6,23 +6,29 @@ use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\Services\ProjectsService;
 use Modules\Tasks\Services\TasksService;
+use Modules\TaxRates\Services\TaxRatesService;
 
 #[AllowDynamicProperties]
 class TasksController extends AdminController
 {
     /**
-     * TasksController constructor.
+     * Initialize the TasksController.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_tasks');
     }
 
     /**
-     * @originalName index
+     * Display the tasks index page with paginated tasks and related view data.
      *
-     * @originalFile TasksController.php
+     * Prepares pagination for the tasks list, retrieves the current page of tasks
+     * and task statuses, and returns the rendered tasks index view including
+     * filter configuration.
+     *
+     * @param int $page the page number to display (zero-based)
+     *
+     * @return string|\CodeIgniter\HTTP\Response the rendered tasks index view
      */
     public function index($page = 0)
     {
@@ -33,9 +39,15 @@ class TasksController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Show the task create/edit form and handle its submission.
      *
-     * @originalFile TasksController.php
+     * If the cancel action is posted, redirects to the tasks list. If the form is submitted and validates,
+     * saves the task and redirects to the tasks list. When opening the form for an existing task, a missing
+     * task triggers a 404.
+     *
+     * @param int|null $id the task ID to edit, or null to create a new task
+     *
+     * @return string the rendered task form view HTML
      */
     public function form($id = null)
     {
@@ -54,16 +66,14 @@ class TasksController extends AdminController
                 show_404();
             }
         }
-        $this->load->model('projects/mdl_projects');
-        $this->load->model('tax_rates/mdl_tax_rates');
 
         return view('tasks.form', ['projects' => (new ProjectsService())->get()->result(), 'task_statuses' => (new TasksService())->statuses(), 'tax_rates' => (new TaxRatesService())->get()->result()]);
     }
 
     /**
-     * @originalName delete
+     * Delete the task identified by the given id and redirect to the tasks list.
      *
-     * @originalFile TasksController.php
+     * @param int|string $id the identifier of the task to delete
      */
     public function delete($id)
     {

@@ -9,18 +9,19 @@ use Modules\Core\Controllers\AdminController;
 class CustomFieldsController extends AdminController
 {
     /**
-     * Custom_Fields constructor.
+     * Initialize the CustomFieldsController.
+     *
+     * Calls the parent AdminController constructor to set up base controller state.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_custom_fields');
     }
 
     /**
-     * @originalName index
+     * Redirects to the view that lists all custom fields tables.
      *
-     * @originalFile CustomFieldsController.php
+     * Performs an immediate redirect to the 'custom_fields/table/all' route.
      */
     public function index(): void
     {
@@ -29,9 +30,12 @@ class CustomFieldsController extends AdminController
     }
 
     /**
-     * @originalName table
+     * Render the custom fields list view filtered by table name with pagination.
      *
-     * @originalFile CustomFieldsController.php
+     * When $name is not 'all' and exists, only fields for that table are shown. The view is provided with filter controls, the paginated custom fields, available custom tables, custom value fields, and position options.
+     *
+     * @param string $name the custom table name to filter by, or 'all' to show all tables
+     * @param int    $page the pagination page number to display
      */
     public function table(string $name = 'all', $page = 0): void
     {
@@ -43,7 +47,6 @@ class CustomFieldsController extends AdminController
         // Paginate before result
         (new CustomFieldsService())->paginate(site_url('custom_fields/name/' . $name), $page);
         $custom_fields = (new CustomFieldsService())->result();
-        $this->load->model('custom_values/mdl_custom_values');
 
         return view('custom_fields.index', ['filter_display' => true, 'filter_placeholder' => trans('filter_custom_fields'), 'filter_method' => 'filter_custom_fields', 'custom_fields' => $custom_fields, 'custom_tables' => $custom_tables, 'custom_value_fields' => (new CustomValuesService())->customValueFields(), 'positions' => (new CustomFieldsService())->getPositions(true)]);
     }
@@ -72,9 +75,11 @@ class CustomFieldsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Attempts to delete a custom field identified by `$id` and then redirects back to the referring page.
      *
-     * @originalFile CustomFieldsController.php
+     * If the field cannot be deleted, a flash message is set to inform the user that the field is in use.
+     *
+     * @param int|string $id the custom field identifier to delete
      */
     public function delete($id)
     {

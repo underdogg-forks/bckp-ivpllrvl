@@ -10,16 +10,16 @@
     });
 </script>
 
-<div class="row">
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
+<div class="flex flex-wrap -mx-4">
+    <div class="w-full px-4 col-md-8 col-md-offset-2">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                 @lang('online_payments')
             </div>
-            <div class="panel-body">
+            <div class="p-6">
 
-                <div class="form-group">
+                <div class="mb-4">
                     <div class="checkbox">
                         <label>
                             <input type="hidden" name="settings[enable_online_payments]" value="0">
@@ -30,15 +30,15 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="online-payment-select">
                         @lang('add_payment_provider')
                     </label>
-                    <select id="online-payment-select" class="form-control">
+                    <select id="online-payment-select" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors">
                         <option value="">@lang('none')</option>
                         @foreach($gateway_drivers as $driver => $fields) {
     $d = mb_strtolower($driver)
-                        <option value="{{ $d }}">
+                        <option value="{{ $d " }}>
                             {{ ucwords(str_replace('_', ' ', $driver)) }}
                         </option>@endforeach
                     </select>
@@ -51,11 +51,11 @@
     $d = mb_strtolower($driver);
 
         <div id="gateway-settings-{{ $d }}"
-             class="gateway-settings panel panel-default {{ get_setting('gateway_' . $d . '_enabled') ? 'active-gateway' : 'hidden' }}">
+             class="gateway-settings bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm {{ get_setting('gateway_' . $d '_enabled') ? 'active-gateway' : 'hidden'" }}>
 
-            <div class="panel-heading">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                 {{ ucwords(str_replace('_', ' ', $driver)) }}
-                <div class="pull-right">
+                <div class="float-right">
                     <div class="checkbox no-margin">
                         <label>
                             <input type="hidden" name="settings[gateway_{{ $d }}_enabled]" value="0">
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="panel-body small">
+            <div class="p-6 small">
 
                 @foreach($fields as $key => $setting)
                 @if($setting['type'] == 'checkbox')
@@ -82,20 +82,14 @@
                                value="1"
                             @php
                                 check_select(get_setting('gateway_' . $d . '_' . $key), 1, '==', true)>
-                        @php
-                            _trans('online_payment_' . $key, '', $setting['label']);
-
-                    </label>
+                        {{ _trans('online_payment_' . $key, '', $setting['label']) }}</label>
                 </div>
 
                 @else
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="settings[gateway_{{ $d }}_{{ $key }}]">
-                        @php
-                            _trans('online_payment_' . $key, '', $setting['label']);
-
-                    </label>
-                    <input type="{{ $setting['type'] }}" class="form-control"
+                        {{ _trans('online_payment_' . $key, '', $setting['label']) }}</label>
+                    <input type="{{ $setting['type'] }}" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                            name="settings[gateway_{{ $d }}_{{ $key }}]"
                            id="settings[gateway_{{ $d }}_{{ $key }}]"
                            @if($setting['type'] == 'password')
@@ -110,13 +104,13 @@
 
                 <hr>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="settings[gateway_{{ $d }}_currency]">
                         @lang('currency')
                     </label>
                     <select name="settings[gateway_{{ $d }}_currency]"
                             id="settings[gateway_{{ $d }}_currency]"
-                            class="form-control simple-select">
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                         @foreach($gateway_currency_codes as $val => $key)
                         <option value="{{ $val }}"
                             @php
@@ -126,13 +120,13 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-4">
                     <label for="settings[gateway_{{ $d }}_payment_method]">
                         @lang('online_payment_method')
                     </label>
                     <select name="settings[gateway_{{ $d }}_payment_method]"
                             id="settings[gateway_{{ $d }}_payment_method]"
-                            class="form-control simple-select">
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select">
                         <option value="">@lang('none')</option>
                         @foreach($payment_methods as $payment_method)
                         <option value="{{ $payment_method->payment_method_id }}"
@@ -149,4 +143,3 @@
 
     </div>
 </div>
-<?php

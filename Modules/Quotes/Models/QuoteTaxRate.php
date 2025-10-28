@@ -12,6 +12,8 @@ class QuoteTaxRate extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_quote_tax_rates';
+
     protected $casts = [];
 
     protected $guarded = [];

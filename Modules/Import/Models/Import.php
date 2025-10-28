@@ -12,6 +12,8 @@ class Import extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_imports';
+
     protected $casts = [];
 
     protected $guarded = [];

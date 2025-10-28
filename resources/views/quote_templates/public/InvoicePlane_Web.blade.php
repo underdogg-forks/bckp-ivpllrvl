@@ -10,9 +10,9 @@
         - @lang('quote') {{ $quote->quote_number }}
     </title>
 
-    <link rel="icon" href="@php _core_asset('img/favicon.png'); " type="image/png">
-    <link rel="stylesheet" href="@php _theme_asset('css/style.css'); " type="text/css">
-    <link rel="stylesheet" href="@php _core_asset('css/custom.css'); " type="text/css">
+    <link rel="icon" href="{{ _core_asset('img/favicon.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ _theme_asset('css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ _core_asset('css/custom.css') }}" type="text/css">
 </head>
 <body>
 
@@ -24,27 +24,27 @@
 
             <h2>@lang('quote')&nbsp;{{ $quote->quote_number }}</h2>
 
-            <div class="btn-group">
-                @if(isset($_SESSION['user_id'], $_SESSION['user_type'])) { ?>
+            <div class="inline-flex rounded-md shadow-sm">
+                @if(isset($_SESSION['user_id'], $_SESSION['user_type']))
                 <a href="{{ url($_SESSION['user_type'] > 1 ? 'guest' : '') }}"
-                   class="btn btn-default" title="@lang('dashboard')">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors" title="@lang('dashboard')">
                     <i class="fa fa-dashboard"></i> @lang('dashboard')
                 </a>
-                @php }
+                @endif
                 @if(in_array($quote->quote_status_id, [2, 3]))
 
                 <a href="{{ url('guest/view/approve_quote/' . $quote_url_key) }}"
-                   class="btn btn-success">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
                     <i class="fa fa-check"></i>@lang('approve_this_quote')
                 </a>
                 <a href="{{ url('guest/view/reject_quote/' . $quote_url_key) }}"
-                   class="btn btn-danger">
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
                     <i class="fa fa-times-circle"></i>@lang('reject_this_quote')
                 </a>
 
 @endif
                 <a href="{{ url('guest/view/generate_quote_pdf/' . $quote_url_key) }}"
-                   class="btn btn-primary">
+                   class="inline-flex items-center gap-2 px-4 py-2 btn-primary border border-transparent rounded-md text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors">
                     <i class="fa fa-print"></i> @lang('download_pdf')
                 </a>
             </div>
@@ -55,7 +55,7 @@
 
         @if($flash_message)
 
-        <div class="alert alert-info">
+        <div class="p-4 mb-4 text-cyan-700 dark:text-cyan-200 bg-cyan-100 dark:bg-cyan-900/50 border border-cyan-200 dark:border-cyan-800 rounded-lg">
             {{ $flash_message }}
         </div>
         @php } else {
@@ -68,76 +68,76 @@
     {{ $logo . '<br><br>' }}
 }
 
-            <div class="row">
-                <div class="col-xs-12 col-md-6 col-lg-5">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full px-4 md:w-1/2 col-lg-5">
 
                     <h4>{!! format_client($quote) !!}</h4>
                     <p>@if($quote->user_vat_id) {
                                 @lang('vat_id_short') . ': ' . $quote->user_vat_id . '<br>' }}
                             }
-if ($quote->user_tax_code) {
+@if($quote->user_tax_code) {
     @lang('tax_code_short') . ': ' . $quote->user_tax_code . '<br>' }}
 }
-if ($quote->user_address_1) {
+@if($quote->user_address_1) {
     {!! $quote->user_address_1) . '<br>' }}
 }
-if ($quote->user_address_2) {
+@if($quote->user_address_2) {
     {!! $quote->user_address_2) . '<br>' }}
 }
-if ($quote->user_city) {
+@if($quote->user_city) {
     {!! $quote->user_city) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->user_state) {
+@if($quote->user_state) {
     {!! $quote->user_state) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->user_zip) {
+@if($quote->user_zip) {
     {!! $quote->user_zip) . '<br>' }}
 }
-if ($quote->user_phone) {
+@if($quote->user_phone) {
     @lang('phone_abbr');
     {{ ': ' . htmlsc($quote->user_phone) . '<br>' }}
 }
-if ($quote->user_fax) {
+@if($quote->user_fax) {
     @lang('fax_abbr');
     {{ ': ' . htmlsc($quote->user_fax !!}
 } </p>
 
                 </div>
                 <div class="col-lg-2"></div>
-                <div class="col-xs-12 col-md-6 col-lg-5 text-right">
+                <div class="w-full px-4 md:w-1/2 col-lg-5 text-right">
 
                     <h4>{!! $quote->client_name !!}</h4>
                     <p>@if($quote->client_vat_id) {
     @lang('vat_id_short');
     {{ ': ' . $quote->client_vat_id . '<br>' }}
 }
-if ($quote->client_tax_code) {
+@if($quote->client_tax_code) {
     @lang('tax_code_short');
     {{ ': ' . $quote->client_tax_code . '<br>' }}
 }
-if ($quote->client_address_1) {
+@if($quote->client_address_1) {
     {!! $quote->client_address_1) . '<br>' }}
 }
-if ($quote->client_address_2) {
+@if($quote->client_address_2) {
     {!! $quote->client_address_2) . '<br>' }}
 }
-if ($quote->client_city) {
+@if($quote->client_city) {
     {!! $quote->client_city) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->client_state) {
+@if($quote->client_state) {
     {!! $quote->client_state) . ' InvoicePlane_Web.php' }}
 }
-if ($quote->client_zip) {
+@if($quote->client_zip) {
     {!! $quote->client_zip) . '<br>' }}
 }
-if ($quote->client_phone) {
+@if($quote->client_phone) {
     @lang('phone_abbr');
     {{ ': ' . htmlsc($quote->client_phone) . '<br>' }}
 } </p>
 
                     <br>
 
-                    <table class="table table-condensed">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
                         <tbody>
                         <tr>
                             <td>@lang('quote_date')</td>
@@ -145,8 +145,7 @@ if ($quote->client_phone) {
                         </tr>
                         <tr class="{{ $is_expired ? 'overdue' : '' ?>">
                                     <td>@lang('expires' !!}</td>
-                                    <td class=" amount
-                        ">
+                                    <td class="amount">
                         {{ date_from_mysql($quote->quote_date_expires !!}
                         </td>
                         </tr>
@@ -163,8 +162,8 @@ if ($quote->client_phone) {
             <br>
 
             <div class="quote-items">
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-bordered">
                         <thead>
                         <tr>
                             <th>@lang('item')</th>
@@ -179,34 +178,37 @@ if ($quote->client_phone) {
                         @foreach($items as $item)
                         <tr>
                             <td>{!! $item->item_name !!}</td>
-                            <td>{{ nl2br(e($item->item_description))</td>
+                            <td>{{ nl2br(e($item->item_description)) }}</td>
                             <td class="amount">
-                                {{ format_quantity($item->item_quantity !!}
+                                {{ format_quantity($item->item_quantity) }}
                                 @if($item->item_product_unit)
-                                            <br>
-                                            <small><?php htmlspecialchars($item->item_product_unit); </small>@endforeach
+                                    <br>
+                                    <small>{{ $item->item_product_unit }}</small>
+                                @endif
                             </td>
-                            <td class="amount">{{ format_currency($item->item_price)</td>
-                            <td class="amount">{{ format_currency($item->item_discount !!}</td>
-                            <td class="amount">{{ format_currency($item->item_subtotal !!}</td>
-                        </tr>@endforeach
-
-                        @if( ! $legacy_calculation)
-
+                            <td class="amount">{{ format_currency($item->item_price) }}</td>
+                            <td class="amount">{{ format_currency($item->item_discount) }}</td>
+                            <td class="amount">{{ format_currency($item->item_subtotal) }}</td>
+                        </tr>
+                        @endforeach
+                        @if(! $legacy_calculation)
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
-                            <td class="amount">@lang('discount')</td>
-                            <td class="amount">@if($quote->quote_discount_percent > 0) {
-                                                {{ format_amount($quote->quote_discount_percent) . '&nbsp }}%';
-                                            } else {
-                                                {{ format_currency($quote->quote_discount_amount !!}
-                                            } </td>
-                        </tr>@endforeach
+                            <td class="amount">{{ trans('discount') }}</td>
+                            <td class="amount">
+@if($quote->quote_discount_percent > 0)
+{{ format_amount($quote->quote_discount_percent) }}&nbsp;%
+@else
+{{ format_currency($quote->quote_discount_amount) }}
+@endif
+</td>
+                        </tr>
+@endif
 
                         <tr>
                             <td colspan="4"></td>
                             <td class="amount">@lang('subtotal'):</td>
-                            <td class="amount">{{ format_currency($quote->quote_item_subtotal !!}</td>
+                            <td class="amount">{{ format_currency($quote->quote_item_subtotal) }}</td>
                         </tr>
 
                         @if($quote->quote_item_tax_total > 0)
@@ -215,59 +217,63 @@ if ($quote->client_phone) {
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('item_tax')</td>
                             <td class="amount">{{ format_currency($quote->quote_item_tax_total) }}</td>
-                        </tr>@endforeach
+                        </tr>
+@endif
 
                         @foreach($quote_tax_rates as $quote_tax_rate)
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">
-                                {!! $quote_tax_rate->quote_tax_rate_name) . ' InvoicePlane_Web.php' . format_amount($quote_tax_rate->quote_tax_rate_percent) . '&nbsp;%' }}
+                                {{ $quote_tax_rate->quote_tax_rate_name }} ({{ format_amount($quote_tax_rate->quote_tax_rate_percent) }}&nbsp;%)
                             </td>
-                            <td class="amount">{{ format_currency($quote_tax_rate->quote_tax_rate_amount !!}</td>
+                            <td class="amount">{{ format_currency($quote_tax_rate->quote_tax_rate_amount) }}</td>
                         </tr>
-                        @php }
+@endforeach
 
                         @if($legacy_calculation)
 
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('discount')</td>
-                            <td class="amount">@if($quote->quote_discount_percent > 0) {
-                                                {{ format_amount($quote->quote_discount_percent) . '&nbsp }}%';
-                                            } else {
-                                                {{ format_currency($quote->quote_discount_amount) }}
-                                            } </td>
-                        </tr>@endforeach
+                            <td class="amount">
+@if($quote->quote_discount_percent > 0)
+{{ format_amount($quote->quote_discount_percent) }}&nbsp;%
+@else
+{{ format_currency($quote->quote_discount_amount) }}
+@endif
+</td>
+                        </tr>
+@endif
 
                         <tr>
                             <td class="no-bottom-border" colspan="4"></td>
                             <td class="amount">@lang('total')</td>
-                            <td class="amount">{{ format_currency($quote->quote_total) </td>
+                            <td class="amount">{{ format_currency($quote->quote_total) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="row">
+                    <div class="flex flex-wrap -mx-4">
 
 @if($quote->notes)
 
-                        <div class="col-xs-12 col-md-6">
-                            <h4>@lang('notes') }}</h4>
+                        <div class="w-full px-4 md:w-1/2">
+                            <h4>@lang('notes')</h4>
                                 <p>{{ nl2br(e($quote->notes)) }}</p>
                 </div>@endforeach
 
                 @if(count($attachments) > 0) {
-                <div class="col-xs-12 col-md-6">
+                <div class="w-full px-4 md:w-1/2">
                     <h4>@lang('attachments')</h4>
-                    <div class="table-responsive">
-                        <table class="table table-condensed">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
                             @foreach($attachments as $attachment)
                             <tr class="attachments">
                                 <td>{{ $attachment['name'] }}</td>
                                 <td>
                                     <a href="{{ url('guest/get/attachment/' . $attachment['fullname']) }}"
-                                       class="btn btn-primary btn-sm">
+                                       class="inline-flex items-center gap-2 px-4 py-2 btn-primary border border-transparent rounded-md text-sm font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  transition-colors px-3 py-1.5">
                                         <i class="fa fa-download"></i> @lang('download')
                                     </a>
                                 </td>

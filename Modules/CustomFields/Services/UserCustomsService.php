@@ -52,9 +52,12 @@ class UserCustomsService extends BaseService
     }
 
     /**
-     * @originalName saveCustom
+     * Persist custom field values from the service's form data for the specified user.
      *
-     * @originalFile UserCustom.php
+     * @param int|string $user_id  the identifier of the user to save custom fields for
+     * @param array      $db_array data passed to the validator
+     *
+     * @return true|mixed `true` if validation passed and form data (if any) were saved or there was nothing to save; otherwise the validation error information returned by validate()
      */
     public function saveCustom($user_id, $db_array)
     {
@@ -64,14 +67,18 @@ class UserCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $user_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array    = ['user_id' => $user_id, 'user_custom_fieldid' => $key, 'user_custom_fieldvalue' => $value];
-                $user_custom = $this->where('user_id', $user_id)->where('user_custom_fieldid', $key)->get();
-                if ($user_custom->numRows()) {
-                    $user_custom_id = $user_custom->row()->user_custom_id;
-                }
-                parent::save($user_custom_id, $db_array);
+                \Modules\Users\Models\UserCustom::query()->updateOrCreate(
+                    [
+                        'user_id'             => $user_id,
+                        'user_custom_fieldid' => $key,
+                    ],
+                    [
+                        'user_id'                => $user_id,
+                        'user_custom_fieldid'    => $key,
+                        'user_custom_fieldvalue' => $value,
+                    ]
+                );
             }
 
             return true;
@@ -93,12 +100,14 @@ class UserCustomsService extends BaseService
     }
 
     /**
-     * @originalName getByUseid
+     * Retrieve custom field records for a specific user.
      *
-     * @originalFile UserCustom.php
+     * @param int $user_id the user's ID to filter records by
+     *
+     * @return array an array of matching user custom field records
      */
     public function getByUseid($user_id)
     {
-        return $this->where('ip_user_custom.user_id', $user_id)->get()->result();
+        return $this->where('ip_user_custom.user_id', $user_id)->get()->all();
     }
 }

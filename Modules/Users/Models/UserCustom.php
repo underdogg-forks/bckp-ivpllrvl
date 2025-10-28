@@ -12,6 +12,8 @@ class UserCustom extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_user_custom';
+
     protected $casts = [];
 
     protected $guarded = [];

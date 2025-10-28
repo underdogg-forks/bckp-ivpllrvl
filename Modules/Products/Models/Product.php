@@ -12,6 +12,8 @@ class Product extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_products';
+
     protected $casts = [];
 
     protected $guarded = [];

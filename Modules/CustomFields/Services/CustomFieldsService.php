@@ -70,15 +70,18 @@ class CustomFieldsService extends BaseService
     }
 
     /**
-     * @originalName getByTable
+     * Retrieve all custom fields for a given custom table.
      *
-     * @originalFile CustomField.php
+     * @param string $table The internal custom field table identifier (e.g., 'ip_client_custom', 'ip_invoice_custom').
+     *
+     * @return \Modules\CustomFields\Models\CustomField[] an array of CustomField model instances matching the provided table
      */
     public function getByTable($table)
     {
-        $this->where('custom_field_table', $table);
-
-        return $this->get()->result();
+        return \Modules\CustomFields\Models\CustomField::query()
+            ->where('custom_field_table', $table)
+            ->get()
+            ->all();
     }
 
     /**
@@ -171,9 +174,12 @@ class CustomFieldsService extends BaseService
     }
 
     /**
-     * @originalName used
+     * Check whether a custom field is used in its corresponding custom data table.
      *
-     * @originalFile CustomField.php
+     * @param int|null $id  the custom field ID to check
+     * @param bool     $get if true, return all matching rows as an array; if false, return the query builder
+     *
+     * @return array|\Illuminate\Database\Query\Builder|null an array of matching rows when `$get` is true, the query builder when `$get` is false, or `null` if `$id` is not provided
      */
     public function used($id = null, $get = true)
     {
@@ -182,15 +188,24 @@ class CustomFieldsService extends BaseService
         }
         $cf   = $this->getById($id);
         $base = strtr($cf->custom_field_table, ['ip_' => '']) . '_field';
-        $this->db->from($cf->custom_field_table)->where($base . 'id', $id)->where($base . 'value IS NOT NULL', null, false)->where($base . 'value <> ""');
 
-        return $get ? $this->db->get()->result() : $this->db;
+        $query = \Illuminate\Support\Facades\DB::table($cf->custom_field_table)
+            ->where($base . 'id', $id)
+            ->whereNotNull($base . 'value')
+            ->where($base . 'value', '<>', '');
+
+        return $get ? $query->get()->all() : $query;
     }
 
     /**
-     * @originalName delete
+     * Delete a custom field if it is not currently used.
      *
-     * @originalFile CustomField.php
+     * Removes any associated choice values, deletes the field's column reference from its custom data table,
+     * and then removes the custom field record.
+     *
+     * @param int $id the ID of the custom field to delete
+     *
+     * @return bool `true` if the field was deleted, `false` if the field is in use and not deleted
      */
     public function delete($id): bool
     {
@@ -203,7 +218,9 @@ class CustomFieldsService extends BaseService
             }
             // Remove reference in custom table
             $base = strtr($custom_field->custom_field_table, ['ip_' => '']) . '_field';
-            $this->db->from($custom_field->custom_field_table)->where($base . 'id', $id)->delete($custom_field->custom_field_table);
+            \Illuminate\Support\Facades\DB::table($custom_field->custom_field_table)
+                ->where($base . 'id', $id)
+                ->delete();
             parent::delete($id);
 
             return true;

@@ -12,6 +12,8 @@ class Project extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_projects';
+
     protected $casts = [];
 
     protected $guarded = [];

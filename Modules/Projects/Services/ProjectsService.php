@@ -65,22 +65,21 @@ class ProjectsService extends BaseService
     }
 
     /**
-     * @originalName getTasks
+     * Retrieve tasks belonging to the specified project.
      *
-     * @originalFile Project.php
+     * @param int|string $project_id the project identifier
+     *
+     * @return \Modules\Tasks\Models\Task[] an array of Task model instances for the project; empty if no valid project id is provided
      */
     public function getTasks($project_id)
     {
-        $result = [];
         if ( ! $project_id) {
-            return $result;
-        }
-        $this->load->model('tasks/mdl_tasks');
-        $query = $this->mdl_tasks->where('ip_tasks.project_id', $project_id)->get();
-        foreach ($query->result() as $row) {
-            $result[] = $row;
+            return [];
         }
 
-        return $result;
+        return \Modules\Tasks\Models\Task::query()
+            ->where('project_id', $project_id)
+            ->get()
+            ->all();
     }
 }

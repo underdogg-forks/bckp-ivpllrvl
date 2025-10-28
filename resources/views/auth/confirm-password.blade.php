@@ -10,7 +10,7 @@
                 </p>
             </div>
 
-            <form method="POST" action="{{ route('password.confirm') }}">
+            <form method="POST" action="{{ route('password.confirm') " }}>
                 @csrf
                 <!-- Password Input -->
                 <div class="mb-4">
@@ -26,7 +26,7 @@
             <!-- Forgot Password Link -->
             <div class="text-center mt-6">
                 <a href="{{ route('password.request') }}"
-                    class="text-blue-600 dark:text-blue-400 hover:underline font-medium">{{ trans('ip.Forgot your password?') }}</a>
+                    class="text-link hover:text-link-hover hover:underline font-medium">{{ trans('ip.Forgot your password?') }}</a>
             </div>
         </div>
     </div>

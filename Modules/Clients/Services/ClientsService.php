@@ -4,6 +4,7 @@ namespace Modules\Clients\Services;
 
 use AllowDynamicProperties;
 use DB;
+use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Modules\Clients\Models\Client;
@@ -116,6 +117,7 @@ class ClientsService extends BaseService
      * Converts a date string to MySQL format using Carbon.
      *
      * @param string|null $input
+     *
      * @return string
      */
     public function convertDate(?string $input): string
@@ -125,8 +127,9 @@ class ClientsService extends BaseService
         }
         try {
             return Carbon::parse($input)->format('Y-m-d');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::warning('Invalid date format for client birthdate', ['input' => $input]);
+
             return '';
         }
     }
@@ -150,6 +153,7 @@ class ClientsService extends BaseService
      * Deletes a client and logs orphan handling.
      *
      * @param int $id
+     *
      * @return void
      */
     public function delete($id): void
@@ -216,9 +220,9 @@ class ClientsService extends BaseService
     }
 
     /**
-     * @originalName isActive
+     * Get a query builder filtered to active clients.
      *
-     * @originalFile Client.php
+     * @return \Illuminate\Database\Eloquent\Builder a query builder scoped to records where `client_active` equals 1
      */
     public function isActive(): \Illuminate\Database\Eloquent\Builder
     {
@@ -226,10 +230,11 @@ class ClientsService extends BaseService
     }
 
     /**
-     * Gets clients not assigned to a user using Eloquent.
+     * Retrieve active clients that are not assigned to the specified user.
      *
-     * @param int $user_id
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param int $user_id the ID of the user to exclude assigned clients for
+     *
+     * @return \Illuminate\Database\Eloquent\Collection collection of Client models not assigned to the user
      */
     public function getNotAssignedToUser(int $user_id)
     {
@@ -243,5 +248,15 @@ class ClientsService extends BaseService
             ->whereNotIn('client_id', $assignedClientIds)
             ->where('client_active', 1)
             ->get();
+    }
+
+    /**
+     * Retrieve all clients marked active (client_active = 1).
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Modules\Clients\Models\Client[] collection of active Client models
+     */
+    public function getActive()
+    {
+        return \Modules\Clients\Models\Client::query()->where('client_active', 1)->get();
     }
 }

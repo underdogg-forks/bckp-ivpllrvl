@@ -12,6 +12,8 @@ class Task extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_tasks';
+
     protected $casts = [];
 
     protected $guarded = [];

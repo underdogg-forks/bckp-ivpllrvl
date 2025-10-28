@@ -1,7 +1,7 @@
 <div id="headerbar">
     <h1 class="headerbar-title">@lang('payments')</h1>
 
-    <div class="headerbar-item pull-right">
+    <div class="headerbar-item float-right">
         {{ pager(site_url('guest/payments/index'), 'mdl_payments') }}
     </div>
 
@@ -12,8 +12,8 @@
     @include('layout.alerts')
 
     <div id="filter_results">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 
                 <thead>
                 <tr>
@@ -30,7 +30,7 @@
                     <tr>
                         <td>{{ date_from_mysql($payment->payment_date) }}</td>
                         <td>
-                            <a href="{{ url('guest/invoices/view/' . $payment->invoice_id) }}">
+                            <a href="{{ url('guest/invoices/view/' . $payment->invoice_id) " }}>
                                 {{ $payment->invoice_number }}
                             </a>
                         </td>
@@ -45,4 +45,3 @@
     </div>
 
 </div>
-<?php

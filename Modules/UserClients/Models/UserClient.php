@@ -12,6 +12,8 @@ class UserClient extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_user_clients';
+
     protected $casts = [];
 
     protected $guarded = [];

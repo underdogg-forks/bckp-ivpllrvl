@@ -12,6 +12,8 @@ class InvoiceTaxRate extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_invoice_tax_rates';
+
     protected $casts = [];
 
     protected $guarded = [];

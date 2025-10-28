@@ -15,6 +15,8 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
+    protected $table = 'ip_users';
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',

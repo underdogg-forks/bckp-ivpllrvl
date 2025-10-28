@@ -4,17 +4,19 @@ namespace Modules\PaymentMethods\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\PaymentMethods\Services\PaymentMethodsService;
 
 #[AllowDynamicProperties]
 class PaymentMethodsController extends AdminController
 {
     /**
-     * Payment_Methods constructor.
+     * Initialize the PaymentMethodsController.
+     *
+     * Ensures base AdminController initialization is executed.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_payment_methods');
     }
 
     /**
@@ -65,9 +67,12 @@ class PaymentMethodsController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a payment method and redirect to the payment methods index.
      *
-     * @originalFile PaymentMethodsController.php
+     * Deletes the payment method identified by the given ID, then redirects to the
+     * payment methods listing route.
+     *
+     * @param int|string $id the identifier of the payment method to delete
      */
     public function delete($id)
     {

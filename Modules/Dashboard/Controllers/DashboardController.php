@@ -4,23 +4,31 @@ namespace Modules\Dashboard\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
+use Modules\Invoices\Services\InvoiceAmountsService;
+use Modules\Invoices\Services\InvoicesService;
+use Modules\Projects\Services\ProjectsService;
+use Modules\Quotes\Services\QuoteAmountsService;
+use Modules\Quotes\Services\QuotesService;
+use Modules\Tasks\Services\TasksService;
 
 #[AllowDynamicProperties]
 class DashboardController extends AdminController
 {
     /**
-     * @originalName index
+     * Prepares data required by the admin dashboard and renders the dashboard view.
      *
-     * @originalFile DashboardController.php
+     * The view data includes:
+     * - `invoice_status_totals`, `quote_status_totals` — aggregated amounts by status for the configured overview periods.
+     * - `invoice_status_period`, `quote_status_period` — overview period identifiers with `-` replaced by `_`.
+     * - `invoices`, `quotes` — latest 10 invoices and quotes.
+     * - `invoice_statuses`, `quote_statuses` — available invoice and quote statuses.
+     * - `overdue_invoices` — invoices marked as overdue.
+     * - `projects`, `tasks`, `task_statuses` — latest projects, latest tasks, and task statuses.
+     *
+     * @return string the rendered dashboard view content
      */
     public function index()
     {
-        $this->load->model('invoices/mdl_invoice_amounts');
-        $this->load->model('quotes/mdl_quote_amounts');
-        $this->load->model('invoices/mdl_invoices');
-        $this->load->model('quotes/mdl_quotes');
-        $this->load->model('projects/mdl_projects');
-        $this->load->model('tasks/mdl_tasks');
         $quote_overview_period   = get_setting('quote_overview_period');
         $invoice_overview_period = get_setting('invoice_overview_period');
 

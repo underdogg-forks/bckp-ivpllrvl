@@ -12,6 +12,8 @@ class Report extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_reports';
+
     protected $casts = [];
 
     protected $guarded = [];

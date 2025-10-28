@@ -2,28 +2,25 @@
 <html lang="@lang('cldr')">
 <head>
     <title>{{ get_setting('custom_title', 'InvoicePlane', true) }} - @lang('sales_by_date')</title>
-    <link rel="stylesheet" href="@php _theme_asset('css/reports.css'); " type="text/css">
+    <link rel="stylesheet" href="{{ _theme_asset('css/reports.css') }}" type="text/css">
 </head>
 
 <body>
-<h3 class="report_title">@lang('sales_by_date')<br><small>{{ $from_date . ' - ' . $to_date ?></small></h3>
+<h3 class="report_title">{{ trans('sales_by_date') }}<br><small>{{ $from_date . ' - ' . $to_date }}</small></h3>
 
-    <table>
-
-        <tr>
-            <th style="width:15%;text-align:center;border-bottom: none;"> @lang('vat_id') }} </th>
-        <th style="width:50%;text-align:center;border-bottom: none;"> <?php @lang('name') </th>
-        <th style="width:15%;text-align:center;border-bottom: none;"> @lang('period') </th>
-        <th style="width:20%;text-align:center;border-bottom: none;"> @lang('quantity') </th>
-        </tr>
-
-        <tr>
-            <td colspan="4" style="border-bottom: none;">
-                <hr>
-            </td>
-        </tr>
-
-        @php $initial_year = 0;
+<table>
+    <tr>
+        <th style="width:15%;text-align:center;border-bottom: none;">{{ trans('vat_id') }}</th>
+        <th style="width:50%;text-align:center;border-bottom: none;">{{ trans('name') }}</th>
+        <th style="width:15%;text-align:center;border-bottom: none;">{{ trans('period') }}</th>
+        <th style="width:20%;text-align:center;border-bottom: none;">{{ trans('quantity') }}</th>
+    </tr>
+    <tr>
+        <td colspan="4" style="border-bottom: none;">
+            <hr>
+        </td>
+    </tr>
+    @php $initial_year = 0;
 $final_year   = 0;
 $numYears     = 1;
 $numRows      = 1;
@@ -31,27 +28,27 @@ $contRows     = 0;
 $contYears    = 0;
 $pattern      = '/^payment_*/i';
 
-foreach ($results as $result) {
-    if ($final_year == 0) {
-        foreach ($result as $index => $value) {
-            if ($initial_year == 0) {
+@foreach($results as $result) {
+    @if($final_year == 0) {
+        @foreach($result as $index => $value) {
+            @if($initial_year == 0) {
                 $initial_year = (int) (mb_substr($index, 11, 4));
             }
 
             $aux = (int) (mb_substr($index, 11, 4));
 
-            if ($aux > $final_year) {
+            @if($aux > $final_year) {
                 $final_year = $aux;
             }
         }
     }
 
-    if ($contYears == 0 && ($final_year - $initial_year) > 0) {
+    @if($contYears == 0 && ($final_year - $initial_year) > 0) {
         $numYears  = $final_year - $initial_year + 1;
         $contYears = 1;
     }
 
-    if ($contRows == 0) {
+    @if($contRows == 0) {
         $numRows += $numYears * 4;
         $contRows = 1;
     }
@@ -68,7 +65,7 @@ foreach ($results as $result) {
             $quarter = mb_substr($index, 8, 2);
             $year    = mb_substr($index, 11, 4);
 
-            if (preg_match($pattern, $index)) {
+            @if(preg_match($pattern, $index)) {
         <tr>
             <td style="border-bottom: none;">&nbsp;</td>
             <td style="border-bottom: none;text-align:center;">@switch($quarter)

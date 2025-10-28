@@ -12,6 +12,8 @@ class Setting extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_settings';
+
     protected $casts = [];
 
     protected $guarded = [];

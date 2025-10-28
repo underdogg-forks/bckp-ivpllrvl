@@ -9,37 +9,53 @@ use Modules\Core\Services\BaseService;
 class TemplatesService extends BaseService
 {
     /**
-     * @originalName getInvoiceTemplates
+     * Retrieve available invoice template names for the given template type.
      *
-     * @originalFile Template.php
+     * @param string $type template category to load; supported values are `'pdf'` and `'public'`
+     *
+     * @return string[] Array of template basenames with the `.php` extension removed.
      */
     public function getInvoiceTemplates($type = 'pdf')
     {
-        $this->load->helper('directory');
         if ($type == 'pdf') {
-            $templates = directory_map(APPPATH . '/views/invoice_templates/pdf', true);
+            $templates = array_map('basename', glob(resource_path('views/invoice_templates/pdf/*')));
         } elseif ($type == 'public') {
-            $templates = directory_map(APPPATH . '/views/invoice_templates/public', true);
+            $templates = array_map('basename', glob(resource_path('views/invoice_templates/public/*')));
+        } else {
+            $templates = [];
         }
 
         return $this->removeExtension($templates);
     }
 
     /**
-     * @originalName getQuoteTemplates
+     * Retrieve available quote template names for the specified template type.
      *
-     * @originalFile Template.php
+     * @param string $type the template type to list: 'pdf' for PDF templates or 'public' for public templates
+     *
+     * @return string[] An array of template filenames with the '.php' extension removed.
      */
     public function getQuoteTemplates($type = 'pdf')
     {
-        $this->load->helper('directory');
         if ($type == 'pdf') {
-            $templates = directory_map(APPPATH . '/views/quote_templates/pdf', true);
+            $templates = array_map('basename', glob(resource_path('views/quote_templates/pdf/*')));
         } elseif ($type == 'public') {
-            $templates = directory_map(APPPATH . '/views/quote_templates/public', true);
+            $templates = array_map('basename', glob(resource_path('views/quote_templates/public/*')));
+        } else {
+            $templates = [];
         }
 
         return $this->removeExtension($templates);
+    }
+
+    /**
+     * Get all templates.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAll()
+    {
+        return \Modules\Invoices\Models\Template::query()->get();
     }
 
     /**

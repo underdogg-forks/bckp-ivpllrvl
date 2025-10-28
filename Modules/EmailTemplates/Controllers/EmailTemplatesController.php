@@ -9,18 +9,21 @@ use Modules\Core\Controllers\AdminController;
 class EmailTemplatesController extends AdminController
 {
     /**
-     * Email_Templates constructor.
+     * Set up the EmailTemplatesController.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_email_templates');
     }
 
     /**
-     * @originalName index
+     * Display a paginated list of email templates and render the index view.
      *
-     * @originalFile EmailTemplatesController.php
+     * Paginates email templates for the given page, stores the resulting collection
+     * in the layout under the key `email_templates`, buffers the `email_templates/index`
+     * view as the content, and renders the layout.
+     *
+     * @param int $page page number to display (defaults to 0)
      */
     public function index($page = 0)
     {
@@ -32,9 +35,16 @@ class EmailTemplatesController extends AdminController
     }
 
     /**
-     * @originalName form
+     * Display and handle the email template create/edit form.
      *
-     * @originalFile EmailTemplatesController.php
+     * Handles cancel actions, validates uniqueness for new template titles, runs validation and saves
+     * the template, prepares form values for editing, and collects custom fields and available PDF
+     * templates for the view. May redirect to the email templates list or back to the form, or trigger
+     * a 404 response when an edit ID cannot be prepared.
+     *
+     * @param int|null $id the ID of the email template to edit, or null to create a new template
+     *
+     * @return string the rendered form view HTML
      */
     public function form($id = null)
     {
@@ -60,7 +70,6 @@ class EmailTemplatesController extends AdminController
             }
             (new EmailTemplatesService())->setFormValue('is_update', true);
         }
-        $this->load->model(['custom_fields/mdl_custom_fields', 'invoices/mdl_templates']);
         foreach (array_keys((new CustomFieldsService())->customTables()) as $table) {
             $custom_fields[$table] = (new CustomFieldsService())->byTable($table)->get()->result();
         }
@@ -69,9 +78,11 @@ class EmailTemplatesController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete an email template and redirect to the email templates list.
      *
-     * @originalFile EmailTemplatesController.php
+     * @param int|string $id the identifier of the email template to remove
+     *
+     * @return void
      */
     public function delete($id)
     {

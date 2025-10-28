@@ -12,6 +12,8 @@ class TaxRate extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_tax_rates';
+
     protected $casts = [];
 
     protected $guarded = [];

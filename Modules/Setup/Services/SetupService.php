@@ -67,7 +67,7 @@ class SetupService extends BaseService
             $this->executeContents($file_contents);
             $this->saveVersion($sql_file);
             $upgrade_method = 'upgrade_' . str_replace('.', '_', mb_substr($sql_file, 0, -4));
-            if (! method_exists($this, $upgrade_method)) {
+            if ( ! method_exists($this, $upgrade_method)) {
                 continue;
             }
             $this->{$upgrade_method}();

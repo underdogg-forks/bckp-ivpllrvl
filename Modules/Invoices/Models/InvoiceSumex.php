@@ -12,6 +12,8 @@ class InvoiceSumex extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_invoice_sumex';
+
     protected $casts = [];
 
     protected $guarded = [];

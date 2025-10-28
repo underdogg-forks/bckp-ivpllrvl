@@ -12,6 +12,8 @@ class ClientNote extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_client_notes';
+
     protected $casts = [];
 
     protected $guarded = [];

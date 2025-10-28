@@ -26,11 +26,11 @@
                             },
                             function (data) {
                                 var response = json_parse(data, {{ (int) IP_DEBUG }});
-                                if (response.success === 1) {
+                                @if(response.success === 1) {
                                     // The validation was successful and invoice was created
                                     window.location = "{{ url('invoices/view') }}/" + response.invoice_id;
                                 }
-                                else {
+                                @else
                                     // The validation was not successful
                                     $('.control-group').removeClass('has-error');
                                     for (var key in response.validation_errors) {
@@ -48,36 +48,36 @@
                 <form class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><i class="fa fa-close"></i></button>
-                        <h4 class="panel-title">@lang('create_invoice')</h4>
+                        <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">@lang('create_invoice')</h4>
                     </div>
                     <div class="modal-body">
 
                         <input class="hidden" id="payment_method_id"
-                               value="{{ get_setting('invoice_default_payment_method') }}">
+                               value="{{ get_setting('invoice_default_payment_method') " }}>
                         <input class="hidden" id="input_permissive_search_clients"
-                               value="{{ get_setting('enable_permissive_search_clients') }}">
+                               value="{{ get_setting('enable_permissive_search_clients') " }}>
 
-                        <div class="form-group has-feedback">
+                        <div class="mb-4 has-feedback">
                             <label for="create_invoice_client_id">@lang('client')</label>
                             <div class="input-group">
                                 <span id="toggle_permissive_search_clients" class="input-group-addon" title="@lang('enable_permissive_search_clients')" style="cursor:pointer;">
                                     <i class="fa fa-toggle-{{ get_setting('enable_permissive_search_clients') ? 'on' : 'off' }} fa-fw"></i>
                                 </span>
-                                <select name="client_id" id="create_invoice_client_id" class="client-id-select form-control"
+                                <select name="client_id" id="create_invoice_client_id" class="client-id-select w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                                         autofocus="autofocus" required>
             @if(!empty($client))
-        <option value="{{ $client->client_id }}">{!! format_client($client, false) !!}</option>
+        <option value="{{ $client->client_id " }}>{!! format_client($client, false) !!}</option>
         @endif
     </select>
     </div>
     </div>
 
-        <div class="form-group has-feedback">
+        <div class="mb-4 has-feedback">
             <label for="invoice_date_created">@lang('invoice_date')</label>
 
             <div class="input-group">
                 <input name="invoice_date_created" id="invoice_date_created"
-                       class="form-control datepicker"
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors datepicker"
                        value="{{ date(date_format_setting()) }}" required>
                     <span class="input-group-addon">
                     <i class="fa fa-calendar fa-fw"></i>
@@ -85,17 +85,17 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-4">
             <label for="invoice_password">@lang('invoice_password')</label>
-            <input type="text" name="invoice_password" id="invoice_password" class="form-control"
+            <input type="text" name="invoice_password" id="invoice_password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors"
                    value="{{ get_setting('invoice_pre_password') == '' ? '' : get_setting('invoice_pre_password') }}"
                    style="margin: 0 auto;" autocomplete="off">
         </div>
 
-        <div class="form-group">
+        <div class="mb-4">
             <label for="invoice_group_id">@lang('invoice_group')</label>
             <select name="invoice_group_id" id="invoice_group_id"
-                    class="form-control simple-select" data-minimum-results-for-search="Infinity" required>
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors simple-select" data-minimum-results-for-search="Infinity" required>
                 @foreach($invoice_groups as $invoice_group) {
     $is_selected = get_setting('default_invoice_group') == $invoice_group->invoice_group_id ? ' selected="selected"' : '';
 
@@ -108,11 +108,11 @@
     </div>
 
         <div class="modal-footer">
-            <div class="btn-group">
-                <button class="btn btn-success ajax-loader" id="invoice_create_confirm" type="button">
+            <div class="inline-flex rounded-md shadow-sm">
+                <button class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors ajax-loader" id="invoice_create_confirm" type="button">
                     <i class="fa fa-check"></i> @lang('submit')
                 </button>
-                <button class="btn btn-danger" type="button" data-dismiss="modal">
+                <button class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 dark:bg-red-500 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i> @lang('cancel')
                 </button>
             </div>
@@ -121,4 +121,3 @@
     </form>
 
     </div>
-<?php

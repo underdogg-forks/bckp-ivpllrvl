@@ -12,6 +12,8 @@ class PaymentLog extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_merchant_responses';
+
     protected $casts = [];
 
     protected $guarded = [];

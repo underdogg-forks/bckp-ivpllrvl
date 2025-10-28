@@ -151,9 +151,11 @@ class UsersController extends AdminController
     }
 
     /**
-     * @originalName delete
+     * Delete a user by id and redirect to the users list.
      *
-     * @originalFile UsersController.php
+     * Does not delete the primary administrator with id 1; in all cases the request is redirected to the users route.
+     *
+     * @param int|string $id the identifier of the user to delete
      */
     public function delete($id)
     {
@@ -164,13 +166,13 @@ class UsersController extends AdminController
     }
 
     /**
-     * @originalName deleteUserClient
+     * Delete a user-client association and redirect back to the user's form.
      *
-     * @originalFile UsersController.php
+     * @param string $user_id        the ID of the user whose form to return to after deletion
+     * @param mixed  $user_client_id the identifier of the user-client linkage to delete
      */
     public function deleteUserClient(string $user_id, $user_client_id)
     {
-        $this->load->model('mdl_user_clients');
         (new UserClientsService())->delete($user_client_id);
         redirect('users/form/' . $user_id);
     }

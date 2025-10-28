@@ -3,26 +3,30 @@
 namespace Modules\Payments\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Core\Controllers\AdminController;
-use Modules\Payments\Services\PaymentLogsService;
 use Illuminate\Http\Request;
+use Modules\Core\Controllers\AdminController;
+use Modules\PaymentMethods\Services\PaymentMethodsService;
+use Modules\Payments\Services\PaymentLogsService;
 
 #[AllowDynamicProperties]
 class PaymentsController extends AdminController
 {
     /**
-     * PaymentsController constructor.
+     * Initialize the PaymentsController and set up controller state.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_payments');
     }
 
     /**
-     * @originalName index
+     * Display a paginated list of payments.
      *
-     * @originalFile PaymentsController.php
+     * Renders the payments index view with the paginated payments and filter UI configuration.
+     *
+     * @param int $page page number for pagination
+     *
+     * @return \Illuminate\View\View the payments index view populated with payments and filter settings
      */
     public function index($page = 0)
     {
@@ -44,7 +48,6 @@ class PaymentsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        $this->load->model('custom_fields/mdl_payment_custom');
         if ((new PaymentsService())->runValidation()) {
             $id = (new PaymentsService())->save($id);
             (new PaymentCustomService())->saveCustom($id, $this->input->post('custom'));
@@ -55,7 +58,6 @@ class PaymentsController extends AdminController
             if ($id && ! $prep_form) {
                 show_404();
             }
-            $this->load->model('custom_values/mdl_custom_values');
             $payment_custom = (new PaymentCustomService())->where('payment_id', $id)->get();
             if ($payment_custom->numRows()) {
                 $payment_custom = $payment_custom->row();
@@ -70,7 +72,6 @@ class PaymentsController extends AdminController
             }
         }
         $this->load->helper('custom_values');
-        $this->load->model(['invoices/mdl_invoices', 'payment_methods/mdl_payment_methods', 'custom_fields/mdl_custom_fields', 'custom_values/mdl_custom_values']);
         $open_invoices = (new InvoicesService())->isOpen()->get()->result();
         $custom_fields = (new CustomFieldsService())->byTable('ip_payment_custom')->get()->result();
         $custom_values = [];
@@ -97,12 +98,7 @@ class PaymentsController extends AdminController
             $invoice_payment_methods['invoice' . $open_invoice->invoice_id] = $open_invoice->payment_method;
         }
 
-        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => (new PaymentMethodsService())->get()->result(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
-        if ($id) {
-            $this->layout->set('payment', (new PaymentsService())->where('ip_payments.payment_id', $id)->get()->row());
-        }
-        $this->layout->buffer('content', 'payments/form');
-        $this->layout->render();
+        return view('payments.online_logs', ['payment_id' => $id, 'payment_methods' => (new PaymentMethodsService())->getAll(), 'open_invoices' => $open_invoices, 'custom_fields' => $custom_fields, 'custom_values' => $custom_values, 'amounts' => json_encode($amounts), 'invoice_payment_methods' => json_encode($invoice_payment_methods)]);
     }
 
     /**
@@ -116,20 +112,25 @@ class PaymentsController extends AdminController
         $payment_logs = $service->result();
 
         return view('payments.online_logs', [
-            'filter_display' => true,
+            'filter_display'     => true,
             'filter_placeholder' => trans('filter_online_logs'),
-            'filter_method' => 'filter_online_logs',
-            'payment_logs' => $payment_logs,
-            'filters' => $filters,
+            'filter_method'      => 'filter_online_logs',
+            'payment_logs'       => $payment_logs,
+            'filters'            => $filters,
         ]);
     }
 
     /**
-     * Delete a payment record.
+     * Delete the specified payment.
+     *
+     * @param int $id the ID of the payment to delete
+     *
+     * @return \Illuminate\Http\RedirectResponse a redirect response to the payments index route
      */
     public function delete(int $id): \Illuminate\Http\RedirectResponse
     {
         app(PaymentsService::class)->delete($id);
+
         return redirect()->route('payments');
     }
 }

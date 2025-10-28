@@ -12,6 +12,8 @@ class InvoiceRecurring extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_invoices_recurring';
+
     protected $casts = [];
 
     protected $guarded = [];

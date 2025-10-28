@@ -12,6 +12,8 @@ class Upload extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_uploads';
+
     protected $casts = [];
 
     protected $guarded = [];

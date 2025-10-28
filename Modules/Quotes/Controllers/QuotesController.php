@@ -12,12 +12,11 @@ use Modules\Quotes\Models\Quote;
 class QuotesController extends AdminController
 {
     /**
-     * QuotesController constructor.
+     * Initialize the QuotesController.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_quotes');
     }
 
     /**
@@ -140,9 +139,10 @@ class QuotesController extends AdminController
     }
 
     /**
-     * @originalName recalculateAllQuotes
+     * Recalculate totals and derived values for every quote in the system.
      *
-     * @originalFile QuotesController.php
+     * Iterates all quote records and triggers the quote recalculation routine so stored totals,
+     * taxes, and related derived fields are updated in persistent storage.
      */
     public function recalculateAllQuotes(): void
     {

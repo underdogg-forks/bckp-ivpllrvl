@@ -8,26 +8,26 @@
             placeholder: '@lang('country')',
             allowClear: true
         });
-        if (window.ls) {
+        @if(window.ls) {
             // Memorise active tab
             $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
                 localStorage.setItem(window.ls, $(e.target).attr('href'));
             });
             var activeTab = localStorage.getItem(window.ls);
-            if (activeTab) {
+            @if(activeTab) {
                 $('#settings-tabs a[href="' + activeTab + '"]').tab('show');
             }
         }
     });
 
     window.ls = typeof (localStorage) != 'undefined' ? 'activeTab-settings' : '';
-    if (window.ls) {
+    @if(window.ls) {
         const lsother = window.ls + '-other';
         // Become from other page, Return to general tab (Clear memory)
-        if (document.referrer != '{{ url('settings') }}') {
+        @if(document.referrer != '{{ url('settings') }}') {
             // Note: when become from other page & refresh it, the originaly referrer is returned but show last choosen tab
             localStorage.setItem(lsother, (localStorage.getItem(lsother) ? parseInt(localStorage.getItem(lsother)) : 0) + 1);
-            if (localStorage.getItem(lsother) == 1 && localStorage.getItem(window.ls)) {
+            @if(localStorage.getItem(lsother) == 1 && localStorage.getItem(window.ls)) {
                 localStorage.removeItem(window.ls); // Clear tab memory
             }
         } else {
@@ -78,7 +78,7 @@
 
         <div class="tab-content">
 
-            <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <div class="w-full px-4 col-md-8 col-md-offset-2">
                 @include('layout.alerts')
             </div>
 

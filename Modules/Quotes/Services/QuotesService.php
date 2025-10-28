@@ -5,6 +5,7 @@ namespace Modules\Quotes\Services;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\Quote;
+use Modules\Quotes\Models\Quote;
 
 #[AllowDynamicProperties]
 class QuotesService extends BaseService
@@ -76,10 +77,11 @@ class QuotesService extends BaseService
     }
 
     /**
-     * Create a quote and related records using Eloquent.
+     * Create a quote record and its related amount and default tax records.
      *
-     * @param array|null $db_array
-     * @return int
+     * @param array|null $db_array optional associative array of quote attributes to set before saving
+     *
+     * @return int the created quote's primary key (`quote_id`)
      */
     public function create(?array $db_array = null): int
     {
@@ -93,18 +95,24 @@ class QuotesService extends BaseService
         // Create default invoice tax record if applicable
         if (get_setting('default_invoice_tax_rate')) {
             $quote->quoteTaxRates()->create([
-                'tax_rate_id' => get_setting('default_invoice_tax_rate'),
-                'include_item_tax' => get_setting('default_include_item_tax'),
+                'tax_rate_id'           => get_setting('default_invoice_tax_rate'),
+                'include_item_tax'      => get_setting('default_include_item_tax'),
                 'quote_tax_rate_amount' => 0,
             ]);
         }
+
         return $quote->quote_id;
     }
 
     /**
-     * @originalName copyQuote
+     * Copy line items, tax rates, global discount, and non-primary-key custom fields from one quote to another.
      *
-     * @originalFile Quote.php
+     * Duplicates each item from the source quote into the target while preserving item name, description,
+     * quantity, price, tax rate, product/unit references, and applies the source quote's global discount to the copied items.
+     * Also copies the source quote's tax rate entries and any custom fields (excluding primary key) to the target.
+     *
+     * @param int $source_id the ID of the quote to copy from
+     * @param int $target_id the ID of the quote to copy to
      */
     public function copyQuote($source_id, $target_id)
     {
@@ -123,12 +131,12 @@ class QuotesService extends BaseService
         // Free memory
         // Update the discounts - since v1.6.3
         $this->where('quote_id', $target_id)->update('ip_quotes', ['quote_discount_percent' => $global_discount['percent'], 'quote_discount_amount' => $global_discount['amount']]);
-        $quote_items = $this->mdl_quote_items->where('quote_id', $source_id)->get()->result();
+        $quote_items = (new QuoteItemsService())->getByQuoteId($source_id);
         foreach ($quote_items as $quote_item) {
             $db_array = ['quote_id' => $target_id, 'item_tax_rate_id' => $quote_item->item_tax_rate_id, 'item_product_id' => $quote_item?->item_product_id, 'item_name' => $quote_item->item_name, 'item_description' => $quote_item->item_description, 'item_quantity' => $quote_item->item_quantity, 'item_price' => $quote_item->item_price, 'item_discount_amount' => $quote_item?->item_discount_amount, 'item_order' => $quote_item->item_order, 'item_product_unit' => $quote_item?->item_product_unit, 'item_product_unit_id' => $quote_item?->item_product_unit_id];
             $this->mdl_quote_items->save(null, $db_array, $global_discount);
         }
-        $quote_tax_rates = $this->mdl_quote_tax_rates->where('quote_id', $source_id)->get()->result();
+        $quote_tax_rates = (new QuoteTaxRatesService())->getByQuoteId($source_id);
         foreach ($quote_tax_rates as $quote_tax_rate) {
             $db_array = ['quote_id' => $target_id, 'tax_rate_id' => $quote_tax_rate->tax_rate_id, 'include_item_tax' => $quote_tax_rate->include_item_tax, 'quote_tax_rate_amount' => $quote_tax_rate->quote_tax_rate_amount];
             $this->mdl_quote_tax_rates->save(null, $db_array);
@@ -345,95 +353,110 @@ class QuotesService extends BaseService
     }
 
     /**
-     * @originalName approveQuoteByKey
+     * Approve a quote identified by its URL key.
      *
-     * @originalFile Quote.php
+     * Updates the quote's status to approved (4) for any quote matching the given URL key that is currently in sent (2) or viewed (3) status.
+     *
+     * @param string $quote_url_key the quote's public URL key
      */
     public function approveQuoteByKey($quote_url_key)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_url_key', $quote_url_key);
-        $this->db->set('quote_status_id', 4);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_url_key', $quote_url_key)
+            ->update(['quote_status_id' => 4]);
     }
 
     /**
-     * @originalName rejectQuoteByKey
+     * Mark the quote identified by the given URL key as rejected when its current status is "sent" or "viewed".
      *
-     * @originalFile Quote.php
+     * Updates matching quotes' status to the rejected status (5) for records whose `quote_url_key` equals
+     * the provided key and whose current `quote_status_id` is 2 (sent) or 3 (viewed).
+     *
+     * @param string $quote_url_key the public URL key of the quote
      */
     public function rejectQuoteByKey($quote_url_key)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_url_key', $quote_url_key);
-        $this->db->set('quote_status_id', 5);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_url_key', $quote_url_key)
+            ->update(['quote_status_id' => 5]);
     }
 
     /**
-     * @originalName approveQuoteById
+     * Mark a quote as approved if its current status is "sent" or "viewed".
      *
-     * @originalFile Quote.php
+     * Updates the quote's status to approved for the given quote id only when the quote is in status 2 (sent) or 3 (viewed).
+     *
+     * @param int $quote_id the ID of the quote to approve
      */
     public function approveQuoteById($quote_id)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_id', $quote_id);
-        $this->db->set('quote_status_id', 4);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_id', $quote_id)
+            ->update(['quote_status_id' => 4]);
     }
 
     /**
-     * @originalName rejectQuoteById
+     * Mark the specified quote as rejected when its current status is "sent" or "viewed".
      *
-     * @originalFile Quote.php
+     * @param int $quote_id the ID of the quote to reject
      */
     public function rejectQuoteById($quote_id)
     {
-        $this->db->where_in('quote_status_id', [2, 3]);
-        $this->db->where('quote_id', $quote_id);
-        $this->db->set('quote_status_id', 5);
-        $this->db->update('ip_quotes');
+        Quote::query()
+            ->whereIn('quote_status_id', [2, 3])
+            ->where('quote_id', $quote_id)
+            ->update(['quote_status_id' => 5]);
     }
 
     /**
-     * @originalName markViewed
+     * Change a quote's status from "sent" to "viewed" when the quote is currently sent.
      *
-     * @originalFile Quote.php
+     * If the quote exists and its status is "sent", this updates the status to "viewed".
+     *
+     * @param int $quote_id the ID of the quote to mark as viewed
      */
     public function markViewed($quote_id)
     {
-        $this->db->select('quote_status_id');
-        $this->db->where('quote_id', $quote_id);
-        $quote = $this->db->get('ip_quotes');
-        if ($quote->numRows() && $quote->row()->quote_status_id == 2) {
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('quote_status_id', 3);
-            $this->db->update('ip_quotes');
+        $quote = Quote::query()
+            ->select('quote_status_id')
+            ->where('quote_id', $quote_id)
+            ->first();
+
+        if ($quote && $quote->quote_status_id == 2) {
+            Quote::query()->where('quote_id', $quote_id)->update(['quote_status_id' => 3]);
         }
     }
 
     /**
-     * @originalName markSent
+     * Set a quote's status to "sent" when the quote is currently a draft.
      *
-     * @originalFile Quote.php
+     * Updates the quote's `quote_status_id` to 2 if the quote exists and its current `quote_status_id` is 1.
+     *
+     * @param int $quote_id the ID of the quote to mark as sent
      */
     public function markSent($quote_id)
     {
-        $this->db->select('quote_status_id');
-        $this->db->where('quote_id', $quote_id);
-        $quote = $this->db->get('ip_quotes');
-        if ($quote->numRows() && $quote->row()->quote_status_id == 1) {
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('quote_status_id', 2);
-            $this->db->update('ip_quotes');
+        $quote = Quote::query()
+            ->select('quote_status_id')
+            ->where('quote_id', $quote_id)
+            ->first();
+
+        if ($quote && $quote->quote_status_id == 1) {
+            Quote::query()->where('quote_id', $quote_id)->update(['quote_status_id' => 2]);
         }
     }
 
     /**
-     * @originalName generateQuoteNumberIfApplicable
+     * Assigns a generated quote number to a draft quote when application settings require it.
      *
-     * @originalFile Quote.php
+     * Checks the specified quote; if it exists, has status 1 (draft), has an empty quote_number,
+     * and the `generate_quote_number_for_draft` setting is 0, generates a new quote number for the
+     * quote's invoice group and updates the quote record with that number.
+     *
+     * @param int $quote_id the ID of the quote to evaluate and potentially update
      */
     public function generateQuoteNumberIfApplicable($quote_id)
     {
@@ -442,12 +465,15 @@ class QuotesService extends BaseService
         if ( ! empty($quote) && ($quote->quote_status_id == 1 && $quote->quote_number == '') && get_setting('generate_quote_number_for_draft') == 0) {
             $quote_number = $this->mdl_quotes->getQuoteNumber($quote->invoice_group_id);
             // Set new quote number and save
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('quote_number', $quote_number);
-            $this->db->update('ip_quotes');
+            Quote::query()->where('quote_id', $quote_id)->update(['quote_number' => $quote_number]);
         }
     }
 
+    /**
+     * Retrieve all quotes with their related user, client, quoteAmount, and invoice models, ordered by creation date, quote number, and quote id in descending order.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection collection of Quote models with the specified relations loaded
+     */
     public function getQuotesWithRelations(): \Illuminate\Database\Eloquent\Collection
     {
         return Quote::with(['user', 'client', 'quoteAmount', 'invoice'])

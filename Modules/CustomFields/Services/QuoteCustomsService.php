@@ -45,9 +45,15 @@ class QuoteCustomsService extends BaseService
     }
 
     /**
-     * @originalName saveCustom
+     * Persist custom field values for a quote.
      *
-     * @originalFile QuoteCustom.php
+     * Validates the provided data and, if valid, upserts each entry from the instance's
+     * form data into the quote custom fields table for the given quote ID.
+     *
+     * @param int   $quote_id the ID of the quote to associate custom field values with
+     * @param array $db_array data used for validation (the function reads actual values from $this->_formdata)
+     *
+     * @return mixed `true` if values were persisted or there was no form data to process; otherwise the validation result
      */
     public function saveCustom($quote_id, $db_array)
     {
@@ -57,14 +63,18 @@ class QuoteCustomsService extends BaseService
             if (null === $form_data) {
                 return true;
             }
-            $quote_custom_id = null;
             foreach ($form_data as $key => $value) {
-                $db_array     = ['quote_id' => $quote_id, 'quote_custom_fieldid' => $key, 'quote_custom_fieldvalue' => $value];
-                $quote_custom = $this->where('quote_id', $quote_id)->where('quote_custom_fieldid', $key)->get();
-                if ($quote_custom->numRows()) {
-                    $quote_custom_id = $quote_custom->row()->quote_custom_id;
-                }
-                parent::save($quote_custom_id, $db_array);
+                \Modules\Quotes\Models\QuoteCustom::query()->updateOrCreate(
+                    [
+                        'quote_id'             => $quote_id,
+                        'quote_custom_fieldid' => $key,
+                    ],
+                    [
+                        'quote_id'                => $quote_id,
+                        'quote_custom_fieldid'    => $key,
+                        'quote_custom_fieldvalue' => $value,
+                    ]
+                );
             }
 
             return true;

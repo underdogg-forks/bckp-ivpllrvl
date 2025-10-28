@@ -12,6 +12,8 @@ class Family extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_families';
+
     protected $casts = [];
 
     protected $guarded = [];

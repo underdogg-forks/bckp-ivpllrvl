@@ -12,6 +12,8 @@ class CustomValue extends BaseModel
 
     public $timestamps = false;
 
+    protected $table = 'ip_custom_values';
+
     protected $casts = [];
 
     protected $guarded = [];

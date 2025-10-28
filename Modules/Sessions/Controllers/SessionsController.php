@@ -3,6 +3,7 @@
 namespace Modules\Sessions\Controllers;
 
 use AllowDynamicProperties;
+use App\Helpers\MailerHelper;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\BaseController;
 
@@ -20,9 +21,13 @@ class SessionsController extends BaseController
     }
 
     /**
-     * @originalName login
+     * Handle display and processing of the login form.
      *
-     * @originalFile SessionsController.php
+     * Processes submitted credentials, sets flash messages for errors, redirects
+     * on successful authentication according to user type, and returns the login
+     * view when rendering the form.
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View a redirect response after form processing or the login view when displaying the form
      */
     public function login()
     {
@@ -50,17 +55,24 @@ class SessionsController extends BaseController
                 redirect()->route('sessions/login');
             }
         }
-        $this->load->view('session_login', $view_data);
+
+        return view('session_login', $view_data);
     }
 
     /**
-     * @originalName authenticate
+     * Validate user credentials while enforcing login-attempt throttling.
      *
-     * @originalFile SessionsController.php
+     * Attempts authentication only if the recorded failed attempts for the given
+     * email are below the configured threshold; on success the failed-attempt
+     * log for the email is cleared, on failure a failed-attempt is recorded.
+     *
+     * @param string $email_address the user's email address used to identify the account
+     * @param string $password      the plaintext password to verify for the account
+     *
+     * @return bool `true` if authentication succeeds and the failure log is reset, `false` otherwise
      */
     public function authenticate($email_address, $password): bool
     {
-        $this->load->model('mdl_sessions');
         //check if user is banned
         $login_log = $this->loginLogCheck($email_address);
         if (empty($login_log) || $login_log->log_count < 10) {
@@ -88,9 +100,16 @@ class SessionsController extends BaseController
     }
 
     /**
-     * @originalName passwordreset
+     * Handle password reset flows: token verification, new-password submission, and reset-request submission.
      *
-     * @originalFile SessionsController.php
+     * Processes three distinct actions depending on input:
+     * - If a token is provided: validate the token, throttle abuse, locate the user, clear login failures, and render the new-password view.
+     * - If the new-password form is submitted: validate input and token, update the user's password, clear the reset token and login failures, and redirect to the login page.
+     * - If the password-reset request form is submitted: validate the email, throttle abuse, generate and store a reset token, send the reset email, and redirect to the login page.
+     *
+     * @param string|null $token the password reset token supplied via the URL, or null when not using a token
+     *
+     * @return mixed a view response for rendering the appropriate password reset page or a redirect response after processing
      */
     public function passwordreset($token = null)
     {
@@ -122,7 +141,7 @@ class SessionsController extends BaseController
             }
             $formdata = ['token' => $token, 'user_id' => $user->user_id];
 
-            return $this->load->view('session_new_password', $formdata);
+            return view('session_new_password', $formdata);
         }
         // Check if the form for a new password was used
         if ($this->input->post('btn_new_password')) {
@@ -132,7 +151,6 @@ class SessionsController extends BaseController
                 $this->session->set_flashdata('alert_error', trans('loginalert_no_password'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
-            $this->load->model('users/mdl_users');
             // Check for the reset token
             $user = (new UsersService())->getById($user_id);
             if (empty($user)) {
@@ -190,7 +208,6 @@ class SessionsController extends BaseController
                 $this->db->where('user_email', $email);
                 $this->db->update('ip_users', $db_array);
                 // Send the email with reset link
-                $this->load->helper('mailer');
                 // Prepare some variables for the email
                 $email_resetlink = site_url('sessions/passwordreset/' . $token);
                 $email_message   = $this->load->view('emails/passwordreset', ['resetlink' => $email_resetlink], true);
@@ -199,7 +216,7 @@ class SessionsController extends BaseController
                     $email_from = 'system@' . preg_replace('/^[\w]{2,6}:\/\/([\w\d\.\-]+).*$/', '$1', base_url());
                 }
                 // Mail the invoice with the pre-configured mailer if possible
-                if (mailer_configured()) {
+                if (MailerHelper::mailerConfigured()) {
                     $this->load->helper('mailer/phpmailer');
                     if ( ! phpmail_send($email_from, $email, trans('password_reset'), $email_message)) {
                         $email_failed = true;
@@ -230,7 +247,7 @@ class SessionsController extends BaseController
             }
         }
 
-        return $this->load->view('session_passwordreset');
+        return view('session_passwordreset');
     }
 
     /**
