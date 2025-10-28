@@ -9,9 +9,11 @@ use Modules\Invoices\Models\Item;
 use Modules\Projects\app\Models\Task;
 use Modules\Projects\app\Services\TasksService;
 use Modules\Projects\Models\Project;
+
+use function Modules\Tasks\Tests\Integration\now;
+
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use function Modules\Tasks\Tests\Integration\now;
 
 /**
  * Integration tests for Task-Invoice workflows.

@@ -5,14 +5,16 @@ namespace Modules\Quotes\Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Modules\Core\Models\TaxRate;
 use Modules\Invoices\app\Models\InvoiceGroup;
 use Modules\Quotes\Controllers\QuotesController;
 use Modules\Quotes\Models\Quote;
 use Modules\Quotes\Models\QuoteItem;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Modules\Core\Models\TaxRate;
-use Tests\TestCase;
+
 use function Tests\Feature\Quotes\route;
+
+use Tests\TestCase;
 
 #[CoversClass(QuotesController::class)]
 class QuotesControllerTest extends TestCase

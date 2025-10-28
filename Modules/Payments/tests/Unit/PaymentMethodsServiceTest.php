@@ -3,11 +3,13 @@
 namespace Modules\Payments\tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Modules\PaymentMethods\Tests\Unit\app;
+
 use Modules\Payments\app\Models\PaymentMethod;
 use Modules\Payments\app\Services\PaymentMethodsService;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use function Modules\PaymentMethods\Tests\Unit\app;
 
 class PaymentMethodsServiceTest extends TestCase
 {

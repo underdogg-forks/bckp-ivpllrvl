@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Controllers;
 
-use Modules\Core\Controllers\BaseController;
-use Modules\Guest\Controllers\UploadsService;
 use function Modules\Guest\Controllers\log_message;
+
+use Modules\Guest\Controllers\UploadsService;
 
 /*
  * InvoicePlane

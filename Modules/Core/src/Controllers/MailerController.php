@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Modules\Core\Controllers\AdminController;
+use Modules\Core\Services\EmailTemplatesService;
 use Modules\CustomFields\Services\CustomFieldsService;
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Invoices\Services\TemplatesService;
 use Modules\Quotes\Services\QuotesService;
 use Modules\Upload\Services\UploadsService;
-use Modules\Core\Services\EmailTemplatesService;
 
 #[AllowDynamicProperties]
 class MailerController extends AdminController

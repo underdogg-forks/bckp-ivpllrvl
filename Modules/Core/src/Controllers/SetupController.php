@@ -5,20 +5,27 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller as MXController;
 use Illuminate\Support\Facades\Log;
-use Modules\Setup\Controllers\UsersService;
-use Modules\Setup\Controllers\VersionsService;
 use Modules\Core\Services\SetupService;
-use function Modules\Setup\Controllers\env_bool;
-use function Modules\Setup\Controllers\show_error;
-use function Modules\Setup\Controllers\write_file;
+
 use const Modules\Setup\Controllers\APPPATH;
+
+use function Modules\Setup\Controllers\env_bool;
+
 use const Modules\Setup\Controllers\IPCONFIG_FILE;
 use const Modules\Setup\Controllers\LOGS_FOLDER;
+
+use function Modules\Setup\Controllers\show_error;
+
 use const Modules\Setup\Controllers\UPLOADS_ARCHIVE_FOLDER;
 use const Modules\Setup\Controllers\UPLOADS_CFILES_FOLDER;
 use const Modules\Setup\Controllers\UPLOADS_FOLDER;
 use const Modules\Setup\Controllers\UPLOADS_TEMP_FOLDER;
 use const Modules\Setup\Controllers\UPLOADS_TEMP_MPDF_FOLDER;
+
+use Modules\Setup\Controllers\UsersService;
+use Modules\Setup\Controllers\VersionsService;
+
+use function Modules\Setup\Controllers\write_file;
 
 #[AllowDynamicProperties]
 class SetupController extends MXController

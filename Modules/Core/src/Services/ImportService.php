@@ -3,7 +3,6 @@
 namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
-use Modules\Core\Services\BaseService;
 
 #[AllowDynamicProperties]
 class ImportService extends BaseService

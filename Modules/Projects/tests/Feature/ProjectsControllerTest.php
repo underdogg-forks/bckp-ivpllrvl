@@ -9,8 +9,10 @@ use Modules\Projects\Controllers\ProjectsController;
 use Modules\Projects\Models\Project;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Projects\route;
+
+use Tests\TestCase;
 
 #[CoversClass(ProjectsController::class)]
 class ProjectsControllerTest extends TestCase

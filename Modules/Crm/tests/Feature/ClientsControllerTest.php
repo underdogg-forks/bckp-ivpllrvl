@@ -6,11 +6,13 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Clients\Models\tmpClient;
+
+use function Modules\Clients\Tests\Feature\route;
+
 use Modules\Crm\app\Http\Controllers\ClientsController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use function Modules\Clients\Tests\Feature\route;
 
 #[CoversClass(ClientsController::class)]
 class ClientsControllerTest extends TestCase

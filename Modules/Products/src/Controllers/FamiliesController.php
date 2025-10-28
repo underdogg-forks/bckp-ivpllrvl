@@ -4,9 +4,11 @@ namespace src\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use src\Services\FamiliesService;
+
 use function Modules\Families\Controllers\show_404;
 use function Modules\Families\Controllers\site_url;
+
+use src\Services\FamiliesService;
 
 #[AllowDynamicProperties]
 class FamiliesController extends AdminController

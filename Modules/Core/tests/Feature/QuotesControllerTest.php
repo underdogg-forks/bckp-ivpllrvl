@@ -3,9 +3,9 @@
 namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Core\Controllers\QuotesController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Modules\Core\Controllers\QuotesController;
 use Tests\TestCase;
 
 #[CoversClass(QuotesController::class)]

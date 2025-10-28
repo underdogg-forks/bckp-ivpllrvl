@@ -3,7 +3,6 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Core\Controllers\AdminController;
 use Modules\Users\Controllers\ClientsService;
 use Modules\Users\Controllers\SettingsService;
 use Modules\Users\Controllers\UserClientsService;

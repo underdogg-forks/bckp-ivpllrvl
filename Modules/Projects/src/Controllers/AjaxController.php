@@ -6,6 +6,7 @@ use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\app\Services\TasksService;
+
 use function Modules\Tasks\Controllers\view;
 
 #[AllowDynamicProperties]

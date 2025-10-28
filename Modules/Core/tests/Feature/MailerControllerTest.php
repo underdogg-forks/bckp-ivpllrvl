@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Mailer\Tests\Feature;
+namespace Modules\Core\Tests\Feature;
 
 use App\Models\User;
 use Exception;
@@ -9,12 +9,13 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Modules\Core\Controllers\Controllers\MailerController;
+use Modules\Core\Models\EmailTemplate;
+use Modules\Core\Models\Upload;
 use Modules\Invoices\Models\Invoice;
+use Modules\Mailer\Tests\Feature\tmpClient;
 use Modules\Quotes\Models\Quote;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Modules\Core\Models\EmailTemplate;
-use Modules\Core\Models\Upload;
 use Tests\TestCase;
 
 #[CoversClass(MailerController::class)]

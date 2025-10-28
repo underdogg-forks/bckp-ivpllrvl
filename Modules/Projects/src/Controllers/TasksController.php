@@ -6,11 +6,13 @@ use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Projects\app\Services\TasksService;
 use Modules\Projects\Services\ProjectsService;
-use src\Services\TaxRatesService;
+
 use function Modules\Tasks\Controllers\redirect;
 use function Modules\Tasks\Controllers\show_404;
 use function Modules\Tasks\Controllers\site_url;
 use function Modules\Tasks\Controllers\view;
+
+use src\Services\TaxRatesService;
 
 #[AllowDynamicProperties]
 class TasksController extends AdminController

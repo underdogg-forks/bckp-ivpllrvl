@@ -5,10 +5,9 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
-use Modules\Core\Controllers\BaseController;
+use Modules\Core\Services\SettingsService;
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Payments\app\Services\PaymentMethodsService;
-use Modules\Core\Services\SettingsService;
 
 #[AllowDynamicProperties]
 class PaymentInformation extends BaseController

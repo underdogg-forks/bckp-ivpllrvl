@@ -21,11 +21,13 @@ use Modules\Core\Controllers\BaseController;
 use Modules\Guest\Controllers\Gateways\Error;
 use Modules\Guest\Controllers\Gateways\ErrorException;
 use Modules\Guest\Controllers\Gateways\Exception;
+
+use function Modules\Guest\Controllers\Gateways\lang;
+use function Modules\Guest\Controllers\Gateways\site_url;
+
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Payments\Services\PaymentsService;
 use Stripe\StripeClient;
-use function Modules\Guest\Controllers\Gateways\lang;
-use function Modules\Guest\Controllers\Gateways\site_url;
 
 #[AllowDynamicProperties]
 class StripeController extends BaseController

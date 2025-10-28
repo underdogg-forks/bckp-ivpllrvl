@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
 use Modules\CustomFields\Services\CustomFieldsService;
+
+use function Modules\Guest\Controllers\show_404;
+
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Invoices\Services\InvoiceTaxRatesService;
 use Modules\Invoices\Services\ItemsService;
@@ -15,7 +18,6 @@ use Modules\Payments\app\Services\PaymentMethodsService;
 use Modules\Quotes\Services\QuoteItemsService;
 use Modules\Quotes\Services\QuotesService;
 use Modules\Quotes\Services\QuoteTaxRatesService;
-use function Modules\Guest\Controllers\show_404;
 
 #[AllowDynamicProperties]
 class View extends BaseGuestController

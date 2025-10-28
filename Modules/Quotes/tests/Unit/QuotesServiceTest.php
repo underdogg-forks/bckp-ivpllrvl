@@ -3,7 +3,6 @@
 namespace Modules\Quotes\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Clients\Models\tmpClient;
 use Modules\Quotes\Models\Quote;
 use Modules\Quotes\Services\QuotesService;
 use PHPUnit\Framework\Attributes\Test;

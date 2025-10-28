@@ -3,12 +3,14 @@
 namespace tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Core\Controllers\TaxRatesController;
 use Modules\Core\Models\TaxRate;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Modules\Core\Controllers\TaxRatesController;
-use Tests\TestCase;
+
 use function Tests\Feature\TaxRates\route;
+
+use Tests\TestCase;
 
 #[CoversClass(TaxRatesController::class)]
 class TaxRatesControllerTest extends TestCase

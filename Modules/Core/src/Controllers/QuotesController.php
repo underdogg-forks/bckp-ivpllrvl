@@ -4,12 +4,16 @@ namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
-use Modules\Guest\Controllers\QuotesService;
-use Modules\Quotes\Services\QuoteItemsService;
-use Modules\Quotes\Services\QuoteTaxRatesService;
+
 use function Modules\Guest\Controllers\config_item;
+
+use Modules\Guest\Controllers\QuotesService;
+
 use function Modules\Guest\Controllers\show_404;
 use function Modules\Guest\Controllers\site_url;
+
+use Modules\Quotes\Services\QuoteItemsService;
+use Modules\Quotes\Services\QuoteTaxRatesService;
 
 #[AllowDynamicProperties]
 class QuotesController extends BaseGuestController

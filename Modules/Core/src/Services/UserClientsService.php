@@ -4,7 +4,6 @@ namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
 use Modules\Clients\Models\tmpClient;
-use Modules\Core\Services\BaseService;
 use Modules\Core\Models\User;
 use Modules\Core\Models\UserClient;
 

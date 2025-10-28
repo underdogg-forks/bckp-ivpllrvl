@@ -3,14 +3,17 @@
 namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
-use Modules\Core\Services\BaseService;
+use Modules\Core\Models\Version;
 use Modules\Invoices\app\Models\InvoiceGroup;
 use Modules\Payments\app\Models\PaymentMethod;
-use Modules\Core\Models\Version;
-use function Modules\Setup\Services\directory_map;
-use function Modules\Setup\Services\random_string;
+
 use const Modules\Setup\Services\APPPATH;
+
+use function Modules\Setup\Services\directory_map;
+
 use const Modules\Setup\Services\IP_DEBUG;
+
+use function Modules\Setup\Services\random_string;
 
 #[AllowDynamicProperties]
 class SetupService extends BaseService

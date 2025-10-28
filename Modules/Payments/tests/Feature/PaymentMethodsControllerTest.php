@@ -6,8 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Payments\app\Http\Controllers\PaymentMethodsController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\PaymentMethods\route;
+
+use Tests\TestCase;
 
 #[CoversClass(PaymentMethodsController::class)]
 class PaymentMethodsControllerTest extends TestCase

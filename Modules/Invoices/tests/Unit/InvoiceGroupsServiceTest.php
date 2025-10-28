@@ -3,11 +3,13 @@
 namespace Modules\Invoices\tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Modules\InvoiceGroups\Tests\Unit\app;
+
 use Modules\Invoices\app\Models\InvoiceGroup;
 use Modules\Invoices\app\Services\InvoiceGroupsService;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use function Modules\InvoiceGroups\Tests\Unit\app;
 
 class InvoiceGroupsServiceTest extends TestCase
 {

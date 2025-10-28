@@ -10,8 +10,10 @@ use Modules\Tasks\Tests\Feature\User;
 use Modules\Tasks\Tests\Feature\WithFaker;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Tasks\route;
+
+use Tests\TestCase;
 
 #[CoversClass(TasksController::class)]
 class TasksControllerTest extends TestCase

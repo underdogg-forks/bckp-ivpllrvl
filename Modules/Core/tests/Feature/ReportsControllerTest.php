@@ -6,11 +6,11 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Clients\Models\tmpClient;
+use Modules\Core\Controllers\ReportsController;
 use Modules\Invoices\Models\Invoice;
 use Modules\Payments\Models\Payment;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Modules\Core\Controllers\ReportsController;
 use Tests\TestCase;
 
 #[CoversClass(ReportsController::class)]

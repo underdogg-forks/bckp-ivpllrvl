@@ -7,8 +7,10 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Core\Controllers\DashboardController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\Dashboard\route;
+
+use Tests\TestCase;
 
 #[CoversClass(DashboardController::class)]
 class DashboardControllerTest extends TestCase

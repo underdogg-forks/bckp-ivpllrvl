@@ -5,8 +5,8 @@ namespace Modules\Core\Services;
 use AllowDynamicProperties;
 use DB;
 use Modules\Clients\Models\tmpClient;
-use Modules\Core\Services\BaseService;
 use Modules\Payments\Models\Payment;
+
 use function Modules\Reports\Services\CONCAT;
 
 #[AllowDynamicProperties]

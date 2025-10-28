@@ -6,7 +6,6 @@ use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
-use Modules\Core\Controllers\AdminController;
 use Modules\Core\Services\UploadService;
 
 #[AllowDynamicProperties]

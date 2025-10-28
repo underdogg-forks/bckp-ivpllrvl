@@ -5,9 +5,11 @@ namespace Modules\Products\Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use src\Controllers\UnitsController;
 use Tests\Feature\Units\CoversClass;
+
+use function Tests\Feature\Units\route;
+
 use Tests\Feature\Units\Test;
 use tests\TestCase;
-use function Tests\Feature\Units\route;
 
 #[CoversClass(UnitsController::class)]
 class UnitsControllerTest extends TestCase

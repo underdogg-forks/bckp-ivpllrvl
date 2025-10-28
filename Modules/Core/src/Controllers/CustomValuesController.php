@@ -4,7 +4,6 @@ namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
-use Modules\Core\Controllers\AdminController;
 use Modules\CustomValues\Controllers\CustomFieldsService;
 use Modules\CustomValues\Controllers\CustomValuesService;
 

@@ -3,7 +3,7 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Core\Controllers\AdminController;
+
 use function Modules\Settings\Controllers\random_string;
 
 #[AllowDynamicProperties]

@@ -5,13 +5,12 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Modules\Core\Controllers\AdminController;
-use Modules\Crm\app\Services\ClientsService;
-use Modules\CustomFields\Services\CustomFieldsService;
-use Modules\Users\Controllers\UserCustomService;
 use Modules\Core\Services\CustomValuesService;
 use Modules\Core\Services\UserClientsService;
 use Modules\Core\Services\UsersService;
+use Modules\Crm\app\Services\ClientsService;
+use Modules\CustomFields\Services\CustomFieldsService;
+use Modules\Users\Controllers\UserCustomService;
 
 #[AllowDynamicProperties]
 class UsersController extends AdminController

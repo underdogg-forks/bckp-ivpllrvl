@@ -6,12 +6,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Clients\Tests\Feature\Client;
 use Modules\Clients\Tests\Feature\ClientNote;
+
+use function Modules\Clients\Tests\Feature\csrf_token;
+use function Modules\Clients\Tests\Feature\route;
+
 use Modules\Crm\app\Http\Controllers\AjaxController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use src\Models\User;
 use Tests\TestCase;
-use function Modules\Clients\Tests\Feature\csrf_token;
-use function Modules\Clients\Tests\Feature\route;
 
 #[CoversClass(AjaxController::class)]
 class ClientsAjaxControllerTest extends TestCase

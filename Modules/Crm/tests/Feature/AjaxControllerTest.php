@@ -3,11 +3,13 @@
 namespace Modules\Crm\tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Modules\Clients\Tests\Feature\route;
+
 use Modules\Crm\app\Http\Controllers\AjaxController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use function Modules\Clients\Tests\Feature\route;
 
 #[CoversClass(AjaxController::class)]
 class AjaxControllerTest extends TestCase

@@ -7,12 +7,11 @@ use App\Services\SettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Modules\Core\Controllers\AdminController;
+use Modules\Core\Models\EmailTemplate;
+use Modules\Core\Models\TaxRate;
 use Modules\Invoices\app\Models\InvoiceGroup;
 use Modules\Invoices\Models\Template;
 use Modules\Payments\app\Models\PaymentMethod;
-use Modules\Core\Models\EmailTemplate;
-use Modules\Core\Models\TaxRate;
 
 #[AllowDynamicProperties]
 class SettingsController extends AdminController

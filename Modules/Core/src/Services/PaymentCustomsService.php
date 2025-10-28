@@ -3,7 +3,6 @@
 namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
-use Modules\Core\Services\BaseService;
 use Modules\Payments\Models\PaymentCustom;
 
 #[AllowDynamicProperties]

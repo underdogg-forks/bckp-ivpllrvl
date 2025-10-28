@@ -5,12 +5,15 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use App\Helpers\MailerHelper;
 use Illuminate\Support\Facades\Log;
-use Modules\Core\Controllers\BaseController;
 use Modules\Sessions\Controllers\DateTime;
-use Modules\Sessions\Controllers\SessionsService;
-use Modules\Sessions\Controllers\UsersService;
+
 use function Modules\Sessions\Controllers\phpmail_send;
+
+use Modules\Sessions\Controllers\SessionsService;
+
 use function Modules\Sessions\Controllers\site_url;
+
+use Modules\Sessions\Controllers\UsersService;
 
 #[AllowDynamicProperties]
 class SessionsController extends BaseController

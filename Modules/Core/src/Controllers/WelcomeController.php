@@ -3,7 +3,6 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Core\Controllers\AdminController;
 
 #[AllowDynamicProperties]
 class WelcomeController extends AdminController

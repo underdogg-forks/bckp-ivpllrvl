@@ -5,7 +5,6 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Clients\Models\tmpClient;
-use Modules\Core\Controllers\AdminController;
 use Modules\Filter\Controllers\CustomFieldsService;
 use Modules\Filter\Controllers\CustomValuesService;
 use Modules\Filter\Controllers\FamiliesService;

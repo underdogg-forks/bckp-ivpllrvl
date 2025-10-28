@@ -4,10 +4,12 @@ namespace Modules\Invoices\app\Http\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use Modules\Invoices\app\Services\InvoiceGroupsService;
+
 use function Modules\InvoiceGroups\Controllers\redirect;
 use function Modules\InvoiceGroups\Controllers\show_404;
 use function Modules\InvoiceGroups\Controllers\site_url;
+
+use Modules\Invoices\app\Services\InvoiceGroupsService;
 
 #[AllowDynamicProperties]
 class InvoiceGroupsController extends AdminController

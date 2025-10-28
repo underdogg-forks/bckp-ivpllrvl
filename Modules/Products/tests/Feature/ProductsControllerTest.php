@@ -11,9 +11,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use src\Models\Family;
 use src\Models\TaxRate;
 use src\Models\Unit;
+
+use function Tests\Feature\Products\route;
+
 use Tests\Feature\Products\Test;
 use Tests\TestCase;
-use function Tests\Feature\Products\route;
 
 #[CoversClass(ProductsController::class)]
 class ProductsControllerTest extends TestCase

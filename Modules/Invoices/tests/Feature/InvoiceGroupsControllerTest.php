@@ -9,8 +9,10 @@ use Modules\Invoices\app\Http\Controllers\InvoiceGroupsController;
 use Modules\Invoices\app\Models\InvoiceGroup;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+
 use function Tests\Feature\InvoiceGroups\route;
+
+use Tests\TestCase;
 
 #[CoversClass(InvoiceGroupsController::class)]
 class InvoiceGroupsControllerTest extends TestCase

@@ -4,10 +4,12 @@ namespace Modules\Payments\app\Http\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use Modules\Payments\app\Services\PaymentMethodsService;
+
 use function Modules\PaymentMethods\Controllers\redirect;
 use function Modules\PaymentMethods\Controllers\show_404;
 use function Modules\PaymentMethods\Controllers\site_url;
+
+use Modules\Payments\app\Services\PaymentMethodsService;
 
 #[AllowDynamicProperties]
 class PaymentMethodsController extends AdminController

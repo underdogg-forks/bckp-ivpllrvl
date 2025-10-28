@@ -17,13 +17,13 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
-            'client_name' => $this->faker->company(),
-            'client_email' => $this->faker->companyEmail(),
-            'client_phone' => $this->faker->phoneNumber(),
+            'client_name'    => $this->faker->company(),
+            'client_email'   => $this->faker->companyEmail(),
+            'client_phone'   => $this->faker->phoneNumber(),
             'client_address' => $this->faker->streetAddress(),
-            'client_city' => $this->faker->city(),
-            'client_state' => $this->faker->state(),
-            'client_zip' => $this->faker->postcode(),
+            'client_city'    => $this->faker->city(),
+            'client_state'   => $this->faker->state(),
+            'client_zip'     => $this->faker->postcode(),
             'client_country' => $this->faker->country(),
         ];
     }

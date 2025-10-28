@@ -8,9 +8,11 @@ use Modules\Invoices\Models\Invoice;
 use Modules\Projects\app\Models\Task;
 use Modules\Projects\app\Services\TasksService;
 use Modules\Projects\Models\Project;
+
+use function Modules\Tasks\Tests\Unit\now;
+
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use function Modules\Tasks\Tests\Unit\now;
 
 class TasksServiceTest extends TestCase
 {

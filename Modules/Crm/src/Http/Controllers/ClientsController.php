@@ -4,13 +4,15 @@ namespace Modules\Crm\app\Http\Controllers;
 
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
-use Modules\Clients\Models\tmpClient;
-use Modules\Core\Controllers\AdminController;
-use Modules\Crm\app\Services\ClientsService;
+
 use function Modules\Clients\Controllers\abort;
 use function Modules\Clients\Controllers\config;
 use function Modules\Clients\Controllers\redirect;
 use function Modules\Clients\Controllers\view;
+
+use Modules\Clients\Models\tmpClient;
+use Modules\Core\Controllers\AdminController;
+use Modules\Crm\app\Services\ClientsService;
 
 #[AllowDynamicProperties]
 class ClientsController extends AdminController

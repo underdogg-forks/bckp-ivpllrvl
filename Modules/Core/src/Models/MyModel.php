@@ -3,6 +3,7 @@
 namespace Modules\Core\Models;
 
 use AllowDynamicProperties;
+
 use function App\Models\validation_errors;
 
 /**

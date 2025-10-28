@@ -3,8 +3,8 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Core\Controllers\AdminController;
 use Modules\CustomFields\Controllers\CustomFieldsService;
+
 use function Modules\CustomFields\Controllers\show_404;
 use function Modules\CustomFields\Controllers\site_url;
 

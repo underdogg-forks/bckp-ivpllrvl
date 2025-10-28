@@ -3,7 +3,6 @@
 namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
-use Modules\Core\Services\BaseService;
 use Modules\Core\Models\Version;
 
 #[AllowDynamicProperties]

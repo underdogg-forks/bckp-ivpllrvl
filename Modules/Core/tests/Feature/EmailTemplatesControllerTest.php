@@ -3,12 +3,12 @@
 namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Core\Controllers\EmailTemplatesController;
 use Modules\EmailTemplates\Tests\Feature\EmailTemplate;
 use Modules\EmailTemplates\Tests\Feature\User;
 use Modules\EmailTemplates\Tests\Feature\WithFaker;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use Modules\Core\Controllers\EmailTemplatesController;
 use Tests\TestCase;
 
 #[CoversClass(EmailTemplatesController::class)]

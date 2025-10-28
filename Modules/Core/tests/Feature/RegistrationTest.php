@@ -3,8 +3,10 @@
 namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+
 use function Tests\Feature\Auth\route;
+
+use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {

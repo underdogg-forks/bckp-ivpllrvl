@@ -5,9 +5,11 @@ namespace Modules\Core\Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Core\Controllers\SettingsController;
 use Tests\Feature\Settings\CoversClass;
+
+use function Tests\Feature\Settings\route;
+
 use Tests\Feature\Settings\Test;
 use Tests\TestCase;
-use function Tests\Feature\Settings\route;
 
 #[CoversClass(SettingsController::class)]
 class SettingsControllerTest extends TestCase

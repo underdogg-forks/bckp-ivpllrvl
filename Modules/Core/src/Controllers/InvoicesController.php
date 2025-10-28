@@ -4,12 +4,16 @@ namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\GuestController as BaseGuestController;
-use Modules\Guest\Controllers\InvoicesService;
-use Modules\Invoices\Services\InvoiceTaxRatesService;
-use Modules\Invoices\Services\ItemsService;
+
 use function Modules\Guest\Controllers\config_item;
+
+use Modules\Guest\Controllers\InvoicesService;
+
 use function Modules\Guest\Controllers\show_404;
 use function Modules\Guest\Controllers\site_url;
+
+use Modules\Invoices\Services\InvoiceTaxRatesService;
+use Modules\Invoices\Services\ItemsService;
 
 #[AllowDynamicProperties]
 class InvoicesController extends BaseGuestController

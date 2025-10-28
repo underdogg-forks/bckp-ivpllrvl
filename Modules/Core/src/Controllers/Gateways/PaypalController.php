@@ -4,6 +4,7 @@ namespace Modules\Core\Controllers\Gateways;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
+
 use function Modules\Guest\Controllers\Gateways\lang;
 
 #[AllowDynamicProperties]

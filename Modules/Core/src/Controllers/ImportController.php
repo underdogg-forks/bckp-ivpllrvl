@@ -3,10 +3,7 @@
 namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Core\Controllers\AdminController;
 use Modules\Core\Services\ImportService;
-use function Modules\Import\Controllers\directory_map;
-use function Modules\Import\Controllers\site_url;
 
 #[AllowDynamicProperties]
 class ImportController extends AdminController
