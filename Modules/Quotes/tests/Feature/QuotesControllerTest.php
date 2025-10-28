@@ -5,14 +5,12 @@ namespace Modules\Quotes\Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\app\Models\InvoiceGroup;
 use Modules\Quotes\Controllers\QuotesController;
 use Modules\Quotes\Models\Quote;
 use Modules\Quotes\Models\QuoteItem;
 use PHPUnit\Framework\Attributes\CoversClass;
-use src\Models\TaxRate;
-use Tests\Feature\Quotes\Test;
+use Modules\Core\Models\TaxRate;
 use Tests\TestCase;
 use function Tests\Feature\Quotes\route;
 

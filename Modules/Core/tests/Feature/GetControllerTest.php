@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Guest\Tests\Feature;
+namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use src\Controllers\GetController;
+use Modules\Core\Controllers\GetController;
 use Tests\TestCase;
 
 #[CoversClass(GetController::class)]

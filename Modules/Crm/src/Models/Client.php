@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Crm\app\Models;
+namespace Modules\Crm\Models;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

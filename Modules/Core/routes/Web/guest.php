@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use src\Controllers\CustomerPortalController;
-use src\Controllers\Gateways\PaypalController;
-use src\Controllers\Gateways\StripeController;
-use src\Controllers\GetController;
-use src\Controllers\InvoicesController;
-use src\Controllers\PaymentInformation;
-use src\Controllers\PaymentsController;
-use src\Controllers\QuotesController;
-use src\Controllers\View;
+use Modules\Core\Controllers\CustomerPortalController;
+use Modules\Core\Controllers\Gateways\PaypalController;
+use Modules\Core\Controllers\Gateways\StripeController;
+use Modules\Core\Controllers\GetController;
+use Modules\Core\Controllers\InvoicesController;
+use Modules\Core\Controllers\PaymentInformation;
+use Modules\Core\Controllers\PaymentsController;
+use Modules\Core\Controllers\QuotesController;
+use Modules\Core\Controllers\View;
 
 Route::middleware('web')->group(function () {
     Route::get('guest', [InvoicesController::class, 'index'])->name('guest.index');
