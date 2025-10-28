@@ -3,8 +3,8 @@
 namespace Modules\UserClients\Controllers;
 
 use AllowDynamicProperties;
-use Modules\Clients\Services\ClientsService;
 use Modules\Core\Controllers\AdminController;
+use Modules\Crm\app\Services\ClientsService;
 use Modules\UserClients\Services\UserClientsService;
 use Modules\Users\Services\UsersService;
 

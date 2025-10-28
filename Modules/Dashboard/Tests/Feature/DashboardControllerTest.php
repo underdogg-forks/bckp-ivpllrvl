@@ -30,7 +30,7 @@ class DashboardControllerTest extends TestCase
     public function it_displays_dashboard_with_overview_data()
     {
         // Arrange: create sample data
-        $client  = \Modules\Clients\Models\Client::factory()->create();
+        $client  = \Modules\Clients\Models\tmpClient::factory()->create();
         $invoice = \Modules\Invoices\Models\Invoice::factory()->create([
             'client_id' => $client->id,
             'total'     => 1000,

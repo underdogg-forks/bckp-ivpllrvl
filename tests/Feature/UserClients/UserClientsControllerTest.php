@@ -64,7 +64,7 @@ class UserClientsControllerTest extends TestCase
     {
         // Arrange: create user and user client
         $user       = \Modules\Users\Models\User::factory()->create();
-        $client     = \Modules\Clients\Models\Client::factory()->create();
+        $client     = \Modules\Clients\Models\tmpClient::factory()->create();
         $userClient = \Modules\UserClients\Models\UserClient::factory()->create([
             'user_id'   => $user->id,
             'client_id' => $client->id,

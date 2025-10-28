@@ -67,7 +67,7 @@ class ClientCustomsService extends BaseService
                 return true;
             }
             foreach ($form_data as $key => $value) {
-                \Modules\Clients\Models\ClientCustom::query()->updateOrCreate(
+                \Modules\Crm\app\Models\ClientCustom::query()->updateOrCreate(
                     [
                         'client_id'             => $client_id,
                         'client_custom_fieldid' => $key,

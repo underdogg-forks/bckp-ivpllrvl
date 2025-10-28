@@ -5,7 +5,7 @@ namespace Modules\Users\Tests\Feature;
 use App\Models\User as AuthUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\UserClients\Models\UserClient;
 use Modules\Users\Controllers\AjaxController;
 use Modules\Users\Models\User;
@@ -167,7 +167,7 @@ class UsersAjaxControllerTest extends TestCase
     public function it_saves_user_client_relationship_for_existing_user(): void
     {
         $user   = User::factory()->create();
-        $client = Client::factory()->create();
+        $client = tmpClient::factory()->create();
 
         $response = $this->post(route('users.ajax.saveUserClient'), [
             'user_id'   => $user->user_id,
@@ -185,7 +185,7 @@ class UsersAjaxControllerTest extends TestCase
     public function it_does_not_duplicate_user_client_relationship(): void
     {
         $user   = User::factory()->create();
-        $client = Client::factory()->create();
+        $client = tmpClient::factory()->create();
 
         UserClient::factory()->create([
             'user_id'   => $user->user_id,
@@ -206,7 +206,7 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_stores_user_client_in_session_for_new_user(): void
     {
-        $client = Client::factory()->create();
+        $client = tmpClient::factory()->create();
 
         $response = $this->post(route('users.ajax.saveUserClient'), [
             'user_id'   => null,
@@ -221,7 +221,7 @@ class UsersAjaxControllerTest extends TestCase
     public function it_loads_user_client_table_for_existing_user(): void
     {
         $user    = User::factory()->create();
-        $clients = Client::factory()->count(3)->create();
+        $clients = tmpClient::factory()->count(3)->create();
 
         foreach ($clients as $client) {
             UserClient::factory()->create([
@@ -243,7 +243,7 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_loads_user_client_table_from_session_for_new_user(): void
     {
-        $clients        = Client::factory()->count(2)->create();
+        $clients        = tmpClient::factory()->count(2)->create();
         $sessionClients = $clients->pluck('client_id')->toArray();
 
         session(['user_clients' => array_combine($sessionClients, $sessionClients)]);
@@ -260,8 +260,8 @@ class UsersAjaxControllerTest extends TestCase
     public function it_displays_modal_add_user_client_for_existing_user(): void
     {
         $user              = User::factory()->create();
-        $assignedClients   = Client::factory()->count(2)->create();
-        $unassignedClients = Client::factory()->count(3)->create();
+        $assignedClients   = tmpClient::factory()->count(2)->create();
+        $unassignedClients = tmpClient::factory()->count(3)->create();
 
         foreach ($assignedClients as $client) {
             UserClient::factory()->create([
@@ -282,7 +282,7 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_displays_all_clients_for_new_user_in_modal(): void
     {
-        Client::factory()->count(5)->create();
+        tmpClient::factory()->count(5)->create();
 
         $response = $this->get(route('users.ajax.modalAddUserClient'));
 
@@ -295,7 +295,7 @@ class UsersAjaxControllerTest extends TestCase
     #[Test]
     public function it_excludes_session_clients_from_modal_for_new_user(): void
     {
-        $clients        = Client::factory()->count(5)->create();
+        $clients        = tmpClient::factory()->count(5)->create();
         $sessionClients = [$clients->first()->client_id => $clients->first()->client_id];
 
         session(['user_clients' => $sessionClients]);

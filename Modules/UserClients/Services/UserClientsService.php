@@ -3,7 +3,7 @@
 namespace Modules\UserClients\Services;
 
 use AllowDynamicProperties;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Core\Services\BaseService;
 use Modules\UserClients\Models\UserClient;
 use Modules\Users\Models\User;
@@ -78,7 +78,7 @@ class UserClientsService extends BaseService
     {
         foreach ($users_id as $user_id) {
             $assignedClientIds = UserClient::query()->where('user_id', $user_id)->pluck('client_id')->toArray();
-            $clients           = Client::query()->whereNotIn('client_id', $assignedClientIds)->get();
+            $clients           = tmpClient::query()->whereNotIn('client_id', $assignedClientIds)->get();
             foreach ($clients as $client) {
                 UserClient::query()->create(['user_id' => $user_id, 'client_id' => $client->client_id]);
             }

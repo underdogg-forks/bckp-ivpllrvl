@@ -1,15 +1,14 @@
-#includes:
-#    - phpstan-baseline.neon
+includes:
+    - phpstan-baseline.neon
 
 parameters:
     tmpDir: null
-    level: 5
+    level: 0
     paths:
         - Modules/
 
     excludePaths:
         analyse:
-            - */Http/*
 
     ignoreErrors:
 

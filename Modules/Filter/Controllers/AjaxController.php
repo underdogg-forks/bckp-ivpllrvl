@@ -4,7 +4,7 @@ namespace Modules\Filter\Controllers;
 
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Core\Controllers\AdminController;
 use Modules\Invoices\Models\Invoice;
 use Modules\Quotes\Models\Quote;
@@ -69,7 +69,7 @@ class AjaxController extends AdminController
     {
         $query    = $request->input('filter_query');
         $keywords = array_filter(explode(' ', $query));
-        $clients  = Client::query();
+        $clients  = tmpClient::query();
         foreach ($keywords as $keyword) {
             $clients->where(function ($q) use ($keyword) {
                 $q->whereRaw('LOWER(client_name) LIKE ?', ["%{$keyword}%"])

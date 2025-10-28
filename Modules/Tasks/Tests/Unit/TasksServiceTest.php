@@ -3,7 +3,7 @@
 namespace Modules\Tasks\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
 use Modules\Projects\Models\Project;
 use Modules\Tasks\Models\Task;
@@ -115,7 +115,7 @@ class TasksServiceTest extends TestCase
         ]);
 
         // Create invoice
-        $client = Client::create([
+        $client = tmpClient::create([
             'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);

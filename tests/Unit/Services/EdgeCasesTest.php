@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
 use Modules\Projects\Models\Project;
 use Modules\Tasks\Models\Task;
@@ -72,7 +72,7 @@ class EdgeCasesTest extends TestCase
     {
         // Arrange
         $service = new TasksService();
-        $client  = Client::create(['client_name' => 'Test Client', 'client_active' => 1]);
+        $client  = tmpClient::create(['client_name' => 'Test Client', 'client_active' => 1]);
         $invoice = Invoice::create([
             'client_id'         => $client->client_id,
             'invoice_status_id' => 1,

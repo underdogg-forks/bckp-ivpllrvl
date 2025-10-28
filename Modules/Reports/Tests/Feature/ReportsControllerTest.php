@@ -5,7 +5,7 @@ namespace Modules\Reports\Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
 use Modules\Payments\Models\Payment;
 use Modules\Reports\Controllers\ReportsController;
@@ -32,7 +32,7 @@ class ReportsControllerTest extends TestCase
     public function it_returns_sales_by_client_report()
     {
         // Arrange: create clients and sales data
-        $client  = \Modules\Clients\Models\Client::factory()->create();
+        $client  = \Modules\Clients\Models\tmpClient::factory()->create();
         $invoice = \Modules\Invoices\Models\Invoice::factory(3)->create([
             'client_id'    => $client->id,
             'invoice_date' => now()->subDays(5),
@@ -56,7 +56,7 @@ class ReportsControllerTest extends TestCase
     public function it_generates_sales_by_client_report(): void
     {
         // Arrange
-        $client = Client::factory()->create();
+        $client = tmpClient::factory()->create();
         Invoice::factory()->count(3)->create([
             'client_id'            => $client->client_id,
             'invoice_status_id'    => 4, // Paid
@@ -136,7 +136,7 @@ class ReportsControllerTest extends TestCase
     public function it_returns_invoices_per_client_report()
     {
         // Arrange: create clients and invoices
-        $client  = \Modules\Clients\Models\Client::factory()->create();
+        $client  = \Modules\Clients\Models\tmpClient::factory()->create();
         $invoice = \Modules\Invoices\Models\Invoice::factory()->create([
             'client_id'    => $client->id,
             'invoice_date' => now()->subDays(3),

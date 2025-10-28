@@ -4,7 +4,7 @@ namespace Modules\Sessions\Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -43,7 +43,7 @@ class SecurityTest extends TestCase
     public function it_filters_input_to_prevent_xss_attacks(): void
     {
         $this->actingAs($this->user);
-        $client = Client::factory()->create();
+        $client = tmpClient::factory()->create();
 
         $maliciousData = [
             'client_id'            => $client->client_id,
@@ -64,7 +64,7 @@ class SecurityTest extends TestCase
     public function it_prevents_sql_injection_in_search_queries(): void
     {
         $this->actingAs($this->user);
-        Client::factory()->create(['client_name' => 'Test Client', 'client_active' => 1]);
+        tmpClient::factory()->create(['client_name' => 'Test Client', 'client_active' => 1]);
 
         $sqlInjection = "' OR '1'='1";
 

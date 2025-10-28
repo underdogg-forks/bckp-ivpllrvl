@@ -277,7 +277,7 @@ class CustomValuesService extends BaseService
     protected function getModelClassForTable(string $table): ?string
     {
         $map = [
-            'ip_client_custom'  => \Modules\Clients\Models\ClientCustom::class,
+            'ip_client_custom'  => \Modules\Crm\app\Models\ClientCustom::class,
             'ip_invoice_custom' => \Modules\Invoices\Models\InvoiceCustom::class,
             'ip_payment_custom' => \Modules\Payments\Models\PaymentCustom::class,
             'ip_quote_custom'   => \Modules\Quotes\Models\QuoteCustom::class,

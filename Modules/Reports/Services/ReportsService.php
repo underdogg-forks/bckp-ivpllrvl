@@ -4,7 +4,7 @@ namespace Modules\Reports\Services;
 
 use AllowDynamicProperties;
 use DB;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Core\Services\BaseService;
 use Modules\Payments\Models\Payment;
 
@@ -18,7 +18,7 @@ class ReportsService extends BaseService
      */
     public function salesByClient(?string $from_date = null, ?string $to_date = null)
     {
-        $query = Client::query()
+        $query = tmpClient::query()
             ->select(['client_name', 'client_surname'])
             ->addSelect(DB::raw(CONCAT('client_name', ' ', 'client_surname') . ' AS client_namesurname'))
             ->with(['invoices' => function ($q) use ($from_date, $to_date) {
@@ -84,7 +84,7 @@ class ReportsService extends BaseService
      */
     public function invoiceAging(): \Illuminate\Database\Eloquent\Collection
     {
-        $clients = Client::query()->with(['invoices.invoiceAmount'])
+        $clients = tmpClient::query()->with(['invoices.invoiceAmount'])
             ->get();
         $result = collect();
         foreach ($clients as $client) {
@@ -135,7 +135,7 @@ class ReportsService extends BaseService
     {
         $from_date = $from_date ? \Carbon\Carbon::parse($from_date)->format('Y-m-d') : null;
         $to_date   = $to_date ? \Carbon\Carbon::parse($to_date)->format('Y-m-d') : null;
-        $query     = Client::query()->with(['invoices.invoiceAmount']);
+        $query     = tmpClient::query()->with(['invoices.invoiceAmount']);
         if ($from_date && $to_date) {
             $query->whereHas('invoices', function ($q) use ($from_date, $to_date) {
                 $q->whereBetween('invoice_date_created', [$from_date, $to_date]);
@@ -154,7 +154,7 @@ class ReportsService extends BaseService
     {
         $from_date = $from_date ? \Carbon\Carbon::parse($from_date)->format('Y-m-d') : now()->format('Y-m-d');
         $to_date   = $to_date ? \Carbon\Carbon::parse($to_date)->format('Y-m-d') : now()->format('Y-m-d');
-        $clients   = Client::query()->with(['invoices.invoiceAmount'])->get();
+        $clients   = tmpClient::query()->with(['invoices.invoiceAmount'])->get();
         $result    = collect();
         foreach ($clients as $client) {
             $payments = collect();

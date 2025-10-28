@@ -15,7 +15,7 @@ class UploadControllerTest extends TestCase
     public function it_saves_file_and_returns_success()
     {
         // Arrange: create a fake customer and url_key
-        $customer = \Modules\Clients\Models\Client::factory()->create();
+        $customer = \Modules\Clients\Models\tmpClient::factory()->create();
         $url_key  = 'test-key';
 
         // Create a fake file

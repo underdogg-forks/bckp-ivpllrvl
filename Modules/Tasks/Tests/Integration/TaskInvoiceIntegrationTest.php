@@ -3,7 +3,7 @@
 namespace Modules\Tasks\Tests\Integration;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\Invoices\Models\Invoice;
 use Modules\Invoices\Models\Item;
 use Modules\Projects\Models\Project;
@@ -31,7 +31,7 @@ class TaskInvoiceIntegrationTest extends TestCase
     public function complete_task_to_invoice_workflow(): void
     {
         // Arrange: Create client, project, and tasks
-        $client = Client::create([
+        $client = tmpClient::create([
             'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
@@ -86,7 +86,7 @@ class TaskInvoiceIntegrationTest extends TestCase
     public function task_invoice_association_retrieval(): void
     {
         // Arrange: Create a task and link it to an invoice
-        $client = Client::create([
+        $client = tmpClient::create([
             'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);
@@ -122,7 +122,7 @@ class TaskInvoiceIntegrationTest extends TestCase
     public function deleting_invoice_updates_associated_tasks(): void
     {
         // Arrange: Create invoice with linked tasks
-        $client = Client::create([
+        $client = tmpClient::create([
             'client_name'   => 'Test Client',
             'client_active' => 1,
         ]);

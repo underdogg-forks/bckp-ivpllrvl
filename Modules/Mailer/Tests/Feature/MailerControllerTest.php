@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
-use Modules\Clients\Models\Client;
+use Modules\Clients\Models\tmpClient;
 use Modules\EmailTemplates\Models\EmailTemplate;
 use Modules\Invoices\Models\Invoice;
 use Modules\Mailer\Controllers\MailerController;
@@ -27,13 +27,13 @@ class MailerControllerTest extends TestCase
 
     protected User $user;
 
-    protected Client $client;
+    protected tmpClient $client;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->user   = User::factory()->create(['user_type' => 1, 'user_active' => 1]);
-        $this->client = Client::factory()->create(['client_email' => 'client@example.com']);
+        $this->client = tmpClient::factory()->create(['client_email' => 'client@example.com']);
         $this->actingAs($this->user);
 
         // Mock mailer as configured
