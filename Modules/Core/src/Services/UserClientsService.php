@@ -5,8 +5,8 @@ namespace Modules\Core\Services;
 use AllowDynamicProperties;
 use Modules\Clients\Models\tmpClient;
 use Modules\Core\Services\BaseService;
-use src\Models\User;
-use src\Models\UserClient;
+use Modules\Core\Models\User;
+use Modules\Core\Models\UserClient;
 
 #[AllowDynamicProperties]
 class UserClientsService extends BaseService

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use src\Controllers\CustomValuesController;
+use Modules\Core\Controllers\CustomValuesController;
 
 Route::middleware('web')->group(function () {
     Route::get('custom-values', [CustomValuesController::class, 'index'])->name('custom-values.index');

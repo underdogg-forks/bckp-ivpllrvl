@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Modules\Core\Controllers\BaseController;
 use Modules\Invoices\Services\InvoicesService;
 use Modules\Payments\app\Services\PaymentMethodsService;
-use src\Services\SettingsService;
+use Modules\Core\Services\SettingsService;
 
 #[AllowDynamicProperties]
 class PaymentInformation extends BaseController

@@ -5,8 +5,8 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Crm\app\Services\ClientsService;
-use src\Services\UserClientsService;
-use src\Services\UsersService;
+use Modules\Core\Services\UserClientsService;
+use Modules\Core\Services\UsersService;
 
 #[AllowDynamicProperties]
 class UserClientsController extends AdminController

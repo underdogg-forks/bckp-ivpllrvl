@@ -5,8 +5,8 @@ namespace Modules\Core\Services;
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Settings\Services\Dotenv;
-use src\Models\Setting;
-use src\Models\Version;
+use Modules\Core\Models\Setting;
+use Modules\Core\Models\Version;
 use function Modules\Settings\Services\directory_map;
 use const Modules\Settings\Services\THEME_FOLDER;
 

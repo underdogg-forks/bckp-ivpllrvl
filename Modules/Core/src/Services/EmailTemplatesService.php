@@ -4,7 +4,7 @@ namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
-use src\Models\EmailTemplate;
+use Modules\Core\Models\EmailTemplate;
 
 #[AllowDynamicProperties]
 class EmailTemplatesService extends BaseService

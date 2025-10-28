@@ -6,7 +6,7 @@ use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\app\Models\InvoiceGroup;
 use Modules\Payments\app\Models\PaymentMethod;
-use src\Models\Version;
+use Modules\Core\Models\Version;
 use function Modules\Setup\Services\directory_map;
 use function Modules\Setup\Services\random_string;
 use const Modules\Setup\Services\APPPATH;

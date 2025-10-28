@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use src\Controllers\UsersAjaxController;
-use src\Controllers\UsersController;
+use Modules\Core\Controllers\UsersAjaxController;
+use Modules\Core\Controllers\UsersController;
 
 Route::middleware('web')->group(function () {
     Route::get('users/name-query', [UsersAjaxController::class, 'nameQuery'])->name('users.name-query');

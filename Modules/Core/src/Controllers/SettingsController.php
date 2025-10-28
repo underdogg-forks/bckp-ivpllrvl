@@ -11,8 +11,8 @@ use Modules\Core\Controllers\AdminController;
 use Modules\Invoices\app\Models\InvoiceGroup;
 use Modules\Invoices\Models\Template;
 use Modules\Payments\app\Models\PaymentMethod;
-use src\Models\EmailTemplate;
-use src\Models\TaxRate;
+use Modules\Core\Models\EmailTemplate;
+use Modules\Core\Models\TaxRate;
 
 #[AllowDynamicProperties]
 class SettingsController extends AdminController

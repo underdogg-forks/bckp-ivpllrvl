@@ -4,7 +4,7 @@ namespace Modules\Core\Controllers;
 
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
-use src\Services\ImportService;
+use Modules\Core\Services\ImportService;
 use function Modules\Import\Controllers\directory_map;
 use function Modules\Import\Controllers\site_url;
 

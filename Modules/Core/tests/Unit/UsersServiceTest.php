@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Users\Tests\Unit;
+namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use src\Models\User;
-use src\Services\UsersService;
+use Modules\Core\Models\User;
+use Modules\Core\Services\UsersService;
 use Tests\TestCase;
 
 class UsersServiceTest extends TestCase

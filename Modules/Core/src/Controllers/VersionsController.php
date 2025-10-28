@@ -5,7 +5,7 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
-use src\Services\VersionsService;
+use Modules\Core\Services\VersionsService;
 
 #[AllowDynamicProperties]
 class VersionsController extends AdminController

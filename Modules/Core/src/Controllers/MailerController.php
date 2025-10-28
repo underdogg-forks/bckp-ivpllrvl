@@ -13,7 +13,7 @@ use Modules\Invoices\Services\InvoicesService;
 use Modules\Invoices\Services\TemplatesService;
 use Modules\Quotes\Services\QuotesService;
 use Modules\Upload\Services\UploadsService;
-use src\Services\EmailTemplatesService;
+use Modules\Core\Services\EmailTemplatesService;
 
 #[AllowDynamicProperties]
 class MailerController extends AdminController

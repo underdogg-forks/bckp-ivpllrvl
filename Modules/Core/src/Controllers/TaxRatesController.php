@@ -5,7 +5,7 @@ namespace Modules\Core\Controllers;
 use AllowDynamicProperties;
 use Illuminate\Http\Request;
 use Modules\Core\Controllers\AdminController;
-use src\Services\TaxRatesService;
+use Modules\Core\Services\TaxRatesService;
 
 #[AllowDynamicProperties]
 class TaxRatesController extends AdminController

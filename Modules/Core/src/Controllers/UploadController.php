@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
-use src\Services\UploadService;
+use Modules\Core\Services\UploadService;
 
 #[AllowDynamicProperties]
 class UploadController extends AdminController

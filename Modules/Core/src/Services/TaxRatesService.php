@@ -4,7 +4,7 @@ namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
-use src\Models\TaxRate;
+use Modules\Core\Models\TaxRate;
 
 #[AllowDynamicProperties]
 class TaxRatesService extends BaseService

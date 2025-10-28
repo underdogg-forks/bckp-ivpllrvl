@@ -3,7 +3,7 @@
 namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
-use src\Models\User;
+use Modules\Core\Models\User;
 
 #[AllowDynamicProperties]
 class SessionsService extends BaseService

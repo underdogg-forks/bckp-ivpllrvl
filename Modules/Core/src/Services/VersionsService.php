@@ -4,7 +4,7 @@ namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
-use src\Models\Version;
+use Modules\Core\Models\Version;
 
 #[AllowDynamicProperties]
 class VersionsService extends BaseService

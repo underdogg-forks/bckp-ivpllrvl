@@ -3,6 +3,7 @@
 namespace Modules\Core\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Modules\Core\Controllers\DashboardController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -13,9 +14,9 @@ use function Tests\Feature\Dashboard\route;
 class DashboardControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use \Modules\Dashboard\Tests\Feature\WithFaker;
+    use WithFaker;
 
-    protected \Modules\Dashboard\Tests\Feature\User $user;
+    protected \Modules\Core\Models\User $user;
 
     protected function setUp(): void
     {

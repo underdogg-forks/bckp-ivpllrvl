@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller as MXController;
 use Illuminate\Support\Facades\Log;
 use Modules\Setup\Controllers\UsersService;
 use Modules\Setup\Controllers\VersionsService;
-use src\Services\SetupService;
+use Modules\Core\Services\SetupService;
 use function Modules\Setup\Controllers\env_bool;
 use function Modules\Setup\Controllers\show_error;
 use function Modules\Setup\Controllers\write_file;

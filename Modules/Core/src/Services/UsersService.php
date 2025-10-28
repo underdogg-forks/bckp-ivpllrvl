@@ -4,7 +4,7 @@ namespace Modules\Core\Services;
 
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
-use src\Models\User;
+use Modules\Core\Models\User;
 
 #[AllowDynamicProperties]
 class UsersService extends BaseService

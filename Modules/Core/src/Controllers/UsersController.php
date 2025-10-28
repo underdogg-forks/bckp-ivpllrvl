@@ -9,9 +9,9 @@ use Modules\Core\Controllers\AdminController;
 use Modules\Crm\app\Services\ClientsService;
 use Modules\CustomFields\Services\CustomFieldsService;
 use Modules\Users\Controllers\UserCustomService;
-use src\Services\CustomValuesService;
-use src\Services\UserClientsService;
-use src\Services\UsersService;
+use Modules\Core\Services\CustomValuesService;
+use Modules\Core\Services\UserClientsService;
+use Modules\Core\Services\UsersService;
 
 #[AllowDynamicProperties]
 class UsersController extends AdminController
