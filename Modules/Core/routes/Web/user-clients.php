@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use src\Controllers\UserClientsController;
+use Modules\Core\Controllers\UserClientsController;
 
 Route::middleware('web')->group(function () {
     Route::get('user-clients', [UserClientsController::class, 'index'])->name('user-clients.index');
