@@ -48,17 +48,18 @@ class InvoiceGroupsController extends AdminController
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ((new InvoiceGroupsService())->runValidation(null, $request)) {
-            (new InvoiceGroupsService())->save($request, $id);
+        $service = new InvoiceGroupsService();
+        if ($service->runValidation('validationRules', $request)) {
+            $service->save($request, $id);
             return redirect()->route('invoice_groups');
         }
-        if ($id && ! $request->has('btn_submit')) {
-            if ( ! (new InvoiceGroupsService())->prepForm($id)) {
+        if ($id && $request->isMethod('GET')) {
+            if (! $service->prepForm($id)) {
                 abort(404);
             }
-        } elseif ( ! $id) {
-            (new InvoiceGroupsService())->setFormValue('invoice_group_left_pad', 0);
-            (new InvoiceGroupsService())->setFormValue('invoice_group_next_id', 1);
+        } elseif (! $id) {
+            $service->setFormValue('invoice_group_left_pad', 0);
+            $service->setFormValue('invoice_group_next_id', 1);
         }
         return view('invoice_groups.form');
     }

@@ -6,7 +6,7 @@ use AllowDynamicProperties;
 use Illuminate\Http\Request;
 
 #[AllowDynamicProperties]
-class ResponseModel
+class ResponseModel extends BaseModel
 {
     /**
      * @originalName save

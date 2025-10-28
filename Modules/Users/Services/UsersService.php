@@ -195,6 +195,11 @@ class UsersService extends BaseService
             $activeRequest = $requestOrId;
             $id            = $idOrDbArray;
             $data          = $db_array;
+        } elseif (is_array($requestOrId) && $idOrDbArray === null && $db_array === null) {
+            // BC: save(db_array)
+            $activeRequest = request();
+            $id            = null;
+            $data          = $requestOrId;
         } else {
             $activeRequest = request();
             $id            = $requestOrId;

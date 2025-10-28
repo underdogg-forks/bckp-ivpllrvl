@@ -64,14 +64,15 @@ class UserClientsController extends AdminController
         } elseif ($request->post('btn_cancel')) {
             return redirect('user_clients/field/' . $user_id);
         }
-        if ((new UserClientsService())->runValidation(null, $request)) {
+        $service = new UserClientsService();
+        if ($service->runValidation(null, $request)) {
             if ($request->post('user_all_clients')) {
                 $users_id = [$user_id];
-                (new UserClientsService())->setAllClientsUser($users_id);
+                $service->setAllClientsUser($users_id);
                 $user_update = ['user_all_clients' => 1];
             } else {
                 $user_update = ['user_all_clients' => 0];
-                (new UserClientsService())->save($request);
+                $service->save($request);
             }
             DB::table('ip_users')
                 ->where('user_id', $user_id)
@@ -80,7 +81,12 @@ class UserClientsController extends AdminController
         }
         $user    = (new UsersService())->getById($user_id);
         $clients = (new ClientsService())->getNotAssignedToUser($user_id);
-        return view('user_clients.field', ['id' => $user_id, 'user' => $user, 'clients' => $clients]);
+        return view('user_clients.field', [
+            'id' => $user_id,
+            'user' => $user,
+            'clients' => $clients,
+            'validation_errors' => $service->validation_errors,
+        ]);
     }
 
     /**
