@@ -159,8 +159,8 @@ class MyModel
         if (config('pagination_style')) {
             $config = array_merge($config, config('pagination_style'));
         }
-        $this->pagination->initialize($config);
-        $this->page_links = $this->pagination->create_links();
+        // TODO: Use Laravel pagination - $config);
+        $this->page_links = // TODO: Use Laravel pagination - create_links();
     }
 
     /**
@@ -340,8 +340,8 @@ class MyModel
         if (method_exists($this, $validation_rules)) {
             $this->validation_rules = $validation_rules;
 // TODO: Use Laravel services/facades - $this->load->library('form_validation');
-            // TODO: Move to Form Request - $this->form_validation->set_rules($this->{$validation_rules}());
-            $run                     = // TODO: Move to Form Request - $this->form_validation->run();
+            // TODO: Move to Form Request - // TODO: Use Form Request - set_rules($this->{$validation_rules}());
+            $run                     = // TODO: Move to Form Request - // TODO: Use Form Request - run();
             $this->validation_errors = validation_errors();
 
             return $run;

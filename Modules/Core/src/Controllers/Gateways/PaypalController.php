@@ -58,7 +58,7 @@ class PaypalController extends BaseController
             $this->mdl_payments->save(null, ['invoice_id' => $invoice_id, 'payment_date' => date('Y-m-d'), 'payment_amount' => $amount, 'payment_method_id' => get_setting('gateway_paypal_payment_method'), 'payment_note' => '']);
             $invoice = $this->mdl_invoices->where('ip_invoices.invoice_id', $invoice_id)->get()->row();
             session()->flash('alert_success', sprintf(trans('online_payment_payment_successful'), $invoice->invoice_number));
-            $this->session->keep_flashdata('alert_success');
+            session()->reflash('alert_success');
             DB::insert('ip_merchant_responses', ['invoice_id' => $invoice_id, 'merchant_response_successful' => true, 'merchant_response_date' => date('Y-m-d'), 'merchant_response_driver' => 'paypal', 'merchant_response' => $paypal_object->status, 'merchant_response_reference' => 'Resource ID:' . $paypal_object->id]);
         } else {
             $response_error = json_decode($paypal_response['error']->getResponse()->getBody());
@@ -68,7 +68,7 @@ class PaypalController extends BaseController
             DB::insert('ip_merchant_responses', ['invoice_id' => $order_details->purchase_units[0]->payments->captures[0]->invoice_id, 'merchant_response_successful' => true, 'merchant_response_date' => date('Y-m-d'), 'merchant_response_driver' => 'paypal', 'merchant_response' => 'name: ' . $response_error->name . '; details: ' . $response_error->details[0]->description, 'merchant_response_reference' => 'Resource ID:' . $order_id]);
             //set error message to be flashed
             session()->flash('alert_error', trans('online_payment_payment_failed') . '<br>' . $response_error->details[0]->description);
-            $this->session->keep_flashdata('alert_error');
+            session()->reflash('alert_error');
         }
     }
 

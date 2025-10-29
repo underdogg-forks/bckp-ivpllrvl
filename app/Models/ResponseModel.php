@@ -15,10 +15,10 @@ class ResponseModel
     public function save($id = null, $db_array = null)
     {
         if ($id) {
-            $this->session->set_flashdata('alert_success', trans('record_successfully_updated'));
+            session()->flash('alert_success', trans('record_successfully_updated'));
             parent::save($id, $db_array);
         } else {
-            $this->session->set_flashdata('alert_success', trans('record_successfully_created'));
+            session()->flash('alert_success', trans('record_successfully_created'));
             $id = parent::save(null, $db_array);
         }
 
@@ -33,6 +33,6 @@ class ResponseModel
     public function delete($id)
     {
         parent::delete($id);
-        $this->session->set_flashdata('alert_success', trans('record_successfully_deleted'));
+        session()->flash('alert_success', trans('record_successfully_deleted'));
     }
 }

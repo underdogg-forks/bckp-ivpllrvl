@@ -78,8 +78,8 @@ class AjaxController extends AdminController
                 } elseif (empty($item->item_name) && ( ! empty($item->item_quantity) || ! empty($item->item_price))) {
                     // Throw an error message and use the form validation for that (todo: where the translations of: The .* field is required.)
 // TODO: Use Laravel services/facades - $this->load->library('form_validation');
-                    // TODO: Move to Form Request - $this->form_validation->set_rules('item_name', trans('item'), 'required');
-                    // TODO: Move to Form Request - $this->form_validation->run();
+                    // TODO: Move to Form Request - // TODO: Use Form Request - set_rules('item_name', trans('item'), 'required');
+                    // TODO: Move to Form Request - // TODO: Use Form Request - run();
                     $response = ['success' => 0, 'validation_errors' => ['item_name' => form_error('item_name', '', '')]];
                     exit(json_encode($response));
                 }
