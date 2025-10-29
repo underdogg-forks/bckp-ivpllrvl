@@ -11,11 +11,10 @@ class RedirectHelper
      */
     public static function redirectTo($fallback_url_string, $redirect = true)
     {
-        $CI           = & get_instance();
-        $redirect_url = $CI->session->userdata('redirect_to') ? $CI->session->userdata('redirect_to') : $fallback_url_string;
-        $CI->session->unset_userdata('redirect_to');
+        $redirect_url = session('redirect_to', $fallback_url_string);
+        session()->forget('redirect_to');
         if ($redirect) {
-            redirect($redirect_url);
+            return redirect($redirect_url);
         }
 
         return $redirect_url;
@@ -28,7 +27,6 @@ class RedirectHelper
      */
     public static function redirectToSet(): void
     {
-        $CI = & get_instance();
-        $CI->session->set_userdata('redirect_to', $CI->uri->uri_string());
+        session(['redirect_to' => request()->path()]);
     }
 }

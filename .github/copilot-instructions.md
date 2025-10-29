@@ -23,6 +23,36 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, naming.
 - Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
 - Check for existing components to reuse before writing a new one.
+- **NEVER use CodeIgniter patterns** - this is a Laravel application. See "CodeIgniter to Laravel Migration" section below.
+
+## CodeIgniter to Laravel Migration
+
+This application is being migrated from CodeIgniter to Laravel. **NEVER** use or create CodeIgniter patterns. Use Laravel equivalents:
+
+### Forbidden Patterns (CodeIgniter)
+- ❌ `$this->load->` - Use Laravel dependency injection or facades
+- ❌ `$this->config->` - Use `config()` helper
+- ❌ `$this->input->` - Use `request()` helper  
+- ❌ `$this->session->` - Use `session()` helper
+- ❌ `$this->db->` - Use Eloquent models or `DB::` facade
+- ❌ `$this->security->` - Use Laravel validation and sanitization
+- ❌ `$this->form_validation->` - Use Form Request classes
+- ❌ `get_instance()` - Use dependency injection or facades
+- ❌ `current_url()` - Use `request()->url()` or `url()->current()`
+- ❌ `show_404()` - Use `abort(404)`
+
+### Laravel Equivalents (Use These)
+- ✅ `request()` - For HTTP requests
+- ✅ `session()` - For session data  
+- ✅ `config()` - For configuration
+- ✅ `redirect()` - For redirects
+- ✅ `view()` - For views
+- ✅ Eloquent models - For database operations
+- ✅ Form Request classes - For validation
+- ✅ Dependency injection - For services
+- ✅ `abort(404)` - For 404 errors
+
+
 
 ## Verification Scripts
 
