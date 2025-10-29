@@ -2,6 +2,8 @@
 
 namespace Modules\Projects\app\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\Models\Item;
@@ -23,7 +25,7 @@ class TasksService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS *,
+        DB::select('SQL_CALC_FOUND_ROWS *,
           (CASE WHEN DATEDIFF(NOW(), task_finish_date) > 0 THEN 1 ELSE 0 END) is_overdue
         ', false);
     }
@@ -35,7 +37,7 @@ class TasksService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('ip_projects.project_name, ip_tasks.task_name');
+        DB::orderBy('ip_projects.project_name, ip_tasks.task_name');
     }
 
     /**
@@ -45,7 +47,7 @@ class TasksService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_projects', 'ip_projects.project_id = ip_tasks.project_id', 'left');
+        DB::join('ip_projects', 'ip_projects.project_id = ip_tasks.project_id', 'left');
     }
 
     /**
@@ -55,7 +57,7 @@ class TasksService extends BaseService
      */
     public function getLatest()
     {
-        $this->db->orderBy('ip_tasks.task_id', 'DESC');
+        DB::orderBy('ip_tasks.task_id', 'DESC');
 
         return $this;
     }

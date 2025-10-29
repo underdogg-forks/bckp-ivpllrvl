@@ -2,6 +2,8 @@
 
 namespace Modules\Quotes\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
@@ -260,8 +262,8 @@ class AjaxController extends AdminController
         if ( ! empty($user)) {
             $quote_id = request()->input('quote_id');
             $db_array = ['user_id' => $user_id];
-            $this->db->where('quote_id', $quote_id);
-            $this->db->update('ip_quotes', $db_array);
+            DB::where('quote_id', $quote_id);
+            DB::update('ip_quotes', $db_array);
             $response = ['success' => 1, 'quote_id' => e($quote_id)];
         } else {
 // TODO: Laravel autoloads helpers - $this->load->helper('json_error');
@@ -301,8 +303,8 @@ class AjaxController extends AdminController
         if ( ! empty($client)) {
             $quote_id = request()->input('quote_id');
             $db_array = ['client_id' => $client_id];
-            $this->db->where('quote_id', $quote_id);
-            $this->db->update('ip_quotes', $db_array);
+            DB::where('quote_id', $quote_id);
+            DB::update('ip_quotes', $db_array);
             $response = ['success' => 1, 'quote_id' => e($quote_id)];
         } else {
 // TODO: Laravel autoloads helpers - $this->load->helper('json_error');
@@ -380,14 +382,14 @@ class AjaxController extends AdminController
             // Create new invoice
             $invoice_id = (new InvoicesService())->create(null, false);
             // Update the discounts
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->set('invoice_discount_amount', $quote->quote_discount_amount);
-            $this->db->set('invoice_discount_percent', $quote->quote_discount_percent);
-            $this->db->update('ip_invoices');
+            DB::where('invoice_id', $invoice_id);
+            DB::set('invoice_discount_amount', $quote->quote_discount_amount);
+            DB::set('invoice_discount_percent', $quote->quote_discount_percent);
+            DB::update('ip_invoices');
             // Save the invoice id to the quote
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('invoice_id', $invoice_id);
-            $this->db->update('ip_quotes');
+            DB::where('quote_id', $quote_id);
+            DB::set('invoice_id', $invoice_id);
+            DB::update('ip_quotes');
             // Discounts calculation - since v1.6.3 Need if taxes applied after discounts
             $global_discount = [
                 'amount'  => $quote->quote_discount_amount,

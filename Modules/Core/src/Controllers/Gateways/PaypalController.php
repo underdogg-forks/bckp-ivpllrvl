@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers\Gateways;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\BaseController;
 
@@ -57,13 +59,13 @@ class PaypalController extends BaseController
             $invoice = $this->mdl_invoices->where('ip_invoices.invoice_id', $invoice_id)->get()->row();
             session()->flash('alert_success', sprintf(trans('online_payment_payment_successful'), $invoice->invoice_number));
             $this->session->keep_flashdata('alert_success');
-            $this->db->insert('ip_merchant_responses', ['invoice_id' => $invoice_id, 'merchant_response_successful' => true, 'merchant_response_date' => date('Y-m-d'), 'merchant_response_driver' => 'paypal', 'merchant_response' => $paypal_object->status, 'merchant_response_reference' => 'Resource ID:' . $paypal_object->id]);
+            DB::insert('ip_merchant_responses', ['invoice_id' => $invoice_id, 'merchant_response_successful' => true, 'merchant_response_date' => date('Y-m-d'), 'merchant_response_driver' => 'paypal', 'merchant_response' => $paypal_object->status, 'merchant_response_reference' => 'Resource ID:' . $paypal_object->id]);
         } else {
             $response_error = json_decode($paypal_response['error']->getResponse()->getBody());
             //get the order details to have the invoice id from paypal
             $order_details = json_decode($this->paypal->showOrderDetails($order_id));
             //record the failed transaction in the logs
-            $this->db->insert('ip_merchant_responses', ['invoice_id' => $order_details->purchase_units[0]->payments->captures[0]->invoice_id, 'merchant_response_successful' => true, 'merchant_response_date' => date('Y-m-d'), 'merchant_response_driver' => 'paypal', 'merchant_response' => 'name: ' . $response_error->name . '; details: ' . $response_error->details[0]->description, 'merchant_response_reference' => 'Resource ID:' . $order_id]);
+            DB::insert('ip_merchant_responses', ['invoice_id' => $order_details->purchase_units[0]->payments->captures[0]->invoice_id, 'merchant_response_successful' => true, 'merchant_response_date' => date('Y-m-d'), 'merchant_response_driver' => 'paypal', 'merchant_response' => 'name: ' . $response_error->name . '; details: ' . $response_error->details[0]->description, 'merchant_response_reference' => 'Resource ID:' . $order_id]);
             //set error message to be flashed
             session()->flash('alert_error', trans('online_payment_payment_failed') . '<br>' . $response_error->details[0]->description);
             $this->session->keep_flashdata('alert_error');

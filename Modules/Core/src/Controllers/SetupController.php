@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller as MXController;
 use Illuminate\Support\Facades\Log;
@@ -127,7 +129,7 @@ class SetupController extends MXController
         if (request()->input('btn_continue')) {
             $this->loadCiDatabase();
             // This might be an upgrade - check if it is
-            if ( ! $this->db->table_exists('ip_versions')) {
+            if ( ! DB::table_exists('ip_versions')) {
                 // This appears to be an install
                 session(['install_step', 'install_tables');
                 redirect()->route('setup/install_tables');
@@ -267,7 +269,7 @@ class SetupController extends MXController
             redirect()->route('setup/prerequisites');
         }
         $this->loadCiDatabase();
-        $users = $this->db->query('SELECT * FROM ip_users');
+        $users = DB::query('SELECT * FROM ip_users');
         if ($users->numRows() === 0) {
             Log::error('there was already one or more users in the database');
             session()->flash('alert_error', 'Something went wrong, check the log file for errors');
@@ -278,7 +280,7 @@ class SetupController extends MXController
         $this->postSetupTasks();
         // Check if this is an update or the first install
         // First get all version entries from the database and format them
-        $versions = $this->db->query('SELECT * FROM ip_versions');
+        $versions = DB::query('SELECT * FROM ip_versions');
         if ($versions->numRows() > 0) {
             foreach ($versions->result() as $row) {
                 $data[] = $row;

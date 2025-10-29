@@ -10,10 +10,9 @@ class InvoiceHelper
      * @originalFile invoice_helper.php
      */
     public static function invoiceLogo(): string
-    {
-        $CI = & get_instance();
-        if ($CI->mdl_settings->setting('invoice_logo')) {
-            return '<img src="' . base_url() . 'uploads/' . $CI->mdl_settings->setting('invoice_logo') . '">';
+    { // TODO: Replace with Laravel patterns
+        if (get_setting('invoice_logo')) {
+            return '<img src="' . base_url() . 'uploads/' . get_setting('invoice_logo') . '">';
         }
 
         return '';
@@ -25,12 +24,11 @@ class InvoiceHelper
      * @originalFile invoice_helper.php
      */
     public static function invoiceLogoPdf(): string
-    {
-        $CI = & get_instance();
-        if ($CI->mdl_settings->setting('invoice_logo')) {
+    { // TODO: Replace with Laravel patterns
+        if (get_setting('invoice_logo')) {
             $absolutePath = dirname(dirname(__DIR__));
 
-            return '<img src="' . $absolutePath . '/uploads/' . $CI->mdl_settings->setting('invoice_logo') . '" id="invoice-logo">';
+            return '<img src="' . $absolutePath . '/uploads/' . get_setting('invoice_logo') . '" id="invoice-logo">';
         }
 
         return '';
@@ -90,12 +88,11 @@ class InvoiceHelper
      * @originalFile invoice_helper.php
      */
     public static function invoiceQrcode($invoice_id): string
-    {
-        $CI = & get_instance();
-        if ($CI->mdl_settings->setting('qr_code') && $CI->mdl_settings->setting('qr_code_iban') && $CI->mdl_settings->setting('qr_code_bic')) {
+    { // TODO: Replace with Laravel patterns
+        if (get_setting('qr_code') && get_setting('qr_code_iban') && get_setting('qr_code_bic')) {
             $invoice = $CI->mdl_invoices->get_by_id($invoice_id);
             if ((float) $invoice->invoice_balance) {
-                $CI->load->library('Modules\Core\Libraries\QrCode', ['invoice' => $invoice]);
+                // TODO: Use Laravel services - 'Modules\Core\Libraries\QrCode', ['invoice' => $invoice]);
                 $qrcode_data_uri = $CI->qrcode->generate();
 
                 return '<img src="' . $qrcode_data_uri . '" alt="QR Code" id="invoice-qr-code">';

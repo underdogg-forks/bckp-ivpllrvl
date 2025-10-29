@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Payments\Models\PaymentCustom;
 
@@ -21,7 +23,7 @@ class PaymentCustomsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_payment_custom.*, ip_custom_fields.*', false);
+        DB::select('SQL_CALC_FOUND_ROWS ip_payment_custom.*, ip_custom_fields.*', false);
     }
 
     /**
@@ -31,7 +33,7 @@ class PaymentCustomsService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_custom_fields', 'ip_payment_custom.payment_custom_fieldid = ip_custom_fields.custom_field_id');
+        DB::join('ip_custom_fields', 'ip_payment_custom.payment_custom_fieldid = ip_custom_fields.custom_field_id');
     }
 
     /**
@@ -41,7 +43,7 @@ class PaymentCustomsService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
+        DB::orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
 
     /**
@@ -89,7 +91,7 @@ class PaymentCustomsService extends BaseService
      */
     public function byId($payment_id)
     {
-        $this->db->where('ip_payment_custom.payment_id', $payment_id);
+        DB::where('ip_payment_custom.payment_id', $payment_id);
 
         return $this;
     }

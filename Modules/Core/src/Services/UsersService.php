@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Models\User;
 
@@ -33,7 +35,7 @@ class UsersService extends BaseService
      */
     public function defaultSelect(): void
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_users.*', false);
+        DB::select('SQL_CALC_FOUND_ROWS ip_users.*', false);
     }
 
     /**
@@ -43,7 +45,7 @@ class UsersService extends BaseService
      */
     public function defaultOrderBy(): void
     {
-        $this->db->orderBy('ip_users.user_name');
+        DB::orderBy('ip_users.user_name');
     }
 
     /**

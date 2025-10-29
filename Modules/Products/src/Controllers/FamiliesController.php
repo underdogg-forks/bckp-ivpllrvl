@@ -2,6 +2,8 @@
 
 namespace src\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -47,7 +49,7 @@ class FamiliesController extends AdminController
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if (request()->input('is_update') == 0 && request()->input('family_name') != '') {
-            $check = $this->db->get_where('ip_families', ['family_name' => request()->input('family_name')])->result();
+            $check = DB::get_where('ip_families', ['family_name' => request()->input('family_name')])->result();
             if ( ! empty($check)) {
                 session()->flash('alert_error', trans('family_already_exists'));
                 redirect()->route('families/form');

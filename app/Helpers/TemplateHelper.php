@@ -70,16 +70,15 @@ class TemplateHelper
                     default:
                         // Check if it's a custom field
                         if (preg_match('/ip_cf_(\d.*)/', $var, $cf_id)) {
-                            // GetController the custom field
-                            $CI = & get_instance();
-                            $CI->load->model('custom_fields/mdl_custom_fields');
+                            // GetController the custom field // TODO: Replace with Laravel patterns
+                            // TODO: Use dependency injection - 'custom_fields/mdl_custom_fields');
                             $cf = $CI->mdl_custom_fields->get_by_id($cf_id[1]);
                             if ($cf) {
                                 // GetController the values for the custom field
                                 $cf_model = str_replace('ip_', 'mdl_', $cf->custom_field_table);
                                 $replace  = $CI->mdl_custom_fields->get_value_for_field($cf_id[1], $cf_model, $object);
                                 if ($cf->custom_field_type == 'SINGLE-CHOICE') {
-                                    $CI->load->model('custom_values/mdl_custom_values', 'cv');
+                                    // TODO: Use dependency injection - 'custom_values/mdl_custom_values', 'cv');
                                     $el      = $CI->cv->get_by_id($replace)->row();
                                     $replace = $el->custom_values_value;
                                 }
@@ -103,10 +102,9 @@ class TemplateHelper
      * @originalFile template_helper.php
      */
     public static function getInvoiceStatus($id)
-    {
-        $CI = & get_instance();
+    { // TODO: Replace with Laravel patterns
         if (empty($CI->mdl_invoices)) {
-            $CI->load->model('invoices/mdl_invoices');
+            // TODO: Use dependency injection - 'invoices/mdl_invoices');
         }
         $statuses = $CI->mdl_invoices->statuses();
 
@@ -119,19 +117,18 @@ class TemplateHelper
      * @originalFile template_helper.php
      */
     public static function selectPdfInvoiceTemplate($invoice)
-    {
-        $CI = & get_instance();
+    { // TODO: Replace with Laravel patterns
         if ($invoice->is_overdue) {
             // Use the overdue template
-            return $CI->mdl_settings->setting('pdf_invoice_template_overdue');
+            return get_setting('pdf_invoice_template_overdue');
         }
         if ($invoice->invoice_status_id == 4) {
             // Use the paid template
-            return $CI->mdl_settings->setting('pdf_invoice_template_paid');
+            return get_setting('pdf_invoice_template_paid');
         }
 
         // Use the default template
-        return $CI->mdl_settings->setting('pdf_invoice_template');
+        return get_setting('pdf_invoice_template');
     }
 
     /**
@@ -140,18 +137,17 @@ class TemplateHelper
      * @originalFile template_helper.php
      */
     public static function selectEmailInvoiceTemplate($invoice)
-    {
-        $CI = & get_instance();
+    { // TODO: Replace with Laravel patterns
         if ($invoice->is_overdue) {
             // Use the overdue template
-            return $CI->mdl_settings->setting('email_invoice_template_overdue');
+            return get_setting('email_invoice_template_overdue');
         }
         if ($invoice->invoice_status_id == 4) {
             // Use the paid template
-            return $CI->mdl_settings->setting('email_invoice_template_paid');
+            return get_setting('email_invoice_template_paid');
         }
 
         // Use the default template
-        return $CI->mdl_settings->setting('email_invoice_template');
+        return get_setting('email_invoice_template');
     }
 }

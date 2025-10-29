@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use App\Helpers\MailerHelper;
 use Illuminate\Support\Facades\Log;
@@ -41,8 +43,8 @@ class SessionsController extends BaseController
     {
         $view_data = ['login_logo' => get_setting('login_logo')];
         if (request()->input('btn_login')) {
-            $this->db->where('user_email', request()->input('email'));
-            $query = $this->db->get('ip_users');
+            DB::where('user_email', request()->input('email'));
+            $query = DB::get('ip_users');
             $user  = $query->row();
             // Check if the user exists
             if (empty($user)) {
@@ -135,8 +137,8 @@ class SessionsController extends BaseController
                 //the use of a token counts as a failure
                 $this->loginLogAddfailure($token);
             }
-            $this->db->where('user_passwordreset_token', $token);
-            $user = $this->db->get('ip_users');
+            DB::where('user_passwordreset_token', $token);
+            $user = DB::get('ip_users');
             $user = $user->row();
             if (empty($user)) {
                 // Redirect back to the login screen with an alert
@@ -174,10 +176,10 @@ class SessionsController extends BaseController
             // Update the user and set him active again
             $db_array = ['user_passwordreset_token' => ''];
             //delete failed attempts from login_log table
-            $user = $this->db->where('user_id', $user_id)->get('ip_users')->row();
+            $user = DB::where('user_id', $user_id)->get('ip_users')->row();
             $this->loginLogReset($user->user_email);
-            $this->db->where('user_id', $user_id);
-            $this->db->update('ip_users', $db_array);
+            DB::where('user_id', $user_id);
+            DB::update('ip_users', $db_array);
             // Redirect back to the login form
             redirect()->route('sessions/login');
         }
@@ -201,7 +203,7 @@ class SessionsController extends BaseController
                 $this->loginLogAddfailure($email);
             }
             // Test if a user with this email exists
-            if ($recovery_result = $this->db->where('user_email', $email)) {
+            if ($recovery_result = DB::where('user_email', $email)) {
                 // Create a passwordreset token.
                 $email = request()->input('email', true);
                 if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -213,8 +215,8 @@ class SessionsController extends BaseController
                 $token = md5(time() . $email . $this->crypt->salt());
                 // Save the token to the database and set the user to inactive
                 $db_array = ['user_passwordreset_token' => $token];
-                $this->db->where('user_email', $email);
-                $this->db->update('ip_users', $db_array);
+                DB::where('user_email', $email);
+                DB::update('ip_users', $db_array);
                 // Send the email with reset link
                 // Prepare some variables for the email
                 $email_resetlink = site_url('sessions/passwordreset/' . $token);
@@ -265,7 +267,7 @@ class SessionsController extends BaseController
      */
     private function loginLogCheck($username)
     {
-        $login_log_query = $this->db->where('login_name', $username)->get('ip_login_log')->row();
+        $login_log_query = DB::where('login_name', $username)->get('ip_login_log')->row();
         if ( ! empty($login_log_query) && $login_log_query->log_count > 10) {
             $current_time = new DateTime();
             $interval     = $current_time->diff(new DateTime($login_log_query->log_create_timestamp));
@@ -291,10 +293,10 @@ class SessionsController extends BaseController
     {
         if (empty($login_log_check = $this->loginLogCheck($username))) {
             //create the log
-            $this->db->insert('ip_login_log', ['login_name' => $username, 'log_count' => 1, 'log_create_timestamp' => date('c')]);
+            DB::insert('ip_login_log', ['login_name' => $username, 'log_count' => 1, 'log_create_timestamp' => date('c')]);
         } else {
             //update the log
-            $this->db->set(['log_count' => $login_log_check->log_count + 1, 'log_create_timestamp' => date('c')])->where('login_name', $username)->update('ip_login_log');
+            DB::set(['log_count' => $login_log_check->log_count + 1, 'log_create_timestamp' => date('c')])->where('login_name', $username)->update('ip_login_log');
         }
     }
 
@@ -305,6 +307,6 @@ class SessionsController extends BaseController
      */
     private function loginLogReset($username)
     {
-        $this->db->delete('ip_login_log', ['login_name' => $username]);
+        DB::delete('ip_login_log', ['login_name' => $username]);
     }
 }

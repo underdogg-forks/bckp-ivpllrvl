@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\CustomFieldsService;
 
@@ -58,7 +60,7 @@ class EmailTemplatesController extends AdminController
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if (request()->input('is_update') == 0 && request()->input('email_template_title') != '') {
-            $check = $this->db->get_where('ip_email_templates', ['email_template_title' => request()->input('email_template_title')])->result();
+            $check = DB::get_where('ip_email_templates', ['email_template_title' => request()->input('email_template_title')])->result();
             if ( ! empty($check)) {
                 session()->flash('alert_error', trans('email_template_already_exists'));
                 redirect()->route('email_templates/form');

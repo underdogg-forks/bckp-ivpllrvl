@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 
 #[AllowDynamicProperties]
@@ -27,7 +29,7 @@ class ImportService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select("SQL_CALC_FOUND_ROWS ip_imports.*,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_clients' AND ip_import_details.import_id = ip_imports.import_id) AS num_clients,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_invoices' AND ip_import_details.import_id = ip_imports.import_id) AS num_invoices,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_invoice_items' AND ip_import_details.import_id = ip_imports.import_id) AS num_invoice_items,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_payments' AND ip_import_details.import_id = ip_imports.import_id) AS num_payments", false);
+        DB::select("SQL_CALC_FOUND_ROWS ip_imports.*,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_clients' AND ip_import_details.import_id = ip_imports.import_id) AS num_clients,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_invoices' AND ip_import_details.import_id = ip_imports.import_id) AS num_invoices,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_invoice_items' AND ip_import_details.import_id = ip_imports.import_id) AS num_invoice_items,\n            (SELECT COUNT(*) FROM ip_import_details WHERE import_table_name = 'ip_payments' AND ip_import_details.import_id = ip_imports.import_id) AS num_payments", false);
     }
 
     /**
@@ -37,7 +39,7 @@ class ImportService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('ip_imports.import_date DESC');
+        DB::orderBy('ip_imports.import_date DESC');
     }
 
     /**
@@ -48,9 +50,9 @@ class ImportService extends BaseService
     public function startImport()
     {
         $db_array = ['import_date' => date('Y-m-d H:i:s')];
-        $this->db->insert('ip_imports', $db_array);
+        DB::insert('ip_imports', $db_array);
 
-        return $this->db->insert_id();
+        return DB::insert_id();
     }
 
     /**
@@ -90,9 +92,9 @@ class ImportService extends BaseService
                     $db_array['client_date_modified'] = date('Y-m-d');
                 }
                 // Insert the record
-                $this->db->insert($table, $db_array);
+                DB::insert($table, $db_array);
                 // Record the inserted id
-                $ids[] = $this->db->insert_id();
+                $ids[] = DB::insert_id();
             }
             $row++;
         }
@@ -129,8 +131,8 @@ class ImportService extends BaseService
                 foreach ($headers as $key => $header) {
                     if ($header == 'user_email') {
                         // Attempt to replace email address with user id
-                        $this->db->where('user_email', $data[$key]);
-                        $user = $this->db->get('ip_users');
+                        DB::where('user_email', $data[$key]);
+                        $user = DB::get('ip_users');
                         if ($user->numRows()) {
                             $header     = 'user_id';
                             $data[$key] = $user->row()->user_id;
@@ -141,16 +143,16 @@ class ImportService extends BaseService
                     } elseif ($header == 'client_name') {
                         // Replace client name with client id
                         $header = 'client_id';
-                        $this->db->where('client_name', $data[$key]);
-                        $client = $this->db->get('ip_clients');
+                        DB::where('client_name', $data[$key]);
+                        $client = DB::get('ip_clients');
                         if ($client->numRows()) {
                             // Existing client found
                             $data[$key] = $client->row()->client_id;
                         } else {
                             // Existing client not found - create new client
                             $client_db_array = ['client_name' => $data[$key], 'client_date_created' => date('Y-m-d'), 'client_date_modified' => date('Y-m-d')];
-                            $this->db->insert('ip_clients', $client_db_array);
-                            $data[$key] = $this->db->insert_id();
+                            DB::insert('ip_clients', $client_db_array);
+                            $data[$key] = DB::insert_id();
                         }
                     }
                     // Each invoice needs a url key
@@ -199,8 +201,8 @@ class ImportService extends BaseService
                 foreach ($headers as $key => $header) {
                     if ($header == 'invoice_number') {
                         // Replace invoice_number with invoice_id
-                        $this->db->where('invoice_number', $data[$key]);
-                        $user = $this->db->get('ip_invoices');
+                        DB::where('invoice_number', $data[$key]);
+                        $user = DB::get('ip_invoices');
                         if ($user->numRows()) {
                             $header     = 'invoice_id';
                             $data[$key] = $user->row()->invoice_id;
@@ -211,13 +213,13 @@ class ImportService extends BaseService
                         // Replace item_tax_rate with item_tax_rate_id
                         $header = 'item_tax_rate_id';
                         if ($data[$key] > 0) {
-                            $this->db->where('tax_rate_percent', $data[$key]);
-                            $tax_rate = $this->db->get('ip_tax_rates');
+                            DB::where('tax_rate_percent', $data[$key]);
+                            $tax_rate = DB::get('ip_tax_rates');
                             if ($tax_rate->numRows()) {
                                 $data[$key] = $tax_rate->row()->tax_rate_id;
                             } else {
-                                $this->db->insert('ip_tax_rates', ['tax_rate_name' => $data[$key], 'tax_rate_percent' => $data[$key]]);
-                                $data[$key] = $this->db->insert_id();
+                                DB::insert('ip_tax_rates', ['tax_rate_name' => $data[$key], 'tax_rate_percent' => $data[$key]]);
+                                $data[$key] = DB::insert_id();
                             }
                         } else {
                             $data[$key] = 0;
@@ -267,8 +269,8 @@ class ImportService extends BaseService
                 $db_array = [];
                 foreach ($headers as $key => $header) {
                     if ($header == 'invoice_number') {
-                        $this->db->where('invoice_number', $data[$key]);
-                        $user = $this->db->get('ip_invoices');
+                        DB::where('invoice_number', $data[$key]);
+                        $user = DB::get('ip_invoices');
                         if ($user->numRows()) {
                             $header     = 'invoice_id';
                             $data[$key] = $user->row()->invoice_id;
@@ -278,13 +280,13 @@ class ImportService extends BaseService
                     } elseif ($header == 'payment_method') {
                         $header = 'payment_method_id';
                         if ($data[$key]) {
-                            $this->db->where('payment_method_name', $data[$key]);
-                            $payment_method = $this->db->get('ip_payment_methods');
+                            DB::where('payment_method_name', $data[$key]);
+                            $payment_method = DB::get('ip_payment_methods');
                             if ($payment_method->numRows()) {
                                 $data[$key] = $payment_method->row()->payment_method_id;
                             } else {
-                                $this->db->insert('ip_payment_methods', ['payment_method_name' => $data[$key]]);
-                                $data[$key] = $this->db->insert_id();
+                                DB::insert('ip_payment_methods', ['payment_method_name' => $data[$key]]);
+                                $data[$key] = DB::insert_id();
                             }
                         } else {
                             // No payment method provided
@@ -312,7 +314,7 @@ class ImportService extends BaseService
     {
         foreach ($ids as $id) {
             $db_array = ['import_id' => $import_id, 'import_table_name' => $table_name, 'import_lang_key' => $import_lang_key, 'import_record_id' => $id];
-            $this->db->insert('ip_import_details', $db_array);
+            DB::insert('ip_import_details', $db_array);
         }
     }
 
@@ -324,16 +326,16 @@ class ImportService extends BaseService
     public function delete($import_id)
     {
         // Gather the import details
-        $import_details = $this->db->where('import_id', $import_id)->get('ip_import_details')->result();
+        $import_details = DB::where('import_id', $import_id)->get('ip_import_details')->result();
         // Loop through details and delete each of the imported records
         foreach ($import_details as $import_detail) {
-            $this->db->query('DELETE FROM ' . $import_detail->import_table_name . ' WHERE ' . $this->primary_keys[$import_detail->import_table_name] . ' = ' . $import_detail->import_record_id);
+            DB::query('DELETE FROM ' . $import_detail->import_table_name . ' WHERE ' . $this->primary_keys[$import_detail->import_table_name] . ' = ' . $import_detail->import_record_id);
         }
         // Delete the master import record
         parent::delete($import_id);
         // Delete the detail records
-        $this->db->where('import_id', $import_id);
-        $this->db->delete('ip_import_details');
+        DB::where('import_id', $import_id);
+        DB::delete('ip_import_details');
         // Delete any orphaned records
 // TODO: Laravel autoloads helpers - $this->load->helper('orphan');
         delete_orphans();

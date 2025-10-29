@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\UserClientsService;
 use Modules\Core\Services\UsersService;
@@ -71,8 +73,8 @@ class UserClientsController extends AdminController
                 $user_update = ['user_all_clients' => 0];
                 (new UserClientsService())->save();
             }
-            $this->db->where('user_id', $user_id);
-            $this->db->update('ip_users', $user_update);
+            DB::where('user_id', $user_id);
+            DB::update('ip_users', $user_update);
             redirect('user_clients/user/' . $user_id);
         }
         $user    = (new UsersService())->getById($user_id);

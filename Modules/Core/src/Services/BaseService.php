@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use function App\Services\validation_errors;
 
 class BaseService
@@ -94,7 +96,7 @@ class BaseService
             $this->setDefaults();
         }
         $this->runFilters();
-        $this->query  = $this->db->get($this->table);
+        $this->query  = DB::get($this->table);
         $this->filter = [];
 
         return $this;
@@ -114,9 +116,9 @@ class BaseService
         $per_page           = empty($default_list_limit) ? $this->default_limit : $default_list_limit;
         $this->setDefaults();
         $this->runFilters();
-        $this->db->limit($per_page, $this->offset);
-        $this->query           = $this->db->get($this->table);
-        $this->total_rows      = $this->db->query('SELECT FOUND_ROWS() AS num_rows')->row()->num_rows;
+        DB::limit($per_page, $this->offset);
+        $this->query           = DB::get($this->table);
+        $this->total_rows      = DB::query('SELECT FOUND_ROWS() AS num_rows')->row()->num_rows;
         $this->total_pages     = ceil($this->total_rows / $per_page);
         $this->previous_offset = $this->offset - $per_page;
         $this->next_offset     = $this->offset + $per_page;
@@ -160,9 +162,9 @@ class BaseService
                     $db_array->{$this->date_modified_field} = $datetime;
                 }
             }
-            $this->db->insert($this->table, $db_array);
+            DB::insert($this->table, $db_array);
 
-            return $this->db->insert_id();
+            return DB::insert_id();
         }
         if ($this->date_modified_field) {
             if (is_array($db_array)) {
@@ -171,8 +173,8 @@ class BaseService
                 $db_array->{$this->date_modified_field} = $datetime;
             }
         }
-        $this->db->where($this->primary_key, $id);
-        $this->db->update($this->table, $db_array);
+        DB::where($this->primary_key, $id);
+        DB::update($this->table, $db_array);
 
         return $id;
     }
@@ -202,8 +204,8 @@ class BaseService
      */
     public function delete($id)
     {
-        $this->db->where($this->primary_key, $id);
-        $this->db->delete($this->table);
+        DB::where($this->primary_key, $id);
+        DB::delete($this->table);
     }
 
     /**

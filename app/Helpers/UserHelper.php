@@ -12,10 +12,9 @@ class UserHelper
     public static function formatUser($user): string
     {
         // GetController an id
-        if ($user && is_numeric($user)) {
-            $CI = & get_instance();
+        if ($user && is_numeric($user)) { // TODO: Replace with Laravel patterns
             if ( ! property_exists($CI, 'mdl_users')) {
-                $CI->load->model('users/mdl_users');
+                // TODO: Use dependency injection - 'users/mdl_users');
             }
             $user = $CI->mdl_users->get_by_id($user);
         }

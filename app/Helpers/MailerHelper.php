@@ -10,10 +10,9 @@ class MailerHelper
      * @originalFile mailer_helper.php
      */
     public static function mailerConfigured(): bool
-    {
-        $CI = & get_instance();
+    { // TODO: Replace with Laravel patterns
 
-        return $CI->mdl_settings->setting('email_send_method') == 'phpmail' || $CI->mdl_settings->setting('email_send_method') == 'sendmail' || $CI->mdl_settings->setting('email_send_method') == 'smtp' && $CI->mdl_settings->setting('smtp_server_address');
+        return get_setting('email_send_method') == 'phpmail' || get_setting('email_send_method') == 'sendmail' || get_setting('email_send_method') == 'smtp' && get_setting('smtp_server_address');
     }
 
     /**
@@ -22,9 +21,8 @@ class MailerHelper
      * @originalFile mailer_helper.php
      */
     public static function emailInvoice(string $invoice_id, $invoice_template, array $from, $to, $subject, $body, $cc = null, $bcc = null, $attachments = null)
-    {
-        $CI = & get_instance();
-        $CI->load->helper(['mailer/phpmailer', 'template', 'invoice', 'pdf']);
+    { // TODO: Replace with Laravel patterns
+        // TODO: Laravel autoloads helpers - ['mailer/phpmailer', 'template', 'invoice', 'pdf']);
         $db_invoice = $CI->mdl_invoices->where('ip_invoices.invoice_id', $invoice_id)->get()->row();
         if ($db_invoice->sumex_id == null) {
             $invoice = generate_invoice_pdf($invoice_id, false, $invoice_template);
@@ -68,9 +66,8 @@ class MailerHelper
      * @originalFile mailer_helper.php
      */
     public static function emailQuote(string $quote_id, $quote_template, array $from, $to, $subject, $body, $cc = null, $bcc = null, $attachments = null)
-    {
-        $CI = & get_instance();
-        $CI->load->helper(['mailer/phpmailer', 'template', 'pdf']);
+    { // TODO: Replace with Laravel patterns
+        // TODO: Laravel autoloads helpers - ['mailer/phpmailer', 'template', 'pdf']);
         $quote    = generate_quote_pdf($quote_id, false, $quote_template);
         $db_quote = $CI->mdl_quotes->where('ip_quotes.quote_id', $quote_id)->get()->row();
         $message  = parse_template($db_quote, $body);
@@ -109,9 +106,8 @@ class MailerHelper
         error_reporting(E_ALL);
         if ( ! mailer_configured()) {
             return false;
-        }
-        $CI = & get_instance();
-        $CI->load->helper('mailer/phpmailer');
+        } // TODO: Replace with Laravel patterns
+        // TODO: Laravel autoloads helpers - 'mailer/phpmailer');
         $quote      = $CI->mdl_quotes->where('ip_quotes.quote_id', $quote_id)->get()->row();
         $index      = env('REMOVE_INDEXPHP', true) ? '' : 'index.php';
         $base_url   = base_url('/' . $index . '/quotes/view/' . $quote_id);
@@ -129,8 +125,7 @@ class MailerHelper
      */
     public static function checkMailErrors(array $errors = [], $redirect = ''): void
     {
-        if ($errors) {
-            $CI = & get_instance();
+        if ($errors) { // TODO: Replace with Laravel patterns
             foreach ($errors as $i => $e) {
                 $errors[$i] = strtr(trans('form_validation_valid_email'), ['{field}' => trans($e)]);
             }

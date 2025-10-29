@@ -10,9 +10,8 @@ class SettingsHelper
      * @originalFile settings_helper.php
      */
     public static function getSetting($setting_key, $default = '', $escape = false)
-    {
-        $CI    = & get_instance();
-        $value = $CI->mdl_settings->setting($setting_key, $default);
+    { // TODO: Replace with Laravel patterns
+        $value = get_setting($setting_key, $default);
 
         return $escape ? htmlsc($value) : $value;
     }
@@ -23,8 +22,7 @@ class SettingsHelper
      * @originalFile settings_helper.php
      */
     public static function getGatewaySettings($gateway)
-    {
-        $CI = & get_instance();
+    { // TODO: Replace with Laravel patterns
 
         return $CI->mdl_settings->gateway_settings($gateway);
     }

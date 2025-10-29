@@ -2,6 +2,8 @@
 
 namespace Modules\Quotes\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Quotes\Models\QuoteTaxRate;
@@ -20,9 +22,9 @@ class QuoteTaxRatesService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('ip_tax_rates.tax_rate_name AS quote_tax_rate_name');
-        $this->db->select('ip_tax_rates.tax_rate_percent AS quote_tax_rate_percent');
-        $this->db->select('ip_quote_tax_rates.*');
+        DB::select('ip_tax_rates.tax_rate_name AS quote_tax_rate_name');
+        DB::select('ip_tax_rates.tax_rate_percent AS quote_tax_rate_percent');
+        DB::select('ip_quote_tax_rates.*');
     }
 
     /**
@@ -32,7 +34,7 @@ class QuoteTaxRatesService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_quote_tax_rates.tax_rate_id');
+        DB::join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_quote_tax_rates.tax_rate_id');
     }
 
     /**

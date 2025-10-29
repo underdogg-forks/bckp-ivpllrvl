@@ -1,5 +1,5 @@
 @php
-    if ($this->config->item('disable_read_only') == true) {
+    if (config('disable_read_only') == true) {
         $invoice->is_read_only = 0;
     }
     $its_mine = $this->session->__get('user_id') == $invoice->user_id;

@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Users\Controllers\ClientsService;
 use Modules\Users\Controllers\SettingsService;
@@ -39,7 +41,7 @@ class UsersAjaxController extends AdminController
         // Search for chars "in the middle" of users names
         $moreUsersQuery = $permissiveSearchUsers ? '%' : '';
         // Search for users $type
-        $escapedQuery = $this->db->escape_str($query);
+        $escapedQuery = DB::escape_str($query);
         $escapedQuery = str_replace('%', '', $escapedQuery);
         // Not searched: user_address_1 user_address_2 user_city user_state user_zip user_country user_invoicing_contact
         $users = (new UsersService())->where('user_active', 1)->where('user_type', $type)->having("user_name LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_company LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_invoicing_contact LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->orderBy('user_name')->get()->result();

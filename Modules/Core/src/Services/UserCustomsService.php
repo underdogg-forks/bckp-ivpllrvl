@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 /*
  * userPlane
  *
@@ -26,7 +28,7 @@ class UserCustomsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_user_custom.*, ip_custom_fields.*', false);
+        DB::select('SQL_CALC_FOUND_ROWS ip_user_custom.*, ip_custom_fields.*', false);
     }
 
     /**
@@ -36,7 +38,7 @@ class UserCustomsService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_custom_fields', 'ip_user_custom.user_custom_fieldid = ip_custom_fields.custom_field_id');
+        DB::join('ip_custom_fields', 'ip_user_custom.user_custom_fieldid = ip_custom_fields.custom_field_id');
     }
 
     /**
@@ -46,7 +48,7 @@ class UserCustomsService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
+        DB::orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
 
     /**
@@ -92,7 +94,7 @@ class UserCustomsService extends BaseService
      */
     public function byId($user_id)
     {
-        $this->db->where('ip_user_custom.user_id', $user_id);
+        DB::where('ip_user_custom.user_id', $user_id);
 
         return $this;
     }

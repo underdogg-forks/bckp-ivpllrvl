@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\Models\InvoiceSumex;
@@ -20,7 +22,7 @@ class InvoiceSumexService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('ip_invoice_sumex.*');
+        DB::select('ip_invoice_sumex.*');
     }
 
     /**

@@ -10,9 +10,8 @@ class EInvoiceHelper
      * @originalFile e-invoice_helper.php
      */
     public static function generateXmlInvoiceFile($invoice, $items, string $xml_lib, string $filename, $options): string
-    {
-        $CI = & get_instance();
-        $CI->load->library('XMLtemplates/' . $xml_lib . 'Xml', ['invoice' => $invoice, 'items' => $items, 'filename' => $filename, 'options' => $options], 'ublciixml');
+    { // TODO: Replace with Laravel patterns
+        // TODO: Use Laravel services - 'XMLtemplates/' . $xml_lib . 'Xml', ['invoice' => $invoice, 'items' => $items, 'filename' => $filename, 'options' => $options], 'ublciixml');
         $CI->ublciixml->xml();
 
         return UPLOADS_TEMP_FOLDER . $filename . '.xml';
@@ -66,8 +65,7 @@ class EInvoiceHelper
     public static function getXmlFullName(string $xml_id)
     {
         if (file_exists(APPPATH . 'Helpers/XMLconfigs/' . $xml_id . '.php')) {
-            include APPPATH . 'Helpers/XMLconfigs/' . $xml_id . '.php';
-            $CI = & get_instance();
+            include APPPATH . 'Helpers/XMLconfigs/' . $xml_id . '.php'; // TODO: Replace with Laravel patterns
             // Shift calculation mode (false by default). Need true? See Dev Note on ipconfig example
             $CI->config->set_item('legacy_calculation', ! empty($xml_setting['legacy_calculation']));
 
@@ -81,15 +79,14 @@ class EInvoiceHelper
      * @originalFile e-invoice_helper.php
      */
     public static function getAdminActiveUsers($user_id = ''): array
-    {
-        $CI    = & get_instance();
+    { // TODO: Replace with Laravel patterns
         $where = ['user_type' => '1', 'user_active' => '1'];
         // Administrators Active Only
         if ($user_id) {
             $where['user_id'] = $user_id;
         }
 
-        return $CI->db->from('ip_users')->where($where)->get()->result();
+        return DB::from('ip_users')->where($where)->get()->result();
     }
 
     /**
@@ -248,8 +245,7 @@ class EInvoiceHelper
         // Check if taxe are in all or not alert
         $checks = get_items_tax_usages($items);
         // Bad: One with 0 Ok (false), No 0 NoOk (true)
-        if (count($checks[0]) != 0 && count($checks[1]) != 0) {
-            $CI = & get_instance();
+        if (count($checks[0]) != 0 && count($checks[1]) != 0) { // TODO: Replace with Laravel patterns
             $CI->session->set_flashdata('alert_warning', '<h3 class="pull-right"><a class="btn btn-default" href="javascript:check_items_tax_usages(true);"><i class="fa fa-cogs"></i> ' . trans('view') . '</a></h3>' . trans('items_tax_usages_bad_set'));
 
             return $checks;

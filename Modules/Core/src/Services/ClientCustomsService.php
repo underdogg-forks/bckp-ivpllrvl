@@ -2,6 +2,8 @@
 
 namespace Modules\CustomFields\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\CustomFields\Models\ClientCustom;
@@ -22,7 +24,7 @@ class ClientCustomsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_client_custom.*, ip_custom_fields.*', false);
+        DB::select('SQL_CALC_FOUND_ROWS ip_client_custom.*, ip_custom_fields.*', false);
     }
 
     /**
@@ -32,7 +34,7 @@ class ClientCustomsService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
+        DB::orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
 
     /**
@@ -42,7 +44,7 @@ class ClientCustomsService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_custom_fields', 'ip_client_custom.client_custom_fieldid = ip_custom_fields.custom_field_id', 'inner');
+        DB::join('ip_custom_fields', 'ip_client_custom.client_custom_fieldid = ip_custom_fields.custom_field_id', 'inner');
     }
 
     /**
@@ -135,7 +137,7 @@ class ClientCustomsService extends BaseService
      */
     public function byId($client_id)
     {
-        $this->db->where('ip_client_custom.client_id', $client_id);
+        DB::where('ip_client_custom.client_id', $client_id);
 
         return $this;
     }

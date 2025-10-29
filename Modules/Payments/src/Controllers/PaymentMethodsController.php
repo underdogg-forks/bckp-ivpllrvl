@@ -2,6 +2,8 @@
 
 namespace Modules\Payments\app\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -51,7 +53,7 @@ class PaymentMethodsController extends AdminController
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if (request()->input('is_update') == 0 && request()->input('payment_method_name') != '') {
-            $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => request()->input('payment_method_name')])->result();
+            $check = DB::get_where('ip_payment_methods', ['payment_method_name' => request()->input('payment_method_name')])->result();
             if ( ! empty($check)) {
                 session()->flash('alert_error', trans('payment_method_already_exists'));
                 redirect()->route('payment_methods/form');

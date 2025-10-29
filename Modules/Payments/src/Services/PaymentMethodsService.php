@@ -2,6 +2,8 @@
 
 namespace Modules\Payments\app\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 
@@ -19,7 +21,7 @@ class PaymentMethodsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+        DB::select('SQL_CALC_FOUND_ROWS *', false);
     }
 
     /**
@@ -29,7 +31,7 @@ class PaymentMethodsService extends BaseService
      */
     public function orderBy()
     {
-        $this->db->orderBy('ip_payment_methods.payment_method_name');
+        DB::orderBy('ip_payment_methods.payment_method_name');
     }
 
     /**

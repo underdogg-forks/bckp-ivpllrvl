@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
@@ -332,7 +334,7 @@ class InvoicesController extends AdminController
      */
     public function recalculateAllInvoices(): void
     {
-        $invoice_ids = $this->db->table('ip_invoices')->pluck('invoice_id');
+        $invoice_ids = DB::table('ip_invoices')->pluck('invoice_id');
         foreach ($invoice_ids as $invoice_id) {
             $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
             $this->invoiceAmountsService->calculate($invoice_id, $global_discount);

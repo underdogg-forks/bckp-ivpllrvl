@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 
@@ -29,9 +31,9 @@ class InvoiceTaxRatesService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('ip_tax_rates.tax_rate_name AS invoice_tax_rate_name');
-        $this->db->select('ip_tax_rates.tax_rate_percent AS invoice_tax_rate_percent');
-        $this->db->select('ip_invoice_tax_rates.*');
+        DB::select('ip_tax_rates.tax_rate_name AS invoice_tax_rate_name');
+        DB::select('ip_tax_rates.tax_rate_percent AS invoice_tax_rate_percent');
+        DB::select('ip_invoice_tax_rates.*');
     }
 
     /**
@@ -41,7 +43,7 @@ class InvoiceTaxRatesService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_invoice_tax_rates.tax_rate_id');
+        DB::join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_invoice_tax_rates.tax_rate_id');
     }
 
     /**

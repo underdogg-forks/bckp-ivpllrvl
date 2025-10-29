@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
@@ -338,8 +340,8 @@ class AjaxController extends AdminController
         if ( ! empty($user)) {
             $invoice_id = e(request()->input('invoice_id'));
             $db_array   = ['user_id' => $user_id];
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->update('ip_invoices', $db_array);
+            DB::where('invoice_id', $invoice_id);
+            DB::update('ip_invoices', $db_array);
             $response = ['success' => 1, 'invoice_id' => e($invoice_id)];
         } else {
 // TODO: Laravel autoloads helpers - $this->load->helper('json_error');
@@ -381,8 +383,8 @@ class AjaxController extends AdminController
         if ( ! empty($client)) {
             $invoice_id = e(request()->input('invoice_id'));
             $db_array   = ['client_id' => $client_id];
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->update('ip_invoices', $db_array);
+            DB::where('invoice_id', $invoice_id);
+            DB::update('ip_invoices', $db_array);
             $response = ['success' => 1, 'invoice_id' => e($invoice_id)];
         } else {
 // TODO: Laravel autoloads helpers - $this->load->helper('json_error');

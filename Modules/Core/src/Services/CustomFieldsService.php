@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 
 #[AllowDynamicProperties]
@@ -45,7 +47,7 @@ class CustomFieldsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_custom_fields.*', false);
+        DB::select('SQL_CALC_FOUND_ROWS ip_custom_fields.*', false);
     }
 
     /**
@@ -55,7 +57,7 @@ class CustomFieldsService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
+        DB::orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
 
     /**

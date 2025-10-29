@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\app\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Crm\app\Services\ClientNotesService;
@@ -30,7 +32,7 @@ class AjaxController extends AdminController
             exit;
         }
         $moreClientsQuery = $permissiveSearchClients ? '%' : '';
-        $escapedQuery     = $this->db->escape_str($query);
+        $escapedQuery     = DB::escape_str($query);
         $escapedQuery     = str_replace('%', '', $escapedQuery);
         $clients          = (new ClientsService())->where('client_active', 1)->having("client_name LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_surname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_fullname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->orderBy('client_name')->get()->result();
         foreach ($clients as $client) {
