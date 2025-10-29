@@ -550,7 +550,7 @@ class InvoicesService extends BaseService
                 $update_data['invoice_status_id'] = 3;
             }
             // Set the invoice to read-only if feature is not disabled and setting is view
-            if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 3) {
+            if (config('disable_read_only') == false && get_setting('read_only_toggle') == 3) {
                 $update_data['is_read_only'] = 1;
             }
             // Save?
@@ -580,7 +580,7 @@ class InvoicesService extends BaseService
                 $update_data['invoice_status_id'] = 2;
             }
             // Set the invoice to read-only if feature is not disabled and setting is sent
-            if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 2) {
+            if (config('disable_read_only') == false && get_setting('read_only_toggle') == 2) {
                 $update_data['is_read_only'] = 1;
             }
             // Save?

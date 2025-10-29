@@ -45,15 +45,15 @@ class PaymentMethodsController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('payment_methods');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->input->post('is_update') == 0 && $this->input->post('payment_method_name') != '') {
-            $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => $this->input->post('payment_method_name')])->result();
+        if (request()->input('is_update') == 0 && request()->input('payment_method_name') != '') {
+            $check = $this->db->get_where('ip_payment_methods', ['payment_method_name' => request()->input('payment_method_name')])->result();
             if ( ! empty($check)) {
-                $this->session->set_flashdata('alert_error', trans('payment_method_already_exists'));
+                session()->flash('alert_error', trans('payment_method_already_exists'));
                 redirect()->route('payment_methods/form');
             }
         }
@@ -61,7 +61,7 @@ class PaymentMethodsController extends AdminController
             (new PaymentMethodsService())->save($id);
             redirect()->route('payment_methods');
         }
-        if ($id && ! $this->input->post('btn_submit')) {
+        if ($id && ! request()->input('btn_submit')) {
             if ( ! (new PaymentMethodsService())->prepForm($id)) {
                 show_404();
             }

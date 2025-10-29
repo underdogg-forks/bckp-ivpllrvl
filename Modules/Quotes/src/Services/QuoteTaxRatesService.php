@@ -44,8 +44,8 @@ class QuoteTaxRatesService extends BaseService
     {
         // Only appliable in legacy calculation - since 1.6.3
         config_item('legacy_calculation') && parent::save($id, $db_array);
-        $this->load->model('quotes/mdl_quote_amounts');
-        $quote_id = $db_array['quote_id'] ?? $this->input->post('quote_id');
+// TODO: Use dependency injection - $this->load->model('quotes/mdl_quote_amounts');
+        $quote_id = $db_array['quote_id'] ?? request()->input('quote_id');
         if ($quote_id) {
             $global_discount['item'] = $this->mdl_quote_amounts->getGlobalDiscount($quote_id);
             // Recalculate quote amounts

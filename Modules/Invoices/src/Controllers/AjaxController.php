@@ -72,12 +72,12 @@ class AjaxController extends AdminController
      */
     public function save()
     {
-        $invoice_id = $this->security->xss_clean($this->input->post('invoice_id', true));
+        $invoice_id = e(request()->input('invoice_id', true));
         $this->invoicesService->setId($invoice_id);
         if ($this->invoicesService->runValidation('validation_rules_save_invoice')) {
-            $items                    = json_decode($this->input->post('items'));
-            $invoice_discount_percent = (float) $this->input->post('invoice_discount_percent');
-            $invoice_discount_amount  = (float) $this->input->post('invoice_discount_amount');
+            $items                    = json_decode(request()->input('items'));
+            $invoice_discount_percent = (float) request()->input('invoice_discount_percent');
+            $invoice_discount_amount  = (float) request()->input('invoice_discount_amount');
             // Percent by default. Only one allowed. Prevent set 2 global discounts by geeky client - since v1.6.3
             if ($invoice_discount_percent && $invoice_discount_amount) {
                 $invoice_discount_amount = 0.0;
@@ -102,7 +102,7 @@ class AjaxController extends AdminController
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+                config()->set('legacy_calculation', ! empty(request()->input('legacy_calculation')));
             }
             foreach ($items as $item) {
                 // Check if an item has either a quantity + price or name or description
@@ -129,16 +129,16 @@ class AjaxController extends AdminController
                     $this->itemsService->save($item_id, $item, $global_discount);
                 } elseif (empty($item->item_name) && ( ! empty($item->item_quantity) || ! empty($item->item_price))) {
                     // Throw an error message and use the form validation for that (todo: where the translations of: The .* field is required.)
-                    $this->load->library('form_validation');
-                    $this->form_validation->set_rules('item_name', trans('item'), 'required');
-                    $this->form_validation->run();
+// TODO: Use Laravel services/facades - $this->load->library('form_validation');
+                    // TODO: Move to Form Request - $this->form_validation->set_rules('item_name', trans('item'), 'required');
+                    // TODO: Move to Form Request - $this->form_validation->run();
                     $response = ['success' => 0, 'validation_errors' => ['item_name' => form_error('item_name', '', '')]];
                     exit(json_encode($response));
                 }
             }
-            $invoice_status_id = $this->input->post('invoice_status_id');
+            $invoice_status_id = request()->input('invoice_status_id');
             // Generate new invoice number if needed
-            $invoice_number = $this->input->post('invoice_number');
+            $invoice_number = request()->input('invoice_number');
             if (empty($invoice_number) && $invoice_status_id != 1) {
                 $invoice_group_id = $this->invoicesService->getInvoiceGroupId($invoice_id);
                 $invoice_number   = $this->invoicesService->getInvoiceNumber($invoice_group_id);
@@ -148,15 +148,15 @@ class AjaxController extends AdminController
                 // Adjust amount to reflect real calculation (cents)
                 $invoice_discount_amount = $global_discount['item'];
             }
-            $db_array = ['invoice_number' => $invoice_number, 'invoice_status_id' => $invoice_status_id, 'invoice_date_created' => date_to_mysql($this->input->post('invoice_date_created')), 'invoice_date_due' => date_to_mysql($this->input->post('invoice_date_due')), 'invoice_password' => $this->security->xss_clean($this->input->post('invoice_password')), 'invoice_terms' => $this->security->xss_clean($this->input->post('invoice_terms')), 'payment_method' => $this->security->xss_clean($this->input->post('payment_method')), 'invoice_discount_amount' => standardize_amount($invoice_discount_amount), 'invoice_discount_percent' => standardize_amount($invoice_discount_percent)];
+            $db_array = ['invoice_number' => $invoice_number, 'invoice_status_id' => $invoice_status_id, 'invoice_date_created' => date_to_mysql(request()->input('invoice_date_created')), 'invoice_date_due' => date_to_mysql(request()->input('invoice_date_due')), 'invoice_password' => e(request()->input('invoice_password')), 'invoice_terms' => e(request()->input('invoice_terms')), 'payment_method' => e(request()->input('payment_method')), 'invoice_discount_amount' => standardize_amount($invoice_discount_amount), 'invoice_discount_percent' => standardize_amount($invoice_discount_percent)];
             // check if status changed to sent, the feature is enabled and settings is set to sent
-            if ($this->config->item('disable_read_only') === false && $invoice_status_id == get_setting('read_only_toggle')) {
+            if (config('disable_read_only') === false && $invoice_status_id == get_setting('read_only_toggle')) {
                 $db_array['is_read_only'] = 1;
             }
             $this->invoicesService->save($invoice_id, $db_array);
             $sumexInvoice = $this->invoicesService->where('sumex_invoice', $invoice_id)->get()->numRows();
             if ($sumexInvoice >= 1) {
-                $sumex_array = ['sumex_invoice' => $invoice_id, 'sumex_reason' => $this->input->post('invoice_sumex_reason'), 'sumex_diagnosis' => $this->input->post('invoice_sumex_diagnosis'), 'sumex_treatmentstart' => date_to_mysql($this->input->post('invoice_sumex_treatmentstart')), 'sumex_treatmentend' => date_to_mysql($this->input->post('invoice_sumex_treatmentend')), 'sumex_casedate' => date_to_mysql($this->input->post('invoice_sumex_casedate')), 'sumex_casenumber' => $this->input->post('invoice_sumex_casenumber'), 'sumex_observations' => $this->input->post('invoice_sumex_observations')];
+                $sumex_array = ['sumex_invoice' => $invoice_id, 'sumex_reason' => request()->input('invoice_sumex_reason'), 'sumex_diagnosis' => request()->input('invoice_sumex_diagnosis'), 'sumex_treatmentstart' => date_to_mysql(request()->input('invoice_sumex_treatmentstart')), 'sumex_treatmentend' => date_to_mysql(request()->input('invoice_sumex_treatmentend')), 'sumex_casedate' => date_to_mysql(request()->input('invoice_sumex_casedate')), 'sumex_casenumber' => request()->input('invoice_sumex_casenumber'), 'sumex_observations' => request()->input('invoice_sumex_observations')];
                 $this->invoiceSumexService->save($invoice_id, $sumex_array);
             }
             if (config_item('legacy_calculation')) {
@@ -166,14 +166,14 @@ class AjaxController extends AdminController
             $response = ['success' => 1];
         } else {
             Log::error('980: I wasnt able to run the validation validation_rules_save_invoice');
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         // Save all custom fields
-        if ($this->input->post('custom')) {
+        if (request()->input('custom')) {
             $db_array = [];
             $values   = [];
-            foreach ($this->input->post('custom') as $custom) {
+            foreach (request()->input('custom') as $custom) {
                 if (preg_match('/^(.*)\[\]$/i', $custom['name'], $matches)) {
                     $values[$matches[1]][] = $custom['value'];
                 } else {
@@ -230,7 +230,7 @@ class AjaxController extends AdminController
     public function deleteItem($invoice_id)
     {
         $success = 0;
-        $item_id = $this->security->xss_clean($this->input->post('item_id'));
+        $item_id = e(request()->input('item_id'));
         // Only continue if the invoice exists or no item id was provided
         if ($this->invoicesService->getById($invoice_id) || empty($item_id)) {
             // Delete invoice item
@@ -256,7 +256,7 @@ class AjaxController extends AdminController
      */
     public function getItem()
     {
-        $item = $this->itemsService->getById($this->security->xss_clean($this->input->post('item_id', true)));
+        $item = $this->itemsService->getById(e(request()->input('item_id', true)));
         echo json_encode($item);
     }
 
@@ -272,9 +272,9 @@ class AjaxController extends AdminController
         $data = [
             'invoice_groups' => $this->invoiceGroupsService->getAll(),
             'tax_rates'      => $this->taxRatesService->getAll(),
-            'invoice_id'     => $this->input->post('invoice_id'),
-            'invoice'        => $this->invoicesService->getById($this->input->post('invoice_id')),
-            'client'         => $this->clientsService->getById($this->input->post('client_id')),
+            'invoice_id'     => request()->input('invoice_id'),
+            'invoice'        => $this->invoicesService->getById(request()->input('invoice_id')),
+            'client'         => $this->clientsService->getById(request()->input('client_id')),
         ];
 
         return view('invoices.modal_copy_invoice', $data);
@@ -295,14 +295,14 @@ class AjaxController extends AdminController
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+                config()->set('legacy_calculation', ! empty(request()->input('legacy_calculation')));
             }
             $target_id = $this->invoicesService->save();
-            $source_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            $source_id = e(request()->input('invoice_id'));
             $this->invoicesService->copyInvoice($source_id, $target_id);
             $response = ['success' => 1, 'invoice_id' => $target_id];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -316,8 +316,8 @@ class AjaxController extends AdminController
     public function modalChangeUser()
     {
         $data = [
-            'user_id'    => $this->input->post('user_id'),
-            'invoice_id' => $this->input->post('invoice_id'),
+            'user_id'    => request()->input('user_id'),
+            'invoice_id' => request()->input('invoice_id'),
             'users'      => $this->usersService->getLatest(),
         ];
 
@@ -333,16 +333,16 @@ class AjaxController extends AdminController
     public function changeUser()
     {
         // GetController the user ID
-        $user_id = $this->security->xss_clean($this->input->post('user_id'));
+        $user_id = e(request()->input('user_id'));
         $user    = $this->usersService->getById($user_id);
         if ( ! empty($user)) {
-            $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            $invoice_id = e(request()->input('invoice_id'));
             $db_array   = ['user_id' => $user_id];
             $this->db->where('invoice_id', $invoice_id);
             $this->db->update('ip_invoices', $db_array);
-            $response = ['success' => 1, 'invoice_id' => $this->security->xss_clean($invoice_id)];
+            $response = ['success' => 1, 'invoice_id' => e($invoice_id)];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -358,8 +358,8 @@ class AjaxController extends AdminController
     public function modalChangeClient()
     {
         $data = [
-            'client_id'  => $this->input->post('client_id'),
-            'invoice_id' => $this->input->post('invoice_id'),
+            'client_id'  => request()->input('client_id'),
+            'invoice_id' => request()->input('invoice_id'),
             'clients'    => $this->clientsService->getLatest(),
         ];
 
@@ -376,16 +376,16 @@ class AjaxController extends AdminController
     public function changeClient()
     {
         // GetController the client ID
-        $client_id = $this->security->xss_clean($this->input->post('client_id'));
+        $client_id = e(request()->input('client_id'));
         $client    = $this->clientsService->getById($client_id);
         if ( ! empty($client)) {
-            $invoice_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            $invoice_id = e(request()->input('invoice_id'));
             $db_array   = ['client_id' => $client_id];
             $this->db->where('invoice_id', $invoice_id);
             $this->db->update('ip_invoices', $db_array);
-            $response = ['success' => 1, 'invoice_id' => $this->security->xss_clean($invoice_id)];
+            $response = ['success' => 1, 'invoice_id' => e($invoice_id)];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -401,7 +401,7 @@ class AjaxController extends AdminController
         $data = [
             'invoice_groups' => $this->invoiceGroupsService->getAll(),
             'tax_rates'      => $this->taxRatesService->getAll(),
-            'client'         => $this->clientsService->getById($this->input->post('client_id')),
+            'client'         => $this->clientsService->getById(request()->input('client_id')),
             'clients'        => $this->clientsService->getLatest(),
         ];
 
@@ -422,7 +422,7 @@ class AjaxController extends AdminController
             $invoice_id = $this->invoicesService->create();
             $response   = ['success' => 1, 'invoice_id' => $invoice_id];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -440,7 +440,7 @@ class AjaxController extends AdminController
             (new InvoicesRecurringService())->save();
             $response = ['success' => 1];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -456,7 +456,7 @@ class AjaxController extends AdminController
     public function modalCreateRecurring()
     {
         $data = [
-            'invoice_id'        => $this->input->post('invoice_id'),
+            'invoice_id'        => request()->input('invoice_id'),
             'recur_frequencies' => $this->invoicesRecurringService->recur_frequencies,
         ];
 
@@ -470,8 +470,8 @@ class AjaxController extends AdminController
      */
     public function getRecurStartDate()
     {
-        $invoice_date    = $this->input->post('invoice_date');
-        $recur_frequency = $this->input->post('recur_frequency');
+        $invoice_date    = request()->input('invoice_date');
+        $recur_frequency = request()->input('recur_frequency');
         echo increment_user_date($invoice_date, $recur_frequency);
     }
 
@@ -491,8 +491,8 @@ class AjaxController extends AdminController
         $data = [
             'invoice_groups' => $this->invoiceGroupsService->getAll(),
             'tax_rates'      => $this->taxRatesService->getAll(),
-            'invoice_id'     => $this->input->post('invoice_id'),
-            'invoice'        => $this->invoicesService->getById($this->input->post('invoice_id')),
+            'invoice_id'     => request()->input('invoice_id'),
+            'invoice'        => $this->invoicesService->getById(request()->input('invoice_id')),
         ];
 
         return view('invoices.modal_create_credit', $data);
@@ -516,13 +516,13 @@ class AjaxController extends AdminController
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+                config()->set('legacy_calculation', ! empty(request()->input('legacy_calculation')));
             }
             $target_id = (new InvoicesService())->save();
-            $source_id = $this->security->xss_clean($this->input->post('invoice_id'));
+            $source_id = e(request()->input('invoice_id'));
             (new InvoicesService())->copyCreditInvoice($source_id, $target_id);
             // Set source invoice to read-only
-            if ($this->config->item('disable_read_only') == false) {
+            if (config('disable_read_only') == false) {
                 (new InvoicesService())->where('invoice_id', $source_id);
                 (new InvoicesService())->update('ip_invoices', ['is_read_only' => '1']);
             }
@@ -533,7 +533,7 @@ class AjaxController extends AdminController
             (new InvoicesService())->update('ip_invoice_amounts', ['invoice_sign' => '-1']);
             $response = ['success' => 1, 'invoice_id' => $target_id];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));

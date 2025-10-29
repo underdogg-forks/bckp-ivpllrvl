@@ -43,17 +43,17 @@ class PaymentsController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('payments');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
         if ((new PaymentsService())->runValidation()) {
             $id = (new PaymentsService())->save($id);
-            (new PaymentCustomService())->saveCustom($id, $this->input->post('custom'));
+            (new PaymentCustomService())->saveCustom($id, request()->input('custom'));
             redirect()->route('payments');
         }
-        if ( ! $this->input->post('btn_submit')) {
+        if ( ! request()->input('btn_submit')) {
             $prep_form = (new PaymentsService())->prepForm($id);
             if ($id && ! $prep_form) {
                 show_404();
@@ -66,12 +66,12 @@ class PaymentsController extends AdminController
                     (new PaymentsService())->setFormValue('custom[' . $key . ']', $val);
                 }
             }
-        } elseif ($this->input->post('custom')) {
-            foreach ($this->input->post('custom') as $key => $val) {
+        } elseif (request()->input('custom')) {
+            foreach (request()->input('custom') as $key => $val) {
                 (new PaymentsService())->setFormValue('custom[' . $key . ']', $val);
             }
         }
-        $this->load->helper('custom_values');
+// TODO: Laravel autoloads helpers - $this->load->helper('custom_values');
         $open_invoices = (new InvoicesService())->isOpen()->get()->result();
         $custom_fields = (new CustomFieldsService())->byTable('ip_payment_custom')->get()->result();
         $custom_values = [];

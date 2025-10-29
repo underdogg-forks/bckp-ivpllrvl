@@ -115,7 +115,7 @@ class QuotesService extends BaseService
      */
     public function copyQuote($source_id, $target_id)
     {
-        $this->load->model('quotes/mdl_quote_items');
+// TODO: Use dependency injection - $this->load->model('quotes/mdl_quote_items');
         // Discounts calculation - since v1.6.3 Need if taxes applied after discounts
         $quote = $this->getById($source_id);
         // This is the original quote
@@ -141,7 +141,7 @@ class QuotesService extends BaseService
             $this->mdl_quote_tax_rates->save(null, $db_array);
         }
         // Copy the custom fields
-        $this->load->model('custom_fields/mdl_quote_custom');
+// TODO: Use dependency injection - $this->load->model('custom_fields/mdl_quote_custom');
         $db_array = $this->mdl_quote_custom->where('quote_id', $source_id)->get()->rowArray() ?? [];
         if (count($db_array) > 2) {
             unset($db_array['quote_custom_id']);
@@ -159,7 +159,7 @@ class QuotesService extends BaseService
     {
         $db_array = parent::dbArray();
         // GetController the client id for the submitted quote
-        $this->load->model('clients/mdl_clients');
+// TODO: Use dependency injection - $this->load->model('clients/mdl_clients');
         $cid                            = $this->mdl_clients->where('ip_clients.client_id', $db_array['client_id'])->get()->row()->client_id;
         $db_array['client_id']          = $cid;
         $db_array['quote_date_created'] = date_to_mysql($db_array['quote_date_created']);
@@ -202,7 +202,7 @@ class QuotesService extends BaseService
      */
     public function getQuoteNumber($invoice_group_id)
     {
-        $this->load->model('invoice_groups/mdl_invoice_groups');
+// TODO: Use dependency injection - $this->load->model('invoice_groups/mdl_invoice_groups');
 
         return $this->mdl_invoice_groups->generateInvoiceNumber($invoice_group_id);
     }
@@ -214,7 +214,7 @@ class QuotesService extends BaseService
      */
     public function getUrlKey()
     {
-        $this->load->helper('string');
+// TODO: Laravel autoloads helpers - $this->load->helper('string');
 
         return random_string('alnum', 32);
     }
@@ -239,7 +239,7 @@ class QuotesService extends BaseService
     public function delete($quote_id)
     {
         parent::delete($quote_id);
-        $this->load->helper('orphan');
+// TODO: Laravel autoloads helpers - $this->load->helper('orphan');
         delete_orphans();
     }
 

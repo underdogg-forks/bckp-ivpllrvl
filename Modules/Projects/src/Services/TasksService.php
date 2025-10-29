@@ -137,7 +137,7 @@ class TasksService extends BaseService
         if (empty($invoice_item) || ! isset($invoice_item->invoice_id)) {
             return;
         }
-        $this->load->model('invoices/mdl_invoices');
+// TODO: Use dependency injection - $this->load->model('invoices/mdl_invoices');
 
         return $this->mdl_invoices->getById($invoice_item->invoice_id);
     }

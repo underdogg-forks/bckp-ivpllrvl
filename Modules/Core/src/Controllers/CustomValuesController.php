@@ -133,9 +133,9 @@ class CustomValuesController extends AdminController
     public function delete($id)
     {
         if ( ! (new CustomValuesService())->delete($id)) {
-            $this->session->set_flashdata('alert_info', trans('id') . sprintf(' "%s" ', $id) . trans('custom_values_used_not_deletable'));
+            session()->flash('alert_info', trans('id') . sprintf(' "%s" ', $id) . trans('custom_values_used_not_deletable'));
         }
-        $fid = $this->input->post('custom_field_id');
+        $fid = request()->input('custom_field_id');
         redirect('custom_values' . ($fid ? '/field/' . $fid : ''));
     }
 }

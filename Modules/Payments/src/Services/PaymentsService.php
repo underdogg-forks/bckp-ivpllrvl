@@ -88,7 +88,7 @@ class PaymentsService extends BaseService
     public function save($id = null, $db_array = null)
     {
         $db_array = $db_array ? $db_array : $this->dbArray();
-        $this->load->model('invoices/mdl_invoice_amounts');
+// TODO: Use dependency injection - $this->load->model('invoices/mdl_invoice_amounts');
         // Save the payment
         $id                      = parent::save($id, $db_array);
         $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($db_array['invoice_id']);
@@ -142,7 +142,7 @@ class PaymentsService extends BaseService
 
         // Delete the payment
         parent::delete($id);
-        $this->load->model('invoices/mdl_invoice_amounts');
+// TODO: Use dependency injection - $this->load->model('invoices/mdl_invoice_amounts');
         $global_discount['item'] = $this->mdl_invoice_amounts->getGlobalDiscount($invoice_id);
         // Recalculate invoice amounts
         $this->mdl_invoice_amounts->calculate($invoice_id, $global_discount);
@@ -151,7 +151,7 @@ class PaymentsService extends BaseService
         if ($invoice->invoice_status_id == 4) {
             Invoice::query()->where('invoice_id', $invoice_id)->update(['invoice_status_id' => 2]);
         }
-        $this->load->helper('orphan');
+// TODO: Laravel autoloads helpers - $this->load->helper('orphan');
         delete_orphans();
     }
 

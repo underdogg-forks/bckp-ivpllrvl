@@ -214,7 +214,7 @@ class InvoicesController extends AdminController
     {
         $invoice        = $this->invoicesService->getById($invoice_id);
         $invoice_status = $invoice->invoice_status_id;
-        if ($invoice_status == 1 || $this->config->item('enable_invoice_deletion') === true) {
+        if ($invoice_status == 1 || config('enable_invoice_deletion') === true) {
             $this->tasksService->updateOnInvoiceDelete($invoice_id);
             $this->invoicesService->delete($invoice_id);
         } else {

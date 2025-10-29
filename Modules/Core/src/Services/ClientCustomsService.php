@@ -100,8 +100,8 @@ class ClientCustomsService extends BaseService
     {
         if ($id) {
             $values = $this->getByClient($id);
-            $this->load->helper('custom_values_helper');
-            $this->load->module('custom_fields/mdl_custom_fields');
+// TODO: Laravel autoloads helpers - $this->load->helper('custom_values_helper');
+// TODO: Modules handled differently in Laravel - $this->load->module('custom_fields/mdl_custom_fields');
             if ($values != null) {
                 foreach ($values as $value) {
                     $type = $value->custom_field_type;
@@ -167,7 +167,7 @@ class ClientCustomsService extends BaseService
     public function dbArray()
     {
         $db_array = parent::dbArray();
-        $this->load->module('custom_fields/mdl_custom_fields');
+// TODO: Modules handled differently in Laravel - $this->load->module('custom_fields/mdl_custom_fields');
         $fields = $this->mdl_custom_fields->result();
         foreach ($fields as $field) {
             if ($field->custom_field_type == 'DATE') {

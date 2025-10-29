@@ -107,8 +107,8 @@ class BaseService
      */
     public function paginate($base_url, $offset = 0, $uri_segment = 3)
     {
-        $this->load->helper('url');
-        $this->load->library('pagination');
+// TODO: Laravel autoloads helpers - $this->load->helper('url');
+// TODO: Use Laravel services/facades - $this->load->library('pagination');
         $this->offset       = $offset;
         $default_list_limit = $this->mdl_settings->setting('default_list_limit');
         $per_page           = empty($default_list_limit) ? $this->default_limit : $default_list_limit;
@@ -122,8 +122,8 @@ class BaseService
         $this->next_offset     = $this->offset + $per_page;
         $config                = ['base_url' => $base_url, 'total_rows' => $this->total_rows, 'per_page' => $per_page];
         $this->last_offset     = $this->total_pages * $per_page - $per_page;
-        if ($this->config->item('pagination_style')) {
-            $config = array_merge($config, $this->config->item('pagination_style'));
+        if (config('pagination_style')) {
+            $config = array_merge($config, config('pagination_style'));
         }
         $this->pagination->initialize($config);
         $this->page_links = $this->pagination->create_links();
@@ -186,7 +186,7 @@ class BaseService
     {
         $db_array         = [];
         $validation_rules = $this->{$this->validation_rules}();
-        foreach ($this->input->post() as $key => $value) {
+        foreach (request()->input() as $key => $value) {
             if (array_key_exists($key, $validation_rules)) {
                 $db_array[$key] = $value;
             }
@@ -301,13 +301,13 @@ class BaseService
             $validation_rules = $this->default_validation_rules;
         }
         foreach (array_keys($_POST) as $key) {
-            $this->form_values[$key] = $this->input->post($key);
+            $this->form_values[$key] = request()->input($key);
         }
         if (method_exists($this, $validation_rules)) {
             $this->validation_rules = $validation_rules;
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules($this->{$validation_rules}());
-            $run                     = $this->form_validation->run();
+// TODO: Use Laravel services/facades - $this->load->library('form_validation');
+            // TODO: Move to Form Request - $this->form_validation->set_rules($this->{$validation_rules}());
+            $run                     = // TODO: Move to Form Request - $this->form_validation->run();
             $this->validation_errors = validation_errors();
 
             return $run;

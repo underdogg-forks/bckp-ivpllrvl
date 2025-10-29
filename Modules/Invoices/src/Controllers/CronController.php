@@ -39,7 +39,7 @@ class CronController extends BaseController
             $invoice = (new InvoicesService())->getById($source_id);
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
-                $this->load->helper('e-invoice');
+// TODO: Laravel autoloads helpers - $this->load->helper('e-invoice');
                 // Only for shift legacy_calculation mode
                 get_einvoice_usage($invoice, [], false);
             }

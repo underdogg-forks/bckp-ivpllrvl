@@ -35,7 +35,7 @@ class UserClientsController extends AdminController
      */
     public function user($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('users');
         }
         $user = (new UsersService())->getById($id);
@@ -59,11 +59,11 @@ class UserClientsController extends AdminController
     {
         if ( ! $user_id) {
             redirect()->route('custom_values');
-        } elseif ($this->input->post('btn_cancel')) {
+        } elseif (request()->input('btn_cancel')) {
             redirect('user_clients/field/' . $user_id);
         }
         if ((new UserClientsService())->runValidation()) {
-            if ($this->input->post('user_all_clients')) {
+            if (request()->input('user_all_clients')) {
                 $users_id = [$user_id];
                 (new UserClientsService())->setAllClientsUser($users_id);
                 $user_update = ['user_all_clients' => 1];

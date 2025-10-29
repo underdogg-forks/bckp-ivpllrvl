@@ -109,7 +109,7 @@ class CustomFieldsService extends BaseService
      */
     public function getPositions($table_name = false)
     {
-        $this->load->model(['custom_fields/mdl_client_custom', 'custom_fields/mdl_invoice_custom', 'custom_fields/mdl_payment_custom', 'custom_fields/mdl_quote_custom', 'custom_fields/mdl_user_custom']);
+// TODO: Use dependency injection - $this->load->model(['custom_fields/mdl_client_custom', 'custom_fields/mdl_invoice_custom', 'custom_fields/mdl_payment_custom', 'custom_fields/mdl_quote_custom', 'custom_fields/mdl_user_custom']);
         $p         = $table_name ? 'ip_' : '';
         $s         = $table_name ? '_custom' : '';
         $positions = [$p . 'client' . $s => Mdl_client_custom::$positions, $p . 'invoice' . $s => Mdl_invoice_custom::$positions, $p . 'payment' . $s => Mdl_payment_custom::$positions, $p . 'quote' . $s => Mdl_quote_custom::$positions, $p . 'user' . $s => Mdl_user_custom::$positions];
@@ -212,7 +212,7 @@ class CustomFieldsService extends BaseService
             $custom_field = $this->getById($id);
             // Remove MULTIPLE|SINGLE CHOICE values
             if (preg_match('/CHOICE/', $custom_field->custom_field_type)) {
-                $this->load->model('custom_values/mdl_custom_values');
+// TODO: Use dependency injection - $this->load->model('custom_values/mdl_custom_values');
                 $this->mdl_custom_values->deleteAllFid($id);
             }
             // Remove reference in custom table
@@ -261,7 +261,7 @@ class CustomFieldsService extends BaseService
      */
     public function getValueForField($field_id, $custom_field_model, $object)
     {
-        $this->load->model('custom_fields/' . $custom_field_model);
+// TODO: Use dependency injection - $this->load->model('custom_fields/' . $custom_field_model);
         $cf_table             = str_replace('mdl_', '', $custom_field_model);
         $cf_model_name        = str_replace('_custom', '', $cf_table);
         $value                = $this->{$custom_field_model}->where($cf_table . '_fieldid', $field_id)->where($cf_model_name . '_id', $object->{$cf_model_name . '_id'})->get()->result();
@@ -281,8 +281,8 @@ class CustomFieldsService extends BaseService
      */
     public function getValuesForFields($custom_field_model, $model_id)
     {
-        $this->load->model('custom_fields/' . $custom_field_model);
-        $this->load->model('custom_values/mdl_custom_values');
+// TODO: Use dependency injection - $this->load->model('custom_fields/' . $custom_field_model);
+// TODO: Use dependency injection - $this->load->model('custom_values/mdl_custom_values');
         $fields = $this->{$custom_field_model}->byId($model_id)->get()->result();
         if (empty($fields)) {
             return [];
@@ -332,7 +332,7 @@ class CustomFieldsService extends BaseService
      */
     private function renameColumn($table_name, $old_column_name, $new_column_name)
     {
-        $this->load->dbforge();
+// TODO: Use Laravel migrations - $this->load->dbforge();
         $column = [$old_column_name => ['name' => $new_column_name, 'type' => 'VARCHAR', 'constraint' => 50]];
         $this->dbforge->modify_column($table_name, $column);
     }
@@ -344,7 +344,7 @@ class CustomFieldsService extends BaseService
      */
     private function addColumn($table_name, $column_name)
     {
-        $this->load->dbforge();
+// TODO: Use Laravel migrations - $this->load->dbforge();
         $column = [$column_name => ['type' => 'VARCHAR', 'constraint' => 256]];
         $this->dbforge->addColumn($table_name, $column);
     }

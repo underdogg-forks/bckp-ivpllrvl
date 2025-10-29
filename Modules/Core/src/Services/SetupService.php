@@ -102,9 +102,9 @@ class SetupService extends BaseService
         $this->db->where_in('version_file', ['006_1.2.0.sql', '005_1.1.2.sql']);
         $versions     = $this->db->get('ip_versions')->result();
         $upgrade_diff = $versions[1]->version_date_applied - $versions[0]->version_date_applied;
-        if ($this->session->userdata('is_upgrade') && $upgrade_diff > 100 && $versions[1]->version_date_applied > time() - 100) {
+        if (session('is_upgrade') && $upgrade_diff > 100 && $versions[1]->version_date_applied > time() - 100) {
             $setup_notice = ['type' => 'alert-danger', 'content' => trans('setup_v120_alert')];
-            $this->session->set_userdata('setup_notice', $setup_notice);
+            session(['setup_notice', $setup_notice);
         }
     }
 
@@ -122,9 +122,9 @@ class SetupService extends BaseService
         $this->db->where_in('version_file', ['018_1.4.6.sql', '019_1.4.7.sql']);
         $versions     = $this->db->get('ip_versions')->result();
         $upgrade_diff = $versions[1]->version_date_applied - $versions[0]->version_date_applied;
-        if ($this->session->userdata('is_upgrade') && $upgrade_diff > 100 && $versions[1]->version_date_applied > time() - 100) {
+        if (session('is_upgrade') && $upgrade_diff > 100 && $versions[1]->version_date_applied > time() - 100) {
             $setup_notice = ['type' => 'alert-danger', 'content' => trans('setup_v147_alert')];
-            $this->session->set_userdata('setup_notice', $setup_notice);
+            session(['setup_notice', $setup_notice);
         }
     }
 
@@ -220,9 +220,9 @@ class SetupService extends BaseService
               AFTER `user_psalt`;');
         }
         // Copy the invoice pdf footer to the new quote pdf footer setting
-        $this->load->model('settings/mdl_settings');
+// TODO: Use dependency injection - $this->load->model('settings/mdl_settings');
         $this->mdl_settings->loadSettings();
-        $this->load->helper('settings');
+// TODO: Laravel autoloads helpers - $this->load->helper('settings');
         $this->mdl_settings->save('pdf_quote_footer', get_setting('pdf_invoice_footer'));
     }
 
@@ -352,8 +352,8 @@ class SetupService extends BaseService
      */
     private function installDefaultSettings()
     {
-        $this->load->helper('string');
-        $default_settings = ['default_language' => $this->session->userdata('ip_lang'), 'date_format' => 'm/d/Y', 'currency_symbol' => '$', 'currency_symbol_placement' => 'before', 'currency_code' => 'USD', 'invoices_due_after' => 30, 'quotes_expire_after' => 15, 'default_invoice_group' => 3, 'default_quote_group' => 4, 'thousands_separator' => ',', 'decimal_point' => '.', 'cron_key' => random_string('alnum', 16), 'tax_rate_decimal_places' => 2, 'pdf_invoice_template' => 'InvoicePlane', 'pdf_invoice_template_paid' => 'InvoicePlane - paid', 'pdf_invoice_template_overdue' => 'InvoicePlane - overdue', 'pdf_quote_template' => 'InvoicePlane', 'public_invoice_template' => 'InvoicePlane_Web', 'public_quote_template' => 'InvoicePlane_Web', 'disable_sidebar' => 1];
+// TODO: Laravel autoloads helpers - $this->load->helper('string');
+        $default_settings = ['default_language' => session('ip_lang'), 'date_format' => 'm/d/Y', 'currency_symbol' => '$', 'currency_symbol_placement' => 'before', 'currency_code' => 'USD', 'invoices_due_after' => 30, 'quotes_expire_after' => 15, 'default_invoice_group' => 3, 'default_quote_group' => 4, 'thousands_separator' => ',', 'decimal_point' => '.', 'cron_key' => random_string('alnum', 16), 'tax_rate_decimal_places' => 2, 'pdf_invoice_template' => 'InvoicePlane', 'pdf_invoice_template_paid' => 'InvoicePlane - paid', 'pdf_invoice_template_overdue' => 'InvoicePlane - overdue', 'pdf_quote_template' => 'InvoicePlane', 'public_invoice_template' => 'InvoicePlane_Web', 'public_quote_template' => 'InvoicePlane_Web', 'disable_sidebar' => 1];
         foreach ($default_settings as $setting_key => $setting_value) {
             $this->db->where('setting_key', $setting_key);
             if ( ! $this->db->get('ip_settings')->numRows()) {

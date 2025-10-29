@@ -335,7 +335,7 @@ class ImportService extends BaseService
         $this->db->where('import_id', $import_id);
         $this->db->delete('ip_import_details');
         // Delete any orphaned records
-        $this->load->helper('orphan');
+// TODO: Laravel autoloads helpers - $this->load->helper('orphan');
         delete_orphans();
     }
 }

@@ -52,15 +52,15 @@ class EmailTemplatesController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('email_templates');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->input->post('is_update') == 0 && $this->input->post('email_template_title') != '') {
-            $check = $this->db->get_where('ip_email_templates', ['email_template_title' => $this->input->post('email_template_title')])->result();
+        if (request()->input('is_update') == 0 && request()->input('email_template_title') != '') {
+            $check = $this->db->get_where('ip_email_templates', ['email_template_title' => request()->input('email_template_title')])->result();
             if ( ! empty($check)) {
-                $this->session->set_flashdata('alert_error', trans('email_template_already_exists'));
+                session()->flash('alert_error', trans('email_template_already_exists'));
                 redirect()->route('email_templates/form');
             }
         }
@@ -68,7 +68,7 @@ class EmailTemplatesController extends AdminController
             (new EmailTemplatesService())->save($id);
             redirect()->route('email_templates');
         }
-        if ($id && ! $this->input->post('btn_submit')) {
+        if ($id && ! request()->input('btn_submit')) {
             if ( ! (new EmailTemplatesService())->prepForm($id)) {
                 show_404();
             }

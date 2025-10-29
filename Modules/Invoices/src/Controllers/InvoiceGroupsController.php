@@ -45,7 +45,7 @@ class InvoiceGroupsController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('invoice_groups');
         }
         $this->filterInput();
@@ -54,7 +54,7 @@ class InvoiceGroupsController extends AdminController
             (new InvoiceGroupsService())->save($id);
             redirect()->route('invoice_groups');
         }
-        if ($id && ! $this->input->post('btn_submit')) {
+        if ($id && ! request()->input('btn_submit')) {
             if ( ! (new InvoiceGroupsService())->prepForm($id)) {
                 show_404();
             }

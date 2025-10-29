@@ -40,26 +40,26 @@ class SessionsController extends BaseController
     public function login()
     {
         $view_data = ['login_logo' => get_setting('login_logo')];
-        if ($this->input->post('btn_login')) {
-            $this->db->where('user_email', $this->input->post('email'));
+        if (request()->input('btn_login')) {
+            $this->db->where('user_email', request()->input('email'));
             $query = $this->db->get('ip_users');
             $user  = $query->row();
             // Check if the user exists
             if (empty($user)) {
-                $this->session->set_flashdata('alert_error', trans('loginalert_user_not_found'));
+                session()->flash('alert_error', trans('loginalert_user_not_found'));
                 redirect()->route('sessions/login');
             } elseif ($user->user_active == 0) {
                 // Check if the user is marked as active (not implemented: Todo?)
-                $this->session->set_flashdata('alert_error', trans('loginalert_user_inactive'));
+                session()->flash('alert_error', trans('loginalert_user_inactive'));
                 redirect()->route('sessions/login');
-            } elseif ($this->authenticate($this->input->post('email'), $this->input->post('password'))) {
-                if ($this->session->userdata('user_type') == 1) {
+            } elseif ($this->authenticate(request()->input('email'), request()->input('password'))) {
+                if (session('user_type') == 1) {
                     redirect()->route('dashboard');
-                } elseif ($this->session->userdata('user_type') == 2) {
+                } elseif (session('user_type') == 2) {
                     redirect()->route('guest');
                 }
             } else {
-                $this->session->set_flashdata('alert_error', trans('loginalert_credentials_incorrect'));
+                session()->flash('alert_error', trans('loginalert_credentials_incorrect'));
                 redirect()->route('sessions/login');
             }
         }
@@ -140,7 +140,7 @@ class SessionsController extends BaseController
             $user = $user->row();
             if (empty($user)) {
                 // Redirect back to the login screen with an alert
-                $this->session->set_flashdata('alert_error', trans('wrong_passwordreset_token'));
+                session()->flash('alert_error', trans('wrong_passwordreset_token'));
                 redirect()->route('sessions/passwordreset');
             } else {
                 //if token is valid, delete the failure attempt from
@@ -152,21 +152,21 @@ class SessionsController extends BaseController
             return view('session_new_password', $formdata);
         }
         // Check if the form for a new password was used
-        if ($this->input->post('btn_new_password')) {
-            $new_password = $this->input->post('new_password', true);
-            $user_id      = $this->input->post('user_id', true);
+        if (request()->input('btn_new_password')) {
+            $new_password = request()->input('new_password', true);
+            $user_id      = request()->input('user_id', true);
             if (empty($user_id) || empty($new_password)) {
-                $this->session->set_flashdata('alert_error', trans('loginalert_no_password'));
+                session()->flash('alert_error', trans('loginalert_no_password'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
             // Check for the reset token
             $user = (new UsersService())->getById($user_id);
             if (empty($user)) {
-                $this->session->set_flashdata('alert_error', trans('loginalert_user_not_found'));
+                session()->flash('alert_error', trans('loginalert_user_not_found'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
-            if (empty($user->user_passwordreset_token) || $this->input->post('token') !== $user->user_passwordreset_token) {
-                $this->session->set_flashdata('alert_error', trans('loginalert_wrong_auth_code'));
+            if (empty($user->user_passwordreset_token) || request()->input('token') !== $user->user_passwordreset_token) {
+                session()->flash('alert_error', trans('loginalert_wrong_auth_code'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
             // Call the save_change_password() function from users model
@@ -182,14 +182,14 @@ class SessionsController extends BaseController
             redirect()->route('sessions/login');
         }
         // Check if the password reset form was used
-        if ($this->input->post('btn_reset', true)) {
-            $email = $this->input->post('email', true);
+        if (request()->input('btn_reset', true)) {
+            $email = request()->input('email', true);
             if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
                 redirect()->route('/');
             }
             if (empty($email)) {
-                $this->session->set_flashdata('alert_error', trans('loginalert_user_not_found'));
+                session()->flash('alert_error', trans('loginalert_user_not_found'));
                 redirect($_SERVER['HTTP_REFERER']);
             }
             //prevent brute force attacks by counting password resets
@@ -203,13 +203,13 @@ class SessionsController extends BaseController
             // Test if a user with this email exists
             if ($recovery_result = $this->db->where('user_email', $email)) {
                 // Create a passwordreset token.
-                $email = $this->input->post('email', true);
+                $email = request()->input('email', true);
                 if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     Log::error('Incoming email is not a valid email address in passwordreset ' . $email);
                     redirect()->route('/');
                 }
                 //use salt to prevent predictability of the reset token (CVE-2021-29023)
-                $this->load->library('crypt');
+// TODO: Use Laravel services/facades - $this->load->library('crypt');
                 $token = md5(time() . $email . $this->crypt->salt());
                 // Save the token to the database and set the user to inactive
                 $db_array = ['user_passwordreset_token' => $token];
@@ -218,19 +218,19 @@ class SessionsController extends BaseController
                 // Send the email with reset link
                 // Prepare some variables for the email
                 $email_resetlink = site_url('sessions/passwordreset/' . $token);
-                $email_message   = $this->load->view('emails/passwordreset', ['resetlink' => $email_resetlink], true);
+                $email_message   = return view('emails/passwordreset', ['resetlink' => $email_resetlink], true);
                 $email_from      = get_setting('smtp_mail_from');
                 if (empty($email_from)) {
                     $email_from = 'system@' . preg_replace('/^[\w]{2,6}:\/\/([\w\d\.\-]+).*$/', '$1', base_url());
                 }
                 // Mail the invoice with the pre-configured mailer if possible
                 if (MailerHelper::mailerConfigured()) {
-                    $this->load->helper('mailer/phpmailer');
+// TODO: Laravel autoloads helpers - $this->load->helper('mailer/phpmailer');
                     if ( ! phpmail_send($email_from, $email, trans('password_reset'), $email_message)) {
                         $email_failed = true;
                     }
                 } else {
-                    $this->load->library('email');
+// TODO: Use Laravel services/facades - $this->load->library('email');
                     // Set email configuration
                     $config['mailtype'] = 'html';
                     $this->email->initialize($config);
@@ -247,9 +247,9 @@ class SessionsController extends BaseController
                 }
                 // Redirect back to the login screen with an alert
                 if (isset($email_failed)) {
-                    $this->session->set_flashdata('alert_error', trans('password_reset_failed'));
+                    session()->flash('alert_error', trans('password_reset_failed'));
                 } else {
-                    $this->session->set_flashdata('alert_success', trans('email_successfully_sent'));
+                    session()->flash('alert_success', trans('email_successfully_sent'));
                 }
                 redirect()->route('sessions/login');
             }

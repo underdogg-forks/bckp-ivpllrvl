@@ -50,8 +50,8 @@ class ImportController extends AdminController
      */
     public function form()
     {
-        if ( ! $this->input->post('btn_submit')) {
-            $this->load->helper('directory');
+        if ( ! request()->input('btn_submit')) {
+// TODO: Laravel autoloads helpers - $this->load->helper('directory');
             $files = directory_map('./uploads/import');
             foreach ($files as $key => $file) {
                 if ( ! is_numeric(array_search($file, $this->allowed_files, true))) {
@@ -62,12 +62,12 @@ class ImportController extends AdminController
             $this->layout->buffer('content', 'import/import_index');
             $this->layout->render();
         } else {
-            $this->load->helper('file');
+// TODO: Laravel autoloads helpers - $this->load->helper('file');
             $import_id = (new ImportService())->startImport();
-            if ($this->input->post('files')) {
+            if (request()->input('files')) {
                 $files = $this->allowed_files;
                 foreach ($files as $key => $file) {
-                    if ( ! is_numeric(array_search($file, $this->input->post('files'), true))) {
+                    if ( ! is_numeric(array_search($file, request()->input('files'), true))) {
                         unset($files[$key]);
                     }
                 }

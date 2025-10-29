@@ -64,7 +64,7 @@ class Validator extends MyModel
         if ($value == '') {
             return;
         }
-        $this->load->model('custom_values/mdl_custom_values', 'custom_value');
+// TODO: Use dependency injection - $this->load->model('custom_values/mdl_custom_values', 'custom_value');
 
         return $this->custom_value->columnHasValue($key, $value);
     }
@@ -81,7 +81,7 @@ class Validator extends MyModel
             // work with str, array & null: See https://www.php.net/manual/function.is-null.php#87355
             return;
         }
-        $this->load->model('custom_values/mdl_custom_values', 'custom_value');
+// TODO: Use dependency injection - $this->load->model('custom_values/mdl_custom_values', 'custom_value');
         $this->custom_value->where('custom_field_id', $id);
         $dbvals = $this->custom_value->where_in('custom_values_id', $values)->get();
 
@@ -105,7 +105,7 @@ class Validator extends MyModel
      */
     public function getFieldType($column)
     {
-        $this->load->model('custom_values/mdl_custom_fields', 'cf');
+// TODO: Use dependency injection - $this->load->model('custom_values/mdl_custom_fields', 'cf');
         $el = $this->cf->getByColumn($column)->row();
         if ($el == null) {
             return;
@@ -121,8 +121,8 @@ class Validator extends MyModel
      */
     public function validate($array)
     {
-        $this->load->model('custom_fields/mdl_custom_fields');
-        $this->load->model('custom_values/mdl_custom_values');
+// TODO: Use dependency injection - $this->load->model('custom_fields/mdl_custom_fields');
+// TODO: Use dependency injection - $this->load->model('custom_values/mdl_custom_values');
         $db_array = $array;
         $errors   = [];
         if (empty($db_array)) {
