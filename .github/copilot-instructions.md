@@ -42,15 +42,49 @@ This application is being migrated from CodeIgniter to Laravel. **NEVER** use or
 - ❌ `show_404()` - Use `abort(404)`
 
 ### Laravel Equivalents (Use These)
-- ✅ `request()` - For HTTP requests
-- ✅ `session()` - For session data  
-- ✅ `config()` - For configuration
+
+#### HTTP Requests
+- ✅ `request()->input('key')` - Get POST/GET data
+- ✅ `request()->query('key')` - Get query string parameter
+- ✅ `request()->all()` - Get all input
+- ✅ `request()->method()` - Get HTTP method
+- ✅ `request()->ajax()` - Check if AJAX request
+- ✅ `request()->url()` - Get current URL
+- ✅ `request()->path()` - Get current path
+
+#### Session Management
+- ✅ `session('key')` - Get session value
+- ✅ `session(['key' => 'value'])` - Set session value
+- ✅ `session()->forget('key')` - Remove session value
+- ✅ `session()->flash('key', 'value')` - Set flash data
+- ✅ `session()->flush()` - Destroy session
+
+#### Configuration
+- ✅ `config('app.name')` - Get config value
+- ✅ `config()->set('key', 'value')` - Set config value
+
+#### Database Operations  
+- ✅ `DB::table('users')->get()` - Query builder
+- ✅ `User::all()` - Eloquent models
+- ✅ `DB::select()`, `DB::insert()`, `DB::update()`, `DB::delete()` - Raw queries
+
+#### Validation
+- ✅ Form Request classes - For validation logic
+- ✅ `validate()` method in controllers - For simple validation
+- ✅ `Validator` facade - For manual validation
+
+#### Other
 - ✅ `redirect()` - For redirects
 - ✅ `view()` - For views
-- ✅ Eloquent models - For database operations
-- ✅ Form Request classes - For validation
-- ✅ Dependency injection - For services
 - ✅ `abort(404)` - For 404 errors
+- ✅ `e()` or `htmlspecialchars()` - For XSS protection
+- ✅ Dependency injection - For services
+
+### Migration Notes
+
+Most CodeIgniter patterns have been replaced in controllers, services, and models. Remaining instances are:
+- Legacy libraries (Sumex, QrCode, XMLtemplates) - marked with TODO
+- Complex helpers that need refactoring - use `get_setting()` instead of `$CI->mdl_settings->setting()`
 
 
 
