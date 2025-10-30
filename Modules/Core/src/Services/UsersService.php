@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Models\User;
 
@@ -33,7 +35,7 @@ class UsersService extends BaseService
      */
     public function defaultSelect(): void
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_users.*', false);
+        DB::select('SQL_CALC_FOUND_ROWS ip_users.*', false);
     }
 
     /**
@@ -43,7 +45,7 @@ class UsersService extends BaseService
      */
     public function defaultOrderBy(): void
     {
-        $this->db->orderBy('ip_users.user_name');
+        DB::orderBy('ip_users.user_name');
     }
 
     /**
@@ -152,7 +154,7 @@ class UsersService extends BaseService
         $db_array = parent::dbArray();
         if (isset($db_array['user_password'])) {
             unset($db_array['user_passwordv']);
-            $this->load->library('crypt');
+// TODO: Use Laravel services/facades - $this->load->library('crypt');
             $user_psalt                = $this->crypt->salt();
             $db_array['user_psalt']    = $user_psalt;
             $db_array['user_password'] = $this->crypt->generate_password($db_array['user_password'], $user_psalt);
@@ -172,13 +174,13 @@ class UsersService extends BaseService
      */
     public function saveChangePassword($user_id, $password): void
     {
-        $this->load->library('crypt');
+// TODO: Use Laravel services/facades - $this->load->library('crypt');
         $user_psalt    = $this->crypt->salt();
         $user_password = $this->crypt->generate_password($password, $user_psalt);
         $db_array      = ['user_psalt' => $user_psalt, 'user_password' => $user_password];
 
         User::query()->where('user_id', $user_id)->update($db_array);
-        $this->session->set_flashdata('alert_success', trans('password_changed'));
+        session()->flash('alert_success', trans('password_changed'));
     }
 
     /**
@@ -189,12 +191,12 @@ class UsersService extends BaseService
     public function save($id = null, $db_array = null)
     {
         $id = parent::save($id, $db_array);
-        if ($user_clients = $this->session->userdata('user_clients')) {
-            $this->load->model('users/mdl_user_clients');
+        if ($user_clients = session('user_clients')) {
+// TODO: Use dependency injection - $this->load->model('users/mdl_user_clients');
             foreach ($user_clients as $user_client) {
                 $this->mdl_user_clients->save(null, ['user_id' => $id, 'client_id' => $user_client]);
             }
-            $this->session->unset_userdata('user_clients');
+            session()->forget('user_clients');
         }
 
         return $id;
@@ -208,7 +210,7 @@ class UsersService extends BaseService
     public function delete($id): void
     {
         parent::delete($id);
-        $this->load->helper('orphan');
+// TODO: Laravel autoloads helpers - $this->load->helper('orphan');
         delete_orphans();
     }
 }

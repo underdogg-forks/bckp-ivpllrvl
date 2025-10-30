@@ -48,7 +48,7 @@ class ProjectsController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('projects');
         }
         $this->filterInput();
@@ -57,7 +57,7 @@ class ProjectsController extends AdminController
             $this->projectsService->save($id);
             redirect()->route('projects');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
+        if ($id && ! request()->input('btn_submit') && ! (new ProjectsService())->prepForm($id)) {
             show_404();
         }
     }
@@ -73,7 +73,7 @@ class ProjectsController extends AdminController
      */
     public function view($project_id)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('projects');
         }
         $project = $this->projectsService->getById($project_id);

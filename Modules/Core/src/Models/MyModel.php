@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Models;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 
 use function App\Models\validation_errors;
@@ -126,7 +128,7 @@ class MyModel
             $this->setDefaults();
         }
         $this->runFilters();
-        $this->query  = $this->db->get($this->table);
+        $this->query  = DB::get($this->table);
         $this->filter = [];
 
         return $this;
@@ -139,26 +141,26 @@ class MyModel
      */
     public function paginate($base_url, $offset = 0, $uri_segment = 3)
     {
-        $this->load->helper('url');
-        $this->load->library('pagination');
+// TODO: Laravel autoloads helpers - $this->load->helper('url');
+// TODO: Use Laravel services/facades - $this->load->library('pagination');
         $this->offset       = $offset;
         $default_list_limit = $this->mdl_settings->setting('default_list_limit');
         $per_page           = empty($default_list_limit) ? $this->default_limit : $default_list_limit;
         $this->setDefaults();
         $this->runFilters();
-        $this->db->limit($per_page, $this->offset);
-        $this->query           = $this->db->get($this->table);
-        $this->total_rows      = $this->db->query('SELECT FOUND_ROWS() AS num_rows')->row()->num_rows;
+        DB::limit($per_page, $this->offset);
+        $this->query           = DB::get($this->table);
+        $this->total_rows      = DB::query('SELECT FOUND_ROWS() AS num_rows')->row()->num_rows;
         $this->total_pages     = ceil($this->total_rows / $per_page);
         $this->previous_offset = $this->offset - $per_page;
         $this->next_offset     = $this->offset + $per_page;
         $config                = ['base_url' => $base_url, 'total_rows' => $this->total_rows, 'per_page' => $per_page];
         $this->last_offset     = $this->total_pages * $per_page - $per_page;
-        if ($this->config->item('pagination_style')) {
-            $config = array_merge($config, $this->config->item('pagination_style'));
+        if (config('pagination_style')) {
+            $config = array_merge($config, config('pagination_style'));
         }
-        $this->pagination->initialize($config);
-        $this->page_links = $this->pagination->create_links();
+        // TODO: Use Laravel pagination - $config);
+        $this->page_links = // TODO: Use Laravel pagination - create_links();
     }
 
     /**
@@ -192,9 +194,9 @@ class MyModel
                     $db_array->{$this->date_modified_field} = $datetime;
                 }
             }
-            $this->db->insert($this->table, $db_array);
+            DB::insert($this->table, $db_array);
 
-            return $this->db->insert_id();
+            return DB::insert_id();
         }
         if ($this->date_modified_field) {
             if (is_array($db_array)) {
@@ -203,8 +205,8 @@ class MyModel
                 $db_array->{$this->date_modified_field} = $datetime;
             }
         }
-        $this->db->where($this->primary_key, $id);
-        $this->db->update($this->table, $db_array);
+        DB::where($this->primary_key, $id);
+        DB::update($this->table, $db_array);
 
         return $id;
     }
@@ -218,7 +220,7 @@ class MyModel
     {
         $db_array         = [];
         $validation_rules = $this->{$this->validation_rules}();
-        foreach ($this->input->post() as $key => $value) {
+        foreach (request()->input() as $key => $value) {
             if (array_key_exists($key, $validation_rules)) {
                 $db_array[$key] = $value;
             }
@@ -234,8 +236,8 @@ class MyModel
      */
     public function delete($id)
     {
-        $this->db->where($this->primary_key, $id);
-        $this->db->delete($this->table);
+        DB::where($this->primary_key, $id);
+        DB::delete($this->table);
     }
 
     /**
@@ -333,13 +335,13 @@ class MyModel
             $validation_rules = $this->default_validation_rules;
         }
         foreach (array_keys($_POST) as $key) {
-            $this->form_values[$key] = $this->input->post($key);
+            $this->form_values[$key] = request()->input($key);
         }
         if (method_exists($this, $validation_rules)) {
             $this->validation_rules = $validation_rules;
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules($this->{$validation_rules}());
-            $run                     = $this->form_validation->run();
+// TODO: Use Laravel services/facades - $this->load->library('form_validation');
+            // TODO: Move to Form Request - // TODO: Use Form Request - set_rules($this->{$validation_rules}());
+            $run                     = // TODO: Move to Form Request - // TODO: Use Form Request - run();
             $this->validation_errors = validation_errors();
 
             return $run;

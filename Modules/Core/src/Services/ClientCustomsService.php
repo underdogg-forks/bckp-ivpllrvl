@@ -2,6 +2,8 @@
 
 namespace Modules\CustomFields\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\CustomFields\Models\ClientCustom;
@@ -22,7 +24,7 @@ class ClientCustomsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_client_custom.*, ip_custom_fields.*', false);
+        DB::select('SQL_CALC_FOUND_ROWS ip_client_custom.*, ip_custom_fields.*', false);
     }
 
     /**
@@ -32,7 +34,7 @@ class ClientCustomsService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
+        DB::orderBy('custom_field_table ASC, custom_field_order ASC, custom_field_label ASC');
     }
 
     /**
@@ -42,7 +44,7 @@ class ClientCustomsService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_custom_fields', 'ip_client_custom.client_custom_fieldid = ip_custom_fields.custom_field_id', 'inner');
+        DB::join('ip_custom_fields', 'ip_client_custom.client_custom_fieldid = ip_custom_fields.custom_field_id', 'inner');
     }
 
     /**
@@ -100,8 +102,8 @@ class ClientCustomsService extends BaseService
     {
         if ($id) {
             $values = $this->getByClient($id);
-            $this->load->helper('custom_values_helper');
-            $this->load->module('custom_fields/mdl_custom_fields');
+// TODO: Laravel autoloads helpers - $this->load->helper('custom_values_helper');
+// TODO: Modules handled differently in Laravel - $this->load->module('custom_fields/mdl_custom_fields');
             if ($values != null) {
                 foreach ($values as $value) {
                     $type = $value->custom_field_type;
@@ -135,7 +137,7 @@ class ClientCustomsService extends BaseService
      */
     public function byId($client_id)
     {
-        $this->db->where('ip_client_custom.client_id', $client_id);
+        DB::where('ip_client_custom.client_id', $client_id);
 
         return $this;
     }
@@ -167,7 +169,7 @@ class ClientCustomsService extends BaseService
     public function dbArray()
     {
         $db_array = parent::dbArray();
-        $this->load->module('custom_fields/mdl_custom_fields');
+// TODO: Modules handled differently in Laravel - $this->load->module('custom_fields/mdl_custom_fields');
         $fields = $this->mdl_custom_fields->result();
         foreach ($fields as $field) {
             if ($field->custom_field_type == 'DATE') {

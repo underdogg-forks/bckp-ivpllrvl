@@ -10,8 +10,7 @@ class PagerHelper
      * @originalFile pager_helper.php
      */
     public static function pager(string $base_url, $model): string
-    {
-        $CI    = & get_instance();
+    { // TODO: Replace with Laravel patterns
         $pager = '<div class="model-pager btn-group btn-group-sm">';
         if (($previous_page = $CI->{$model}->previous_offset) >= 0) {
             $pager .= '<a class="btn btn-default" href="' . $base_url . '/0" title="' . trans('first') . '"><i class="fa fa-fast-backward no-margin"></i></a>';

@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\Models\Item;
@@ -36,7 +38,7 @@ class ItemsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('ip_invoice_item_amounts.*, ip_products.*, ip_invoice_items.*,
+        DB::select('ip_invoice_item_amounts.*, ip_products.*, ip_invoice_items.*,
             item_tax_rates.tax_rate_percent AS item_tax_rate_percent,
             item_tax_rates.tax_rate_name AS item_tax_rate_name');
     }
@@ -48,7 +50,7 @@ class ItemsService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('ip_invoice_items.item_order');
+        DB::orderBy('ip_invoice_items.item_order');
     }
 
     /**
@@ -58,9 +60,9 @@ class ItemsService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_invoice_item_amounts', 'ip_invoice_item_amounts.item_id = ip_invoice_items.item_id', 'left');
-        $this->db->join('ip_tax_rates AS item_tax_rates', 'item_tax_rates.tax_rate_id = ip_invoice_items.item_tax_rate_id', 'left');
-        $this->db->join('ip_products', 'ip_products.product_id = ip_invoice_items.item_product_id', 'left');
+        DB::join('ip_invoice_item_amounts', 'ip_invoice_item_amounts.item_id = ip_invoice_items.item_id', 'left');
+        DB::join('ip_tax_rates AS item_tax_rates', 'item_tax_rates.tax_rate_id = ip_invoice_items.item_tax_rate_id', 'left');
+        DB::join('ip_products', 'ip_products.product_id = ip_invoice_items.item_product_id', 'left');
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Users\Controllers\ClientsService;
 use Modules\Users\Controllers\SettingsService;
@@ -27,11 +29,11 @@ class UsersAjaxController extends AdminController
     public function nameQuery($type = 1)
     {
         // Load the model & helper
-        $this->load->helper('user');
+// TODO: Laravel autoloads helpers - $this->load->helper('user');
         $response = [];
         // GetController the post input
-        $query                 = $this->input->get('query');
-        $permissiveSearchUsers = $this->input->get('permissive_search_users');
+        $query                 = request()->query('query');
+        $permissiveSearchUsers = request()->query('permissive_search_users');
         if (empty($query)) {
             echo json_encode($response);
             exit;
@@ -39,7 +41,7 @@ class UsersAjaxController extends AdminController
         // Search for chars "in the middle" of users names
         $moreUsersQuery = $permissiveSearchUsers ? '%' : '';
         // Search for users $type
-        $escapedQuery = $this->db->escape_str($query);
+        $escapedQuery = DB::escape_str($query);
         $escapedQuery = str_replace('%', '', $escapedQuery);
         // Not searched: user_address_1 user_address_2 user_city user_state user_zip user_country user_invoicing_contact
         $users = (new UsersService())->where('user_active', 1)->where('user_type', $type)->having("user_name LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_company LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->or_having("user_invoicing_contact LIKE '" . $moreUsersQuery . $escapedQuery . "%'")->orderBy('user_name')->get()->result();
@@ -78,7 +80,7 @@ class UsersAjaxController extends AdminController
      */
     public function savePreferencePermissiveSearchUsers()
     {
-        $permissiveSearchUsers = $this->input->get('permissive_search_users');
+        $permissiveSearchUsers = request()->query('permissive_search_users');
         if ( ! preg_match('!^[0-1]{1}$!', $permissiveSearchUsers)) {
             exit;
         }
@@ -95,8 +97,8 @@ class UsersAjaxController extends AdminController
      */
     public function saveUserClient()
     {
-        $user_id   = $this->input->post('user_id');
-        $client_id = $this->input->post('client_id');
+        $user_id   = request()->input('user_id');
+        $client_id = request()->input('client_id');
         $client    = (new ClientsService())->getById($client_id);
         if ($client) {
             $client_id = $client->client_id;
@@ -109,9 +111,9 @@ class UsersAjaxController extends AdminController
                 }
             } else {
                 // New user - assign the entries to a session variable until user record is saved
-                $user_clients             = $this->session->userdata('user_clients') ? $this->session->userdata('user_clients') : [];
+                $user_clients             = session('user_clients') ? session('user_clients') : [];
                 $user_clients[$client_id] = $client_id;
-                $this->session->set_userdata('user_clients', $user_clients);
+                session(['user_clients', $user_clients);
             }
         }
     }
@@ -128,11 +130,11 @@ class UsersAjaxController extends AdminController
      */
     public function loadUserClientTable()
     {
-        $session_user_clients = $this->session->userdata('user_clients');
+        $session_user_clients = session('user_clients');
         if ($session_user_clients) {
             $data = ['id' => null, 'user_clients' => (new ClientsService())->where_in('ip_clients.client_id', $session_user_clients)->get()->result()];
         } else {
-            $data = ['id' => $this->input->post('user_id'), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', $this->input->post('user_id'))->get()->result()];
+            $data = ['id' => request()->input('user_id'), 'user_clients' => (new UserClientsService())->where('ip_user_clients.user_id', request()->input('user_id'))->get()->result()];
         }
         $this->layout->loadView('users/partial_user_client_table', $data);
     }
@@ -148,7 +150,7 @@ class UsersAjaxController extends AdminController
      */
     public function modalAddUserClient($user_id = null)
     {
-        if ($session_user_clients = $this->session->userdata('user_clients')) {
+        if ($session_user_clients = session('user_clients')) {
             $clients          = (new ClientsService())->where_not_in('ip_clients.client_id', $session_user_clients)->get()->result();
             $assigned_clients = [];
         } else {

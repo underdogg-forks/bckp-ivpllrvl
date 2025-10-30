@@ -57,7 +57,7 @@ class TasksController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('tasks');
         }
         $this->filterInput();
@@ -66,7 +66,7 @@ class TasksController extends AdminController
             (new TasksService())->save($id);
             redirect()->route('tasks');
         }
-        if ( ! $this->input->post('btn_submit')) {
+        if ( ! request()->input('btn_submit')) {
             $prep_form = (new TasksService())->prepForm($id);
             if ($id && ! $prep_form) {
                 show_404();

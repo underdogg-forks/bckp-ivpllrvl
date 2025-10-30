@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 
@@ -29,9 +31,9 @@ class InvoiceTaxRatesService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('ip_tax_rates.tax_rate_name AS invoice_tax_rate_name');
-        $this->db->select('ip_tax_rates.tax_rate_percent AS invoice_tax_rate_percent');
-        $this->db->select('ip_invoice_tax_rates.*');
+        DB::select('ip_tax_rates.tax_rate_name AS invoice_tax_rate_name');
+        DB::select('ip_tax_rates.tax_rate_percent AS invoice_tax_rate_percent');
+        DB::select('ip_invoice_tax_rates.*');
     }
 
     /**
@@ -41,7 +43,7 @@ class InvoiceTaxRatesService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_invoice_tax_rates.tax_rate_id');
+        DB::join('ip_tax_rates', 'ip_tax_rates.tax_rate_id = ip_invoice_tax_rates.tax_rate_id');
     }
 
     /**
@@ -59,7 +61,7 @@ class InvoiceTaxRatesService extends BaseService
     {
         // Only appliable in legacy calculation - since 1.6.3
         config_item('legacy_calculation') && parent::save($id, $db_array);
-        $invoice_id = $db_array['invoice_id'] ?? $this->input->post('invoice_id');
+        $invoice_id = $db_array['invoice_id'] ?? request()->input('invoice_id');
         if ($invoice_id) {
             $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
             // Recalculate invoice amounts

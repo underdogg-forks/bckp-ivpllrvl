@@ -26,7 +26,7 @@ class AjaxController extends AdminController
             $payment_id = (new PaymentsService())->save();
             $response   = ['success' => 1, 'payment_id' => $payment_id];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         echo json_encode($response);
@@ -46,8 +46,8 @@ class AjaxController extends AdminController
      */
     public function modalAddPayment()
     {
-        $this->load->module('layout');
-        $data = ['payment_methods' => (new PaymentMethodsService())->getAll(), 'invoice_id' => $this->security->xss_clean($this->input->post('invoice_id')), 'invoice_balance' => $this->input->post('invoice_balance'), 'invoice_payment_method' => $this->input->post('invoice_payment_method'), 'payment_cf_exist' => $this->security->xss_clean($this->input->post('payment_cf_exist'))];
+// TODO: Modules handled differently in Laravel - $this->load->module('layout');
+        $data = ['payment_methods' => (new PaymentMethodsService())->getAll(), 'invoice_id' => e(request()->input('invoice_id')), 'invoice_balance' => request()->input('invoice_balance'), 'invoice_payment_method' => request()->input('invoice_payment_method'), 'payment_cf_exist' => e(request()->input('payment_cf_exist'))];
         $this->layout->loadView('payments/modal_add_payment', $data);
     }
 }

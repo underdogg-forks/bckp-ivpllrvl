@@ -14,10 +14,9 @@ class ClientHelper
     public static function formatClient($client, $show_title = true): string
     {
         // GetController an id
-        if ($client && is_numeric($client)) {
-            $CI = & get_instance();
+        if ($client && is_numeric($client)) { // TODO: Replace with Laravel patterns
             if ( ! property_exists($CI, 'mdl_clients')) {
-                $CI->load->model('clients/mdl_clients');
+                // TODO: Use dependency injection - 'clients/mdl_clients');
             }
             $client = $CI->mdl_clients->get_by_id($client);
         }

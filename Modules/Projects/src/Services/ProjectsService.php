@@ -2,6 +2,8 @@
 
 namespace Modules\Projects\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 
@@ -19,7 +21,7 @@ class ProjectsService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+        DB::select('SQL_CALC_FOUND_ROWS *', false);
     }
 
     /**
@@ -29,7 +31,7 @@ class ProjectsService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('ip_projects.project_id');
+        DB::orderBy('ip_projects.project_id');
     }
 
     /**
@@ -39,7 +41,7 @@ class ProjectsService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_clients', 'ip_clients.client_id = ip_projects.client_id', 'left');
+        DB::join('ip_clients', 'ip_clients.client_id = ip_projects.client_id', 'left');
     }
 
     /**
@@ -49,7 +51,7 @@ class ProjectsService extends BaseService
      */
     public function getLatest()
     {
-        $this->db->orderBy('ip_projects.project_id', 'DESC');
+        DB::orderBy('ip_projects.project_id', 'DESC');
 
         return $this;
     }

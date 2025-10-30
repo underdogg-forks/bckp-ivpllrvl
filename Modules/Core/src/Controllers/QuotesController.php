@@ -102,7 +102,7 @@ class QuotesController extends BaseGuestController
             show_404();
         }
         (new QuotesService())->markViewed($quote->quote_id);
-        $this->load->helper('dropzone');
+// TODO: Laravel autoloads helpers - $this->load->helper('dropzone');
         $this->layout->set(['quote_id' => $quote_id, 'quote' => $quote, 'items' => (new QuoteItemsService())->getByQuoteId($quote_id), 'quote_tax_rates' => (new QuoteTaxRatesService())->getByQuoteId($quote_id), 'legacy_calculation' => config_item('legacy_calculation')]);
         $this->layout->buffer('content', 'guest/quotes_view');
         $this->layout->render('layout_guest');
@@ -120,7 +120,7 @@ class QuotesController extends BaseGuestController
      */
     public function generatePdf($quote_id, $stream = true, $quote_template = null)
     {
-        $this->load->helper('pdf');
+// TODO: Laravel autoloads helpers - $this->load->helper('pdf');
         (new QuotesService())->markViewed($quote_id);
         $quote = (new QuotesService())->guestVisible()->where('ip_quotes.quote_id', $quote_id)->where_in('ip_quotes.client_id', $this->user_clients)->get()->row();
         if ( ! $quote) {

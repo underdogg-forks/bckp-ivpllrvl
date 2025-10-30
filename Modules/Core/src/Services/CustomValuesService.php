@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Models\CustomValue;
@@ -233,7 +235,7 @@ class CustomValuesService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('ip_custom_fields.*,ip_custom_values.*', false);
+        DB::select('ip_custom_fields.*,ip_custom_values.*', false);
     }
 
     /**
@@ -243,7 +245,7 @@ class CustomValuesService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_custom_fields', 'ip_custom_values.custom_values_field = ip_custom_fields.custom_field_id', 'inner');
+        DB::join('ip_custom_fields', 'ip_custom_values.custom_values_field = ip_custom_fields.custom_field_id', 'inner');
     }
 
     /**
@@ -253,7 +255,7 @@ class CustomValuesService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('ip_custom_values.custom_values_value');
+        DB::orderBy('ip_custom_values.custom_values_value');
     }
 
     /**
@@ -263,7 +265,7 @@ class CustomValuesService extends BaseService
      */
     public function defaultGroupBy()
     {
-        //$this->db->group_by('ip_custom_values.custom_values_field');
+        //DB::group_by('ip_custom_values.custom_values_field');
     }
 
     /**

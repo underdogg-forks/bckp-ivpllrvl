@@ -2,6 +2,8 @@
 
 namespace src\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 
@@ -41,15 +43,15 @@ class FamiliesController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('families');
         }
         $this->filterInput();
         // <<<--- filters _POST array for nastiness
-        if ($this->input->post('is_update') == 0 && $this->input->post('family_name') != '') {
-            $check = $this->db->get_where('ip_families', ['family_name' => $this->input->post('family_name')])->result();
+        if (request()->input('is_update') == 0 && request()->input('family_name') != '') {
+            $check = DB::get_where('ip_families', ['family_name' => request()->input('family_name')])->result();
             if ( ! empty($check)) {
-                $this->session->set_flashdata('alert_error', trans('family_already_exists'));
+                session()->flash('alert_error', trans('family_already_exists'));
                 redirect()->route('families/form');
             }
         }
@@ -57,7 +59,7 @@ class FamiliesController extends AdminController
             (new FamiliesService())->save($id);
             redirect()->route('families');
         }
-        if ($id && ! $this->input->post('btn_submit')) {
+        if ($id && ! request()->input('btn_submit')) {
             if ( ! (new FamiliesService())->prepForm($id)) {
                 show_404();
             }

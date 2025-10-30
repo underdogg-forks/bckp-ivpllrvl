@@ -11,7 +11,8 @@ class FormValidationModel extends BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('form_validation');
-        $this->form_validation->CI = & $this;
+        // TODO: Replace with Laravel Form Request validation
+        // $this->load->library('form_validation');
+        // $this->form_validation->CI = & $this;
     }
 }

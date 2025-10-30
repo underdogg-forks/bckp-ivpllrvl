@@ -112,7 +112,7 @@ class SettingsService extends BaseService
      */
     public function getThemes()
     {
-        $this->load->helper('directory');
+// TODO: Laravel autoloads helpers - $this->load->helper('directory');
         $found_folders = directory_map(THEME_FOLDER, 1);
         $themes        = [];
         foreach ($found_folders as $theme) {

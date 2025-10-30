@@ -61,7 +61,7 @@ class CustomFieldsController extends AdminController
      */
     public function form($id = null)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('custom_fields');
         }
         $this->filterInput();
@@ -70,7 +70,7 @@ class CustomFieldsController extends AdminController
             (new CustomFieldsService())->save($id);
             redirect()->route('custom_fields');
         }
-        if ($id && ! $this->input->post('btn_submit') && ! (new CustomFieldsService())->prepForm($id)) {
+        if ($id && ! request()->input('btn_submit') && ! (new CustomFieldsService())->prepForm($id)) {
             show_404();
         }
 
@@ -87,7 +87,7 @@ class CustomFieldsController extends AdminController
     public function delete($id)
     {
         if ( ! (new CustomFieldsService())->delete($id)) {
-            $this->session->set_flashdata('alert_info', CustomFieldsController . phptrans('id') . sprintf(' "%s" ', $id) . trans('custom_fields_used_not_deletable'));
+            session()->flash('alert_info', CustomFieldsController . phptrans('id') . sprintf(' "%s" ', $id) . trans('custom_fields_used_not_deletable'));
         }
         // Return to page number of custom values or fields
         $r = empty($_SERVER['HTTP_REFERER']) ? 'custom_fields' : $_SERVER['HTTP_REFERER'];

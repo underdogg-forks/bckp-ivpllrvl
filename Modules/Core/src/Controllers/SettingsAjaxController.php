@@ -18,7 +18,7 @@ class SettingsAjaxController extends AdminController
      */
     public function getCronKey()
     {
-        $this->load->helper('string');
+// TODO: Laravel autoloads helpers - $this->load->helper('string');
         echo random_string('alnum', 16);
     }
 }

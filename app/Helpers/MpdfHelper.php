@@ -12,8 +12,7 @@ class MpdfHelper
      * @originalFile mpdf_helper.php
      */
     public static function pdfCreate($html, string $filename, bool $stream = true, $password = null, $isInvoice = null, $is_guest = null, bool $embed_xml = false, ?array $associated_files = [])
-    {
-        $CI = & get_instance();
+    { // TODO: Replace with Laravel patterns
         // GetController the invoice from the archive if available
         $invoice_array = [];
         // mPDF loading
@@ -32,7 +31,7 @@ class MpdfHelper
         }
         // eInvoicing: Include (embedded) XML if enabled for the client
         if ($embed_xml) {
-            $CI->load->helper('e-invoice');
+            // TODO: Laravel autoloads helpers - 'e-invoice');
             // mpdf only creates PDF/A-1b files and cannot create the required PDF/A-3b files!
             $mpdf->pdf_version = '1.7';
             $mpdf->PDFA        = true;

@@ -2,6 +2,8 @@
 
 namespace Modules\Quotes\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
@@ -28,12 +30,12 @@ class AjaxController extends AdminController
      */
     public function save()
     {
-        $quote_id = $this->security->xss_clean($this->input->post('quote_id', true));
+        $quote_id = e(request()->input('quote_id', true));
         (new QuotesService())->setId($quote_id);
         if ((new QuotesService())->runValidation('validation_rules_save_quote')) {
-            $items                  = json_decode($this->input->post('items'));
-            $quote_discount_percent = (float) $this->input->post('quote_discount_percent');
-            $quote_discount_amount  = (float) $this->input->post('quote_discount_amount');
+            $items                  = json_decode(request()->input('items'));
+            $quote_discount_percent = (float) request()->input('quote_discount_percent');
+            $quote_discount_amount  = (float) request()->input('quote_discount_amount');
             // Percent by default. Only one allowed. Prevent set 2 global discounts by geeky client - since v1.6.3
             if ($quote_discount_percent && $quote_discount_amount) {
                 $quote_discount_amount = 0.0;
@@ -58,7 +60,7 @@ class AjaxController extends AdminController
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+                config()->set('legacy_calculation', ! empty(request()->input('legacy_calculation')));
             }
             foreach ($items as $item) {
                 // Check if an item has either a quantity + price or name or description
@@ -75,16 +77,16 @@ class AjaxController extends AdminController
                     (new QuoteItemsService())->save($item_id, $item, $global_discount);
                 } elseif (empty($item->item_name) && ( ! empty($item->item_quantity) || ! empty($item->item_price))) {
                     // Throw an error message and use the form validation for that (todo: where the translations of: The .* field is required.)
-                    $this->load->library('form_validation');
-                    $this->form_validation->set_rules('item_name', trans('item'), 'required');
-                    $this->form_validation->run();
+// TODO: Use Laravel services/facades - $this->load->library('form_validation');
+                    // TODO: Move to Form Request - // TODO: Use Form Request - set_rules('item_name', trans('item'), 'required');
+                    // TODO: Move to Form Request - // TODO: Use Form Request - run();
                     $response = ['success' => 0, 'validation_errors' => ['item_name' => form_error('item_name', '', '')]];
                     exit(json_encode($response));
                 }
             }
-            $quote_status_id = $this->input->post('quote_status_id');
+            $quote_status_id = request()->input('quote_status_id');
             // Generate new quote number if needed
-            $quote_number = $this->input->post('quote_number');
+            $quote_number = request()->input('quote_number');
             if (empty($quote_number) && $quote_status_id != 1) {
                 $quote_group_id = (new QuotesService())->getInvoiceGroupId($quote_id);
                 $quote_number   = (new QuotesService())->getQuoteNumber($quote_group_id);
@@ -94,7 +96,7 @@ class AjaxController extends AdminController
                 // Adjust amount to reflect real calculation (cents)
                 $quote_discount_amount = $global_discount['item'];
             }
-            $db_array = ['quote_number' => $quote_number, 'quote_status_id' => $quote_status_id, 'quote_date_created' => date_to_mysql($this->input->post('quote_date_created')), 'quote_date_expires' => date_to_mysql($this->input->post('quote_date_expires')), 'quote_password' => $this->input->post('quote_password'), 'notes' => $this->input->post('notes'), 'quote_discount_amount' => standardize_amount($quote_discount_amount), 'quote_discount_percent' => standardize_amount($quote_discount_percent)];
+            $db_array = ['quote_number' => $quote_number, 'quote_status_id' => $quote_status_id, 'quote_date_created' => date_to_mysql(request()->input('quote_date_created')), 'quote_date_expires' => date_to_mysql(request()->input('quote_date_expires')), 'quote_password' => request()->input('quote_password'), 'notes' => request()->input('notes'), 'quote_discount_amount' => standardize_amount($quote_discount_amount), 'quote_discount_percent' => standardize_amount($quote_discount_percent)];
             (new QuotesService())->save($quote_id, $db_array, $global_discount);
             if (config_item('legacy_calculation')) {
                 // Recalculate for discounts
@@ -103,14 +105,14 @@ class AjaxController extends AdminController
             $response = ['success' => 1];
         } else {
             Log::error('980: I wasnt able to run the validation validation_rules_save_quote');
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         // Save all custom fields
-        if ($this->input->post('custom')) {
+        if (request()->input('custom')) {
             $db_array = [];
             $values   = [];
-            foreach ($this->input->post('custom') as $custom) {
+            foreach (request()->input('custom') as $custom) {
                 if (preg_match('/^(.*)\[\]$/i', $custom['name'], $matches)) {
                     $values[$matches[1]][] = $custom['value'];
                 } else {
@@ -165,7 +167,7 @@ class AjaxController extends AdminController
     public function deleteItem($quote_id)
     {
         $success = 0;
-        $item_id = $this->input->post('item_id');
+        $item_id = request()->input('item_id');
         // Only continue if the quote exists or no item id was provided
         if ((new QuotesService())->getById($quote_id) || empty($item_id)) {
             // Delete quote item
@@ -186,7 +188,7 @@ class AjaxController extends AdminController
      */
     public function getItem()
     {
-        $item = (new QuoteItemsService())->getById($this->input->post('item_id'));
+        $item = (new QuoteItemsService())->getById(request()->input('item_id'));
         exit(json_encode($item));
     }
 
@@ -202,8 +204,8 @@ class AjaxController extends AdminController
      */
     public function modalCopyQuote()
     {
-        $this->load->module('layout');
-        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'tax_rates' => (new TaxRatesService())->getAll(), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'quote' => (new QuotesService())->getById($this->input->post('quote_id')), 'client' => (new ClientsService())->getById($this->input->post('client_id'))];
+// TODO: Modules handled differently in Laravel - $this->load->module('layout');
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'tax_rates' => (new TaxRatesService())->getAll(), 'quote_id' => e(request()->input('quote_id')), 'quote' => (new QuotesService())->getById(request()->input('quote_id')), 'client' => (new ClientsService())->getById(request()->input('client_id'))];
         $this->layout->loadView('quotes/modal_copy_quote', $data);
     }
 
@@ -219,14 +221,14 @@ class AjaxController extends AdminController
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+                config()->set('legacy_calculation', ! empty(request()->input('legacy_calculation')));
             }
             $target_id = (new QuotesService())->save();
-            $source_id = $this->input->post('quote_id');
+            $source_id = request()->input('quote_id');
             (new QuotesService())->copyQuote($source_id, $target_id);
             $response = ['success' => 1, 'quote_id' => $target_id];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -240,8 +242,8 @@ class AjaxController extends AdminController
      */
     public function modalChangeUser()
     {
-        $this->load->module('layout');
-        $data = ['user_id' => $this->security->xss_clean($this->input->post('user_id')), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'users' => (new UsersService())->getLatest()];
+// TODO: Modules handled differently in Laravel - $this->load->module('layout');
+        $data = ['user_id' => e(request()->input('user_id')), 'quote_id' => e(request()->input('quote_id')), 'users' => (new UsersService())->getLatest()];
         $this->layout->loadView('layout/ajax/modal_change_user_client', $data);
     }
 
@@ -255,16 +257,16 @@ class AjaxController extends AdminController
     public function changeUser()
     {
         // GetController the user ID
-        $user_id = $this->security->xss_clean($this->input->post('user_id'));
+        $user_id = e(request()->input('user_id'));
         $user    = (new UsersService())->getById($user_id);
         if ( ! empty($user)) {
-            $quote_id = $this->input->post('quote_id');
+            $quote_id = request()->input('quote_id');
             $db_array = ['user_id' => $user_id];
-            $this->db->where('quote_id', $quote_id);
-            $this->db->update('ip_quotes', $db_array);
-            $response = ['success' => 1, 'quote_id' => $this->security->xss_clean($quote_id)];
+            DB::where('quote_id', $quote_id);
+            DB::update('ip_quotes', $db_array);
+            $response = ['success' => 1, 'quote_id' => e($quote_id)];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -280,8 +282,8 @@ class AjaxController extends AdminController
      */
     public function modalChangeClient()
     {
-        $this->load->module('layout');
-        $data = ['client_id' => $this->security->xss_clean($this->input->post('client_id')), 'quote_id' => $this->security->xss_clean($this->input->post('quote_id')), 'clients' => (new ClientsService())->getLatest()];
+// TODO: Modules handled differently in Laravel - $this->load->module('layout');
+        $data = ['client_id' => e(request()->input('client_id')), 'quote_id' => e(request()->input('quote_id')), 'clients' => (new ClientsService())->getLatest()];
         $this->layout->loadView('layout/ajax/modal_change_user_client', $data);
     }
 
@@ -296,16 +298,16 @@ class AjaxController extends AdminController
     public function changeClient()
     {
         // GetController the client ID
-        $client_id = $this->security->xss_clean($this->input->post('client_id'));
+        $client_id = e(request()->input('client_id'));
         $client    = (new ClientsService())->getById($client_id);
         if ( ! empty($client)) {
-            $quote_id = $this->input->post('quote_id');
+            $quote_id = request()->input('quote_id');
             $db_array = ['client_id' => $client_id];
-            $this->db->where('quote_id', $quote_id);
-            $this->db->update('ip_quotes', $db_array);
-            $response = ['success' => 1, 'quote_id' => $this->security->xss_clean($quote_id)];
+            DB::where('quote_id', $quote_id);
+            DB::update('ip_quotes', $db_array);
+            $response = ['success' => 1, 'quote_id' => e($quote_id)];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -324,8 +326,8 @@ class AjaxController extends AdminController
      */
     public function modalCreateQuote()
     {
-        $this->load->module('layout');
-        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'tax_rates' => (new TaxRatesService())->getAll(), 'client' => (new ClientsService())->getById($this->input->post('client_id')), 'clients' => (new ClientsService())->getLatest()];
+// TODO: Modules handled differently in Laravel - $this->load->module('layout');
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'tax_rates' => (new TaxRatesService())->getAll(), 'client' => (new ClientsService())->getById(request()->input('client_id')), 'clients' => (new ClientsService())->getLatest()];
         $this->layout->loadView('quotes/modal_create_quote', $data);
     }
 
@@ -341,7 +343,7 @@ class AjaxController extends AdminController
             $quote_id = (new QuotesService())->create();
             $response = ['success' => 1, 'quote_id' => $quote_id];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));
@@ -360,8 +362,8 @@ class AjaxController extends AdminController
      */
     public function modalQuoteToInvoice($quote_id)
     {
-        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'quote_id' => $this->security->xss_clean($quote_id), 'quote' => (new QuotesService())->getById($quote_id)];
-        $this->load->view('quotes/modal_quote_to_invoice', $data);
+        $data = ['invoice_groups' => (new InvoiceGroupsService())->getAll(), 'quote_id' => e($quote_id), 'quote' => (new QuotesService())->getById($quote_id)];
+        return view('quotes/modal_quote_to_invoice', $data);
     }
 
     /**
@@ -375,19 +377,19 @@ class AjaxController extends AdminController
     {
         if ((new InvoicesService())->runValidation()) {
             // GetController the quote
-            $quote_id = $this->input->post('quote_id');
+            $quote_id = request()->input('quote_id');
             $quote    = (new QuotesService())->getById($quote_id);
             // Create new invoice
             $invoice_id = (new InvoicesService())->create(null, false);
             // Update the discounts
-            $this->db->where('invoice_id', $invoice_id);
-            $this->db->set('invoice_discount_amount', $quote->quote_discount_amount);
-            $this->db->set('invoice_discount_percent', $quote->quote_discount_percent);
-            $this->db->update('ip_invoices');
+            DB::where('invoice_id', $invoice_id);
+            DB::set('invoice_discount_amount', $quote->quote_discount_amount);
+            DB::set('invoice_discount_percent', $quote->quote_discount_percent);
+            DB::update('ip_invoices');
             // Save the invoice id to the quote
-            $this->db->where('quote_id', $quote_id);
-            $this->db->set('invoice_id', $invoice_id);
-            $this->db->update('ip_quotes');
+            DB::where('quote_id', $quote_id);
+            DB::set('invoice_id', $invoice_id);
+            DB::update('ip_quotes');
             // Discounts calculation - since v1.6.3 Need if taxes applied after discounts
             $global_discount = [
                 'amount'  => $quote->quote_discount_amount,
@@ -398,24 +400,24 @@ class AjaxController extends AdminController
             ];
             unset($quote);
             // Free memory
-            $quote_items = (new QuoteItemsService())->getByQuoteId($this->input->post('quote_id'));
+            $quote_items = (new QuoteItemsService())->getByQuoteId(request()->input('quote_id'));
             // Automatic calculation mode
             if (get_setting('einvoicing')) {
                 // Shift to false (by default). Need true? See Dev Note on ipconfig example
-                $this->config->set_item('legacy_calculation', ! empty($this->input->post('legacy_calculation')));
+                config()->set('legacy_calculation', ! empty(request()->input('legacy_calculation')));
             }
             foreach ($quote_items as $quote_item) {
                 $db_array = ['invoice_id' => $invoice_id, 'item_tax_rate_id' => $quote_item->item_tax_rate_id, 'item_product_id' => $quote_item->item_product_id, 'item_name' => $quote_item->item_name, 'item_description' => $quote_item->item_description, 'item_quantity' => $quote_item->item_quantity, 'item_price' => $quote_item->item_price, 'item_product_unit_id' => $quote_item->item_product_unit_id, 'item_product_unit' => $quote_item->item_product_unit, 'item_discount_amount' => $quote_item->item_discount_amount, 'item_order' => $quote_item->item_order];
                 (new ItemsService())->save(null, $db_array, $global_discount);
             }
-            $quote_tax_rates = (new QuoteTaxRatesService())->getByQuoteId($this->input->post('quote_id'));
+            $quote_tax_rates = (new QuoteTaxRatesService())->getByQuoteId(request()->input('quote_id'));
             foreach ($quote_tax_rates as $quote_tax_rate) {
                 $db_array = ['invoice_id' => $invoice_id, 'tax_rate_id' => $quote_tax_rate->tax_rate_id, 'include_item_tax' => $quote_tax_rate->include_item_tax, 'invoice_tax_rate_amount' => $quote_tax_rate->quote_tax_rate_amount];
                 (new InvoiceTaxRatesService())->save(null, $db_array);
             }
             $response = ['success' => 1, 'invoice_id' => $invoice_id];
         } else {
-            $this->load->helper('json_error');
+// TODO: Laravel autoloads helpers - $this->load->helper('json_error');
             $response = ['success' => 0, 'validation_errors' => json_errors()];
         }
         exit(json_encode($response));

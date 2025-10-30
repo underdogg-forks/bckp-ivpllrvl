@@ -70,9 +70,8 @@ class EchoHelper
      * @originalFile echo_helper.php
      */
     public static function CsrfField(): void
-    {
-        $CI = & get_instance();
-        echo '<input type="hidden" name="' . $CI->config->item('csrf_token_name');
+    { // TODO: Replace with Laravel patterns
+        echo '<input type="hidden" name="' . config('csrf_token_name');
         echo '" value="' . $CI->security->get_csrf_hash() . '">';
     }
 

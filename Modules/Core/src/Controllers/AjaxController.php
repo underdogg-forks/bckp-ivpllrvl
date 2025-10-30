@@ -19,7 +19,7 @@ class AjaxController extends AdminController
      */
     public function getContent()
     {
-        $id = $this->input->post('email_template_id');
+        $id = request()->input('email_template_id');
         echo json_encode((new EmailTemplatesService())->getById($id));
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Controllers\AdminController;
@@ -214,7 +216,7 @@ class InvoicesController extends AdminController
     {
         $invoice        = $this->invoicesService->getById($invoice_id);
         $invoice_status = $invoice->invoice_status_id;
-        if ($invoice_status == 1 || $this->config->item('enable_invoice_deletion') === true) {
+        if ($invoice_status == 1 || config('enable_invoice_deletion') === true) {
             $this->tasksService->updateOnInvoiceDelete($invoice_id);
             $this->invoicesService->delete($invoice_id);
         } else {
@@ -332,7 +334,7 @@ class InvoicesController extends AdminController
      */
     public function recalculateAllInvoices(): void
     {
-        $invoice_ids = $this->db->table('ip_invoices')->pluck('invoice_id');
+        $invoice_ids = DB::table('ip_invoices')->pluck('invoice_id');
         foreach ($invoice_ids as $invoice_id) {
             $global_discount['item'] = $this->invoiceAmountsService->getGlobalDiscount($invoice_id);
             $this->invoiceAmountsService->calculate($invoice_id, $global_discount);

@@ -139,11 +139,11 @@ class UsersController extends AdminController
      */
     public function changePassword(string $user_id)
     {
-        if ($this->input->post('btn_cancel')) {
+        if (request()->input('btn_cancel')) {
             redirect()->route('users');
         }
         if ((new UsersService())->runValidation('validation_rules_change_password')) {
-            (new UsersService())->saveChangePassword($user_id, $this->input->post('user_password'));
+            (new UsersService())->saveChangePassword($user_id, request()->input('user_password'));
             redirect('users/form/' . $user_id);
         }
         $this->layout->buffer('content', 'users/form_change_password');

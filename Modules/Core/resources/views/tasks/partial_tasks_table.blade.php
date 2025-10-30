@@ -48,7 +48,7 @@
                                 <i class="fa fa-edit fa-margin"></i> @lang('edit')
                             </a>
                         </li>
-                        @if(!($task->task_status == 4 && $this->config->item('enable_invoice_deletion') !== true))
+                        @if(!($task->task_status == 4 && config('enable_invoice_deletion') !== true))
                         <li>
                             <form action="{{ url('tasks/delete/' . $task->task_id) }}"
                                   method="POST">

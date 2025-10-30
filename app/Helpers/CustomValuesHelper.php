@@ -43,7 +43,7 @@ class CustomValuesHelper
             return '';
         }
         $CI = get_instance();
-        $CI->load->model('custom_values/mdl_custom_values', 'cv');
+        // TODO: Use dependency injection - 'custom_values/mdl_custom_values', 'cv');
         $el = $CI->cv->get_by_id($txt)->row();
 
         return $el->custom_values_value;
@@ -60,7 +60,7 @@ class CustomValuesHelper
             return '';
         }
         $CI = get_instance();
-        $CI->load->model('custom_values/mdl_custom_values', 'cv');
+        // TODO: Use dependency injection - 'custom_values/mdl_custom_values', 'cv');
         $values      = explode(',', $txt);
         $values      = $CI->cv->where_in('custom_values_id', $values)->get()->result();
         $values_text = [];

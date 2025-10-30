@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Services\BaseService;
 use Modules\Invoices\Models\InvoiceRecurring;
@@ -22,7 +24,7 @@ class InvoicesRecurringService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS ip_invoices.*,
+        DB::select('SQL_CALC_FOUND_ROWS ip_invoices.*,
             ip_clients.client_title,
             ip_clients.client_name,
             ip_clients.client_surname,
@@ -37,8 +39,8 @@ class InvoicesRecurringService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_invoices', 'ip_invoices.invoice_id = ip_invoices_recurring.invoice_id');
-        $this->db->join('ip_clients', 'ip_clients.client_id = ip_invoices.client_id');
+        DB::join('ip_invoices', 'ip_invoices.invoice_id = ip_invoices_recurring.invoice_id');
+        DB::join('ip_clients', 'ip_clients.client_id = ip_invoices.client_id');
     }
 
     /**

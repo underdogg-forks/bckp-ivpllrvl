@@ -23,7 +23,7 @@ class SessionsService extends BaseService
         $user = User::query()->where('user_email', $email)->first();
 
         if ($user) {
-            $this->load->library('crypt');
+// TODO: Use Laravel services/facades - $this->load->library('crypt');
             /*
              * Password hashing changed after 1.2.0
              * Check to see if user has logged in since the password change
@@ -51,7 +51,7 @@ class SessionsService extends BaseService
             }
             if ($this->crypt->check_password($user->user_password, $password)) {
                 $session_data = ['user_type' => $user->user_type, 'user_id' => $user->user_id, 'user_name' => $user->user_name, 'user_email' => $user->user_email, 'user_company' => $user->user_company, 'user_language' => $user->user_language ?? 'system'];
-                $this->session->set_userdata($session_data);
+                session([$session_data);
 
                 return true;
             }

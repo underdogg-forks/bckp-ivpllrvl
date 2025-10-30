@@ -2,6 +2,8 @@
 
 namespace Modules\Invoices\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Illuminate\Support\Str;
 use Modules\Core\Services\BaseService;
@@ -59,7 +61,7 @@ class InvoicesService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select("\n            SQL_CALC_FOUND_ROWS\n            ip_quotes.*,\n            ip_users.*,\n            ip_clients.*,\n            ip_invoice_sumex.*,\n            ip_invoice_amounts.invoice_amount_id,\n            IFNULL(ip_invoice_amounts.invoice_item_subtotal, '0.00') AS invoice_item_subtotal,\n            IFNULL(ip_invoice_amounts.invoice_item_tax_total, '0.00') AS invoice_item_tax_total,\n            IFNULL(ip_invoice_amounts.invoice_tax_total, '0.00') AS invoice_tax_total,\n            IFNULL(ip_invoice_amounts.invoice_total, '0.00') AS invoice_total,\n            IFNULL(ip_invoice_amounts.invoice_paid, '0.00') AS invoice_paid,\n            IFNULL(ip_invoice_amounts.invoice_balance, '0.00') AS invoice_balance,\n            ip_invoice_amounts.invoice_sign AS invoice_sign,\n            (CASE WHEN ip_invoices.invoice_status_id NOT IN (1,4) AND DATEDIFF(NOW(), invoice_date_due) > 0 THEN 1 ELSE 0 END) is_overdue,\n            DATEDIFF(NOW(), invoice_date_due) AS days_overdue,\n            (CASE (SELECT COUNT(*) FROM ip_invoices_recurring WHERE ip_invoices_recurring.invoice_id = ip_invoices.invoice_id and ip_invoices_recurring.recur_next_date IS NOT NULL) WHEN 0 THEN 0 ELSE 1 END) AS invoice_is_recurring,\n            ip_invoices.*", false);
+        DB::select("\n            SQL_CALC_FOUND_ROWS\n            ip_quotes.*,\n            ip_users.*,\n            ip_clients.*,\n            ip_invoice_sumex.*,\n            ip_invoice_amounts.invoice_amount_id,\n            IFNULL(ip_invoice_amounts.invoice_item_subtotal, '0.00') AS invoice_item_subtotal,\n            IFNULL(ip_invoice_amounts.invoice_item_tax_total, '0.00') AS invoice_item_tax_total,\n            IFNULL(ip_invoice_amounts.invoice_tax_total, '0.00') AS invoice_tax_total,\n            IFNULL(ip_invoice_amounts.invoice_total, '0.00') AS invoice_total,\n            IFNULL(ip_invoice_amounts.invoice_paid, '0.00') AS invoice_paid,\n            IFNULL(ip_invoice_amounts.invoice_balance, '0.00') AS invoice_balance,\n            ip_invoice_amounts.invoice_sign AS invoice_sign,\n            (CASE WHEN ip_invoices.invoice_status_id NOT IN (1,4) AND DATEDIFF(NOW(), invoice_date_due) > 0 THEN 1 ELSE 0 END) is_overdue,\n            DATEDIFF(NOW(), invoice_date_due) AS days_overdue,\n            (CASE (SELECT COUNT(*) FROM ip_invoices_recurring WHERE ip_invoices_recurring.invoice_id = ip_invoices.invoice_id and ip_invoices_recurring.recur_next_date IS NOT NULL) WHEN 0 THEN 0 ELSE 1 END) AS invoice_is_recurring,\n            ip_invoices.*", false);
     }
 
     /**
@@ -69,7 +71,7 @@ class InvoicesService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('ip_invoices.invoice_date_created DESC, ip_invoices.invoice_number DESC, ip_invoices.invoice_id DESC');
+        DB::orderBy('ip_invoices.invoice_date_created DESC, ip_invoices.invoice_number DESC, ip_invoices.invoice_id DESC');
     }
 
     /**
@@ -79,11 +81,11 @@ class InvoicesService extends BaseService
      */
     public function defaultJoin()
     {
-        $this->db->join('ip_clients', 'ip_clients.client_id = ip_invoices.client_id');
-        $this->db->join('ip_users', 'ip_users.user_id = ip_invoices.user_id');
-        $this->db->join('ip_invoice_amounts', 'ip_invoice_amounts.invoice_id = ip_invoices.invoice_id', 'left');
-        $this->db->join('ip_invoice_sumex', 'sumex_invoice = ip_invoices.invoice_id', 'left');
-        $this->db->join('ip_quotes', 'ip_quotes.invoice_id = ip_invoices.invoice_id', 'left');
+        DB::join('ip_clients', 'ip_clients.client_id = ip_invoices.client_id');
+        DB::join('ip_users', 'ip_users.user_id = ip_invoices.user_id');
+        DB::join('ip_invoice_amounts', 'ip_invoice_amounts.invoice_id = ip_invoices.invoice_id', 'left');
+        DB::join('ip_invoice_sumex', 'sumex_invoice = ip_invoices.invoice_id', 'left');
+        DB::join('ip_quotes', 'ip_quotes.invoice_id = ip_invoices.invoice_id', 'left');
     }
 
     /**
@@ -550,7 +552,7 @@ class InvoicesService extends BaseService
                 $update_data['invoice_status_id'] = 3;
             }
             // Set the invoice to read-only if feature is not disabled and setting is view
-            if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 3) {
+            if (config('disable_read_only') == false && get_setting('read_only_toggle') == 3) {
                 $update_data['is_read_only'] = 1;
             }
             // Save?
@@ -580,7 +582,7 @@ class InvoicesService extends BaseService
                 $update_data['invoice_status_id'] = 2;
             }
             // Set the invoice to read-only if feature is not disabled and setting is sent
-            if ($this->config->item('disable_read_only') == false && get_setting('read_only_toggle') == 2) {
+            if (config('disable_read_only') == false && get_setting('read_only_toggle') == 2) {
                 $update_data['is_read_only'] = 1;
             }
             // Save?

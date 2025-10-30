@@ -20,7 +20,7 @@ $invoice_count = count($invoices);
 $invoice_list_split = $invoice_count > 3 ? $invoice_count / 2 : 9999;
 @foreach($invoices as $invoice) {
     // Disable read-only if not applicable
-    @if($this->config->item('disable_read_only') == true) {
+    @if(config('disable_read_only') == true) {
         $invoice->is_read_only = 0;
     }
     // Convert the dropdown menu to a dropup if invoice is after the invoice split
@@ -107,7 +107,7 @@ $invoice_list_split = $invoice_count > 3 ? $invoice_count / 2 : 9999;
                                 @lang('enter_payment')
                             </a>
                         </li>
-                        @if($invoice->invoice_status_id == 1 || $this->config->item('enable_invoice_deletion') === true && $invoice->is_read_only != 1)
+                        @if($invoice->invoice_status_id == 1 || config('enable_invoice_deletion') === true && $invoice->is_read_only != 1)
                         <li>
                             <form action="{{ url('invoices/delete/' . $invoice->invoice_id) }}"
                                   method="POST">

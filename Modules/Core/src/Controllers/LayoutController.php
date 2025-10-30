@@ -22,13 +22,13 @@ class LayoutController extends MXController
                 $key                   = $arg[0];
                 $view                  = explode('/', $arg[1]);
                 $data                  = array_merge($arg[2] ?? [], $this->view_data);
-                $this->view_data[$key] = $this->load->view($view[0] . '/' . $view[1], $data, true);
+                $this->view_data[$key] = return view($view[0] . '/' . $view[1], $data, true);
             }
         } else {
             $key                   = $args[0];
             $view                  = explode('/', $args[1]);
             $data                  = array_merge($args[2] ?? [], $this->view_data);
-            $this->view_data[$key] = $this->load->view($view[0] . '/' . $view[1], $data, true);
+            $this->view_data[$key] = return view($view[0] . '/' . $view[1], $data, true);
         }
 
         return $this;
@@ -59,7 +59,7 @@ class LayoutController extends MXController
      */
     public function render(string $view = 'layout')
     {
-        $this->load->view('layout/' . $view, $this->view_data);
+        return view('layout/' . $view, $this->view_data);
     }
 
     /**
@@ -71,6 +71,6 @@ class LayoutController extends MXController
     {
         $view = explode('/', $view);
         $view = $view[0] . '/' . $view[1] . (isset($view[2]) ? '/' . $view[2] : '');
-        $this->load->view($view, $data);
+        return view($view, $data);
     }
 }

@@ -23,6 +23,70 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, naming.
 - Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
 - Check for existing components to reuse before writing a new one.
+- **NEVER use CodeIgniter patterns** - this is a Laravel application. See "CodeIgniter to Laravel Migration" section below.
+
+## CodeIgniter to Laravel Migration
+
+This application is being migrated from CodeIgniter to Laravel. **NEVER** use or create CodeIgniter patterns. Use Laravel equivalents:
+
+### Forbidden Patterns (CodeIgniter)
+- ❌ `$this->load->` - Use Laravel dependency injection or facades
+- ❌ `$this->config->` - Use `config()` helper
+- ❌ `$this->input->` - Use `request()` helper  
+- ❌ `$this->session->` - Use `session()` helper
+- ❌ `$this->db->` - Use Eloquent models or `DB::` facade
+- ❌ `$this->security->` - Use Laravel validation and sanitization
+- ❌ `$this->form_validation->` - Use Form Request classes
+- ❌ `get_instance()` - Use dependency injection or facades
+- ❌ `current_url()` - Use `request()->url()` or `url()->current()`
+- ❌ `show_404()` - Use `abort(404)`
+
+### Laravel Equivalents (Use These)
+
+#### HTTP Requests
+- ✅ `request()->input('key')` - Get POST/GET data
+- ✅ `request()->query('key')` - Get query string parameter
+- ✅ `request()->all()` - Get all input
+- ✅ `request()->method()` - Get HTTP method
+- ✅ `request()->ajax()` - Check if AJAX request
+- ✅ `request()->url()` - Get current URL
+- ✅ `request()->path()` - Get current path
+
+#### Session Management
+- ✅ `session('key')` - Get session value
+- ✅ `session(['key' => 'value'])` - Set session value
+- ✅ `session()->forget('key')` - Remove session value
+- ✅ `session()->flash('key', 'value')` - Set flash data
+- ✅ `session()->flush()` - Destroy session
+
+#### Configuration
+- ✅ `config('app.name')` - Get config value
+- ✅ `config()->set('key', 'value')` - Set config value
+
+#### Database Operations  
+- ✅ `DB::table('users')->get()` - Query builder
+- ✅ `User::all()` - Eloquent models
+- ✅ `DB::select()`, `DB::insert()`, `DB::update()`, `DB::delete()` - Raw queries
+
+#### Validation
+- ✅ Form Request classes - For validation logic
+- ✅ `validate()` method in controllers - For simple validation
+- ✅ `Validator` facade - For manual validation
+
+#### Other
+- ✅ `redirect()` - For redirects
+- ✅ `view()` - For views
+- ✅ `abort(404)` - For 404 errors
+- ✅ `e()` or `htmlspecialchars()` - For XSS protection
+- ✅ Dependency injection - For services
+
+### Migration Notes
+
+Most CodeIgniter patterns have been replaced in controllers, services, and models. Remaining instances are:
+- Legacy libraries (Sumex, QrCode, XMLtemplates) - marked with TODO
+- Complex helpers that need refactoring - use `get_setting()` instead of `$CI->mdl_settings->setting()`
+
+
 
 ## Verification Scripts
 

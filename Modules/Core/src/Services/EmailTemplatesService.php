@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Models\EmailTemplate;
 
@@ -19,7 +21,7 @@ class EmailTemplatesService extends BaseService
      */
     public function defaultSelect()
     {
-        $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+        DB::select('SQL_CALC_FOUND_ROWS *', false);
     }
 
     /**
@@ -29,7 +31,7 @@ class EmailTemplatesService extends BaseService
      */
     public function defaultOrderBy()
     {
-        $this->db->orderBy('email_template_title');
+        DB::orderBy('email_template_title');
     }
 
     /**

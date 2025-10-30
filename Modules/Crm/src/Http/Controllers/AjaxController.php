@@ -2,6 +2,8 @@
 
 namespace Modules\Crm\app\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use AllowDynamicProperties;
 use Modules\Core\Controllers\AdminController;
 use Modules\Crm\app\Services\ClientNotesService;
@@ -23,14 +25,14 @@ class AjaxController extends AdminController
     public function nameQuery(): void
     {
         $response                = [];
-        $query                   = $this->input->get('query');
-        $permissiveSearchClients = $this->input->get('permissive_search_clients');
+        $query                   = request()->query('query');
+        $permissiveSearchClients = request()->query('permissive_search_clients');
         if (empty($query)) {
             echo json_encode($response);
             exit;
         }
         $moreClientsQuery = $permissiveSearchClients ? '%' : '';
-        $escapedQuery     = $this->db->escape_str($query);
+        $escapedQuery     = DB::escape_str($query);
         $escapedQuery     = str_replace('%', '', $escapedQuery);
         $clients          = (new ClientsService())->where('client_active', 1)->having("client_name LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_surname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->or_having("client_fullname LIKE '" . $moreClientsQuery . $escapedQuery . "%'")->orderBy('client_name')->get()->result();
         foreach ($clients as $client) {
@@ -63,7 +65,7 @@ class AjaxController extends AdminController
      */
     public function savePreferencePermissiveSearchClients(): void
     {
-        $permissiveSearchClients = $this->input->get('permissive_search_clients');
+        $permissiveSearchClients = request()->query('permissive_search_clients');
         if ( ! preg_match('!^[0-1]{1}$!', $permissiveSearchClients)) {
             exit;
         }
@@ -78,7 +80,7 @@ class AjaxController extends AdminController
     public function deleteClientNote(): void
     {
         $success        = 0;
-        $client_note_id = $this->input->post('client_note_id');
+        $client_note_id = request()->input('client_note_id');
         if ((new ClientNotesService())->getById($client_note_id) || empty($client_note_id)) {
             $item = (new ClientNotesService())->delete($client_note_id);
             if ($item) {
@@ -118,7 +120,7 @@ class AjaxController extends AdminController
      */
     public function loadClientNotes(): void
     {
-        $data = ['client_notes' => (new ClientNotesService())->where('client_id', $this->input->post('client_id'))->get()->result()];
+        $data = ['client_notes' => (new ClientNotesService())->where('client_id', request()->input('client_id'))->get()->result()];
         $this->layout->loadView('clients/partial_notes', $data);
     }
 }

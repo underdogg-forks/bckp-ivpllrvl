@@ -10,13 +10,12 @@ class TransHelper
      * @originalFile trans_helper.php
      */
     public static function trans($line, ?string $id = '', $default = null)
-    {
-        $CI          = & get_instance();
-        $lang_string = $CI->lang->line($line);
+    { // TODO: Replace with Laravel patterns
+        $lang_string = trans($line);
         // Fall back to default lang if the current lang has no translated string
         if (empty($lang_string)) {
             // Save the current application lang (code borrowed from Modules\Core\Controllers\Base_Controller.php)
-            $current_language = $CI->session->userdata('user_language');
+            $current_language = session('user_language');
             if (empty($current_language) || $current_language == 'system') {
                 // todo gives error at startup, fix later
                 // #1034: Translation breaks in PDF-template
@@ -24,7 +23,7 @@ class TransHelper
             }
             // Load the default lang and translate the string
             set_language('en');
-            $lang_string = $CI->lang->line($line);
+            $lang_string = trans($line);
             // Restore the application lang to its previous setting
             set_language($current_language);
         }
@@ -46,12 +45,11 @@ class TransHelper
      */
     public static function setLanguage($language): void
     {
-        // Clear the current loaded lang
-        $CI                  = & get_instance();
+        // Clear the current loaded lang // TODO: Replace with Laravel patterns
         $CI->lang->is_loaded = [];
         $CI->lang->language  = [];
         // Load system lang if no custom lang is set
-        $default_lang = isset($CI->mdl_settings) ? $CI->mdl_settings->setting('default_language') : 'en';
+        $default_lang = isset($CI->mdl_settings) ? get_setting('default_language') : 'en';
         $new_language = $language == 'system' ? $default_lang : $language;
         $app_dir      = $CI->config->_config_paths[0];
         $lang_dir     = $app_dir . DIRECTORY_SEPARATOR . 'lang';
@@ -70,9 +68,8 @@ class TransHelper
      * @originalFile trans_helper.php
      */
     public static function getAvailableLanguages()
-    {
-        $CI = & get_instance();
-        $CI->load->helper('directory');
+    { // TODO: Replace with Laravel patterns
+        // TODO: Laravel autoloads helpers - 'directory');
         $languages = directory_map(APPPATH . 'lang', true);
         sort($languages);
         $counter = count($languages);

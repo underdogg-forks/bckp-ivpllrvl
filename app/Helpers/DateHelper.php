@@ -22,12 +22,11 @@ class DateHelper
     public static function dateFromMysql($date, $ignore_post_check = false)
     {
         if ($date) {
-            if ( ! $_POST || $ignore_post_check) {
-                $CI = & get_instance();
+            if ( ! $_POST || $ignore_post_check) { // TODO: Replace with Laravel patterns
                 if ($date != null) {
                     $date = DateTime::createFromFormat('Y-m-d', $date);
 
-                    return $date->format($CI->mdl_settings->setting('date_format'));
+                    return $date->format(get_setting('date_format'));
                 }
 
                 return '';
@@ -45,12 +44,11 @@ class DateHelper
      * @originalFile date_helper.php
      */
     public static function dateFromTimestamp($timestamp): string
-    {
-        $CI   = & get_instance();
+    { // TODO: Replace with Laravel patterns
         $date = new DateTime();
         $date->setTimestamp($timestamp);
 
-        return $date->format($CI->mdl_settings->setting('date_format'));
+        return $date->format(get_setting('date_format'));
     }
 
     /**
@@ -59,9 +57,8 @@ class DateHelper
      * @originalFile date_helper.php
      */
     public static function dateToMysql($date)
-    {
-        $CI = & get_instance();
-        $d  = DateTime::createFromFormat($CI->mdl_settings->setting('date_format'), $date);
+    { // TODO: Replace with Laravel patterns
+        $d  = DateTime::createFromFormat(get_setting('date_format'), $date);
 
         return $d ? $d->format('Y-m-d') : '';
     }
@@ -72,9 +69,8 @@ class DateHelper
      * @originalFile date_helper.php
      */
     public static function isDate($date): bool
-    {
-        $CI     = & get_instance();
-        $format = $CI->mdl_settings->setting('date_format');
+    { // TODO: Replace with Laravel patterns
+        $format = get_setting('date_format');
         $d      = DateTime::createFromFormat($format, $date);
 
         return $d && $d->format($format) == $date;
@@ -86,9 +82,8 @@ class DateHelper
      * @originalFile date_helper.php
      */
     public static function dateFormatSetting()
-    {
-        $CI           = & get_instance();
-        $date_format  = $CI->mdl_settings->setting('date_format');
+    { // TODO: Replace with Laravel patterns
+        $date_format  = get_setting('date_format');
         $date_formats = date_formats();
 
         return $date_formats[$date_format]['setting'];
@@ -100,9 +95,8 @@ class DateHelper
      * @originalFile date_helper.php
      */
     public static function dateFormatDatepicker()
-    {
-        $CI           = & get_instance();
-        $date_format  = $CI->mdl_settings->setting('date_format');
+    { // TODO: Replace with Laravel patterns
+        $date_format  = get_setting('date_format');
         $date_formats = date_formats();
 
         return $date_formats[$date_format]['datepicker'];
@@ -119,10 +113,9 @@ class DateHelper
             return '';
         }
         $new_date = new DateTime($d);
-        $new_date->add(new DateInterval('P' . $increment));
-        $CI = & get_instance();
+        $new_date->add(new DateInterval('P' . $increment)); // TODO: Replace with Laravel patterns
 
-        return $new_date->format($CI->mdl_settings->setting('date_format'));
+        return $new_date->format(get_setting('date_format'));
     }
 
     /**
